@@ -19,9 +19,6 @@
 		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
-		DD48C46E11CC093D00038969 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C46811CC093D00038969 /* FMResultSet.m */; };
-		DD48C46F11CC093D00038969 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C46A11CC093D00038969 /* FMDatabaseAdditions.m */; };
-		DD48C47011CC093D00038969 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C46C11CC093D00038969 /* FMDatabase.m */; };
 		DD48C4BA11CC0CE300038969 /* world-light.sql in Resources */ = {isa = PBXBuildFile; fileRef = DD48C4B911CC0CE300038969 /* world-light.sql */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C84611CC423800038969 /* Wood_Plank_Look_Tile.JPG in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */; };
@@ -29,6 +26,9 @@
 		DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84411CC423800038969 /* Wood-Texture.jpg */; };
 		DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */; };
 		DD48C86711CC43F100038969 /* 404803.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* 404803.jpg */; };
+		DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA111D00379007691F3 /* FMResultSet.m */; };
+		DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */; };
+		DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA511D00379007691F3 /* FMDatabase.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,12 +75,6 @@
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
 		DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxSQLiteTileSource.h; sourceTree = "<group>"; };
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
-		DD48C46811CC093D00038969 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
-		DD48C46911CC093D00038969 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
-		DD48C46A11CC093D00038969 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		DD48C46B11CC093D00038969 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		DD48C46C11CC093D00038969 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
-		DD48C46D11CC093D00038969 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		DD48C4B911CC0CE300038969 /* world-light.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.sql"; path = "../stuff to not backup/world-light.sql"; sourceTree = SOURCE_ROOT; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wood_Plank_Look_Tile.JPG; sourceTree = SOURCE_ROOT; };
@@ -88,6 +82,12 @@
 		DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wood-Texture.jpg"; sourceTree = SOURCE_ROOT; };
 		DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood-walnut-background-tile.jpg"; sourceTree = SOURCE_ROOT; };
 		DD48C86611CC43F100038969 /* 404803.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 404803.jpg; sourceTree = SOURCE_ROOT; };
+		DD6E3AA111D00379007691F3 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = fmdb/FMResultSet.m; sourceTree = "<group>"; };
+		DD6E3AA211D00379007691F3 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		DD6E3AA411D00379007691F3 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		DD6E3AA511D00379007691F3 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = fmdb/FMDatabase.m; sourceTree = "<group>"; };
+		DD6E3AA611D00379007691F3 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = fmdb/FMDatabase.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -211,20 +211,20 @@
 			isa = PBXGroup;
 			children = (
 				DD48C2CB11CBF30600038969 /* route-me */,
-				DD48C47111CC094000038969 /* FMDB */,
+				DD6E3AAA11D0037D007691F3 /* FMDB */,
 			);
 			name = Externals;
 			sourceTree = "<group>";
 		};
-		DD48C47111CC094000038969 /* FMDB */ = {
+		DD6E3AAA11D0037D007691F3 /* FMDB */ = {
 			isa = PBXGroup;
 			children = (
-				DD48C46D11CC093D00038969 /* FMDatabase.h */,
-				DD48C46C11CC093D00038969 /* FMDatabase.m */,
-				DD48C46911CC093D00038969 /* FMResultSet.h */,
-				DD48C46811CC093D00038969 /* FMResultSet.m */,
-				DD48C46B11CC093D00038969 /* FMDatabaseAdditions.h */,
-				DD48C46A11CC093D00038969 /* FMDatabaseAdditions.m */,
+				DD6E3AA611D00379007691F3 /* FMDatabase.h */,
+				DD6E3AA511D00379007691F3 /* FMDatabase.m */,
+				DD6E3AA411D00379007691F3 /* FMDatabaseAdditions.h */,
+				DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */,
+				DD6E3AA211D00379007691F3 /* FMResultSet.h */,
+				DD6E3AA111D00379007691F3 /* FMResultSet.m */,
 			);
 			name = FMDB;
 			sourceTree = "<group>";
@@ -318,9 +318,9 @@
 				1D3623260D0F684500981E51 /* MapBoxiPadDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */,
 				DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */,
-				DD48C46E11CC093D00038969 /* FMResultSet.m in Sources */,
-				DD48C46F11CC093D00038969 /* FMDatabaseAdditions.m in Sources */,
-				DD48C47011CC093D00038969 /* FMDatabase.m in Sources */,
+				DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */,
+				DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */,
+				DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
