@@ -1,0 +1,6 @@
+#labels Feature,TouchXML
+I've added support for libtidy to TouchXML
+
+You need to enable tidy support by putting "#define TOUCHXMLUSETIDY 1" into your prefix file. You also need to include the tidy source code (from http://tidy.sourceforge.net/#source) in your project.
+
+Once you've done that you can then use the "CXMLDocumentTidyHTML" and "CXMLDocumentTidyXML" flags to tidy the input data.

@@ -1,0 +1,16 @@
+= Introduction =
+
+How to use TouchXML in 5 seconds or less.
+
+= Details =
+
+Add all source files within TouchXML/Common/Source to your project.
+
+Include TouchXML.h where needed.
+
+Add the following lines to your project configuration.
+
+{{{
+OTHER_LDFLAGS = -lxml2
+HEADER_SEARCH_PATHS = /usr/include/libxml2
+}}}
