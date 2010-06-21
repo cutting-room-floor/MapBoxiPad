@@ -1,0 +1,111 @@
+TFlipMaps
+v7
+r1
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/FlipsideView.xib
+c000000004C1BAEC20000000000002D40
+t1276882626
+s11584
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/MainView.xib
+c000000004C1BAEC2000000000000401F
+t1276882626
+s16415
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/MainWindow.xib
+c000000004C1BAEC20000000000003270
+t1276882626
+s12912
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Info.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/PkgInfo
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/FlipsideView.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/MainView.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/MainWindow.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/error.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/loading.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/marker-blue.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Resources/missing.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/error.png
+c000000004C1BAEC200000000000018DE
+t1276882626
+s6366
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/loading.png
+c000000004C1BAEC2000000000000050D
+t1276882626
+s1293
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/marker-blue.png
+c000000004C1BAEC20000000000000A29
+t1276882626
+s2601
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/missing.png
+c000000004C1BAEC200000000000014DE
+t1276882626
+s5342
+
+NInfo.plist
+c000000004C1BAEC20000000000000386
+t1276882626
+s902
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/FlipsideView.xib"
+r0
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/MainView.xib"
+r0
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/MainWindow.xib"
+r0
+
+CCpResource build/Debug/FlipMaps.app/Contents/Resources/error.png error.png
+r0
+
+CCpResource build/Debug/FlipMaps.app/Contents/Resources/loading.png loading.png
+r0
+
+CCpResource build/Debug/FlipMaps.app/Contents/Resources/marker-blue.png marker-blue.png
+r0
+
+CCpResource build/Debug/FlipMaps.app/Contents/Resources/missing.png missing.png
+r0
+
+CProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app/Contents/Info.plist" Info.plist
+r0
+
+CTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/MapTestbedFlipMaps/build/Debug/FlipMaps.app"
+r0
+

@@ -1,0 +1,27 @@
+TProj4
+v7
+r0
+t298576456.013576
+cCheck dependencies
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/Proj4/build/Debug/libProj4.a
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/Proj4/build/Debug/usr/local/include/proj_api.h
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/Proj4/proj_api.h
+c000000004C1BAEC90000000000001468
+t1276882633
+s5224
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies298576456#298576456#0(73"[BEROR]error: There is no SDK with the name or path 'iphonesimulator3.0'1(4@65"error: There is no SDK with the name or path 'iphonesimulator3.0'298576456#18446744073709551615#0#0(1@0"0(0#1#0"8677931744#0"0#
+
+CCpHeader build/Debug/usr/local/include/proj_api.h proj_api.h
+r0
+

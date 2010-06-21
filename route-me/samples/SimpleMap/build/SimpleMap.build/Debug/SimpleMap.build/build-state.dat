@@ -1,0 +1,123 @@
+TSimpleMap
+v7
+r1
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib
+c000000004C1BAEC30000000000002D29
+t1276882627
+s11561
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib
+c000000004C1BAEC3000000000000228E
+t1276882627
+s8846
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib
+c000000004C1BAEC3000000000000218C
+t1276882627
+s8588
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Info.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/PkgInfo
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/MainView.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/MainWindow.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/MapViewViewController.nib
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/loading.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/marker-blue-withletter.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/marker-blue.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/marker-red-withletter.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Resources/marker-red.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/loading.png
+c000000004C1BAEC30000000000001C13
+t1276882627
+s7187
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue-withletter.png
+c000000004C1BAEC300000000000009E3
+t1276882627
+s2531
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue.png
+c000000004C1BAEC30000000000000A29
+t1276882627
+s2601
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red-withletter.png
+c000000004C1BAEC300000000000009B6
+t1276882627
+s2486
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red.png
+c000000004C1BAEC300000000000009D4
+t1276882627
+s2516
+
+NInfo.plist
+c000000004C1BAEC30000000000000386
+t1276882627
+s902
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib"
+r0
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib"
+r0
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib"
+r0
+
+CCpResource build/Debug/SimpleMap.app/Contents/Resources/loading.png loading.png
+r0
+
+CCpResource build/Debug/SimpleMap.app/Contents/Resources/marker-blue-withletter.png marker-blue-withletter.png
+r0
+
+CCpResource build/Debug/SimpleMap.app/Contents/Resources/marker-blue.png marker-blue.png
+r0
+
+CCpResource build/Debug/SimpleMap.app/Contents/Resources/marker-red-withletter.png marker-red-withletter.png
+r0
+
+CCpResource build/Debug/SimpleMap.app/Contents/Resources/marker-red.png marker-red.png
+r0
+
+CProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app/Contents/Info.plist" Info.plist
+r0
+
+CTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug/SimpleMap.app"
+r0
+

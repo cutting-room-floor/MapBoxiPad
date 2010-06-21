@@ -1,0 +1,2364 @@
+TUnit Tests
+v7
+r1
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk
+c000000004C059C0E0000000000000110
+t1275436046
+s272
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreFoundation.framework/CoreFoundation
+c000000004B9F251300000000002F10E0
+t1268720915
+s3084512
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c000000004BA03AC100000000003B4B70
+t1268792001
+s3885936
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h
+c000000004BA03AC10000000000002384
+t1268792001
+s9092
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.h
+c000000004BA03AC100000000000004FE
+t1268792001
+s1278
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreLocation.framework/CoreLocation
+c000000004BA18C6200000000000A9BA0
+t1268878434
+s695200
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CLLocation.h
+c000000004BA18C5A0000000000001586
+t1268878426
+s5510
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.h
+c000000004BA18C5A00000000000001AF
+t1268878426
+s431
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c000000004B9F26D2000000000036A650
+t1268721362
+s3581520
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c000000004B9F26B90000000000001355
+t1268721337
+s4949
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CALayer.h
+c000000004B9F28EF00000000000072AD
+t1268721903
+s29357
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.h
+c000000004B9F28EE000000000000007D
+t1268721902
+s125
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/QuartzCore.framework/QuartzCore
+c000000004B9F2A1500000000002215A0
+t1268722197
+s2233760
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
+c000000004B9F318D000000000000098F
+t1268724109
+s2447
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c000000004B9F32090000000002703230
+t1268724233
+s40907312
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/AvailabilityMacros.h
+c000000004B9F27C60000000000006724
+t1268721606
+s26404
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/TargetConditionals.h
+c000000004B9F27C600000000000031E9
+t1268721606
+s12777
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/libkern/OSAtomic.h
+c000000004B9F135D0000000000002519
+t1268716381
+s9497
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/math.h
+c000000004B9F12D800000000000004F1
+t1268716248
+s1265
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/objc/objc-api.h
+c000000004B9F1A65000000000000094E
+t1268718181
+s2382
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/objc/objc-auto.h
+c000000004B9F1A650000000000002734
+t1268718181
+s10036
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/objc/runtime.h
+c000000004B9F1A6500000000000053F9
+t1268718181
+s21497
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/sqlite3.h
+c000000004B9F1C66000000000004187F
+t1268718694
+s268415
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/stdio.h
+c000000004B9F135D0000000000004174
+t1268716381
+s16756
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/stdlib.h
+c000000004B9F135D0000000000002DF5
+t1268716381
+s11765
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/string.h
+c000000004B9F135D0000000000001731
+t1268716381
+s5937
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/include/unistd.h
+c000000004B9F135D000000000000563E
+t1268716381
+s22078
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/lib/gcc/arm-apple-darwin10/4.2.1/include/stdarg.h
+c000000004B734D6000000000000010DD
+t1265847648
+s4317
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/lib/gcc/arm-apple-darwin10/4.2.1/include/stdint.h
+c000000004B734E7A000000000000190C
+t1265847930
+s6412
+
+N/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS3.2.sdk/usr/lib/libsqlite3.dylib
+c000000004B9F1C7800000000000B4CF0
+t1268718712
+s740592
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMCALayer+UnitTesting.h
+c000000004C1BAEC40000000000000704
+t1276882628
+s1796
+i<QuartzCore/QuartzCore.h>
+i"GTMNSObject+UnitTesting.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMCALayer+UnitTesting.m
+c000000004C1BAEC40000000000000D8C
+t1276882628
+s3468
+i"GTMCALayer+UnitTesting.h"
+i"GTMGarbageCollection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMDefines.h
+c000000004C1BAEC40000000000002A25
+t1276882628
+s10789
+i<AvailabilityMacros.h>
+i<TargetConditionals.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMGarbageCollection.h
+c000000004C1BAEC40000000000000AFF
+t1276882628
+s2815
+i<Foundation/Foundation.h>
+i"GTMDefines.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestDelegate.h
+c000000004C1BAEC40000000000000581
+t1276882628
+s1409
+i<Foundation/Foundation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestDelegate.m
+c000000004C1BAEC4000000000000192B
+t1276882628
+s6443
+i"GTMIPhoneUnitTestDelegate.h"
+i"GTMDefines.h"
+i<objc/runtime.h>
+i<stdio.h>
+i<UIKit/UIKit.h>
+i"GTMSenTestCase.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestMain.m
+c000000004C1BAEC4000000000000046A
+t1276882628
+s1130
+i"GTMDefines.h"
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSNumber+64Bit.h
+c000000004C1BAEC400000000000004E1
+t1276882628
+s1249
+i<Foundation/Foundation.h>
+i"GTMDefines.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSNumber+64Bit.m
+c000000004C1BAEC40000000000000A5E
+t1276882628
+s2654
+i"GTMNSNumber+64Bit.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSObject+UnitTesting.h
+c000000004C1BAEC400000000000040CB
+t1276882628
+s16587
+i"GTMDefines.h"
+i<Foundation/Foundation.h>
+i<ApplicationServices/ApplicationServices.h>
+i<CoreGraphics/CoreGraphics.h>
+i"GTMSenTestCase.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSObject+UnitTesting.m
+c000000004C1BAEC40000000000008B30
+t1276882628
+s35632
+i"GTMNSObject+UnitTesting.h"
+i"GTMSystemVersion.h"
+i"GTMGarbageCollection.h"
+i"GTMNSNumber+64Bit.h"
+i<UIKit/UIKit.h>
+i<AppKit/AppKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMObjC2Runtime.h
+c000000004C1BAEC40000000000001361
+t1276882628
+s4961
+i<objc/objc-api.h>
+i<objc/objc-auto.h>
+i"GTMDefines.h"
+i<objc/runtime.h>
+i<objc/objc-runtime.h>
+i<objc/Object.h>
+i<libkern/OSAtomic.h>
+i"objc/Protocol.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMObjC2Runtime.m
+c000000004C1BAEC40000000000001289
+t1276882628
+s4745
+i"GTMObjC2Runtime.h"
+i<stdlib.h>
+i<string.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSenTestCase.h
+c000000004C1BAEC4000000000000CA4D
+t1276882628
+s51789
+i"GTMDefines.h"
+i<SenTestingKit/SenTestingKit.h>
+i<Foundation/Foundation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSenTestCase.m
+c000000004C1BAEC40000000000003949
+t1276882628
+s14665
+i"GTMSenTestCase.h"
+i<unistd.h>
+i"GTMObjC2Runtime.h"
+i"GTMGarbageCollection.h"
+i<stdarg.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSystemVersion.h
+c000000004C1BAEC40000000000000A75
+t1276882628
+s2677
+i<Foundation/Foundation.h>
+i"GTMDefines.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSystemVersion.m
+c000000004C1BAEC40000000000001E85
+t1276882628
+s7813
+i"GTMSystemVersion.h"
+i"GTMGarbageCollection.h"
+i<CoreServices/CoreServices.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMUIKit+UnitTesting.h
+c000000004C1BAEC400000000000013CD
+t1276882628
+s5069
+i<UIKit/UIKit.h>
+i"GTMNSObject+UnitTesting.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMUIKit+UnitTesting.m
+c000000004C1BAEC40000000000000F15
+t1276882628
+s3861
+i"GTMUIKit+UnitTesting.h"
+i"GTMCALayer+UnitTesting.h"
+i"GTMDefines.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabase.h
+c000000004C1BAEC500000000000008D5
+t1276882629
+s2261
+i<Foundation/Foundation.h>
+i"sqlite3.h"
+i"FMResultSet.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabase.m
+c000000004C1BAEC500000000000041A3
+t1276882629
+s16803
+i"FMDatabase.h"
+i"unistd.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabaseAdditions.h
+c000000004C1BAEC500000000000002C3
+t1276882629
+s707
+i<Foundation/Foundation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabaseAdditions.m
+c000000004C1BAEC5000000000000066E
+t1276882629
+s1646
+i"FMDatabase.h"
+i"FMDatabaseAdditions.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMResultSet.h
+c000000004C1BAEC50000000000000712
+t1276882629
+s1810
+i<Foundation/Foundation.h>
+i"sqlite3.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMResultSet.m
+c000000004C1BAEC500000000000022D4
+t1276882629
+s8916
+i"FMResultSet.h"
+i"FMDatabase.h"
+i"unistd.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMAbstractMercatorWebSource.h
+c000000004C1BAEC60000000000000955
+t1276882630
+s2389
+i"RMTileSource.h"
+i"RMFractalTileProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMAbstractMercatorWebSource.m
+c000000004C1BAEC600000000000013C1
+t1276882630
+s5057
+i"RMAbstractMercatorWebSource.h"
+i"RMTransform.h"
+i"RMTileImage.h"
+i"RMTileLoader.h"
+i"RMFractalTileProjection.h"
+i"RMTiledLayerController.h"
+i"RMProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCachedTileSource.h
+c000000004C1BAEC60000000000000845
+t1276882630
+s2117
+i<UIKit/UIKit.h>
+i"RMTileSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCachedTileSource.m
+c000000004C1BAEC60000000000000F49
+t1276882630
+s3913
+i"RMCachedTileSource.h"
+i"RMTileCache.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCloudMadeMapSource.h
+c000000004C1BAEC60000000000000952
+t1276882630
+s2386
+i"RMAbstractMercatorWebSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCloudMadeMapSource.m
+c000000004C1BAEC6000000000000174B
+t1276882630
+s5963
+i"RMCloudMadeMapSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMConfiguration.h
+c000000004C1BAEC60000000000000669
+t1276882630
+s1641
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMConfiguration.m
+c000000004C1BAEC60000000000000AEE
+t1276882630
+s2798
+i"RMConfiguration.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCoreAnimationRenderer.h
+c000000004C1BAEC6000000000000064C
+t1276882630
+s1612
+i<Foundation/Foundation.h>
+i<QuartzCore/QuartzCore.h>
+i"RMMapRenderer.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCoreAnimationRenderer.m
+c000000004C1BAEC600000000000011D8
+t1276882630
+s4568
+i"RMGlobalConstants.h"
+i"RMCoreAnimationRenderer.h"
+i<QuartzCore/QuartzCore.h>
+i"RMTile.h"
+i"RMTileLoader.h"
+i"RMPixel.h"
+i"RMTileImage.h"
+i"RMTileImageSet.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCountedSet.h
+c000000004C1BAEC600000000000005C8
+t1276882630
+s1480
+i<Foundation/Foundation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMDatabaseCache.h
+c000000004C1BAEC60000000000000835
+t1276882630
+s2101
+i<UIKit/UIKit.h>
+i"RMTileCache.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMDatabaseCache.m
+c000000004C1BAEC600000000000013A4
+t1276882630
+s5028
+i"RMDatabaseCache.h"
+i"RMTileCacheDAO.h"
+i"RMTileImage.h"
+i"RMTile.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFileTileImage.h
+c000000004C1BAEC6000000000000066D
+t1276882630
+s1645
+i<Foundation/Foundation.h>
+i"RMTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFileTileImage.m
+c000000004C1BAEC600000000000006C8
+t1276882630
+s1736
+i"RMFileTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.c
+c000000004C1BAEC60000000000000A6A
+t1276882630
+s2666
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.h
+c000000004C1BAEC600000000000009BD
+t1276882630
+s2493
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFractalTileProjection.h
+c000000004C1BAEC60000000000000A1F
+t1276882630
+s2591
+i<Foundation/Foundation.h>
+i"RMMercatorToTileProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFractalTileProjection.m
+c000000004C1BAEC60000000000001832
+t1276882630
+s6194
+i"RMFractalTileProjection.h"
+i"RMMercatorToScreenProjection.h"
+i"RMProjection.h"
+i<math.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGeoHash.h
+c000000004C1BAEC600000000000007C4
+t1276882630
+s1988
+i<Foundation/Foundation.h>
+i<CoreLocation/CLLocation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGeoHash.m
+c000000004C1BAEC600000000000016B6
+t1276882630
+s5814
+i"RMGlobalConstants.h"
+i"RMGeoHash.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGlobalConstants.h
+c000000004C1BAEC600000000000000C0
+t1276882630
+s192
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLatLong.h
+c000000004C1BAEC60000000000000C4D
+t1276882630
+s3149
+i<TargetConditionals.h>
+i<CoreLocation/CoreLocation.h>
+i"RMGlobalConstants.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLayerCollection.h
+c000000004C1BAEC60000000000000BFA
+t1276882630
+s3066
+i<Foundation/Foundation.h>
+i"RMFoundation.h"
+i"RMMapLayer.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLayerCollection.m
+c000000004C1BAEC60000000000001558
+t1276882630
+s5464
+i"RMLayerCollection.h"
+i"RMMapContents.h"
+i"RMMercatorToScreenProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.h
+c000000004C1BB7CE0000000000002B55
+t1276884942
+s11093
+i<UIKit/UIKit.h>
+i"RMFoundation.h"
+i"RMLatLong.h"
+i"RMTile.h"
+i"RMTilesUpdateDelegate.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.m
+c000000004C1BAEC60000000000007CF1
+t1276882630
+s31985
+i"RMGlobalConstants.h"
+i"RMMapContents.h"
+i"RMMapView.h"
+i"RMFoundation.h"
+i"RMProjection.h"
+i"RMMercatorToScreenProjection.h"
+i"RMMercatorToTileProjection.h"
+i"RMTileSource.h"
+i"RMTileLoader.h"
+i"RMTileImageSet.h"
+i"RMOpenStreetMapSource.h"
+i"RMCoreAnimationRenderer.h"
+i"RMCachedTileSource.h"
+i"RMLayerCollection.h"
+i"RMMarkerManager.h"
+i"RMMarker.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.h
+c000000004C1BAEC60000000000000719
+t1276882630
+s1817
+i<Foundation/Foundation.h>
+i<QuartzCore/QuartzCore.h>
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.m
+c000000004C1BAEC600000000000008DD
+t1276882630
+s2269
+i"RMMapLayer.h"
+i"RMPixel.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapRenderer.h
+c000000004C1BAEC6000000000000070F
+t1276882630
+s1807
+i<Foundation/Foundation.h>
+i<CoreGraphics/CoreGraphics.h>
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapRenderer.m
+c000000004C1BAEC60000000000000891
+t1276882630
+s2193
+i"RMMapRenderer.h"
+i"RMTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.h
+c000000004C1BAEC60000000000001EC9
+t1276882630
+s7881
+i<UIKit/UIKit.h>
+i<CoreGraphics/CGGeometry.h>
+i"RMNotifications.h"
+i"RMFoundation.h"
+i"RMLatLong.h"
+i"RMMapViewDelegate.h"
+i"RMMapContents.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.m
+c000000004C1BAEC60000000000004D2D
+t1276882630
+s19757
+i"RMMapView.h"
+i"RMMapContents.h"
+i"RMMapViewDelegate.h"
+i"RMTileLoader.h"
+i"RMMercatorToScreenProjection.h"
+i"RMMarker.h"
+i"RMMarkerManager.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapViewDelegate.h
+c000000004C1BAEC600000000000009CD
+t1276882630
+s2509
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.h
+c000000004C1BAEC600000000000011EE
+t1276882630
+s4590
+i<UIKit/UIKit.h>
+i"RMMapLayer.h"
+i"RMFoundation.h"
+i<CoreLocation/CoreLocation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.m
+c000000004C1BAEC6000000000000176A
+t1276882630
+s5994
+i"RMMarker.h"
+i"RMPixel.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.h
+c000000004C1BAEC600000000000009BB
+t1276882630
+s2491
+i<UIKit/UIKit.h>
+i"RMMapContents.h"
+i"RMMarker.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.m
+c000000004C1BAEC6000000000000165A
+t1276882630
+s5722
+i"RMMarkerManager.h"
+i"RMMercatorToScreenProjection.h"
+i"RMProjection.h"
+i"RMLayerCollection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMemoryCache.h
+c000000004C1BAEC600000000000006E3
+t1276882630
+s1763
+i<Foundation/Foundation.h>
+i"RMTile.h"
+i"RMTileCache.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMemoryCache.m
+c000000004C1BAEC60000000000000ED3
+t1276882630
+s3795
+i"RMMemoryCache.h"
+i"RMTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToScreenProjection.h
+c000000004C1BAEC60000000000000E72
+t1276882630
+s3698
+i<Foundation/Foundation.h>
+i<CoreGraphics/CoreGraphics.h>
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToScreenProjection.m
+c000000004C1BAEC60000000000002DEF
+t1276882630
+s11759
+i"RMGlobalConstants.h"
+i"RMMercatorToScreenProjection.h"
+i"RMProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToTileProjection.h
+c000000004C1BAEC60000000000000B24
+t1276882630
+s2852
+i<Foundation/Foundation.h>
+i"RMFoundation.h"
+i"RMTile.h"
+i"RMMercatorToTileProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMNotifications.h
+c000000004C1BAEC600000000000008DB
+t1276882630
+s2267
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenAerialMapSource.h
+c000000004C1BAEC600000000000006C6
+t1276882630
+s1734
+i"RMAbstractMercatorWebSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenAerialMapSource.m
+c000000004C1BAEC600000000000009E4
+t1276882630
+s2532
+i"RMOpenAerialMapSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenStreetMapSource.h
+c000000004C1BAEC600000000000006D0
+t1276882630
+s1744
+i"RMAbstractMercatorWebSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenStreetMapSource.m
+c000000004C1BAEC60000000000000A3C
+t1276882630
+s2620
+i"RMOpenStreetMapSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPath.h
+c000000004C1BAEC60000000000000CFC
+t1276882630
+s3324
+i<UIKit/UIKit.h>
+i"RMFoundation.h"
+i"RMLatLong.h"
+i"RMMapLayer.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPath.m
+c000000004C1BAEC60000000000002473
+t1276882630
+s9331
+i"RMPath.h"
+i"RMMapView.h"
+i"RMMapContents.h"
+i"RMMercatorToScreenProjection.h"
+i"RMPixel.h"
+i"RMProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPixel.c
+c000000004C1BAEC6000000000000082E
+t1276882630
+s2094
+i"RMPixel.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPixel.h
+c000000004C1BAEC60000000000000715
+t1276882630
+s1813
+i<CoreGraphics/CGGeometry.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMProjection.h
+c000000004C1BAEC60000000000000C1E
+t1276882630
+s3102
+i<Foundation/Foundation.h>
+i<CoreLocation/CoreLocation.h>
+i"RMFoundation.h"
+i"RMLatLong.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMProjection.m
+c000000004C1BAEC600000000000015A3
+t1276882630
+s5539
+i"RMGlobalConstants.h"
+i"proj_api.h"
+i"RMProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.c
+c000000004C1BAEC60000000000000C6E
+t1276882630
+s3182
+i"RMTile.h"
+i<math.h>
+i<stdio.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.h
+c000000004C1BAEC60000000000000AAC
+t1276882630
+s2732
+i<CoreGraphics/CGGeometry.h>
+i<stdint.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCache.h
+c000000004C1BAEC600000000000009E6
+t1276882630
+s2534
+i<Foundation/Foundation.h>
+i"RMTile.h"
+i"RMTileSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCache.m
+c000000004C1BAEC60000000000001761
+t1276882630
+s5985
+i"RMTileCache.h"
+i"RMMemoryCache.h"
+i"RMDatabaseCache.h"
+i"RMConfiguration.h"
+i"RMTileSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCacheDAO.h
+c000000004C1BAEC6000000000000077A
+t1276882630
+s1914
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCacheDAO.m
+c000000004C1BAEC60000000000001099
+t1276882630
+s4249
+i"RMTileCacheDAO.h"
+i"FMDatabase.h"
+i"RMTileCache.h"
+i"RMTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImage.h
+c000000004C1BAEC60000000000000B69
+t1276882630
+s2921
+i<TargetConditionals.h>
+i<UIKit/UIKit.h>
+i<Cocoa/Cocoa.h>
+i"RMFoundation.h"
+i"RMNotifications.h"
+i"RMTile.h"
+i"RMTileProxy.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImage.m
+c000000004C1C0F2E0000000000001717
+t1276907310
+s5911
+i"RMGlobalConstants.h"
+i"RMTileImage.h"
+i"RMWebTileImage.h"
+i"RMTileLoader.h"
+i"RMFileTileImage.h"
+i"RMTileCache.h"
+i"RMPixel.h"
+i<QuartzCore/QuartzCore.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImageSet.h
+c000000004C1BAEC60000000000000ABA
+t1276882630
+s2746
+i<TargetConditionals.h>
+i<UIKit/UIKit.h>
+i<Cocoa/Cocoa.h>
+i"RMTile.h"
+i"RMCountedSet.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImageSet.m
+c000000004C1BAEC600000000000021F5
+t1276882630
+s8693
+i"RMTileImageSet.h"
+i"RMTileImage.h"
+i"RMPixel.h"
+i"RMTileSource.h"
+i"RMTileLoader.h"
+i"RMMercatorToTileProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileLoader.h
+c000000004C1BAEC600000000000008C7
+t1276882630
+s2247
+i<Foundation/Foundation.h>
+i"RMTile.h"
+i"RMTileImageSet.h"
+i"RMMapContents.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileLoader.m
+c000000004C1BAEC6000000000000178E
+t1276882630
+s6030
+i"RMGlobalConstants.h"
+i"RMTileLoader.h"
+i"RMTileImage.h"
+i"RMTileSource.h"
+i"RMPixel.h"
+i"RMMercatorToScreenProjection.h"
+i"RMFractalTileProjection.h"
+i"RMTileImageSet.h"
+i"RMTileCache.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileProxy.h
+c000000004C1BAEC600000000000006FF
+t1276882630
+s1791
+i<Foundation/Foundation.h>
+i"RMTile.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileProxy.m
+c000000004C1BAEC600000000000007E4
+t1276882630
+s2020
+i"RMTileProxy.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileSource.h
+c000000004C1BAEC600000000000009EE
+t1276882630
+s2542
+i<Foundation/Foundation.h>
+i"RMTile.h"
+i"RMLatLong.h"
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTiledLayerController.h
+c000000004C1BAEC600000000000009BF
+t1276882630
+s2495
+i<Foundation/Foundation.h>
+i"RMFoundation.h"
+i<QuartzCore/QuartzCore.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTilesUpdateDelegate.h
+c000000004C1BAEC60000000000000118
+t1276882630
+s280
+i<UIKit/UIKit.h>
+i"RMLatLong.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTransform.h
+c000000004C1BAEC60000000000000826
+t1276882630
+s2086
+i<Foundation/Foundation.h>
+i"RMFoundation.h"
+i"RMLatLong.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTransform.m
+c000000004C1BAEC60000000000000B22
+t1276882630
+s2850
+i"proj_api.h"
+i"RMTransform.h"
+i"RMProjection.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMVirtualEarthSource.h
+c000000004C1BAEC60000000000000C04
+t1276882630
+s3076
+i"RMAbstractMercatorWebSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMVirtualEarthSource.m
+c000000004C1BAEC600000000000010C5
+t1276882630
+s4293
+i"RMVirtualEarthSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMWebTileImage.h
+c000000004C1BAEC60000000000000744
+t1276882630
+s1860
+i<Foundation/Foundation.h>
+i"RMTileImage.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMWebTileImage.m
+c000000004C1BAEC60000000000001AF1
+t1276882630
+s6897
+i"RMWebTileImage.h"
+i<QuartzCore/CALayer.h>
+i"RMMapContents.h"
+i"RMTileLoader.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMYahooMapSource.h
+c000000004C1BAEC60000000000000835
+t1276882630
+s2101
+i"RMAbstractMercatorWebSource.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMYahooMapSource.m
+c000000004C1BAEC600000000000009C2
+t1276882630
+s2498
+i"RMYahooMapSource.h"
+i<math.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/Resources/../marker-X.png
+c000000004C1BAEC60000000000000097
+t1276882630
+s151
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/Resources/marker-red.png
+c000000004C1BAEC600000000000009D4
+t1276882630
+s2516
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/MapView_Prefix.pch
+c000000004C1BAEC6000000000000028B
+t1276882630
+s651
+i<Foundation/Foundation.h>
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/UnitTesting/RouteMeTests.h
+c000000004C1BAEC4000000000000022E
+t1276882628
+s558
+i"GTMSenTestCase.h"
+i"GTMUIKit+UnitTesting.h"
+i<CoreLocation/CoreLocation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/UnitTesting/RouteMeTests.m
+c000000004C1BAEC400000000000049B0
+t1276882628
+s18864
+i"RouteMeTests.h"
+i"RMMapView.h"
+i"RMCloudMadeMapSource.h"
+i"RMGeoHash.h"
+i"RMMarker.h"
+i"RMMarkerManager.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app.dSYM
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/Info.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/PkgInfo
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/RM Unit Tests
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/marker-X.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/marker-red.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMDatabase.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMDatabaseAdditions.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMResultSet.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMCALayer+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMIPhoneUnitTestDelegate.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMIPhoneUnitTestMain.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMNSNumber+64Bit.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMNSObject+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMObjC2Runtime.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMSenTestCase.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMSystemVersion.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMUIKit+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RM Unit Tests.LinkFileList
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMAbstractMercatorWebSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCachedTileSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCloudMadeMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMConfiguration.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCoreAnimationRenderer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMDatabaseCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFileTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFoundation.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFractalTileProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMGeoHash.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMLayerCollection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapContents.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapLayer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapRenderer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapView.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMarker.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMarkerManager.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMemoryCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMercatorToScreenProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMOpenAerialMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMOpenStreetMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMPath.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMPixel.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTile.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileCacheDAO.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileImageSet.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileLoader.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileProxy.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTransform.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMVirtualEarthSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMWebTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMYahooMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RouteMeTests.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMDatabase.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMDatabaseAdditions.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMResultSet.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMCALayer+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMIPhoneUnitTestDelegate.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMIPhoneUnitTestMain.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMNSNumber+64Bit.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMNSObject+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMObjC2Runtime.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMSenTestCase.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMSystemVersion.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMUIKit+UnitTesting.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RM Unit Tests.LinkFileList
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMAbstractMercatorWebSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCachedTileSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCloudMadeMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMConfiguration.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCoreAnimationRenderer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMDatabaseCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFileTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFoundation.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFractalTileProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMGeoHash.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMLayerCollection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapContents.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapLayer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapRenderer.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapView.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMarker.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMarkerManager.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMemoryCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMercatorToScreenProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMOpenAerialMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMOpenStreetMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMPath.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMPixel.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMProjection.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTile.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileCache.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileCacheDAO.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileImageSet.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileLoader.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileProxy.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTransform.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMVirtualEarthSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMWebTileImage.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMYahooMapSource.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RouteMeTests.o
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Script-2BF307960F8AC60C007014EE.sh
+c00000000000000000000000000000000
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/FMDatabase.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/FMDatabaseAdditions.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/FMResultSet.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMCALayer+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMIPhoneUnitTestDelegate.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMIPhoneUnitTestMain.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMNSNumber+64Bit.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMNSObject+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMObjC2Runtime.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMSenTestCase.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMSystemVersion.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/GTMUIKit+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMAbstractMercatorWebSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMCachedTileSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMCloudMadeMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMConfiguration.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMCoreAnimationRenderer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMDatabaseCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMFileTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMFoundation.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMFractalTileProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMGeoHash.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMLayerCollection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMapContents.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMapLayer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMapRenderer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMapView.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMarker.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMarkerManager.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMemoryCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMMercatorToScreenProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMOpenAerialMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMOpenStreetMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMPath.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMPixel.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTile.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileCacheDAO.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileImageSet.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileLoader.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTileProxy.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMTransform.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMVirtualEarthSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMWebTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RMYahooMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv6/RouteMeTests.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/FMDatabase.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/FMDatabaseAdditions.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/FMResultSet.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMCALayer+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMIPhoneUnitTestDelegate.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMIPhoneUnitTestMain.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMNSNumber+64Bit.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMNSObject+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMObjC2Runtime.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMSenTestCase.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMSystemVersion.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/GTMUIKit+UnitTesting.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMAbstractMercatorWebSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMCachedTileSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMCloudMadeMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMConfiguration.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMCoreAnimationRenderer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMDatabaseCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMFileTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMFoundation.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMFractalTileProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMGeoHash.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMLayerCollection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMapContents.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMapLayer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMapRenderer.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMapView.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMarker.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMarkerManager.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMemoryCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMMercatorToScreenProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMOpenAerialMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMOpenStreetMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMPath.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMPixel.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMProjection.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTile.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileCache.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileCacheDAO.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileImageSet.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileLoader.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTileProxy.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMTransform.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMVirtualEarthSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMWebTileImage.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RMYahooMapSource.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/StaticAnalyzer/normal/armv7/RouteMeTests.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/Proj4/build/Debug-iphoneos/libProj4.a
+c000000004C1C0DE90000000000248A80
+t1276906985
+s2394752
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/Proj4/proj_api.h
+c000000004C1BAEC90000000000001468
+t1276882633
+s5224
+i<math.h>
+i<stdlib.h>
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-aconemjhxovksycceunlxtzrkfvo/MapView_Prefix.pch.gch
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-bdcpatzsaxyzemcgvzqoeiwcmppf/MapView_Prefix.pch.pth
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-bxpimxzmixeobaftjftvnjinbkwd/MapView_Prefix.pch.gch
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-cngcdlyzekjxoufqqzrujvhbcngn/MapView_Prefix.pch.pth
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-ebgfhoutbudicsdrnyqazpxglmge/MapView_Prefix.pch.gch
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-fsgvlfccfsixcqcjhswxgqermiiw/MapView_Prefix.pch.pth
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-gdduvzfnngnfhzcwrmyxihsagwhu/MapView_Prefix.pch.gch
+t2
+s0
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-gvghuhkxsvznyibyaehyyebrgrqw/MapView_Prefix.pch.pth
+t2
+s0
+
+NRM Unit Tests-Info.plist
+c000000004C1BAEC600000000000002B1
+t1276882630
+s689
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMCALayer+UnitTesting.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestDelegate.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestMain.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSNumber+64Bit.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSObject+UnitTesting.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMObjC2Runtime.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSenTestCase.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSystemVersion.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMUIKit+UnitTesting.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabase.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabaseAdditions.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMResultSet.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMAbstractMercatorWebSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCachedTileSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCloudMadeMapSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMConfiguration.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCoreAnimationRenderer.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMDatabaseCache.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFileTileImage.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.c"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFractalTileProjection.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGeoHash.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLayerCollection.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapRenderer.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMemoryCache.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToScreenProjection.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenAerialMapSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenStreetMapSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPath.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPixel.c"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMProjection.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.c"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCache.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCacheDAO.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImage.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImageSet.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileLoader.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileProxy.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTransform.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMVirtualEarthSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMWebTileImage.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMYahooMapSource.m"
+r0
+
+CAnalyze "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/UnitTesting/RouteMeTests.m"
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMDatabase.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabase.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMDatabaseAdditions.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabaseAdditions.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/FMResultSet.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMResultSet.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMCALayer+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMCALayer+UnitTesting.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMIPhoneUnitTestDelegate.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestDelegate.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMIPhoneUnitTestMain.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestMain.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMNSNumber+64Bit.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSNumber+64Bit.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMNSObject+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSObject+UnitTesting.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMObjC2Runtime.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMObjC2Runtime.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMSenTestCase.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSenTestCase.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMSystemVersion.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSystemVersion.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/GTMUIKit+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMUIKit+UnitTesting.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMAbstractMercatorWebSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMAbstractMercatorWebSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCachedTileSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCachedTileSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCloudMadeMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCloudMadeMapSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMConfiguration.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMConfiguration.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMCoreAnimationRenderer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCoreAnimationRenderer.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMDatabaseCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMDatabaseCache.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFileTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFileTileImage.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFoundation.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.c" normal armv6 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMFractalTileProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFractalTileProjection.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMGeoHash.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGeoHash.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMLayerCollection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLayerCollection.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapContents.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapLayer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapRenderer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapRenderer.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMapView.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMarker.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMarkerManager.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMemoryCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMemoryCache.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMMercatorToScreenProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToScreenProjection.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMOpenAerialMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenAerialMapSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMOpenStreetMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenStreetMapSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMPath.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPath.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMPixel.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPixel.c" normal armv6 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMProjection.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTile.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.c" normal armv6 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCache.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileCacheDAO.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCacheDAO.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImage.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileImageSet.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImageSet.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileLoader.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileLoader.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTileProxy.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileProxy.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMTransform.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTransform.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMVirtualEarthSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMVirtualEarthSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMWebTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMWebTileImage.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RMYahooMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMYahooMapSource.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv6/RouteMeTests.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/UnitTesting/RouteMeTests.m" normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMDatabase.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabase.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMDatabaseAdditions.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMDatabaseAdditions.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/FMResultSet.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/FMDB/FMResultSet.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMCALayer+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMCALayer+UnitTesting.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMIPhoneUnitTestDelegate.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestDelegate.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMIPhoneUnitTestMain.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMIPhoneUnitTestMain.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMNSNumber+64Bit.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSNumber+64Bit.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMNSObject+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMNSObject+UnitTesting.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMObjC2Runtime.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMObjC2Runtime.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMSenTestCase.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSenTestCase.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMSystemVersion.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMSystemVersion.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/GTMUIKit+UnitTesting.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/GTM/GTMUIKit+UnitTesting.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMAbstractMercatorWebSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMAbstractMercatorWebSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCachedTileSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCachedTileSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCloudMadeMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCloudMadeMapSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMConfiguration.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMConfiguration.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMCoreAnimationRenderer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMCoreAnimationRenderer.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMDatabaseCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMDatabaseCache.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFileTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFileTileImage.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFoundation.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.c" normal armv7 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMFractalTileProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFractalTileProjection.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMGeoHash.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGeoHash.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMLayerCollection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLayerCollection.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapContents.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapLayer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapRenderer.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapRenderer.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMapView.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMarker.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMarkerManager.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMemoryCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMemoryCache.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMMercatorToScreenProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMercatorToScreenProjection.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMOpenAerialMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenAerialMapSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMOpenStreetMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMOpenStreetMapSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMPath.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPath.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMPixel.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMPixel.c" normal armv7 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMProjection.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMProjection.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTile.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.c" normal armv7 c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileCache.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCache.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileCacheDAO.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileCacheDAO.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImage.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileImageSet.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileImageSet.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileLoader.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileLoader.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTileProxy.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTileProxy.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMTransform.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTransform.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMVirtualEarthSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMVirtualEarthSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMWebTileImage.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMWebTileImage.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RMYahooMapSource.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMYahooMapSource.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCompileC "build/MapView.build/Debug-iphoneos/Unit Tests.build/Objects-normal/armv7/RouteMeTests.o" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/UnitTesting/RouteMeTests.m" normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CCopyPNGFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/marker-X.png" Map/Resources/../marker-X.png
+r0
+
+CCopyPNGFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/marker-red.png" Map/Resources/marker-red.png
+r0
+
+CGenerateDSYMFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app.dSYM" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/RM Unit Tests"
+r0
+
+CLd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/RM Unit Tests" normal armv6
+r0
+
+CLd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/RM Unit Tests" normal armv7
+r0
+
+CPhaseScriptExecution "Run Script" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug-iphoneos/Unit Tests.build/Script-2BF307960F8AC60C007014EE.sh"
+r0
+
+CProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app/Info.plist" "RM Unit Tests-Info.plist"
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-aconemjhxovksycceunlxtzrkfvo/MapView_Prefix.pch.gch MapView_Prefix.pch normal armv7 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-bdcpatzsaxyzemcgvzqoeiwcmppf/MapView_Prefix.pch.pth MapView_Prefix.pch normal armv6 c com.apple.compilers.llvm.clang.1_0.analyzer
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-bxpimxzmixeobaftjftvnjinbkwd/MapView_Prefix.pch.gch MapView_Prefix.pch normal armv6 c com.apple.compilers.gcc.4_2
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-cngcdlyzekjxoufqqzrujvhbcngn/MapView_Prefix.pch.pth MapView_Prefix.pch normal armv6 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-ebgfhoutbudicsdrnyqazpxglmge/MapView_Prefix.pch.gch MapView_Prefix.pch normal armv7 c com.apple.compilers.gcc.4_2
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-fsgvlfccfsixcqcjhswxgqermiiw/MapView_Prefix.pch.pth MapView_Prefix.pch normal armv7 c com.apple.compilers.llvm.clang.1_0.analyzer
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-gdduvzfnngnfhzcwrmyxihsagwhu/MapView_Prefix.pch.gch MapView_Prefix.pch normal armv6 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/MapView_Prefix-gvghuhkxsvznyibyaehyyebrgrqw/MapView_Prefix.pch.pth MapView_Prefix.pch normal armv7 objective-c com.apple.compilers.llvm.clang.1_0.analyzer
+r0
+
+CTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphoneos/RM Unit Tests.app"
+r0
+

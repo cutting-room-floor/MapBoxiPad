@@ -1,0 +1,107 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* SimpleMap */ = {
+		activeExec = 0;
+		executables = (
+			DD48C22A11CBEE1B00038969 /* SimpleMap */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = DD48C22A11CBEE1B00038969 /* SimpleMap */;
+		activeSDKPreference = iphonesimulator3.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* SimpleMap */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* SimpleMap */,
+		);
+		codeSenseManager = DD48C24311CBEE3300038969 /* Code sense */;
+		executables = (
+			DD48C22A11CBEE1B00038969 /* SimpleMap */,
+		);
+		perUserDictionary = {
+			PBXPerProjectTemplateStateSaveDate = 298579475;
+			PBXWorkspaceStateSaveDate = 298579475;
+		};
+		sourceControlManager = DD48C24211CBEE3300038969 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	966504440F6867F50036562A /* MapViewViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 948}}";
+			sepNavSelRange = "{1503, 17}";
+			sepNavVisRange = "{0, 1657}";
+		};
+	};
+	966504450F6867F50036562A /* MapViewViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 3136}}";
+			sepNavSelRange = "{5706, 469}";
+			sepNavVisRange = "{4938, 2257}";
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	966504480F6868000036562A /* loading.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	9665044C0F6868000036562A /* marker-red-withletter.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C22A11CBEE1B00038969 /* SimpleMap */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = SimpleMap;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	DD48C24211CBEE3300038969 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	DD48C24311CBEE3300038969 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	DD48C24411CBEE6E00038969 /* DSMapBoxTileSource.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1141, 756}}";
+			sepNavSelRange = "{262, 0}";
+			sepNavVisRange = "{0, 658}";
+		};
+	};
+}

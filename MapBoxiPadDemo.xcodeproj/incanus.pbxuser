@@ -1,0 +1,336 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* MapBoxiPadDemo */ = {
+		activeExec = 0;
+		executables = (
+			DD48BE5F11CADD4000038969 /* MapBoxiPadDemo */,
+		);
+	};
+	28D7ACF60DDB3853001CB0EB /* MapBoxiPadDemoViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 996}}";
+			sepNavSelRange = "{276, 0}";
+			sepNavVisRange = "{0, 321}";
+		};
+	};
+	28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 1330}}";
+			sepNavSelRange = "{1552, 0}";
+			sepNavVisRange = "{622, 2225}";
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = DD48BE5F11CADD4000038969 /* MapBoxiPadDemo */;
+		activeSDKPreference = iphoneos3.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* MapBoxiPadDemo */;
+		addToTargets = (
+			1D6058900D05DD3D006BFB54 /* MapBoxiPadDemo */,
+		);
+		breakpoints = (
+		);
+		codeSenseManager = DD48BE6A11CADD4800038969 /* Code sense */;
+		executables = (
+			DD48BE5F11CADD4000038969 /* MapBoxiPadDemo */,
+		);
+		perUserDictionary = {
+			"PBXConfiguration.PBXBreakpointsDataSource.v1:1CA1AED706398EBD00589147" = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXBreakpointsDataSource_BreakpointID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					20,
+					198,
+					20,
+					99,
+					99,
+					29,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXBreakpointsDataSource_ActionID,
+					PBXBreakpointsDataSource_TypeID,
+					PBXBreakpointsDataSource_BreakpointID,
+					PBXBreakpointsDataSource_UseID,
+					PBXBreakpointsDataSource_LocationID,
+					PBXBreakpointsDataSource_ConditionID,
+					PBXBreakpointsDataSource_IgnoreCountID,
+					PBXBreakpointsDataSource_ContinueID,
+				);
+			};
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					315,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 298843527;
+			PBXWorkspaceStateSaveDate = 298843527;
+		};
+		perUserProjectItems = {
+			DD48C7E211CC3DD600038969 /* PBXTextBookmark */ = DD48C7E211CC3DD600038969 /* PBXTextBookmark */;
+			DD48C8B011CD9B8D00038969 /* PBXTextBookmark */ = DD48C8B011CD9B8D00038969 /* PBXTextBookmark */;
+			DD48C8B211CD9B8D00038969 /* PBXTextBookmark */ = DD48C8B211CD9B8D00038969 /* PBXTextBookmark */;
+			DD48C8B311CD9B8D00038969 /* PBXTextBookmark */ = DD48C8B311CD9B8D00038969 /* PBXTextBookmark */;
+			DD48C8B411CD9B8D00038969 /* PlistBookmark */ = DD48C8B411CD9B8D00038969 /* PlistBookmark */;
+			DD48C8B511CD9B8D00038969 /* PlistBookmark */ = DD48C8B511CD9B8D00038969 /* PlistBookmark */;
+			DD6E3A4511CFFD91007691F3 /* PBXTextBookmark */ = DD6E3A4511CFFD91007691F3 /* PBXTextBookmark */;
+			DD6E3A4611CFFD91007691F3 /* PBXTextBookmark */ = DD6E3A4611CFFD91007691F3 /* PBXTextBookmark */;
+			DD6E3A4711CFFD91007691F3 /* PlistBookmark */ = DD6E3A4711CFFD91007691F3 /* PlistBookmark */;
+			DD6E3A4811CFFD91007691F3 /* PlistBookmark */ = DD6E3A4811CFFD91007691F3 /* PlistBookmark */;
+		};
+		sourceControlManager = DD48BE6911CADD4800038969 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48BE5F11CADD4000038969 /* MapBoxiPadDemo */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = MapBoxiPadDemo;
+		savedGlobals = {
+		};
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	DD48BE6911CADD4800038969 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	DD48BE6A11CADD4800038969 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	DD48C3C111CBFA9700038969 /* routeme.plist */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 996}}";
+			sepNavSelRange = "{681, 0}";
+			sepNavVisRange = "{0, 1384}";
+			sepNavWindowFrame = "{{619, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 2212}}";
+			sepNavSelRange = "{1636, 0}";
+			sepNavVisRange = "{1631, 1341}";
+			sepNavWindowFrame = "{{619, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C46811CC093D00038969 /* FMResultSet.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 4662}}";
+			sepNavSelRange = "{6762, 56}";
+			sepNavVisRange = "{5794, 2191}";
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C46911CC093D00038969 /* FMResultSet.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 1064}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{74, 2090}";
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C46D11CC093D00038969 /* FMDatabase.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1115, 1498}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1953}";
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C7E211CC3DD600038969 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */;
+		name = "DSMapBoxSQLiteTileSource.h: 27";
+		rLen = 0;
+		rLoc = 681;
+		rType = 0;
+		vrLen = 1384;
+		vrLoc = 0;
+	};
+	DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C84311CC423800038969 /* Wood-Pattern12.png */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {
+		uiCtxt = {
+			sepNavWindowFrame = "{{15, 69}, {1174, 1109}}";
+		};
+	};
+	DD48C8B011CD9B8D00038969 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF60DDB3853001CB0EB /* MapBoxiPadDemoViewController.h */;
+		name = "MapBoxiPadDemoViewController.h: 12";
+		rLen = 0;
+		rLoc = 276;
+		rType = 0;
+		vrLen = 321;
+		vrLoc = 0;
+	};
+	DD48C8B211CD9B8D00038969 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */;
+		name = "MapBoxiPadDemoViewController.m: 54";
+		rLen = 0;
+		rLoc = 1552;
+		rType = 0;
+		vrLen = 2225;
+		vrLoc = 622;
+	};
+	DD48C8B311CD9B8D00038969 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */;
+		name = "DSMapBoxSQLiteTileSource.m: 65";
+		rLen = 0;
+		rLoc = 1636;
+		rType = 0;
+		vrLen = 1341;
+		vrLoc = 1631;
+	};
+	DD48C8B411CD9B8D00038969 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = DD48C3C111CBFA9700038969 /* routeme.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			caches,
+			0,
+			strategy,
+		);
+		name = "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/routeme.plist";
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	DD48C8B511CD9B8D00038969 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = DD48C3C111CBFA9700038969 /* routeme.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			caches,
+			0,
+			useCachesDirectory,
+		);
+		name = "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/routeme.plist";
+		rLen = 0;
+		rLoc = 9223372036854775808;
+	};
+	DD6E3A4511CFFD91007691F3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */;
+		name = "MapBoxiPadDemoViewController.m: 54";
+		rLen = 0;
+		rLoc = 1552;
+		rType = 0;
+		vrLen = 2225;
+		vrLoc = 622;
+	};
+	DD6E3A4611CFFD91007691F3 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */;
+		name = "DSMapBoxSQLiteTileSource.m: 65";
+		rLen = 0;
+		rLoc = 1636;
+		rType = 0;
+		vrLen = 1341;
+		vrLoc = 1631;
+	};
+	DD6E3A4711CFFD91007691F3 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = DD48C3C111CBFA9700038969 /* routeme.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			caches,
+			0,
+			strategy,
+		);
+		name = "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/routeme.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+	DD6E3A4811CFFD91007691F3 /* PlistBookmark */ = {
+		isa = PlistBookmark;
+		fRef = DD48C3C111CBFA9700038969 /* routeme.plist */;
+		fallbackIsa = PBXBookmark;
+		isK = 0;
+		kPath = (
+			caches,
+			0,
+			useCachesDirectory,
+		);
+		name = "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/routeme.plist";
+		rLen = 0;
+		rLoc = 9223372036854775807;
+	};
+}

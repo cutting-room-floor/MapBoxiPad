@@ -1,0 +1,62 @@
+TUnit Tests
+v7
+r1
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/Resources/../marker-X.png
+c000000004C1BAEC60000000000000097
+t1276882630
+s151
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/Resources/marker-red.png
+c000000004C1BAEC600000000000009D4
+t1276882630
+s2516
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app/Contents/Info.plist
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app/Contents/PkgInfo
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app/Contents/Resources/marker-X.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app/Contents/Resources/marker-red.png
+t2
+s0
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug/Unit Tests.build/Script-2BF307960F8AC60C007014EE.sh
+c00000000000000000000000000000000
+t2
+s0
+
+NRM Unit Tests-Info.plist
+c000000004C1BAEC600000000000002B1
+t1276882630
+s689
+
+CCodeSign "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app"
+r0
+
+CCpResource "build/Debug/RM Unit Tests.app/Contents/Resources/marker-X.png" Map/Resources/../marker-X.png
+r0
+
+CCpResource "build/Debug/RM Unit Tests.app/Contents/Resources/marker-red.png" Map/Resources/marker-red.png
+r0
+
+CPhaseScriptExecution "Run Script" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/MapView.build/Debug/Unit Tests.build/Script-2BF307960F8AC60C007014EE.sh"
+r0
+
+CProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app/Contents/Info.plist" "RM Unit Tests-Info.plist"
+r0
+
+CTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug/RM Unit Tests.app"
+r0
+

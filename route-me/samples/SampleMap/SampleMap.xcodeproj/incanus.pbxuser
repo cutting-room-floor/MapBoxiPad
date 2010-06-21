@@ -1,0 +1,68 @@
+// !$*UTF8*$!
+{
+	1D6058900D05DD3D006BFB54 /* SampleMap */ = {
+		activeExec = 0;
+		executables = (
+			DD48C14611CBE9A100038969 /* SampleMap */,
+		);
+	};
+	29B97313FDCFA39411CA2CEA /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = DD48C14611CBE9A100038969 /* SampleMap */;
+		activeSDKPreference = iphonesimulator3.2;
+		activeTarget = 1D6058900D05DD3D006BFB54 /* SampleMap */;
+		codeSenseManager = DD48C15011CBE9BF00038969 /* Code sense */;
+		executables = (
+			DD48C14611CBE9A100038969 /* SampleMap */,
+		);
+		perUserDictionary = {
+			PBXPerProjectTemplateStateSaveDate = 298577415;
+			PBXWorkspaceStateSaveDate = 298577415;
+		};
+		sourceControlManager = DD48C14F11CBE9BF00038969 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	DD48C14611CBE9A100038969 /* SampleMap */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = SampleMap;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	DD48C14F11CBE9BF00038969 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	DD48C15011CBE9BF00038969 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+}

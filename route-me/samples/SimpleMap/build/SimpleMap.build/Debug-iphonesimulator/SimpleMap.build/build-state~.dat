@@ -1,0 +1,500 @@
+TSimpleMap
+v7
+r0
+t298577457.091701
+cCheck dependencies
+cProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/Info.plist" Info.plist
+cCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib"
+cCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib"
+cCpResource build/Debug-iphonesimulator/SimpleMap.app/loading.png loading.png
+cCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib"
+cCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-blue-withletter.png marker-blue-withletter.png
+cCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-blue.png marker-blue.png
+cCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-red-withletter.png marker-red-withletter.png
+cCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-red.png marker-red.png
+cProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch.gch SimpleMap_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/main.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewAppDelegate.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewViewController.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+cLd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap" normal i386
+cGenerateDSYMFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app.dSYM" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap"
+cTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk
+c000000004BD236930000000000000110
+t1272067731
+s272
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/CoreGraphics.framework/CoreGraphics
+c000000004BD1CD90000000000026F020
+t1272040848
+s2551840
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h
+c000000004BD1CD900000000000002384
+t1272040848
+s9092
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/CoreLocation.framework/CoreLocation
+c000000004BD1D4D20000000000061790
+t1272042706
+s399248
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/CoreLocation.framework/Headers/CoreLocation.h
+c000000004BD1D4C800000000000001AF
+t1272042696
+s431
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/Foundation.framework/Foundation
+c000000004BD1FFC200000000002A96A0
+t1272053698
+s2791072
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.h
+c000000004BD1FF9E0000000000001355
+t1272053662
+s4949
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/QuartzCore.h
+c000000004BD1D01E000000000000007D
+t1272041502
+s125
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/QuartzCore.framework/QuartzCore
+c000000004BD1D06900000000001294B0
+t1272041577
+s1217712
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
+c000000004BD20412000000000000098F
+t1272054802
+s2447
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/System/Library/Frameworks/UIKit.framework/UIKit
+c000000004BD20471000000000222E640
+t1272054897
+s35841600
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/usr/include/TargetConditionals.h
+c000000004BD1CFC100000000000031E9
+t1272041409
+s12777
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/usr/lib/gcc/i686-apple-darwin10/4.2.1/include/stdint.h
+c000000004748AF950000000000001BE4
+t1195945877
+s7140
+
+N/Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk/usr/lib/libsqlite3.dylib
+c000000004BD1FDBD00000000000E1D70
+t1272053181
+s925040
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMFoundation.h
+c000000004C1BAEC600000000000009BD
+t1276882630
+s2493
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMGlobalConstants.h
+c000000004C1BAEC600000000000000C0
+t1276882630
+s192
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMLatLong.h
+c000000004C1BAEC60000000000000C4D
+t1276882630
+s3149
+i<TargetConditionals.h>
+i<CoreLocation/CoreLocation.h>
+i"RMGlobalConstants.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapContents.h
+c000000004C1BAEC60000000000002B55
+t1276882630
+s11093
+i<UIKit/UIKit.h>
+i"RMFoundation.h"
+i"RMLatLong.h"
+i"RMTile.h"
+i"RMTilesUpdateDelegate.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapLayer.h
+c000000004C1BAEC60000000000000719
+t1276882630
+s1817
+i<Foundation/Foundation.h>
+i<QuartzCore/QuartzCore.h>
+i"RMFoundation.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapView.h
+c000000004C1BAEC60000000000001EC9
+t1276882630
+s7881
+i<UIKit/UIKit.h>
+i<CoreGraphics/CGGeometry.h>
+i"RMNotifications.h"
+i"RMFoundation.h"
+i"RMLatLong.h"
+i"RMMapViewDelegate.h"
+i"RMMapContents.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMapViewDelegate.h
+c000000004C1BAEC600000000000009CD
+t1276882630
+s2509
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarker.h
+c000000004C1BAEC600000000000011EE
+t1276882630
+s4590
+i<UIKit/UIKit.h>
+i"RMMapLayer.h"
+i"RMFoundation.h"
+i<CoreLocation/CoreLocation.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMMarkerManager.h
+c000000004C1BAEC600000000000009BB
+t1276882630
+s2491
+i<UIKit/UIKit.h>
+i"RMMapContents.h"
+i"RMMarker.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMNotifications.h
+c000000004C1BAEC600000000000008DB
+t1276882630
+s2267
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTile.h
+c000000004C1BAEC60000000000000AAC
+t1276882630
+s2732
+i<CoreGraphics/CGGeometry.h>
+i<stdint.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/Map/RMTilesUpdateDelegate.h
+c000000004C1BAEC60000000000000118
+t1276882630
+s280
+i<UIKit/UIKit.h>
+i"RMLatLong.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphonesimulator/libMapView.a
+c000000004C1BB6800000000000204970
+t1276884608
+s2115952
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.h
+c000000004C1BAEC300000000000006C5
+t1276882627
+s1733
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m
+c000000004C1BAEC300000000000009FA
+t1276882627
+s2554
+i"MapViewAppDelegate.h"
+i"MapViewViewController.h"
+i"RMMapView.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.h
+c000000004C1BAEC30000000000000679
+t1276882627
+s1657
+i<UIKit/UIKit.h>
+i"RMMapView.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m
+c000000004C1BAEC300000000000019D7
+t1276882627
+s6615
+i"MapViewViewController.h"
+i"RMMapContents.h"
+i"RMFoundation.h"
+i"RMMarker.h"
+i"RMMarkerManager.h"
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib
+c000000004C1BAEC30000000000002D29
+t1276882627
+s11561
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib
+c000000004C1BAEC3000000000000228E
+t1276882627
+s8846
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib
+c000000004C1BAEC3000000000000218C
+t1276882627
+s8588
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/SimpleMap_Prefix.pch
+c000000004C1BAEC300000000000000BB
+t1276882627
+s187
+i<Foundation/Foundation.h>
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app
+t1276884657
+s442
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app.dSYM
+t1276884657
+s102
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/Info.plist
+t1276884655
+s599
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MainView.nib
+t1276884656
+s2681
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MainWindow.nib
+t1276884656
+s1110
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MapViewViewController.nib
+t1276884656
+s1024
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/PkgInfo
+t1276884655
+s8
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap
+t1276884657
+s713024
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/loading.png
+t1276884656
+s7187
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/marker-blue-withletter.png
+t1276884656
+s2531
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/marker-blue.png
+t1276884656
+s2601
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/marker-red-withletter.png
+t1276884656
+s2486
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/marker-red.png
+t1276884656
+s2516
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewAppDelegate.o
+t1276884656
+s50736
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewViewController.o
+t1276884656
+s55788
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/SimpleMap.LinkFileList
+c000000004C1BB6AF000000000000026E
+t1276884655
+s622
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/main.o
+t1276884656
+s6444
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/loading.png
+c000000004C1BAEC30000000000001C13
+t1276882627
+s7187
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m
+c000000004C1BAEC3000000000000010D
+t1276882627
+s269
+i<UIKit/UIKit.h>
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue-withletter.png
+c000000004C1BAEC300000000000009E3
+t1276882627
+s2531
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue.png
+c000000004C1BAEC30000000000000A29
+t1276882627
+s2601
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red-withletter.png
+c000000004C1BAEC300000000000009B6
+t1276882627
+s2486
+
+N/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red.png
+c000000004C1BAEC300000000000009D4
+t1276882627
+s2516
+
+N/var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch.gch
+t1276883349
+s13825936
+
+NInfo.plist
+c000000004C1BAEC30000000000000386
+t1276882627
+s902
+
+CCheck dependencies
+r0
+lSLF07#2@18"Check dependencies298577455#298577455#0(0"0(0#1#0"8656850048#0"0#
+
+CCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewAppDelegate.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s298577456.745314
+e298577456.852080
+r1
+xCompileC
+xbuild/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewAppDelegate.o
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@146"Compile /Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m298577456#298577456#0(0"0(0#0#138"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m8656101472#2957"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30200 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-generated-files.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-own-target-headers.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-all-target-headers.hmap" -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-project-headers.hmap" "-F/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/include" -I../../MapView -I../../MapView/GTM -I../../MapView/Map -I../../MapView/UnitTesting -I../../MapView/Map/Cache.xcdatamodel -I../../MapView/Map/FMDB -I../../MapView/Map/Resources "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources/i386" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources" -include /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch -c "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewAppDelegate.m" -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewAppDelegate.o"0#
+
+CCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewViewController.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s298577456.811759
+e298577456.910107
+r1
+xCompileC
+xbuild/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewViewController.o
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@149"Compile /Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m298577456#298577456#0(0"0(0#0#141"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m8655524448#2963"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30200 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-generated-files.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-own-target-headers.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-all-target-headers.hmap" -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-project-headers.hmap" "-F/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/include" -I../../MapView -I../../MapView/GTM -I../../MapView/Map -I../../MapView/UnitTesting -I../../MapView/Map/Cache.xcdatamodel -I../../MapView/Map/FMDB -I../../MapView/Map/Resources "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources/i386" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources" -include /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch -c "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Classes/MapViewViewController.m" -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/MapViewViewController.o"0#
+
+CCompileC build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/main.o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m" normal i386 objective-c com.apple.compilers.gcc.4_2
+s298577456.744281
+e298577456.811467
+r1
+xCompileC
+xbuild/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/main.o
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m
+xnormal
+xi386
+xobjective-c
+xcom.apple.compilers.gcc.4_2
+lSLF07#2@124"Compile /Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m298577456#298577456#0(0"0(0#0#116"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m8656553280#2921"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv LANG en_US.US-ASCII    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -x objective-c -arch i386 -fmessage-length=0 -pipe -std=c99 -Wno-trigraphs -fpascal-strings -fasm-blocks -O0 -Wreturn-type -Wunused-variable -D__IPHONE_OS_VERSION_MIN_REQUIRED=30200 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk -fvisibility=hidden -mmacosx-version-min=10.5 -gdwarf-2 -fobjc-abi-version=2 -fobjc-legacy-dispatch -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-generated-files.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-own-target-headers.hmap" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-all-target-headers.hmap" -iquote "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/SimpleMap-project-headers.hmap" "-F/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/include" -I../../MapView -I../../MapView/GTM -I../../MapView/Map -I../../MapView/UnitTesting -I../../MapView/Map/Cache.xcdatamodel -I../../MapView/Map/FMDB -I../../MapView/Map/Resources "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources/i386" "-I/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/DerivedSources" -include /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch -c "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/main.m" -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/main.o"0#
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib"
+s298577455.873909
+e298577456.482148
+r1
+xCompileXIB
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib
+lSLF07#2@23"CompileXIB MainView.xib298577455#298577456#0(0"0(0#0#122"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib8650438400#787"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MainView.nib" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainView.xib" --sdk /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk0#
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib"
+s298577455.877414
+e298577456.362493
+r1
+xCompileXIB
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib
+lSLF07#2@25"CompileXIB MainWindow.xib298577455#298577456#0(0"0(0#0#124"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib8644375552#791"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MainWindow.nib" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MainWindow.xib" --sdk /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk0#
+
+CCompileXIB "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib"
+s298577456.364552
+e298577456.744113
+r1
+xCompileXIB
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib
+lSLF07#2@36"CompileXIB MapViewViewController.xib298577456#298577456#0(0"0(0#0#135"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib8669583936#813"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv IBC_MINIMUM_COMPATIBILITY_VERSION 3.2    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/ibtool --errors --warnings --notices --output-format human-readable-text --compile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/MapViewViewController.nib" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/MapViewViewController.xib" --sdk /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk0#
+
+CCpResource build/Debug-iphonesimulator/SimpleMap.app/loading.png loading.png
+s298577456.362578
+e298577456.368952
+r1
+xCpResource
+xbuild/Debug-iphonesimulator/SimpleMap.app/loading.png
+xloading.png
+lSLF07#2@16"Copy loading.png298577456#298577456#0(0"0(0#0#121"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/loading.png8674510048#676"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/loading.png" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
+CCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-blue-withletter.png marker-blue-withletter.png
+s298577456.482248
+e298577456.490982
+r1
+xCpResource
+xbuild/Debug-iphonesimulator/SimpleMap.app/marker-blue-withletter.png
+xmarker-blue-withletter.png
+lSLF07#2@31"Copy marker-blue-withletter.png298577456#298577456#0(0"0(0#0#136"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue-withletter.png8661515872#691"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue-withletter.png" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
+CCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-blue.png marker-blue.png
+s298577456.483340
+e298577456.493870
+r1
+xCpResource
+xbuild/Debug-iphonesimulator/SimpleMap.app/marker-blue.png
+xmarker-blue.png
+lSLF07#2@20"Copy marker-blue.png298577456#298577456#0(0"0(0#0#125"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue.png8660643136#680"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-blue.png" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
+CCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-red-withletter.png marker-red-withletter.png
+s298577456.485021
+e298577456.498731
+r1
+xCpResource
+xbuild/Debug-iphonesimulator/SimpleMap.app/marker-red-withletter.png
+xmarker-red-withletter.png
+lSLF07#2@30"Copy marker-red-withletter.png298577456#298577456#0(0"0(0#0#135"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red-withletter.png8659749984#690"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red-withletter.png" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
+CCpResource build/Debug-iphonesimulator/SimpleMap.app/marker-red.png marker-red.png
+s298577456.486661
+e298577456.503786
+r1
+xCpResource
+xbuild/Debug-iphonesimulator/SimpleMap.app/marker-red.png
+xmarker-red.png
+lSLF07#2@19"Copy marker-red.png298577456#298577456#0(0"0(0#0#124"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red.png8659063104#679"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Library/PrivateFrameworks/DevToolsCore.framework/Resources/pbxcp -exclude .DS_Store -exclude CVS -exclude .svn -resolve-src-symlinks "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/marker-red.png" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
+CGenerateDSYMFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app.dSYM" "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap"
+s298577457.017395
+e298577457.088795
+r1
+xGenerateDSYMFile
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app.dSYM
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap
+lSLF07#2@115"GenerateDSYMFile build/Debug-iphonesimulator/SimpleMap.app.dSYM build/Debug-iphonesimulator/SimpleMap.app/SimpleMap298577457#298577457#0(0"0(0#0#161"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap8682832640#608"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/usr/bin/dsymutil "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap" -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app.dSYM"0#
+
+CLd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap" normal i386
+s298577456.910202
+e298577457.017295
+r1
+xLd
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap
+xnormal
+xi386
+lSLF07#2@166"Link /Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap298577456#298577457#0(0"0(0#0#0"8655056928#1480"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv MACOSX_DEPLOYMENT_TARGET 10.5    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin/gcc-4.2 -arch i386 -isysroot /Developer/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator3.2.sdk "-L/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator" "-F/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator" -filelist "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/SimpleMap.build/Debug-iphonesimulator/SimpleMap.build/Objects-normal/i386/SimpleMap.LinkFileList" -mmacosx-version-min=10.5 -ObjC -Xlinker -objc_abi_version -Xlinker 2 -framework Foundation -framework UIKit -framework CoreGraphics -framework CoreLocation -framework QuartzCore -lsqlite3 "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/MapView/build/Debug-iphonesimulator/libMapView.a" -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/SimpleMap"0#
+
+CProcessInfoPlistFile "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/Info.plist" Info.plist
+s298577455.865045
+e298577455.873816
+r1
+xProcessInfoPlistFile
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/Info.plist
+xInfo.plist
+lSLF07#2@18"Process Info.plist298577455#298577455#0(0"0(0#0#120"/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/Info.plist8651542048#694"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    builtin-infoPlistUtility Info.plist -genpkginfo "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/PkgInfo" -expandbuildsettings -format binary -platform iphonesimulator -o "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app/Info.plist"0#
+
+CProcessPCH /var/folders/6c/6ciES9du2RWQpk+1YuG4O++++TQ/-Caches-/com.apple.Xcode.503/SharedPrecompiledHeaders/SimpleMap_Prefix-bkdwvhtklgozqtaxzrejqnnvcpwd/SimpleMap_Prefix.pch.gch SimpleMap_Prefix.pch normal i386 objective-c com.apple.compilers.gcc.4_2
+r0
+
+CTouch "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"
+s298577457.088883
+e298577457.091671
+r1
+xTouch
+x/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app
+lSLF07#2@157"Touch /Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app298577457#298577457#0(0"0(0#0#0"8663223744#426"    cd "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap"    setenv PATH "/Developer/Platforms/iPhoneSimulator.platform/Developer/usr/bin:/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /usr/bin/touch -c "/Users/incanus/Documents/Projects/Development Seed/Mapping/MapBoxiPadDemo route-me/route-me/samples/SimpleMap/build/Debug-iphonesimulator/SimpleMap.app"0#
+
