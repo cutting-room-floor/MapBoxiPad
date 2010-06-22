@@ -24,7 +24,7 @@
                                                                  maxZoom:kDSDefaultMaxTileZoom 
                                                                  minZoom:kDSDefaultMinTileZoom];
 	
-    db = [[FMDatabase databaseWithPath:[[NSBundle mainBundle] pathForResource:@"haiti-terrain" ofType:@"sql"]] retain];
+    db = [[FMDatabase databaseWithPath:[[NSBundle mainBundle] pathForResource:@"haiti-terrain" ofType:@"mbtiles"]] retain];
     
     if ( ! [db open])
         return nil;

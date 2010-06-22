@@ -43,8 +43,8 @@
 		DD6E3CB711D02362007691F3 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAA11D02362007691F3 /* CXMLDocument.m */; };
 		DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */; };
 		DD70D7C211D16AB50002E222 /* stick.png in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7C111D16AB50002E222 /* stick.png */; };
+		DD70D7E311D1724B0002E222 /* haiti-terrain.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7E211D1724B0002E222 /* haiti-terrain.mbtiles */; };
 		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
-		DDCEB3B511D165C10096B339 /* haiti-terrain.sql in Resources */ = {isa = PBXBuildFile; fileRef = DDCEB3B411D165C10096B339 /* haiti-terrain.sql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -130,9 +130,9 @@
 		DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLDocument_PrivateExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
 		DD6E3CAD11D02362007691F3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLDocument_PrivateExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
 		DD70D7C111D16AB50002E222 /* stick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stick.png; sourceTree = "<group>"; };
+		DD70D7E211D1724B0002E222 /* haiti-terrain.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "haiti-terrain.mbtiles"; path = "../stuff to not backup/haiti-terrain.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
 		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
-		DDCEB3B411D165C10096B339 /* haiti-terrain.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "haiti-terrain.sql"; path = "../stuff to not backup/haiti-terrain.sql"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,8 +201,8 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
-				DDCEB3B411D165C10096B339 /* haiti-terrain.sql */,
 				DD01047D11D0394800B0079E /* kml-point.png */,
+				DD70D7E211D1724B0002E222 /* haiti-terrain.mbtiles */,
 				DD01060B11D04E2000B0079E /* stripe.png */,
 				DD70D7C111D16AB50002E222 /* stick.png */,
 				DD6E3B6711D014A8007691F3 /* Textures */,
@@ -422,8 +422,8 @@
 				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
 				DD01047E11D0394800B0079E /* kml-point.png in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
-				DDCEB3B511D165C10096B339 /* haiti-terrain.sql in Resources */,
 				DD70D7C211D16AB50002E222 /* stick.png in Resources */,
+				DD70D7E311D1724B0002E222 /* haiti-terrain.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
