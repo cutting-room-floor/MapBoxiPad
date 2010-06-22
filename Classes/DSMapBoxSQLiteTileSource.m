@@ -14,7 +14,7 @@
 
 @implementation DSMapBoxSQLiteTileSource
 
--(id) init
+- (id)init
 {
 	if (![super init])
 		return nil;
@@ -32,7 +32,7 @@
 	return self;
 }
 
--(void) dealloc
+- (void)dealloc
 {
 	[tileProjection release];
     
@@ -42,17 +42,17 @@
 	[super dealloc];
 }
 
--(int)tileSideLength
+- (int)tileSideLength
 {
 	return tileProjection.tileSideLength;
 }
 
-- (void) setTileSideLength: (NSUInteger) aTileSideLength
+- (void)setTileSideLength:(NSUInteger)aTileSideLength
 {
 	[tileProjection setTileSideLength:aTileSideLength];
 }
 
--(RMTileImage *)tileImage:(RMTile)tile
+- (RMTileImage *)tileImage:(RMTile)tile
 {
     NSAssert4(((tile.zoom >= self.minZoom) && (tile.zoom <= self.maxZoom)),
 			  @"%@ tried to retrieve tile with zoomLevel %d, outside source's defined range %f to %f", 
@@ -81,87 +81,87 @@
     return image;
 }
 
--(NSString *) tileURL: (RMTile) tile
+- (NSString *)tileURL:(RMTile)tile
 {
     return nil;
 }
 
--(NSString *) tileFile: (RMTile) tile
+- (NSString *)tileFile:(RMTile)tile
 {
     return nil;
 }
 
--(NSString *) tilePath
+- (NSString *)tilePath
 {
     return nil;
 }
 
--(id<RMMercatorToTileProjection>) mercatorToTileProjection
+- (id <RMMercatorToTileProjection>)mercatorToTileProjection
 {
 	return [[tileProjection retain] autorelease];
 }
 
--(RMProjection*) projection
+- (RMProjection *)projection
 {
 	return [RMProjection googleProjection];
 }
 
--(float) minZoom
+- (float)minZoom
 {
     return 0.0;
 }
 
--(float) maxZoom
+- (float)maxZoom
 {
     return 10.0;
 }
 
--(void) setMinZoom:(NSUInteger) aMinZoom
+- (void)setMinZoom:(NSUInteger)aMinZoom
 {
     [tileProjection setMinZoom:aMinZoom];
 }
 
--(void) setMaxZoom:(NSUInteger) aMaxZoom
+- (void)setMaxZoom:(NSUInteger)aMaxZoom
 {
     [tileProjection setMaxZoom:aMaxZoom];
 }
 
--(RMSphericalTrapezium) latitudeLongitudeBoundingBox
+- (RMSphericalTrapezium)latitudeLongitudeBoundingBox
 {
     return kDSDefaultLatLonBoundingBox;
 }
 
--(void) didReceiveMemoryWarning
+- (void)didReceiveMemoryWarning
 {
     NSLog(@"*** didReceiveMemoryWarning in %@", [self class]);
 }
 
--(NSString *)uniqueTilecacheKey
+- (NSString *)uniqueTilecacheKey
 {
     return @"MapBoxSQLite";
 }
 
--(NSString *)shortName
+- (NSString *)shortName
 {
     return @"MapBoxSQLite";
 }
 
--(NSString *)longDescription
+- (NSString *)longDescription
 {
     return @"MapBox local SQLite store";
 }
 
--(NSString *)shortAttribution
+- (NSString *)shortAttribution
 {
     return @"© Development Seed";
 }
 
--(NSString *)longAttribution
+- (NSString *)longAttribution
 {
     return @"Map data © Development Seed";
 }
 
--(void)removeAllCachedImages
+- (void)removeAllCachedImages
 {
     NSLog(@"*** removeAllCachedImages in %@", [self class]);
 }
