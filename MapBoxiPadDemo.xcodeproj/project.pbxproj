@@ -21,7 +21,6 @@
 		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
-		DD48C4BA11CC0CE300038969 /* world-light.sql in Resources */ = {isa = PBXBuildFile; fileRef = DD48C4B911CC0CE300038969 /* world-light.sql */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C84611CC423800038969 /* Wood_Plank_Look_Tile.JPG in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */; };
 		DD48C84711CC423800038969 /* Wood-Pattern12.png in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84311CC423800038969 /* Wood-Pattern12.png */; };
@@ -43,7 +42,9 @@
 		DD6E3CB611D02362007691F3 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA811D02362007691F3 /* CXMLElement_CreationExtensions.m */; };
 		DD6E3CB711D02362007691F3 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAA11D02362007691F3 /* CXMLDocument.m */; };
 		DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */; };
+		DD70D7C211D16AB50002E222 /* stick.png in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7C111D16AB50002E222 /* stick.png */; };
 		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
+		DDCEB3B511D165C10096B339 /* haiti-terrain.sql in Resources */ = {isa = PBXBuildFile; fileRef = DDCEB3B411D165C10096B339 /* haiti-terrain.sql */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,7 +75,7 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D3623240D0F684500981E51 /* MapBoxiPadDemoAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPadDemoAppDelegate.h; sourceTree = "<group>"; };
 		1D3623250D0F684500981E51 /* MapBoxiPadDemoAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxiPadDemoAppDelegate.m; sourceTree = "<group>"; };
-		1D6058910D05DD3D006BFB54 /* MapBoxiPadDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapBoxiPadDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D6058910D05DD3D006BFB54 /* MapPad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapPad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapBoxiPadDemoViewController.xib; path = ../MapBoxiPadDemoViewController.xib; sourceTree = "<group>"; };
@@ -92,7 +93,6 @@
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
 		DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxSQLiteTileSource.h; sourceTree = "<group>"; };
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
-		DD48C4B911CC0CE300038969 /* world-light.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.sql"; path = "../stuff to not backup/world-light.sql"; sourceTree = SOURCE_ROOT; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wood_Plank_Look_Tile.JPG; sourceTree = "<group>"; };
 		DD48C84311CC423800038969 /* Wood-Pattern12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wood-Pattern12.png"; sourceTree = "<group>"; };
@@ -129,8 +129,10 @@
 		DD6E3CAB11D02362007691F3 /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLDocument.h; path = touchcode/TouchXML/Common/Source/CXMLDocument.h; sourceTree = "<group>"; };
 		DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLDocument_PrivateExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
 		DD6E3CAD11D02362007691F3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLDocument_PrivateExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
+		DD70D7C111D16AB50002E222 /* stick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stick.png; sourceTree = "<group>"; };
 		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
 		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
+		DDCEB3B411D165C10096B339 /* haiti-terrain.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "haiti-terrain.sql"; path = "../stuff to not backup/haiti-terrain.sql"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,7 +167,7 @@
 		19C28FACFE9D520D11CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				1D6058910D05DD3D006BFB54 /* MapBoxiPadDemo.app */,
+				1D6058910D05DD3D006BFB54 /* MapPad.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -199,9 +201,10 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
-				DD48C4B911CC0CE300038969 /* world-light.sql */,
+				DDCEB3B411D165C10096B339 /* haiti-terrain.sql */,
 				DD01047D11D0394800B0079E /* kml-point.png */,
 				DD01060B11D04E2000B0079E /* stripe.png */,
+				DD70D7C111D16AB50002E222 /* stick.png */,
 				DD6E3B6711D014A8007691F3 /* Textures */,
 				DD6E3C8C11D02099007691F3 /* KML */,
 			);
@@ -360,7 +363,7 @@
 			);
 			name = MapBoxiPadDemo;
 			productName = MapBoxiPadDemo;
-			productReference = 1D6058910D05DD3D006BFB54 /* MapBoxiPadDemo.app */;
+			productReference = 1D6058910D05DD3D006BFB54 /* MapPad.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -411,7 +414,6 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib in Resources */,
 				DD48C3C211CBFA9700038969 /* routeme.plist in Resources */,
-				DD48C4BA11CC0CE300038969 /* world-light.sql in Resources */,
 				DD48C84611CC423800038969 /* Wood_Plank_Look_Tile.JPG in Resources */,
 				DD48C84711CC423800038969 /* Wood-Pattern12.png in Resources */,
 				DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */,
@@ -420,6 +422,8 @@
 				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
 				DD01047E11D0394800B0079E /* kml-point.png in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
+				DDCEB3B511D165C10096B339 /* haiti-terrain.sql in Resources */,
+				DD70D7C211D16AB50002E222 /* stick.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -491,7 +495,7 @@
 					"\"$(SRCROOT)/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = MapBoxiPadDemo;
+				PRODUCT_NAME = MapPad;
 			};
 			name = Debug;
 		};
@@ -521,7 +525,7 @@
 					"\"$(SRCROOT)/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
-				PRODUCT_NAME = MapBoxiPadDemo;
+				PRODUCT_NAME = MapPad;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

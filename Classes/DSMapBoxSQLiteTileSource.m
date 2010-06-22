@@ -24,7 +24,7 @@
                                                                  maxZoom:kDSDefaultMaxTileZoom 
                                                                  minZoom:kDSDefaultMinTileZoom];
 	
-    db = [[FMDatabase databaseWithPath:[[NSBundle mainBundle] pathForResource:@"world-light" ofType:@"sql"]] retain];
+    db = [[FMDatabase databaseWithPath:[[NSBundle mainBundle] pathForResource:@"haiti-terrain" ofType:@"sql"]] retain];
     
     if ( ! [db open])
         return nil;
@@ -108,12 +108,12 @@
 
 - (float)minZoom
 {
-    return 0.0;
+    return 5.0;
 }
 
 - (float)maxZoom
 {
-    return 10.0;
+    return 16.0;
 }
 
 - (void)setMinZoom:(NSUInteger)aMinZoom
