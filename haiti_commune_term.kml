@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>haiti_commune_term</name>
+        <Style id="0">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>0.2</scale>
+    </IconStyle>
+  </Style>
+    <Style id="1">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>0.48</scale>
+    </IconStyle>
+  </Style>
+    <Style id="2">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>0.76</scale>
+    </IconStyle>
+  </Style>
+    <Style id="3">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>1.04</scale>
+    </IconStyle>
+  </Style>
+    <Style id="4">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>1.32</scale>
+    </IconStyle>
+  </Style>
+    <Style id="5">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>1.6</scale>
+    </IconStyle>
+  </Style>
+    <Style id="6">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>1.88</scale>
+    </IconStyle>
+  </Style>
+    <Style id="7">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>2.16</scale>
+    </IconStyle>
+  </Style>
+    <Style id="8">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>2.44</scale>
+    </IconStyle>
+  </Style>
+    <Style id="9">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>2.72</scale>
+    </IconStyle>
+  </Style>
+    <Style id="10">
+    <IconStyle>
+      <Icon>
+        <href>http://haitiaidmap.org/profiles/quest/themes/geoto/images/kml-point.png</href>
+      </Icon>
+      <scale>3</scale>
+    </IconStyle>
+  </Style>
+      <Placemark>
+  <name>
+    <![CDATA[Port-Salut]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/port-salut">Port-Salut</a> has <em>3</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-73.92,18.15,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Bainet]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/bainet">Bainet</a> has <em>7</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.77,18.22,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Thiotte]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/thiotte">Thiotte</a> has <em>3</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-71.85,18.22,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Torbeck]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/torbeck">Torbeck</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.89,18.26,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Cayes Jacmel]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/cayes-jacmel">Cayes Jacmel</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.4,18.26,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Chantal]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/chantal">Chantal</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.971475,18.268666,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Aquin]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/aquin">Aquin</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.22,18.28,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Belle-Anse]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/belle-anse">Belle-Anse</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.08,18.28,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Jacmel]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/jacmel">Jacmel</a> has <em>46</em> projects]]>
+  </description>
+    <styleUrl>#3</styleUrl>
+    <Point>
+    <coordinates>-72.52,18.3,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Chardonnières]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/chardonni%C3%A8res">Chardonnières</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-74.097212,18.339191,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Tiburon]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/tiburon">Tiburon</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-74.33,18.34,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Camp-Perrin]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/camp-perrin">Camp-Perrin</a> has <em>3</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-73.87,18.35,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Grand-Goâve]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/grand-go%C3%A2ve">Grand-Goâve</a> has <em>32</em> projects]]>
+  </description>
+    <styleUrl>#2</styleUrl>
+    <Point>
+    <coordinates>-72.74295,18.361618,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Petit-Goâve]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/petit-go%C3%A2ve">Petit-Goâve</a> has <em>23</em> projects]]>
+  </description>
+    <styleUrl>#2</styleUrl>
+    <Point>
+    <coordinates>-72.93,18.38,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Miragoâne]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/mirago%C3%A2ne">Miragoâne</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.108065,18.389191,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Kenscoff]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/kenscoff">Kenscoff</a> has <em>4</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.29,18.4,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Léogâne]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/l%C3%A9og%C3%A2ne">Léogâne</a> has <em>89</em> projects]]>
+  </description>
+    <styleUrl>#6</styleUrl>
+    <Point>
+    <coordinates>-72.59,18.44,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Petite-Rivière-de-Nippes]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/petite-rivi%C3%A8re-de-nippes">Petite-Rivière-de-Nippes</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.194885,18.468086,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Carrefour]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/carrefour">Carrefour</a> has <em>62</em> projects]]>
+  </description>
+    <styleUrl>#4</styleUrl>
+    <Point>
+    <coordinates>-72.41,18.47,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Ganthier]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/ganthier">Ganthier</a> has <em>6</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.01,18.5,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Port-au-Prince]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/port-au-prince">Port-au-Prince</a> has <em>163</em> projects]]>
+  </description>
+    <styleUrl>#10</styleUrl>
+    <Point>
+    <coordinates>-72.335544,18.528498,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Jérémie]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/j%C3%A9r%C3%A9mie">Jérémie</a> has <em>7</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-74.17,18.54,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Delmas]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/delmas">Delmas</a> has <em>126</em> projects]]>
+  </description>
+    <styleUrl>#8</styleUrl>
+    <Point>
+    <coordinates>-72.282872,18.566246,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Cabaret]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/cabaret">Cabaret</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.4,18.77,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Mirebalais]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/mirebalais">Mirebalais</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.08,18.79,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Lascahobas]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/lascahobas">Lascahobas</a> has <em>4</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-71.940496,18.827275,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Saut-d&#039;Eau]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/saut-deau">Saut-d&#039;Eau</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.23,18.83,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Belladère]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/bellad%C3%A8re">Belladère</a> has <em>3</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-71.81,18.87,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Arcahaie]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/arcahaie">Arcahaie</a> has <em>10</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.53,18.89,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Pointe-à-Raquette]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/pointe-%C3%A0-raquette">Pointe-à-Raquette</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-73.2,18.9,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Thomonde]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/thomonde">Thomonde</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-71.964655,18.982025,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Saint-Marc]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/saint-marc">Saint-Marc</a> has <em>5</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.68,19.1,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Hinche]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/hinche">Hinche</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.02,19.15,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Maïssade]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/ma%C3%AFssade">Maïssade</a> has <em>5</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.18,19.19,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Cerca-Carvajal]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/cerca-carvajal">Cerca-Carvajal</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-71.94,19.26,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Grande Saline]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/grande-saline">Grande Saline</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.71,19.27,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Pignon]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/pignon">Pignon</a> has <em>4</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.1,19.33,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Mombin Crochu]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/mombin-crochu">Mombin Crochu</a> has <em>4</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-71.89,19.34,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Ranquitte]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/ranquitte">Ranquitte</a> has <em>6</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.05,19.4,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Bahon]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/bahon">Bahon</a> has <em>4</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.12,19.47,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Gonaïves]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/gona%C3%AFves">Gonaïves</a> has <em>18</em> projects]]>
+  </description>
+    <styleUrl>#2</styleUrl>
+    <Point>
+    <coordinates>-72.63364,19.483571,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Ennery]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/ennery">Ennery</a> has <em>3</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.48,19.49,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Acul du Nord]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/acul-du-nord">Acul du Nord</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.33,19.64,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Milot]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/milot">Milot</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.22,19.65,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Limbé]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/limb%C3%A9">Limbé</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.41,19.66,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Gros-Morne]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/gros-morne">Gros-Morne</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.7,19.7,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Quartier Morin]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/quartier-morin">Quartier Morin</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.17,19.7,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Anse-à-Foleur]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/anse-%C3%A0-foleur">Anse-à-Foleur</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.62,19.86,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[Port-de-Paix]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/port-de-paix">Port-de-Paix</a> has <em>2</em> projects]]>
+  </description>
+    <styleUrl>#1</styleUrl>
+    <Point>
+    <coordinates>-72.925345,19.869244,0</coordinates>
+  </Point>
+</Placemark>
+<Placemark>
+  <name>
+    <![CDATA[La Tortue]]>
+  </name>
+  <description>
+    <![CDATA[<a href="http://haitiaidmap.org/commune/la-tortue">La Tortue</a> has <em>1</em> projects]]>
+  </description>
+    <styleUrl>#0</styleUrl>
+    <Point>
+    <coordinates>-72.78,20.05,0</coordinates>
+  </Point>
+</Placemark>
+  </Document>
+</kml>

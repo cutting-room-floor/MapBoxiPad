@@ -15,6 +15,8 @@
 		2899E5220DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
+		DD01047E11D0394800B0079E /* kml-point.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01047D11D0394800B0079E /* kml-point.png */; };
+		DD01060C11D04E2000B0079E /* stripe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01060B11D04E2000B0079E /* stripe.png */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
 		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
@@ -29,6 +31,19 @@
 		DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA111D00379007691F3 /* FMResultSet.m */; };
 		DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */; };
 		DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA511D00379007691F3 /* FMDatabase.m */; };
+		DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */; };
+		DD6E3CAE11D02362007691F3 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3C9711D02362007691F3 /* CTidy.m */; };
+		DD6E3CAF11D02362007691F3 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3C9A11D02362007691F3 /* CXMLDocument_CreationExtensions.m */; };
+		DD6E3CB011D02362007691F3 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3C9C11D02362007691F3 /* CXMLNode_CreationExtensions.m */; };
+		DD6E3CB111D02362007691F3 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3C9E11D02362007691F3 /* CXMLNode.m */; };
+		DD6E3CB211D02362007691F3 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA011D02362007691F3 /* CXMLNode_XPathExtensions.m */; };
+		DD6E3CB311D02362007691F3 /* CXMLNode_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA211D02362007691F3 /* CXMLNode_PrivateExtensions.m */; };
+		DD6E3CB411D02362007691F3 /* CXMLElement.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA411D02362007691F3 /* CXMLElement.m */; };
+		DD6E3CB511D02362007691F3 /* CXMLElement_ElementTreeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA611D02362007691F3 /* CXMLElement_ElementTreeExtensions.m */; };
+		DD6E3CB611D02362007691F3 /* CXMLElement_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CA811D02362007691F3 /* CXMLElement_CreationExtensions.m */; };
+		DD6E3CB711D02362007691F3 /* CXMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAA11D02362007691F3 /* CXMLDocument.m */; };
+		DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */; };
+		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,13 +77,15 @@
 		1D6058910D05DD3D006BFB54 /* MapBoxiPadDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapBoxiPadDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MapBoxiPadDemoViewController.xib; sourceTree = "<group>"; };
+		2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapBoxiPadDemoViewController.xib; path = ../MapBoxiPadDemoViewController.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		28D7ACF60DDB3853001CB0EB /* MapBoxiPadDemoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPadDemoViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxiPadDemoViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MapBoxiPadDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPadDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		DD01047D11D0394800B0079E /* kml-point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point.png"; sourceTree = "<group>"; };
+		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripe.png; sourceTree = "<group>"; };
 		DD48C2BE11CBF2FF00038969 /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
@@ -77,17 +94,43 @@
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
 		DD48C4B911CC0CE300038969 /* world-light.sql */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.sql"; path = "../stuff to not backup/world-light.sql"; sourceTree = SOURCE_ROOT; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
-		DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wood_Plank_Look_Tile.JPG; sourceTree = SOURCE_ROOT; };
-		DD48C84311CC423800038969 /* Wood-Pattern12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wood-Pattern12.png"; sourceTree = SOURCE_ROOT; };
-		DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wood-Texture.jpg"; sourceTree = SOURCE_ROOT; };
-		DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood-walnut-background-tile.jpg"; sourceTree = SOURCE_ROOT; };
-		DD48C86611CC43F100038969 /* 404803.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 404803.jpg; sourceTree = SOURCE_ROOT; };
+		DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wood_Plank_Look_Tile.JPG; sourceTree = "<group>"; };
+		DD48C84311CC423800038969 /* Wood-Pattern12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wood-Pattern12.png"; sourceTree = "<group>"; };
+		DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wood-Texture.jpg"; sourceTree = "<group>"; };
+		DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood-walnut-background-tile.jpg"; sourceTree = "<group>"; };
+		DD48C86611CC43F100038969 /* 404803.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 404803.jpg; sourceTree = "<group>"; };
 		DD6E3AA111D00379007691F3 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = fmdb/FMResultSet.m; sourceTree = "<group>"; };
 		DD6E3AA211D00379007691F3 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = fmdb/FMResultSet.h; sourceTree = "<group>"; };
 		DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
 		DD6E3AA411D00379007691F3 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
 		DD6E3AA511D00379007691F3 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = fmdb/FMDatabase.m; sourceTree = "<group>"; };
 		DD6E3AA611D00379007691F3 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = fmdb/FMDatabase.h; sourceTree = "<group>"; };
+		DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haiti_commune_term.kml; sourceTree = "<group>"; };
+		DD6E3C9611D02362007691F3 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
+		DD6E3C9711D02362007691F3 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
+		DD6E3C9911D02362007691F3 /* CXMLDocument_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLDocument_CreationExtensions.h; sourceTree = "<group>"; };
+		DD6E3C9A11D02362007691F3 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
+		DD6E3C9B11D02362007691F3 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
+		DD6E3C9C11D02362007691F3 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
+		DD6E3C9D11D02362007691F3 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = touchcode/TouchXML/Common/Source/TouchXML.h; sourceTree = "<group>"; };
+		DD6E3C9E11D02362007691F3 /* CXMLNode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLNode.m; path = touchcode/TouchXML/Common/Source/CXMLNode.m; sourceTree = "<group>"; };
+		DD6E3C9F11D02362007691F3 /* CXMLNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLNode.h; path = touchcode/TouchXML/Common/Source/CXMLNode.h; sourceTree = "<group>"; };
+		DD6E3CA011D02362007691F3 /* CXMLNode_XPathExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLNode_XPathExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLNode_XPathExtensions.m; sourceTree = "<group>"; };
+		DD6E3CA111D02362007691F3 /* CXMLNode_XPathExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLNode_XPathExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLNode_XPathExtensions.h; sourceTree = "<group>"; };
+		DD6E3CA211D02362007691F3 /* CXMLNode_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLNode_PrivateExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLNode_PrivateExtensions.m; sourceTree = "<group>"; };
+		DD6E3CA311D02362007691F3 /* CXMLNode_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLNode_PrivateExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLNode_PrivateExtensions.h; sourceTree = "<group>"; };
+		DD6E3CA411D02362007691F3 /* CXMLElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLElement.m; path = touchcode/TouchXML/Common/Source/CXMLElement.m; sourceTree = "<group>"; };
+		DD6E3CA511D02362007691F3 /* CXMLElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLElement.h; path = touchcode/TouchXML/Common/Source/CXMLElement.h; sourceTree = "<group>"; };
+		DD6E3CA611D02362007691F3 /* CXMLElement_ElementTreeExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLElement_ElementTreeExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLElement_ElementTreeExtensions.m; sourceTree = "<group>"; };
+		DD6E3CA711D02362007691F3 /* CXMLElement_ElementTreeExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLElement_ElementTreeExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLElement_ElementTreeExtensions.h; sourceTree = "<group>"; };
+		DD6E3CA811D02362007691F3 /* CXMLElement_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLElement_CreationExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLElement_CreationExtensions.m; sourceTree = "<group>"; };
+		DD6E3CA911D02362007691F3 /* CXMLElement_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLElement_CreationExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLElement_CreationExtensions.h; sourceTree = "<group>"; };
+		DD6E3CAA11D02362007691F3 /* CXMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLDocument.m; path = touchcode/TouchXML/Common/Source/CXMLDocument.m; sourceTree = "<group>"; };
+		DD6E3CAB11D02362007691F3 /* CXMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLDocument.h; path = touchcode/TouchXML/Common/Source/CXMLDocument.h; sourceTree = "<group>"; };
+		DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CXMLDocument_PrivateExtensions.m; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.m; sourceTree = "<group>"; };
+		DD6E3CAD11D02362007691F3 /* CXMLDocument_PrivateExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CXMLDocument_PrivateExtensions.h; path = touchcode/TouchXML/Common/Source/CXMLDocument_PrivateExtensions.h; sourceTree = "<group>"; };
+		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
+		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +157,7 @@
 				1D3623250D0F684500981E51 /* MapBoxiPadDemoAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MapBoxiPadDemoViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */,
+				2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -152,16 +196,14 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
 				DD48C4B911CC0CE300038969 /* world-light.sql */,
-				DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */,
-				DD48C84311CC423800038969 /* Wood-Pattern12.png */,
-				DD48C84411CC423800038969 /* Wood-Texture.jpg */,
-				DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */,
-				DD48C86611CC43F100038969 /* 404803.jpg */,
+				DD01047D11D0394800B0079E /* kml-point.png */,
+				DD01060B11D04E2000B0079E /* stripe.png */,
+				DD6E3B6711D014A8007691F3 /* Textures */,
+				DD6E3C8C11D02099007691F3 /* KML */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -184,6 +226,8 @@
 			children = (
 				DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */,
 				DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */,
+				DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */,
+				DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */,
 			);
 			name = Custom;
 			path = Classes;
@@ -212,6 +256,7 @@
 			children = (
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD6E3AAA11D0037D007691F3 /* FMDB */,
+				DD6E3C9411D02339007691F3 /* touchcode */,
 			);
 			name = Externals;
 			sourceTree = "<group>";
@@ -227,6 +272,74 @@
 				DD6E3AA111D00379007691F3 /* FMResultSet.m */,
 			);
 			name = FMDB;
+			sourceTree = "<group>";
+		};
+		DD6E3B6711D014A8007691F3 /* Textures */ = {
+			isa = PBXGroup;
+			children = (
+				DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */,
+				DD48C84311CC423800038969 /* Wood-Pattern12.png */,
+				DD48C84411CC423800038969 /* Wood-Texture.jpg */,
+				DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */,
+				DD48C86611CC43F100038969 /* 404803.jpg */,
+			);
+			name = Textures;
+			sourceTree = "<group>";
+		};
+		DD6E3C8C11D02099007691F3 /* KML */ = {
+			isa = PBXGroup;
+			children = (
+				DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */,
+			);
+			name = KML;
+			sourceTree = "<group>";
+		};
+		DD6E3C9411D02339007691F3 /* touchcode */ = {
+			isa = PBXGroup;
+			children = (
+				DD6E3C9511D02362007691F3 /* Tidy */,
+				DD6E3C9811D02362007691F3 /* Creation */,
+				DD6E3C9D11D02362007691F3 /* TouchXML.h */,
+				DD6E3C9E11D02362007691F3 /* CXMLNode.m */,
+				DD6E3C9F11D02362007691F3 /* CXMLNode.h */,
+				DD6E3CA011D02362007691F3 /* CXMLNode_XPathExtensions.m */,
+				DD6E3CA111D02362007691F3 /* CXMLNode_XPathExtensions.h */,
+				DD6E3CA211D02362007691F3 /* CXMLNode_PrivateExtensions.m */,
+				DD6E3CA311D02362007691F3 /* CXMLNode_PrivateExtensions.h */,
+				DD6E3CA411D02362007691F3 /* CXMLElement.m */,
+				DD6E3CA511D02362007691F3 /* CXMLElement.h */,
+				DD6E3CA611D02362007691F3 /* CXMLElement_ElementTreeExtensions.m */,
+				DD6E3CA711D02362007691F3 /* CXMLElement_ElementTreeExtensions.h */,
+				DD6E3CA811D02362007691F3 /* CXMLElement_CreationExtensions.m */,
+				DD6E3CA911D02362007691F3 /* CXMLElement_CreationExtensions.h */,
+				DD6E3CAA11D02362007691F3 /* CXMLDocument.m */,
+				DD6E3CAB11D02362007691F3 /* CXMLDocument.h */,
+				DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */,
+				DD6E3CAD11D02362007691F3 /* CXMLDocument_PrivateExtensions.h */,
+			);
+			name = touchcode;
+			sourceTree = "<group>";
+		};
+		DD6E3C9511D02362007691F3 /* Tidy */ = {
+			isa = PBXGroup;
+			children = (
+				DD6E3C9611D02362007691F3 /* CTidy.h */,
+				DD6E3C9711D02362007691F3 /* CTidy.m */,
+			);
+			name = Tidy;
+			path = touchcode/TouchXML/Common/Source/Tidy;
+			sourceTree = "<group>";
+		};
+		DD6E3C9811D02362007691F3 /* Creation */ = {
+			isa = PBXGroup;
+			children = (
+				DD6E3C9911D02362007691F3 /* CXMLDocument_CreationExtensions.h */,
+				DD6E3C9A11D02362007691F3 /* CXMLDocument_CreationExtensions.m */,
+				DD6E3C9B11D02362007691F3 /* CXMLNode_CreationExtensions.h */,
+				DD6E3C9C11D02362007691F3 /* CXMLNode_CreationExtensions.m */,
+			);
+			name = Creation;
+			path = touchcode/TouchXML/Common/Source/Creation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,6 +417,9 @@
 				DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */,
 				DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */,
 				DD48C86711CC43F100038969 /* 404803.jpg in Resources */,
+				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
+				DD01047E11D0394800B0079E /* kml-point.png in Resources */,
+				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -321,6 +437,18 @@
 				DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */,
 				DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */,
 				DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */,
+				DD6E3CAE11D02362007691F3 /* CTidy.m in Sources */,
+				DD6E3CAF11D02362007691F3 /* CXMLDocument_CreationExtensions.m in Sources */,
+				DD6E3CB011D02362007691F3 /* CXMLNode_CreationExtensions.m in Sources */,
+				DD6E3CB111D02362007691F3 /* CXMLNode.m in Sources */,
+				DD6E3CB211D02362007691F3 /* CXMLNode_XPathExtensions.m in Sources */,
+				DD6E3CB311D02362007691F3 /* CXMLNode_PrivateExtensions.m in Sources */,
+				DD6E3CB411D02362007691F3 /* CXMLElement.m in Sources */,
+				DD6E3CB511D02362007691F3 /* CXMLElement_ElementTreeExtensions.m in Sources */,
+				DD6E3CB611D02362007691F3 /* CXMLElement_CreationExtensions.m in Sources */,
+				DD6E3CB711D02362007691F3 /* CXMLDocument.m in Sources */,
+				DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */,
+				DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,7 +472,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPadDemo_Prefix.pch;
-				HEADER_SEARCH_PATHS = "route-me/MapView/**";
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					"route-me/MapView/**",
+				);
 				INFOPLIST_FILE = "MapBoxiPadDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -359,6 +490,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBoxiPadDemo;
 			};
 			name = Debug;
@@ -370,7 +502,10 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPadDemo_Prefix.pch;
-				HEADER_SEARCH_PATHS = "./route-me/MapView/**";
+				HEADER_SEARCH_PATHS = (
+					/usr/include/libxml2,
+					"route-me/MapView/**",
+				);
 				INFOPLIST_FILE = "MapBoxiPadDemo-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -385,6 +520,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBoxiPadDemo;
 				VALIDATE_PRODUCT = YES;
 			};

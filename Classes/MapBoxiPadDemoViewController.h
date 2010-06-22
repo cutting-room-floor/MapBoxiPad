@@ -9,10 +9,18 @@
 #import <UIKit/UIKit.h>
 #import "RMMapView.h"
 
-@interface MapBoxiPadDemoViewController : UIViewController
+@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate>
 {
     IBOutlet RMMapView *mapView;
+    IBOutlet UIToolbar *toolbar;
+    IBOutlet UILabel *clickLabel;
+    IBOutlet UIImageView *clickStripe;
+    NSMutableDictionary *lastMarkerInfo;
+    NSTimer *timer;
 }
 
-@end
+- (IBAction)tappedAllowRotationButton:(id)sender;
+- (IBAction)tappedRecenterButton:(id)sender;
+- (IBAction)tappedKMLButton:(id)sender;
 
+@end
