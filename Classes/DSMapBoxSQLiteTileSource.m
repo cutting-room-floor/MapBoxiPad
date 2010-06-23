@@ -75,7 +75,13 @@
     
     NSData *data = [results dataForColumn:@"tile_data"];
 
-    RMTileImage *image = [RMTileImage imageForTile:tile withData:data];
+    RMTileImage *image;
+    
+    if ( ! data)
+        image = [RMTileImage dummyTile:tile];
+    
+    else
+        image = [RMTileImage imageForTile:tile withData:data];
     
     [results close];
     
