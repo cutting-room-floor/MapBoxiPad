@@ -14,6 +14,7 @@
 #import "RMMarkerManager.h"
 #import "UIImage+DSExtensions.h"
 #import "DSMapBoxTileSetManager.h"
+#import "DSMapBoxTileSetChooserController.h"
 
 #define kStartingLat   19.5f
 #define kStartingLon  -74.0f
@@ -187,6 +188,21 @@
             [mapView.contents.markerManager addMarker:marker AtLatLong:point];
         }
     }
+}
+
+- (IBAction)tappedTilesButton:(id)sender
+{
+    [popover dismissPopoverAnimated:NO];
+    [popover release];
+    popover = nil;
+    
+    DSMapBoxTileSetChooserController *chooser = [[[DSMapBoxTileSetChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
+    
+    popover = [[UIPopoverController alloc] initWithContentViewController:chooser];
+    
+    [popover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    
+    popover.passthroughViews = nil;
 }
 
 - (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context

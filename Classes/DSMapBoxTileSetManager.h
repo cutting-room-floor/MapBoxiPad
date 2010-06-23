@@ -11,18 +11,21 @@
 @interface DSMapBoxTileSetManager : NSObject
 {
     NSURL *_activeTileSetURL;
-    NSString *_activeTileSetName;
+    NSURL *_defaultTileSetURL;
+    NSArray *_activeDownloads;
 }
 
 + (DSMapBoxTileSetManager *)defaultManager;
 
 - (BOOL)isUsingDefaultTileSet;
+- (NSString *)defaultTileSetName;
 - (NSUInteger)tileSetCount;
 - (NSArray *)tileSetNames;
 - (BOOL)importTileSetFromURL:(NSURL *)importURL;
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
-- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName;
+- (NSArray *)activeDownloads;
+- (void)makeTileSetWithNameActive:(NSString *)tileSetName;
 
 @end

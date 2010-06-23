@@ -19,6 +19,7 @@
     IBOutlet UIBarButtonItem *tilesButton;
     IBOutlet UILabel *clickLabel;
     IBOutlet UIImageView *clickStripe;
+    UIPopoverController *popover;
     NSMutableDictionary *lastMarkerInfo;
     NSTimer *timer;
 }
@@ -26,5 +27,6 @@
 - (IBAction)tappedAllowRotationButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedKMLButton:(id)sender;
+- (IBAction)tappedTilesButton:(id)sender;
 
 @end
