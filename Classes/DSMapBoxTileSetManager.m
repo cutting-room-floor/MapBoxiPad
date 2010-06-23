@@ -32,9 +32,24 @@ static DSMapBoxTileSetManager *defaultManager;
         NSArray *bundledTileSets = [[NSBundle mainBundle] pathsForResourcesOfType:@"mbtiles" inDirectory:nil];
         
         NSAssert([bundledTileSets count] > 0, @"No bundled tile sets found in application");
+        
+        NSString *path = [[bundledTileSets sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
+        
+        _activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
+        _activeTileSetName = [[[[_activeTileSetURL path] componentsSeparatedByString:@"/"] lastObject] retain];
+        
+        NSAssert([self activeTileSetName], @"Unable to read default tile set name");
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [_activeTileSetURL  release];
+    [_activeTileSetName release];
+    
+    [super dealloc];
 }
 
 #pragma mark -
@@ -46,12 +61,12 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (NSUInteger)tileSetCount
 {
-    return 0;
+    return 1;
 }
 
 - (NSArray *)tileSetNames
 {
-    return [NSArray array];
+    return [NSArray arrayWithObject:_activeTileSetName];
 }
 
 - (BOOL)importTileSetFromURL:(NSURL *)importURL
@@ -64,9 +79,21 @@ static DSMapBoxTileSetManager *defaultManager;
     return NO;
 }
 
+- (NSURL *)activeTileSetURL
+{
+    return _activeTileSetURL;
+}
+
 - (NSString *)activeTileSetName
 {
-    return nil;
+    NSArray *parts = [[_activeTileSetName stringByReplacingOccurrencesOfString:@".mbtiles" withString:@""] componentsSeparatedByString:@"_"];
+    
+    NSAssert([parts count] == 3, @"Unable to parse tile set name");
+    
+    NSString *displayName = [[parts objectAtIndex:0] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
+    NSString *versionName = [[parts objectAtIndex:2] isEqualToString:@"v1"] ? @"" : [NSString stringWithFormat:@" (%@)", [parts objectAtIndex:2]];
+    
+    return [NSString stringWithFormat:@"%@%@", displayName, versionName];
 }
 
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName

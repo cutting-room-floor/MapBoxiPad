@@ -11,6 +11,7 @@
 #import "RMProjection.h"
 #import "RMFractalTileProjection.h"
 #import "FMDatabase.h"
+#import "DSMapBoxTileSetManager.h"
 
 @implementation DSMapBoxSQLiteTileSource
 
@@ -24,11 +25,7 @@
                                                                  maxZoom:kDSDefaultMaxTileZoom 
                                                                  minZoom:kDSDefaultMinTileZoom];
 	
-    NSArray *tileSets = [[NSBundle mainBundle] pathsForResourcesOfType:@"mbtiles" inDirectory:nil];
-    
-    NSAssert([tileSets count] > 0, @"Unable to find any bundled tile sets in application");
-    
-    db = [[FMDatabase databaseWithPath:[tileSets objectAtIndex:0]] retain];
+    db = [[FMDatabase databaseWithPath:[[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath]] retain];
     
     if ( ! [db open])
         return nil;

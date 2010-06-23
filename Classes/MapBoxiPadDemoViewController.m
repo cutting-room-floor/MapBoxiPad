@@ -65,8 +65,7 @@
     clickLabel.text = @"";
     clickStripe.hidden = YES;
     
-    if ( ! [[DSMapBoxTileSetManager defaultManager] isUsingDefaultTileSet])
-        tilesButton.title = [[DSMapBoxTileSetManager defaultManager] activeTileSetName];
+    tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

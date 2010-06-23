@@ -44,7 +44,7 @@
 		DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3CAC11D02362007691F3 /* CXMLDocument_PrivateExtensions.m */; };
 		DD70D7C211D16AB50002E222 /* stick.png in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7C111D16AB50002E222 /* stick.png */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
-		DD70D91711D1882E0002E222 /* Haiti_Terrain_z5_16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD70D91611D1882E0002E222 /* Haiti_Terrain_z5_16_v1.mbtiles */; };
+		DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD70D96611D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles */; };
 		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
 /* End PBXBuildFile section */
 
@@ -133,7 +133,7 @@
 		DD70D7C111D16AB50002E222 /* stick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stick.png; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
-		DD70D91611D1882E0002E222 /* Haiti_Terrain_z5_16_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = Haiti_Terrain_z5_16_v1.mbtiles; path = "../stuff to not backup/Haiti_Terrain_z5_16_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
+		DD70D96611D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Haiti-Terrain_z5-16_v1.mbtiles"; path = "../stuff to not backup/Haiti-Terrain_z5-16_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
 		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -360,7 +360,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DD70D91611D1882E0002E222 /* Haiti_Terrain_z5_16_v1.mbtiles */,
+				DD70D96611D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles */,
 			);
 			name = "Tile Sets";
 			sourceTree = "<group>";
@@ -453,7 +453,7 @@
 				DD01047E11D0394800B0079E /* kml-point.png in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
 				DD70D7C211D16AB50002E222 /* stick.png in Resources */,
-				DD70D91711D1882E0002E222 /* Haiti_Terrain_z5_16_v1.mbtiles in Resources */,
+				DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

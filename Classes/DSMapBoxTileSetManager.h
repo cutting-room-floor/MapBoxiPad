@@ -10,6 +10,7 @@
 
 @interface DSMapBoxTileSetManager : NSObject
 {
+    NSURL *_activeTileSetURL;
     NSString *_activeTileSetName;
 }
 
@@ -20,6 +21,7 @@
 - (NSArray *)tileSetNames;
 - (BOOL)importTileSetFromURL:(NSURL *)importURL;
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
+- (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName;
 
