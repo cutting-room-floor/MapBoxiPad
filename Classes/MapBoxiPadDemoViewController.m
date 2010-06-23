@@ -276,11 +276,11 @@
     if (newZoom >= 0)
         mapView.contents.zoom = newZoom;
     
+    [mapView.contents removeAllCachedImages];
+
     mapView.contents.minZoom = [newSource minZoom];
     mapView.contents.maxZoom = [newSource maxZoom];
 
-    [mapView.contents removeAllCachedImages];
-    
     mapView.contents.tileSource = newSource;    
 }
 
