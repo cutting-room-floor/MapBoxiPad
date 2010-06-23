@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
+
 @interface DSMapBoxTileSetChooserController : UITableViewController
 {
 }

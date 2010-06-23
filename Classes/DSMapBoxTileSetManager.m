@@ -46,7 +46,7 @@ static DSMapBoxTileSetManager *defaultManager;
         NSString *path = [[bundledTileSets sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
         
         _activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
-        _defaultTileSetURL = [_activeTileSetURL retain];
+        _defaultTileSetURL = [_activeTileSetURL copy];
     }
     
     return self;
@@ -153,9 +153,35 @@ static DSMapBoxTileSetManager *defaultManager;
     return [NSArray arrayWithObject:@"test download goes here"];
 }
 
-- (void)makeTileSetWithNameActive:(NSString *)tileSetName
+- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName
 {
     NSLog(@"activating %@", tileSetName);
+    
+    NSURL *currentPath = [[_activeTileSetURL copy] autorelease];
+    
+    if ([tileSetName isEqualToString:[self displayNameForTileSetAtURL:_defaultTileSetURL]])
+    {
+        if ( ! [currentPath isEqual:_defaultTileSetURL])
+        {
+            [_activeTileSetURL release];
+            _activeTileSetURL = [_defaultTileSetURL copy];
+        }
+    }
+    else
+    {
+        for (NSURL *alternatePath in [self alternateTileSetPaths])
+        {
+            if ([[self displayNameForTileSetAtURL:alternatePath] isEqualToString:tileSetName])
+            {
+                [_activeTileSetURL release];
+                _activeTileSetURL = [alternatePath copy];
+                
+                break;
+            }
+        }
+    }
+    
+    return ! [currentPath isEqual:_activeTileSetURL];
 }
 
 @end

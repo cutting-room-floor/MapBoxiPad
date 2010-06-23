@@ -67,6 +67,11 @@
     clickStripe.hidden = YES;
     
     tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(tileSetDidChange:)
+                                                 name:DSMapBoxTileSetChangedNotification
+                                               object:nil];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -76,6 +81,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
+    
     [timer release];
 
     [super dealloc];
@@ -192,7 +199,7 @@
 
 - (IBAction)tappedTilesButton:(id)sender
 {
-    [popover dismissPopoverAnimated:NO];
+    [popover dismissPopoverAnimated:YES];
     [popover release];
     popover = nil;
     
@@ -200,7 +207,7 @@
     
     popover = [[UIPopoverController alloc] initWithContentViewController:chooser];
     
-    [popover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:NO];
+    [popover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
     popover.passthroughViews = nil;
 }
@@ -245,6 +252,36 @@
     [[lastMarkerInfo objectForKey:@"marker"] replaceUIImage:[UIImage setImage:image toAlpha:newAlpha]];
     
     [lastMarkerInfo setObject:[NSNumber numberWithFloat:newAlpha] forKey:@"lastAlpha"];
+}
+
+- (void)tileSetDidChange:(NSNotification *)notification
+{
+    if (popover)
+    {
+        [popover dismissPopoverAnimated:YES];
+        [popover release];
+        popover = nil;
+    }
+
+    DSMapBoxSQLiteTileSource *newSource = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
+
+    float newZoom = -1;
+    
+    if (mapView.contents.zoom < [newSource minZoom])
+        newZoom = [newSource minZoom];
+    
+    else if (mapView.contents.zoom > [newSource maxZoom])
+        newZoom = [newSource maxZoom];
+    
+    if (newZoom >= 0)
+        mapView.contents.zoom = newZoom;
+    
+    mapView.contents.minZoom = [newSource minZoom];
+    mapView.contents.maxZoom = [newSource maxZoom];
+
+    [mapView.contents removeAllCachedImages];
+    
+    mapView.contents.tileSource = newSource;    
 }
 
 #pragma mark -

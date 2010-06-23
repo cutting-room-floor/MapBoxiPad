@@ -129,12 +129,11 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 1 && indexPath.row == [tableView numberOfRowsInSection:1] - 1)
-    {
         NSLog(@"download more tiles here");
-    }
-    
+
     else
-        [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[tableView cellForRowAtIndexPath:indexPath].textLabel.text];
+        if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[tableView cellForRowAtIndexPath:indexPath].textLabel.text])
+            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification object:nil]];
 }
 
 @end

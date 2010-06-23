@@ -26,6 +26,6 @@
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
 - (NSArray *)activeDownloads;
-- (void)makeTileSetWithNameActive:(NSString *)tileSetName;
+- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName;
 
 @end
