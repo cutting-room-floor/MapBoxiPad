@@ -24,7 +24,11 @@
                                                                  maxZoom:kDSDefaultMaxTileZoom 
                                                                  minZoom:kDSDefaultMinTileZoom];
 	
-    db = [[FMDatabase databaseWithPath:[[NSBundle mainBundle] pathForResource:@"Haiti_Terrain_z5_16_v1" ofType:@"mbtiles"]] retain];
+    NSArray *tileSets = [[NSBundle mainBundle] pathsForResourcesOfType:@"mbtiles" inDirectory:nil];
+    
+    NSAssert([tileSets count] > 0, @"Unable to find any bundled tile sets in application");
+    
+    db = [[FMDatabase databaseWithPath:[tileSets objectAtIndex:0]] retain];
     
     if ( ! [db open])
         return nil;
