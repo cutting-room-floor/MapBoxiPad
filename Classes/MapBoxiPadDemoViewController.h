@@ -13,6 +13,10 @@
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIToolbar *toolbar;
+    IBOutlet UIBarButtonItem *kmlButton;
+    IBOutlet UIBarButtonItem *rotationButton;
+    IBOutlet UIBarButtonItem *recenterButton;
+    IBOutlet UIBarButtonItem *tilesButton;
     IBOutlet UILabel *clickLabel;
     IBOutlet UIImageView *clickStripe;
     NSMutableDictionary *lastMarkerInfo;

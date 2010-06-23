@@ -13,6 +13,7 @@
 #import "RMMarker.h"
 #import "RMMarkerManager.h"
 #import "UIImage+DSExtensions.h"
+#import "DSMapBoxTileSetManager.h"
 
 #define kStartingLat   19.5f
 #define kStartingLon  -74.0f
@@ -63,6 +64,9 @@
     
     clickLabel.text = @"";
     clickStripe.hidden = YES;
+    
+    if ( ! [[DSMapBoxTileSetManager defaultManager] isUsingDefaultTileSet])
+        tilesButton.title = [[DSMapBoxTileSetManager defaultManager] activeTileSetName];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -83,7 +87,7 @@
 {
     mapView.enableRotate = ! mapView.enableRotate;
     
-    [[[toolbar items] objectAtIndex:2] setTitle:(mapView.enableRotate ? @"Disallow Rotation" : @"Allow Rotation")];
+    [rotationButton setTitle:(mapView.enableRotate ? @"Disallow Rotation" : @"Allow Rotation")];
     
     mapView.rotation = 0.0f;
     
@@ -110,7 +114,7 @@
 {
     if ([[mapView.contents.markerManager markers] count])
     {
-        [[[toolbar items] objectAtIndex:0] setTitle:@"Turn KML On"];
+        [kmlButton setTitle:@"Turn KML On"];
 
         [mapView.contents.markerManager removeMarkers];
         
@@ -120,7 +124,7 @@
         return;
     }
     
-    [[[toolbar items] objectAtIndex:0] setTitle:@"Turn KML Off"];
+    [kmlButton setTitle:@"Turn KML Off"];
     
     NSString *kmlText = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] 
                                                   encoding:NSUTF8StringEncoding 

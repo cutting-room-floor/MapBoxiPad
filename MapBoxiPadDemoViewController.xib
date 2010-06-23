@@ -129,13 +129,19 @@
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
 							</object>
+							<object class="IBUIBarButtonItem" id="514991390">
+								<string key="IBUITitle">Re-Center</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="459560094"/>
+							</object>
 							<object class="IBUIBarButtonItem" id="103224902">
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<reference key="IBUIToolbar" ref="459560094"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="514991390">
-								<string key="IBUITitle">Re-Center Map</string>
+							<object class="IBUIBarButtonItem" id="492247442">
+								<string key="IBUITitle">Tiles</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -222,6 +228,38 @@
 					</object>
 					<int key="connectionID">35</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">kmlButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="242908024"/>
+					</object>
+					<int key="connectionID">37</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">rotationButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="828856920"/>
+					</object>
+					<int key="connectionID">38</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">recenterButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="514991390"/>
+					</object>
+					<int key="connectionID">39</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">tilesButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="492247442"/>
+					</object>
+					<int key="connectionID">40</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -268,11 +306,12 @@
 						<reference key="object" ref="459560094"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="103224902"/>
 							<reference ref="514991390"/>
 							<reference ref="242908024"/>
 							<reference ref="828856920"/>
 							<reference ref="825666617"/>
+							<reference ref="103224902"/>
+							<reference ref="492247442"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -311,6 +350,11 @@
 						<reference key="object" ref="284993192"/>
 						<reference key="parent" ref="750562466"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">36</int>
+						<reference key="object" ref="492247442"/>
+						<reference key="parent" ref="459560094"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -329,6 +373,7 @@
 					<string>30.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>33.IBPluginDependency</string>
+					<string>36.IBPluginDependency</string>
 					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
 				</object>
@@ -339,6 +384,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{241, 254}, {1024, 768}}</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -366,7 +412,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">35</int>
+			<int key="maxID">40</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -419,14 +465,22 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>clickLabel</string>
 							<string>clickStripe</string>
+							<string>kmlButton</string>
 							<string>mapView</string>
+							<string>recenterButton</string>
+							<string>rotationButton</string>
+							<string>tilesButton</string>
 							<string>toolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UILabel</string>
 							<string>UIImageView</string>
+							<string>UIBarButtonItem</string>
 							<string>RMMapView</string>
+							<string>UIBarButtonItem</string>
+							<string>UIBarButtonItem</string>
+							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 						</object>
 					</object>
@@ -436,7 +490,11 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>clickLabel</string>
 							<string>clickStripe</string>
+							<string>kmlButton</string>
 							<string>mapView</string>
+							<string>recenterButton</string>
+							<string>rotationButton</string>
+							<string>tilesButton</string>
 							<string>toolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -450,8 +508,24 @@
 								<string key="candidateClassName">UIImageView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
+								<string key="name">kmlButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
 								<string key="name">mapView</string>
 								<string key="candidateClassName">RMMapView</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">recenterButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">rotationButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">tilesButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolbar</string>
