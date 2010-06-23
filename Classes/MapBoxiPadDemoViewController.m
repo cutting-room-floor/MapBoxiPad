@@ -33,6 +33,14 @@
                                           [NSNumber numberWithFloat:3.00], \
                                           nil]
 
+@interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
+
+- (void)updateTilesButtonTitle;
+
+@end
+
+#pragma mark -
+
 @implementation MapBoxiPadDemoViewController
 
 - (void)viewDidLoad
@@ -66,7 +74,7 @@
     clickLabel.text = @"";
     clickStripe.hidden = YES;
     
-    tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
+    [self updateTilesButtonTitle];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(tileSetDidChange:)
@@ -263,6 +271,8 @@
         popover = nil;
     }
 
+    [self updateTilesButtonTitle];
+    
     DSMapBoxSQLiteTileSource *newSource = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
 
     float newZoom = -1;
@@ -281,7 +291,12 @@
     mapView.contents.minZoom = [newSource minZoom];
     mapView.contents.maxZoom = [newSource maxZoom];
 
-    mapView.contents.tileSource = newSource;    
+    mapView.contents.tileSource = newSource;
+}
+
+- (void)updateTilesButtonTitle
+{
+    tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
 }
 
 #pragma mark -
