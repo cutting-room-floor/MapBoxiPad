@@ -17,6 +17,8 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
 		DD01047E11D0394800B0079E /* kml-point.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01047D11D0394800B0079E /* kml-point.png */; };
 		DD01060C11D04E2000B0079E /* stripe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01060B11D04E2000B0079E /* stripe.png */; };
+		DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */; };
+		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
 		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
@@ -90,6 +92,8 @@
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		DD01047D11D0394800B0079E /* kml-point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point.png"; sourceTree = "<group>"; };
 		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripe.png; sourceTree = "<group>"; };
+		DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "page-flip-8.wav"; sourceTree = "<group>"; };
+		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2BE11CBF2FF00038969 /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
@@ -154,6 +158,7 @@
 				DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */,
 				DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */,
 				DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */,
+				DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +219,7 @@
 				DD6E3B6711D014A8007691F3 /* Textures */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD6E3C8C11D02099007691F3 /* KML */,
+				DD48AC4111D3D79B000AF79E /* Sounds */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -227,8 +233,17 @@
 				DD48C2E711CBF3AB00038969 /* QuartzCore.framework */,
 				DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */,
 				DD48C5D811CC1F7300038969 /* libMapView.a */,
+				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD48AC4111D3D79B000AF79E /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */,
+			);
+			name = Sounds;
 			sourceTree = "<group>";
 		};
 		DD48BEF311CAE76A00038969 /* Custom */ = {
@@ -463,6 +478,7 @@
 				DD70D7C211D16AB50002E222 /* stick.png in Resources */,
 				DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */,
 				DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */,
+				DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

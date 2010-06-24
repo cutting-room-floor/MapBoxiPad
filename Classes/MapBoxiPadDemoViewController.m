@@ -15,6 +15,7 @@
 #import "UIImage+DSExtensions.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
+#import <AudioToolbox/AudioToolbox.h>
 
 #define kStartingLat   19.5f
 #define kStartingLon  -74.0f
@@ -35,6 +36,7 @@
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
+void SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)updateTilesButtonTitle;
 
 @end
@@ -266,15 +268,31 @@
 {
     if (popover)
     {
-        [popover dismissPopoverAnimated:YES];
+        [popover dismissPopoverAnimated:NO];
         [popover release];
         popover = nil;
     }
 
     [self updateTilesButtonTitle];
     
+    // get an image of the current map
+    //
+    UIGraphicsBeginImageContext(mapView.bounds.size);
+    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    // swap map view with image view
+    //
+    UIImageView *snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
+    snapshotView.image = snapshot;
+    [self.view addSubview:snapshotView];
+    [mapView removeFromSuperview];
+    
+    // adjust map view to new settings
+    //
     DSMapBoxSQLiteTileSource *newSource = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
-
+    
     float newZoom = -1;
     
     if (mapView.contents.zoom < [newSource minZoom])
@@ -287,11 +305,33 @@
         mapView.contents.zoom = newZoom;
     
     [mapView.contents removeAllCachedImages];
-
+    
     mapView.contents.minZoom = [newSource minZoom];
     mapView.contents.maxZoom = [newSource maxZoom];
-
+    
     mapView.contents.tileSource = newSource;
+
+    // start up page turn sound effect
+    //
+    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page-flip-8" ofType:@"wav"]];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
+    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, SoundCompletionProc, self);
+    AudioServicesPlaySystemSound(sound);
+    
+    // animate swap from old snapshot to new map
+    //
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+    [UIView setAnimationDuration:1.2];
+    [snapshotView removeFromSuperview];
+    [self.view addSubview:mapView];
+    [UIView commitAnimations];
+}
+
+void SoundCompletionProc (SystemSoundID sound, void *clientData)
+{
+    AudioServicesDisposeSystemSoundID(sound);
 }
 
 - (void)updateTilesButtonTitle
