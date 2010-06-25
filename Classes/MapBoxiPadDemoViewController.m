@@ -286,7 +286,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     //
     UIImageView *snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
     snapshotView.image = snapshot;
-    [self.view addSubview:snapshotView];
+    [self.view insertSubview:snapshotView belowSubview:toolbar];
     [mapView removeFromSuperview];
     
     // adjust map view to new settings
@@ -323,9 +323,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     //
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
-    [UIView setAnimationDuration:1.2];
+    [UIView setAnimationDuration:0.8];
     [snapshotView removeFromSuperview];
-    [self.view addSubview:mapView];
+    [self.view insertSubview:mapView belowSubview:toolbar];
     [UIView commitAnimations];
 }
 
