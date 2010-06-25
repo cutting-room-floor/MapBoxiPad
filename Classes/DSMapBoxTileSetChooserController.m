@@ -9,7 +9,16 @@
 #import "DSMapBoxTileSetChooserController.h"
 #import "DSMapBoxTileSetManager.h"
 
+#define DS_EXTERNAL_TILESET (@"http://10.0.7.104/maps/World-Light_z0-10_v1.mbtiles")
+
 @implementation DSMapBoxTileSetChooserController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
+}
 
 #pragma mark -
 
@@ -70,6 +79,8 @@
 
     cell.accessoryType = UITableViewCellAccessoryNone;
     
+    NSDictionary *download;
+    
     switch (indexPath.section)
     {
         case 0:
@@ -98,8 +109,32 @@
             break;
             
         case 2:
-            cell.textLabel.text = [[[DSMapBoxTileSetManager defaultManager] activeDownloads] objectAtIndex:indexPath.row];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:nil] autorelease];
+            
+            download = [[[DSMapBoxTileSetManager defaultManager] activeDownloads] objectAtIndex:indexPath.row];
+            
+            cell.textLabel.text = [download objectForKey:@"name"];
+            /*
+            float completed = [[download objectForKey:@"completion"] floatValue];
+            NSString *completion;
+            
+            if ([download objectForKey:@"size"])
+            {
+                float totalSize = [[download objectForKey:@"size"] floatValue];
+                
+                completion = [NSString stringWithFormat:@"%f of %f MB (%f%%)", round(completed / (1024 * 1024)), 
+                                                                               round(totalSize / (1024 * 1024)), 
+                                                                               round(completed / totalSize * 100)];
+                break;
+            }
+            
+            else
+                completion = [NSString stringWithFormat:@"%f MB of ???", round(completed / (1024 * 1024))];
+            
+            cell.detailTextLabel.text = completion;
+            */
             cell.textLabel.textColor = [UIColor lightGrayColor];
+            
             break;
     }
     
@@ -129,8 +164,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 1 && indexPath.row == [tableView numberOfRowsInSection:1] - 1)
-        NSLog(@"download more tiles here");
-
+        [[DSMapBoxTileSetManager defaultManager] importTileSetFromURL:[NSURL URLWithString:DS_EXTERNAL_TILESET]];
+        
     else
         if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[tableView cellForRowAtIndexPath:indexPath].textLabel.text])
             [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification object:nil]];

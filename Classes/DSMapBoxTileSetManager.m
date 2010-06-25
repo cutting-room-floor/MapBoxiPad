@@ -13,6 +13,7 @@
 - (NSString *)documentsFolderPathString;
 - (NSArray *)alternateTileSetPaths;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
+- (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection;
 
 @end
 
@@ -47,6 +48,7 @@ static DSMapBoxTileSetManager *defaultManager;
         
         _activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
         _defaultTileSetURL = [_activeTileSetURL copy];
+        _activeDownloads   = [[NSMutableArray array] retain];
     }
     
     return self;
@@ -56,6 +58,7 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     [_activeTileSetURL  release];
     [_defaultTileSetURL release];
+    [_activeDownloads   release];
     
     [super dealloc];
 }
@@ -97,6 +100,15 @@ static DSMapBoxTileSetManager *defaultManager;
     return [NSString stringWithFormat:@"%@%@", displayName, versionName];
 }
 
+- (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection
+{
+    for (NSMutableDictionary *download in _activeDownloads)
+        if ([[download objectForKey:@"connection"] isEqual:connection])
+            return download;
+    
+    return nil;
+}
+
 #pragma mark -
 
 - (BOOL)isUsingDefaultTileSet
@@ -130,7 +142,28 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (BOOL)importTileSetFromURL:(NSURL *)importURL
 {
-    return NO;
+    for (NSMutableDictionary *download in _activeDownloads)
+        if ([[download objectForKey:@"url"] isEqualToString:[importURL absoluteString]])
+            return NO;
+    
+    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:importURL] delegate:self startImmediately:NO];
+    
+    NSMutableDictionary *newDownload = [NSMutableDictionary dictionaryWithObjectsAndKeys:connection,                                  @"connection", 
+                                                                                         [importURL absoluteString],                  @"url", 
+                                                                                         [self displayNameForTileSetAtURL:importURL], @"name", 
+                                                                                         [NSNumber numberWithFloat:0],                @"completion", 
+                                                                                         nil];
+
+    [_activeDownloads addObject:newDownload];
+    
+    NSString *baseName = [[[importURL relativePath] componentsSeparatedByString:@"/"] lastObject];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", [self documentsFolderPathString], baseName] error:NULL];
+    
+    [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
+    [connection start];
+    
+    return YES;
 }
 
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName
@@ -150,7 +183,7 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (NSArray *)activeDownloads
 {
-    return [NSArray arrayWithObject:@"test download goes here"];
+    return _activeDownloads;
 }
 
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName
@@ -182,6 +215,82 @@ static DSMapBoxTileSetManager *defaultManager;
     }
     
     return ! [currentPath isEqual:_activeTileSetURL];
+}
+
+#pragma mark -
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSDictionary *download = [self downloadForConnection:connection];
+
+    NSLog(@"download error for %@: %@", download, error);
+    
+    [connection cancel];
+    
+    NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
+    
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    
+    [[NSFileManager defaultManager] removeItemAtPath:inProgress error:NULL];
+    
+    [_activeDownloads removeObject:download];
+    
+    [connection release];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    NSMutableDictionary *download = [self downloadForConnection:connection];
+
+    NSLog(@"received response for %@: %@", download, [(NSHTTPURLResponse *)response allHeaderFields]);
+    
+    NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
+    
+    [[NSFileManager defaultManager] createFileAtPath:[NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName]
+                                            contents:[NSData data]
+                                          attributes:nil];
+    
+    if ([[(NSHTTPURLResponse *)response allHeaderFields] objectForKey:@"Content-Length"])
+        [download setObject:[NSNumber numberWithFloat:[[[(NSHTTPURLResponse *)response allHeaderFields] objectForKey:@"Content-Length"] floatValue]]
+                     forKey:@"size"];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    NSMutableDictionary *download = [self downloadForConnection:connection];
+
+    NSLog(@"received %i bytes for %@", [data length], download);
+    
+    [download setObject:[NSNumber numberWithFloat:([[download objectForKey:@"completion"] floatValue] + (float)[data length])] forKey:@"completion"];
+    
+    NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
+
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    
+    NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:inProgress];
+    
+    [fileHandle seekToEndOfFile];
+    
+    [fileHandle writeData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSDictionary *download = [self downloadForConnection:connection];
+
+    NSLog(@"finished loading for %@", download);
+    
+    NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
+    
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    
+    [[NSFileManager defaultManager] moveItemAtPath:inProgress 
+                                            toPath:[NSString stringWithFormat:@"%@/%@", [self documentsFolderPathString], baseName] 
+                                             error:NULL];
+    
+    [_activeDownloads removeObject:download];
+
+    [connection release];
 }
 
 @end

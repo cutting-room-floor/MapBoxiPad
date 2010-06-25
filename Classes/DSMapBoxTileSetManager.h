@@ -12,7 +12,7 @@
 {
     NSURL *_activeTileSetURL;
     NSURL *_defaultTileSetURL;
-    NSArray *_activeDownloads;
+    NSMutableArray *_activeDownloads;
 }
 
 + (DSMapBoxTileSetManager *)defaultManager;
