@@ -49,6 +49,7 @@
 		DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD70D96611D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles */; };
 		DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */; };
 		DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */; };
+		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
 /* End PBXBuildFile section */
 
@@ -143,6 +144,8 @@
 		DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetChooserController.h; sourceTree = "<group>"; };
 		DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetChooserController.m; sourceTree = "<group>"; };
 		DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxTileSetChooserController.xib; sourceTree = "<group>"; };
+		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
+		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
 		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
 		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -256,6 +259,8 @@
 				DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */,
 				DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */,
 				DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */,
+				DDCDD60111D96CF600568320 /* RMCircle.h */,
+				DDCDD60211D96CF600568320 /* RMCircle.m */,
 			);
 			name = Custom;
 			path = Classes;
@@ -510,6 +515,7 @@
 				DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */,
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
 				DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */,
+				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
