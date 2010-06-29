@@ -51,6 +51,19 @@
 		DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
+		DDF31FF511DAB18C0068287A /* SimpleKMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */; };
+		DDF31FF911DAB2600068287A /* SimpleKMLFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FF811DAB2600068287A /* SimpleKMLFeature.m */; };
+		DDF31FFC11DAB2820068287A /* SimpleKMLPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FFB11DAB2820068287A /* SimpleKMLPlacemark.m */; };
+		DDF31FFF11DAB2920068287A /* SimpleKMLGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FFE11DAB2920068287A /* SimpleKMLGeometry.m */; };
+		DDF3200211DAB29B0068287A /* SimpleKMLPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3200111DAB29B0068287A /* SimpleKMLPoint.m */; };
+		DDF3200811DAB2C10068287A /* SimpleKMLObject.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3200711DAB2C10068287A /* SimpleKMLObject.m */; };
+		DDF3200B11DAB2CD0068287A /* SimpleKMLStyleSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3200A11DAB2CD0068287A /* SimpleKMLStyleSelector.m */; };
+		DDF3200E11DAB2D30068287A /* SimpleKMLStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3200D11DAB2D30068287A /* SimpleKMLStyle.m */; };
+		DDF3201F11DAB32F0068287A /* SimpleKMLContainer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3201E11DAB32F0068287A /* SimpleKMLContainer.m */; };
+		DDF3205B11DAB9440068287A /* SimpleKMLSubStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3205A11DAB9440068287A /* SimpleKMLSubStyle.m */; };
+		DDF3205E11DAB94B0068287A /* SimpleKMLColorStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3205D11DAB94B0068287A /* SimpleKMLColorStyle.m */; };
+		DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */; };
+		DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +161,32 @@
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
 		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
 		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
+		DDF31FF311DAB18C0068287A /* SimpleKMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLDocument.h; sourceTree = "<group>"; };
+		DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLDocument.m; sourceTree = "<group>"; };
+		DDF31FF711DAB2600068287A /* SimpleKMLFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLFeature.h; sourceTree = "<group>"; };
+		DDF31FF811DAB2600068287A /* SimpleKMLFeature.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLFeature.m; sourceTree = "<group>"; };
+		DDF31FFA11DAB2820068287A /* SimpleKMLPlacemark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLPlacemark.h; sourceTree = "<group>"; };
+		DDF31FFB11DAB2820068287A /* SimpleKMLPlacemark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLPlacemark.m; sourceTree = "<group>"; };
+		DDF31FFD11DAB2920068287A /* SimpleKMLGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLGeometry.h; sourceTree = "<group>"; };
+		DDF31FFE11DAB2920068287A /* SimpleKMLGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLGeometry.m; sourceTree = "<group>"; };
+		DDF3200011DAB29B0068287A /* SimpleKMLPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLPoint.h; sourceTree = "<group>"; };
+		DDF3200111DAB29B0068287A /* SimpleKMLPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLPoint.m; sourceTree = "<group>"; };
+		DDF3200611DAB2C10068287A /* SimpleKMLObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLObject.h; sourceTree = "<group>"; };
+		DDF3200711DAB2C10068287A /* SimpleKMLObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLObject.m; sourceTree = "<group>"; };
+		DDF3200911DAB2CD0068287A /* SimpleKMLStyleSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLStyleSelector.h; sourceTree = "<group>"; };
+		DDF3200A11DAB2CD0068287A /* SimpleKMLStyleSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLStyleSelector.m; sourceTree = "<group>"; };
+		DDF3200C11DAB2D30068287A /* SimpleKMLStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLStyle.h; sourceTree = "<group>"; };
+		DDF3200D11DAB2D30068287A /* SimpleKMLStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLStyle.m; sourceTree = "<group>"; };
+		DDF3201D11DAB32F0068287A /* SimpleKMLContainer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLContainer.h; sourceTree = "<group>"; };
+		DDF3201E11DAB32F0068287A /* SimpleKMLContainer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLContainer.m; sourceTree = "<group>"; };
+		DDF3205911DAB9440068287A /* SimpleKMLSubStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLSubStyle.h; sourceTree = "<group>"; };
+		DDF3205A11DAB9440068287A /* SimpleKMLSubStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLSubStyle.m; sourceTree = "<group>"; };
+		DDF3205C11DAB94B0068287A /* SimpleKMLColorStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLColorStyle.h; sourceTree = "<group>"; };
+		DDF3205D11DAB94B0068287A /* SimpleKMLColorStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLColorStyle.m; sourceTree = "<group>"; };
+		DDF3205F11DAB9570068287A /* SimpleKMLLineStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLLineStyle.h; sourceTree = "<group>"; };
+		DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLLineStyle.m; sourceTree = "<group>"; };
+		DDF3206211DAB9610068287A /* SimpleKMLIconStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLIconStyle.h; sourceTree = "<group>"; };
+		DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLIconStyle.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -261,6 +300,7 @@
 				DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */,
 				DDCDD60111D96CF600568320 /* RMCircle.h */,
 				DDCDD60211D96CF600568320 /* RMCircle.m */,
+				DDF31FF211DAB11E0068287A /* Simple KML */,
 			);
 			name = Custom;
 			path = Classes;
@@ -403,6 +443,39 @@
 			name = Images;
 			sourceTree = "<group>";
 		};
+		DDF31FF211DAB11E0068287A /* Simple KML */ = {
+			isa = PBXGroup;
+			children = (
+				DDF3200611DAB2C10068287A /* SimpleKMLObject.h */,
+				DDF3200711DAB2C10068287A /* SimpleKMLObject.m */,
+				DDF31FF711DAB2600068287A /* SimpleKMLFeature.h */,
+				DDF31FF811DAB2600068287A /* SimpleKMLFeature.m */,
+				DDF31FFA11DAB2820068287A /* SimpleKMLPlacemark.h */,
+				DDF31FFB11DAB2820068287A /* SimpleKMLPlacemark.m */,
+				DDF3201D11DAB32F0068287A /* SimpleKMLContainer.h */,
+				DDF3201E11DAB32F0068287A /* SimpleKMLContainer.m */,
+				DDF31FF311DAB18C0068287A /* SimpleKMLDocument.h */,
+				DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */,
+				DDF31FFD11DAB2920068287A /* SimpleKMLGeometry.h */,
+				DDF31FFE11DAB2920068287A /* SimpleKMLGeometry.m */,
+				DDF3200011DAB29B0068287A /* SimpleKMLPoint.h */,
+				DDF3200111DAB29B0068287A /* SimpleKMLPoint.m */,
+				DDF3200911DAB2CD0068287A /* SimpleKMLStyleSelector.h */,
+				DDF3200A11DAB2CD0068287A /* SimpleKMLStyleSelector.m */,
+				DDF3200C11DAB2D30068287A /* SimpleKMLStyle.h */,
+				DDF3200D11DAB2D30068287A /* SimpleKMLStyle.m */,
+				DDF3205911DAB9440068287A /* SimpleKMLSubStyle.h */,
+				DDF3205A11DAB9440068287A /* SimpleKMLSubStyle.m */,
+				DDF3205C11DAB94B0068287A /* SimpleKMLColorStyle.h */,
+				DDF3205D11DAB94B0068287A /* SimpleKMLColorStyle.m */,
+				DDF3205F11DAB9570068287A /* SimpleKMLLineStyle.h */,
+				DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */,
+				DDF3206211DAB9610068287A /* SimpleKMLIconStyle.h */,
+				DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */,
+			);
+			name = "Simple KML";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -516,6 +589,19 @@
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
 				DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */,
 				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
+				DDF31FF511DAB18C0068287A /* SimpleKMLDocument.m in Sources */,
+				DDF31FF911DAB2600068287A /* SimpleKMLFeature.m in Sources */,
+				DDF31FFC11DAB2820068287A /* SimpleKMLPlacemark.m in Sources */,
+				DDF31FFF11DAB2920068287A /* SimpleKMLGeometry.m in Sources */,
+				DDF3200211DAB29B0068287A /* SimpleKMLPoint.m in Sources */,
+				DDF3200811DAB2C10068287A /* SimpleKMLObject.m in Sources */,
+				DDF3200B11DAB2CD0068287A /* SimpleKMLStyleSelector.m in Sources */,
+				DDF3200E11DAB2D30068287A /* SimpleKMLStyle.m in Sources */,
+				DDF3201F11DAB32F0068287A /* SimpleKMLContainer.m in Sources */,
+				DDF3205B11DAB9440068287A /* SimpleKMLSubStyle.m in Sources */,
+				DDF3205E11DAB94B0068287A /* SimpleKMLColorStyle.m in Sources */,
+				DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */,
+				DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
