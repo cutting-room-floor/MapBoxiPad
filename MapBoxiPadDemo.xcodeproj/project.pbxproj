@@ -64,6 +64,7 @@
 		DDF3205E11DAB94B0068287A /* SimpleKMLColorStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3205D11DAB94B0068287A /* SimpleKMLColorStyle.m */; };
 		DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */; };
 		DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */; };
+		DDF3206E11DABE3D0068287A /* SimpleKML.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206D11DABE3D0068287A /* SimpleKML.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,6 +188,8 @@
 		DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLLineStyle.m; sourceTree = "<group>"; };
 		DDF3206211DAB9610068287A /* SimpleKMLIconStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLIconStyle.h; sourceTree = "<group>"; };
 		DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLIconStyle.m; sourceTree = "<group>"; };
+		DDF3206C11DABE3D0068287A /* SimpleKML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML.h; sourceTree = "<group>"; };
+		DDF3206D11DABE3D0068287A /* SimpleKML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -446,6 +449,8 @@
 		DDF31FF211DAB11E0068287A /* Simple KML */ = {
 			isa = PBXGroup;
 			children = (
+				DDF3206C11DABE3D0068287A /* SimpleKML.h */,
+				DDF3206D11DABE3D0068287A /* SimpleKML.m */,
 				DDF3200611DAB2C10068287A /* SimpleKMLObject.h */,
 				DDF3200711DAB2C10068287A /* SimpleKMLObject.m */,
 				DDF31FF711DAB2600068287A /* SimpleKMLFeature.h */,
@@ -602,6 +607,7 @@
 				DDF3205E11DAB94B0068287A /* SimpleKMLColorStyle.m in Sources */,
 				DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */,
 				DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */,
+				DDF3206E11DABE3D0068287A /* SimpleKML.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

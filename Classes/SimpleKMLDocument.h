@@ -14,4 +14,6 @@
 {
 }
 
+// abstract class
+
 @end

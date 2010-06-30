@@ -13,7 +13,8 @@
 
 @interface SimpleKMLPoint : SimpleKMLGeometry
 {
-    CLLocation *_location;
+    @private
+        CLLocation *location;
 }
 
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;

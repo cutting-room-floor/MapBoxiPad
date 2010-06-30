@@ -8,8 +8,7 @@
 //  http://code.google.com/apis/kml/documentation/kmlreference.html#object
 //
 
-#import <Foundation/Foundation.h>
-#import "TouchXML.h"
+#import "SimpleKML.h"
 
 @interface SimpleKMLObject : NSObject
 {
