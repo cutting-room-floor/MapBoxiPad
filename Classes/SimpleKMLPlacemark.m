@@ -8,12 +8,14 @@
 
 #import "SimpleKMLPlacemark.h"
 #import "SimpleKMLGeometry.h"
+#import "SimpleKMLPoint.h"
 
 extern NSString *SimpleKMLErrorDomain;
 
 @implementation SimpleKMLPlacemark
 
 @synthesize geometry;
+@synthesize point;
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error
 {
@@ -50,6 +52,16 @@ extern NSString *SimpleKMLErrorDomain;
     [geometry release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (SimpleKMLPoint *)point
+{
+    if (self.geometry && [self.geometry isKindOfClass:[SimpleKMLPoint class]])
+        return (SimpleKMLPoint *)geometry;
+    
+    return nil;
 }
 
 @end

@@ -11,6 +11,7 @@
 #import "SimpleKMLFeature.h"
 
 @class SimpleKMLGeometry;
+@class SimpleKMLPoint;
 
 @interface SimpleKMLPlacemark : SimpleKMLFeature
 {
@@ -18,5 +19,5 @@
 }
 
 @property (nonatomic, retain) SimpleKMLGeometry *geometry;
-
+@property (nonatomic, retain) SimpleKMLPoint *point;
 @end
