@@ -23,7 +23,7 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
 
 @synthesize feature;
 
-+ (SimpleKML *)kmlWithContentsOfFile:(NSString *)path error:(NSError **)error
++ (SimpleKML *)KMLWithContentsOfFile:(NSString *)path error:(NSError **)error
 {
     return [[[self alloc] initWithContentsOfFile:path error:error] autorelease];
 }
@@ -78,7 +78,7 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
 
             parseError = nil;
             
-            feature = [[[featureClass alloc] initWithXMLNode:featureNode error:&parseError] autorelease];
+            feature = [[featureClass alloc] initWithXMLNode:featureNode error:&parseError];
             
             if (parseError)
             {

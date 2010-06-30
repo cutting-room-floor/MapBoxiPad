@@ -37,7 +37,7 @@
             }
         }
         
-        features = [NSArray arrayWithArray:featuresArray];
+        features = [[NSArray arrayWithArray:featuresArray] retain];
     }
     
     return self;

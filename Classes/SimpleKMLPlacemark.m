@@ -36,7 +36,7 @@ extern NSString *SimpleKMLErrorDomain;
                     id thisGeometry = [[[geometryClass alloc] initWithXMLNode:child error:NULL] autorelease];
                     
                     if (thisGeometry && [thisGeometry isKindOfClass:[SimpleKMLGeometry class]])
-                        geometry = thisGeometry;
+                        geometry = [thisGeometry retain];
                 }
             }
         }

@@ -67,7 +67,7 @@ extern NSString *SimpleKMLErrorDomain;
                     return nil;
                 }
                 
-                location = [[[CLLocation alloc] initWithLatitude:latitude longitude:longitude] autorelease];
+                location = [[CLLocation alloc] initWithLatitude:latitude longitude:longitude];
             }
         }
         

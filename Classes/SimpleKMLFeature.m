@@ -23,10 +23,10 @@
         for (CXMLNode *child in [node children])
         {
             if ([[child name] isEqualToString:@"name"])
-                name = [[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                name = [[[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
             
             else if ([[child name] isEqualToString:@"description"])
-                featureDescription = [[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                featureDescription = [[[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
             
 #pragma mark TODO: parse into style reference
             else if ([[child name] isEqualToString:@"styleUrl"])
