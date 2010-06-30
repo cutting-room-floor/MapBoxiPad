@@ -12,9 +12,15 @@
 
 @interface SimpleKMLObject : NSObject
 {
-    NSString *id;
+    @protected
+        NSString *source;
+    
+    @public
+        NSString *objectID;
 }
 
-@property (nonatomic, retain) NSString *id;
+@property (nonatomic, retain) NSString *objectID;
+
+- (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error;
 
 @end

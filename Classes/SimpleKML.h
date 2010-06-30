@@ -11,6 +11,11 @@
 #import <Foundation/Foundation.h>
 #import "TouchXML.h"
 
+enum SimpleKMLErrorCode {
+    SimpleKMLParseError    = 1000,
+    SimpleKMLUnknownObject = 1001,
+};
+
 @class SimpleKMLFeature;
 
 @interface SimpleKML : NSObject

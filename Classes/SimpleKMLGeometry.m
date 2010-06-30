@@ -8,7 +8,6 @@
 
 #import "SimpleKMLGeometry.h"
 
-
 @implementation SimpleKMLGeometry
 
 @end

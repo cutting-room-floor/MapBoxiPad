@@ -15,12 +15,12 @@
 @interface SimpleKMLFeature : SimpleKMLObject
 {
     NSString *name;
-    NSString *description;
+    NSString *featureDescription;
     SimpleKMLStyle *style;
 }
 
 @property (nonatomic, retain) NSString *name;
-@property (nonatomic, retain) NSString *description;
+@property (nonatomic, retain) NSString *featureDescription;
 @property (nonatomic, retain) SimpleKMLStyle *style;
 
 @end

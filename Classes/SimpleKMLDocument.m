@@ -8,7 +8,6 @@
 
 #import "SimpleKMLDocument.h"
 
-
 @implementation SimpleKMLDocument
 
 @end
