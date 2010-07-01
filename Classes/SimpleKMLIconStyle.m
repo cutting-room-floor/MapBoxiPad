@@ -7,9 +7,11 @@
 //
 
 #import "SimpleKMLIconStyle.h"
+#import "SimpleKML_UIImage.h"
 
-#define kSimpleKMLIconStyleDefaultScale   1.0f
-#define kSimpleKMLIconStyleDefaultHeading 0.0f
+#define kSimpleKMLIconStyleDefaultScale    1.0f
+#define kSimpleKMLIconStyleDefaultHeading  0.0f
+#define kSimpleKMLIconStyleBaseIconSize   32.0f
 
 extern NSString *SimpleKMLErrorDomain;
 
@@ -106,15 +108,12 @@ extern NSString *SimpleKMLErrorDomain;
             }
         }
         
-        if (baseScale != kSimpleKMLIconStyleDefaultScale || baseHeading != kSimpleKMLIconStyleDefaultHeading)
-        {
-#pragma mark TODO: resize and/or rotate image
-            icon = [baseIcon retain];
-        }
-        else
-        {
-            icon = [baseIcon retain];
-        }
+#pragma mark TODO: rotate image according to heading
+
+        CGFloat newWidth  = kSimpleKMLIconStyleBaseIconSize * baseScale;
+        CGFloat newHeight = kSimpleKMLIconStyleBaseIconSize * baseScale;
+        
+        icon = [[baseIcon imageWithWidth:newWidth height:newHeight] retain];
     }
     
     return self;
