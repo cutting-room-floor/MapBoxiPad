@@ -20,7 +20,7 @@
     {
         source = [[NSString stringWithString:[node XMLString]] retain];
         
-        objectID = [[[[((CXMLElement *)node) attributeForName:@"id"] name] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
+        objectID = [[[[((CXMLElement *)node) attributeForName:@"id"] stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
     }
     
 #pragma mark TODO: assert that abstract classes aren't being instantiated

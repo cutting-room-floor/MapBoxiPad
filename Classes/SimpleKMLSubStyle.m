@@ -8,7 +8,6 @@
 
 #import "SimpleKMLSubStyle.h"
 
-
 @implementation SimpleKMLSubStyle
 
 @end

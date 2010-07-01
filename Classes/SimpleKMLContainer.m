@@ -7,6 +7,8 @@
 //
 
 #import "SimpleKMLContainer.h"
+#import "SimpleKMLFeature.h"
+#import "SimpleKMLDocument.h"
 
 @implementation SimpleKMLContainer
 
@@ -33,7 +35,14 @@
                 // only add the feature if it's one we know how to handle
                 //
                 if ( ! parseError && [feature isKindOfClass:[SimpleKMLFeature class]])
+                {
+                    ((SimpleKMLFeature *)feature).container = self;
+                    
+                    if ([self isMemberOfClass:[SimpleKMLDocument class]])
+                        ((SimpleKMLFeature *)feature).document = (SimpleKMLDocument *)self;
+                    
                     [featuresArray addObject:feature];
+                }
             }
         }
         

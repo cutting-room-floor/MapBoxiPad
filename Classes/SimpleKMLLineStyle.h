@@ -12,9 +12,9 @@
 
 @interface SimpleKMLLineStyle : SimpleKMLColorStyle
 {
-    NSUInteger width;
+    CGFloat width;
 }
 
-@property (nonatomic, assign) NSUInteger width;
+@property (nonatomic, assign) CGFloat width;
 
 @end

@@ -12,13 +12,9 @@
 
 @interface SimpleKMLIconStyle : SimpleKMLColorStyle
 {
-    CGFloat scale;
-    NSUInteger heading;
     UIImage *icon;
 }
 
-@property (nonatomic, assign) CGFloat scale;
-@property (nonatomic, assign) NSUInteger heading;
-@property (nonatomic, retain) UIImage *icon;
+@property (nonatomic, retain) UIImage *icon; // automatically gets scale & heading applied
 
 @end

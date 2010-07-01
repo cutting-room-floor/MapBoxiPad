@@ -10,10 +10,17 @@
 
 #import "SimpleKMLContainer.h"
 
+@class SimpleKMLStyle;
+
 @interface SimpleKMLDocument : SimpleKMLContainer
 {
+    NSArray *sharedStyles;
 }
 
 // abstract class
+
+@property (nonatomic, retain) NSArray *sharedStyles;
+
+- (SimpleKMLStyle *)sharedStyleWithID:(NSString *)styleID;
 
 @end

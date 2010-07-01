@@ -8,7 +8,6 @@
 
 #import "SimpleKMLStyleSelector.h"
 
-
 @implementation SimpleKMLStyleSelector
 
 @end

@@ -11,16 +11,26 @@
 #import "SimpleKMLObject.h"
 
 @class SimpleKMLStyle;
+@class SimpleKMLContainer;
+@class SimpleKMLDocument;
 
 @interface SimpleKMLFeature : SimpleKMLObject
 {
     NSString *name;
     NSString *featureDescription;
-    SimpleKMLStyle *style;
+    NSString *sharedStyleID;
+    SimpleKMLStyle *sharedStyle;
+    SimpleKMLStyle *inlineStyle;
+    SimpleKMLContainer *container;
+    SimpleKMLDocument *document;
 }
 
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *featureDescription;
-@property (nonatomic, retain) SimpleKMLStyle *style;
+@property (nonatomic, retain) NSString *sharedStyleID;
+@property (nonatomic, assign) SimpleKMLStyle *sharedStyle;
+@property (nonatomic, assign) SimpleKMLStyle *inlineStyle;
+@property (nonatomic, assign) SimpleKMLContainer *container;
+@property (nonatomic, assign) SimpleKMLDocument *document;
 
 @end

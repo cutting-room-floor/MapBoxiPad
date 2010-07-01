@@ -7,12 +7,17 @@
 //
 
 #import "SimpleKMLFeature.h"
+#import "SimpleKMLDocument.h"
 
 @implementation SimpleKMLFeature
 
 @synthesize name;
 @synthesize featureDescription;
-@synthesize style;
+@synthesize sharedStyleID;
+@synthesize sharedStyle;
+@synthesize inlineStyle;
+@synthesize container;
+@synthesize document;
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error
 {
@@ -28,9 +33,11 @@
             else if ([[child name] isEqualToString:@"description"])
                 featureDescription = [[[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
             
-#pragma mark TODO: parse into style reference
+#pragma mark TODO: parse inline style as well
+            
+#pragma mark TODO: we really need case folding here
             else if ([[child name] isEqualToString:@"styleUrl"])
-                style = nil;
+                sharedStyleID = [[[child stringValue] stringByReplacingOccurrencesOfString:@"#" withString:@""] retain];
         }
     }
     
@@ -41,7 +48,7 @@
 {
     [name release];
     [featureDescription release];
-    [style release];
+    [sharedStyleID release];
     
     [super dealloc];
 }
