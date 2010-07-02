@@ -31,15 +31,11 @@ extern NSString *SimpleKMLErrorDomain;
         CGFloat baseScale   = kSimpleKMLIconStyleDefaultScale;
         CGFloat baseHeading = kSimpleKMLIconStyleDefaultHeading;
         
-#pragma mark TODO: read in parent ColorStyle color & auto-apply to icon
-        
         for (CXMLNode *child in [node children])
         {
 #pragma mark TODO: we should be case folding here
             if ([[child name] isEqualToString:@"Icon"])
             {
-#pragma mark TODO: only read in a given URL once
-                
                 if ([child childCount] != 3)
                 {
                     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (no href specified for IconStyle Icon)" 
@@ -52,19 +48,29 @@ extern NSString *SimpleKMLErrorDomain;
                 
                 CXMLNode *href = [child childAtIndex:1];
                 
-                NSURL *imageURL = [NSURL URLWithString:[href stringValue]];
+                NSData *data;
                 
-                if ( ! imageURL)
+                if ([self cacheObjectForKey:[href stringValue]])
+                    data = [self cacheObjectForKey:[href stringValue]];
+                
+                else
                 {
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (invalid icon URL specified in IconStyle)" 
-                                                                         forKey:NSLocalizedFailureReasonErrorKey];
+                    NSURL *imageURL = [NSURL URLWithString:[href stringValue]];
                     
-                    *error = [NSError errorWithDomain:SimpleKMLErrorDomain code:SimpleKMLParseError userInfo:userInfo];
+                    if ( ! imageURL)
+                    {
+                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (invalid icon URL specified in IconStyle)" 
+                                                                             forKey:NSLocalizedFailureReasonErrorKey];
+                        
+                        *error = [NSError errorWithDomain:SimpleKMLErrorDomain code:SimpleKMLParseError userInfo:userInfo];
+                        
+                        return nil;
+                    }
                     
-                    return nil;
+                    data = [NSData dataWithContentsOfURL:imageURL];
+                    
+                    [self setCacheObject:data forKey:[href stringValue]];
                 }
-                
-                NSData *data = [NSData dataWithContentsOfURL:imageURL];
                 
                 baseIcon = [UIImage imageWithData:data];
                 
@@ -109,6 +115,7 @@ extern NSString *SimpleKMLErrorDomain;
         }
         
 #pragma mark TODO: rotate image according to heading
+#pragma mark TODO: read in parent ColorStyle color & auto-apply to icon
 
         CGFloat newWidth  = kSimpleKMLIconStyleBaseIconSize * baseScale;
         CGFloat newHeight = kSimpleKMLIconStyleBaseIconSize * baseScale;
@@ -125,8 +132,5 @@ extern NSString *SimpleKMLErrorDomain;
     
     [super dealloc];
 }
-
-
-
 
 @end
