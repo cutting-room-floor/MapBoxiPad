@@ -22,5 +22,7 @@
 @property (nonatomic, retain) NSString *objectID;
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error;
+- (void)setCacheObject:(id)object forKey:(NSString *)key;
+- (id)cacheObjectForKey:(NSString *)key;
 
 @end
