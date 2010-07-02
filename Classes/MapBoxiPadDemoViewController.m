@@ -12,27 +12,22 @@
 #import "TouchXML.h"
 #import "RMMarker.h"
 #import "RMMarkerManager.h"
-#import "UIImage+DSExtensions.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
 #import <AudioToolbox/AudioToolbox.h>
+#import "SimpleKML.h"
+#import "SimpleKMLFeature.h"
+#import "SimpleKMLContainer.h"
+#import "SimpleKMLPlacemark.h"
+#import "SimpleKMLPoint.h"
+#import "SimpleKMLStyle.h"
+#import "SimpleKMLIconStyle.h"
+#import "SimpleKML_UIImage.h"
 
-#define kStartingLat   19.5f
-#define kStartingLon  -74.0f
-#define kStartingZoom   8.0f
-
-#define kStyles [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.20], \
-                                          [NSNumber numberWithFloat:0.48], \
-                                          [NSNumber numberWithFloat:0.76], \
-                                          [NSNumber numberWithFloat:1.04], \
-                                          [NSNumber numberWithFloat:1.32], \
-                                          [NSNumber numberWithFloat:1.60], \
-                                          [NSNumber numberWithFloat:1.88], \
-                                          [NSNumber numberWithFloat:2.16], \
-                                          [NSNumber numberWithFloat:2.44], \
-                                          [NSNumber numberWithFloat:2.72], \
-                                          [NSNumber numberWithFloat:3.00], \
-                                          nil]
+#define kStartingLat     19.5f
+#define kStartingLon    -74.0f
+#define kStartingZoom     8.0f
+#define kPlacemarkAlpha   0.7f
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -143,66 +138,41 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     [kmlButton setTitle:@"Turn KML Off"];
     
-    NSString *kmlText = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] 
-                                                  encoding:NSUTF8StringEncoding 
-                                                     error:NULL];
+    SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL];
     
-    CXMLDocument *kml = [[[CXMLDocument alloc] initWithXMLString:kmlText options:0 error:NULL] autorelease];
-
-    NSArray *nodes = [[[kml rootElement] childAtIndex:1] children];
+    CGFloat zoom = mapView.contents.zoom;
+    CGFloat power;
     
-    for (CXMLElement *node in nodes)
+    while (zoom > 1)
     {
-        if ([[[node name] lowercaseString] isEqualToString:@"placemark"])
+        zoom = zoom / 2;
+        power++;
+    }
+    
+    if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
+    {
+        for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
         {
-            NSString *placename   = nil;
-            NSString *coordinates = nil;
-            NSUInteger style      = 0;
-            
-            for (CXMLElement *subnode in [node children])
+            if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
+                ((SimpleKMLPlacemark *)feature).sharedStyle        && 
+                ((SimpleKMLPlacemark *)feature).sharedStyle.iconStyle)
             {
-                if ([[[subnode name] lowercaseString] isEqualToString:@"name"])
-                    placename = [subnode stringValue];
+                UIImage *icon = ((SimpleKMLPlacemark *)feature).sharedStyle.iconStyle.icon;
                 
-                else if ([[[subnode name] lowercaseString] isEqualToString:@"point"])
-                    coordinates = [[[subnode elementsForName:@"coordinates"] objectAtIndex:0] stringValue];
-
-                else if ([[[subnode name] lowercaseString] isEqualToString:@"styleurl"])
-                    style = [[[subnode stringValue] stringByReplacingOccurrencesOfString:@"#" withString:@""] integerValue];
+                RMMarker *marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kPlacemarkAlpha]] autorelease];
+                
+                // we store the original icon & alpha value for later use in the pulse animation
+                //
+                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
+                                                                         feature.name,                               @"label", 
+                                                                         icon,                                       @"icon",
+                                                                         [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
+                                                                         nil];
+                
+                [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
+                
+                [mapView.contents.markerManager addMarker:marker AtLatLong:((SimpleKMLPlacemark *)feature).point.coordinate];
             }
-            
-            //NSLog(@"%@ %@ %i", placename, coordinates, style);
-            
-            NSArray *parts = [coordinates componentsSeparatedByString:@","];
-            
-            float lon = [[NSString stringWithFormat:@"%@", [parts objectAtIndex:0]] floatValue];
-            float lat = [[NSString stringWithFormat:@"%@", [parts objectAtIndex:1]] floatValue];
-            
-            CLLocationCoordinate2D point;
-            
-            point.longitude = lon;
-            point.latitude  = lat;
-            
-            UIImage *image = [UIImage imageNamed:@"kml-point.png"];
-            
-            float multiplier = [[kStyles objectAtIndex:style] floatValue];
-            
-            int dimension = round(30.0 * multiplier);
-            
-            UIImage *sizedImage = [UIImage resizeImage:image width:dimension height:dimension];
-            UIImage *alphaImage = [UIImage setImage:sizedImage toAlpha:0.6];
-            
-            RMMarker *marker = [[[RMMarker alloc] initWithUIImage:alphaImage] autorelease];
-            
-            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                               @"marker", 
-                                                                     placename,                            @"label", 
-                                                                     [NSNumber numberWithFloat:0.6],       @"alpha", 
-                                                                     [NSNumber numberWithFloat:dimension], @"size", 
-                                                                     nil];
-            
-            [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
-            
-            [mapView.contents.markerManager addMarker:marker AtLatLong:point];
         }
     }
 }
@@ -242,26 +212,21 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)pulse:(NSTimer *)aTimer
 {
-    float originalSize = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
-    float newAlpha;
+    // we go after the stored marker metadata since you can't get the original sized image nor the alpha from an RMMarker
+    //
+    RMMarker *marker = [lastMarkerInfo  objectForKey:@"marker"];
+    UIImage  *image  = [lastMarkerInfo  objectForKey:@"icon"];
+    CGFloat   alpha  = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
     
-    if ( ! [lastMarkerInfo objectForKey:@"lastAlpha"] || [[lastMarkerInfo objectForKey:@"lastAlpha"] floatValue] == originalSize)
-    {
-        newAlpha = 0.1;
-        
-        [lastMarkerInfo setObject:[NSNumber numberWithFloat:newAlpha] forKey:@"lastAlpha"];
-    }
+    if (alpha >= kPlacemarkAlpha)
+        alpha = 0.1;
 
     else
-        newAlpha = [[lastMarkerInfo objectForKey:@"lastAlpha"] floatValue] + 0.1;
-    
-    UIImage *image = [UIImage resizeImage:[UIImage imageNamed:@"kml-point.png"] 
-                                    width:[[lastMarkerInfo objectForKey:@"size"] integerValue] 
-                                   height:[[lastMarkerInfo objectForKey:@"size"] integerValue]];
-    
-    [[lastMarkerInfo objectForKey:@"marker"] replaceUIImage:[UIImage setImage:image toAlpha:newAlpha]];
-    
-    [lastMarkerInfo setObject:[NSNumber numberWithFloat:newAlpha] forKey:@"lastAlpha"];
+        alpha = alpha + 0.1;
+
+    [marker replaceUIImage:[image imageWithAlphaComponent:alpha]];
+
+    [lastMarkerInfo setObject:[NSNumber numberWithFloat:alpha] forKey:@"alpha"];
 }
 
 - (void)tileSetDidChange:(NSNotification *)notification
@@ -342,19 +307,27 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 #pragma mark -
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
-{    
+{
+    // don't respond to clicks on currently highlighted marker
+    //
     if ([clickLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
         return;
     
-    [timer invalidate];
-    [timer release];
+    // return last marker to full alpha
+    //
+    if (lastMarkerInfo)
+    {
+        [timer invalidate];
+        [timer release];
+
+        RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
+        UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
+        
+        [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
+    }
     
-    UIImage *image = [UIImage resizeImage:[UIImage imageNamed:@"kml-point.png"] 
-                                    width:[[lastMarkerInfo objectForKey:@"size"] integerValue] 
-                                   height:[[lastMarkerInfo objectForKey:@"size"] integerValue]];
-    
-    [[lastMarkerInfo objectForKey:@"marker"] replaceUIImage:[UIImage setImage:image toAlpha:0.6]];
-    
+    // animate label swap
+    //
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDelegate:self];
@@ -371,6 +344,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     
     [UIView commitAnimations];
     
+    // update last marker & fire off pulse animation on this one
+    //
     [lastMarkerInfo release];
     lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
     

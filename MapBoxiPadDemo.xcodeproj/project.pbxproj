@@ -49,8 +49,10 @@
 		DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD70D96611D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles */; };
 		DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */; };
 		DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */; };
+		DD90359111DBFBCC0075E8DF /* line_sample.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD90359011DBFBCC0075E8DF /* line_sample.kml */; };
+		DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */; };
+		DDA1818911DB3D340080C528 /* gaddr.kml in Resources */ = {isa = PBXBuildFile; fileRef = DDA1818811DB3D340080C528 /* gaddr.kml */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
-		DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */; };
 		DDF31FF511DAB18C0068287A /* SimpleKMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */; };
 		DDF31FF911DAB2600068287A /* SimpleKMLFeature.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FF811DAB2600068287A /* SimpleKMLFeature.m */; };
 		DDF31FFC11DAB2820068287A /* SimpleKMLPlacemark.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF31FFB11DAB2820068287A /* SimpleKMLPlacemark.m */; };
@@ -65,6 +67,7 @@
 		DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */; };
 		DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */; };
 		DDF3206E11DABE3D0068287A /* SimpleKML.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF3206D11DABE3D0068287A /* SimpleKML.m */; };
+		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -158,10 +161,12 @@
 		DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetChooserController.h; sourceTree = "<group>"; };
 		DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetChooserController.m; sourceTree = "<group>"; };
 		DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxTileSetChooserController.xib; sourceTree = "<group>"; };
+		DD90359011DBFBCC0075E8DF /* line_sample.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = line_sample.kml; sourceTree = "<group>"; };
+		DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML_UIImage.h; sourceTree = "<group>"; };
+		DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML_UIImage.m; sourceTree = "<group>"; };
+		DDA1818811DB3D340080C528 /* gaddr.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = gaddr.kml; path = "../libkml-1.2/testdata/xal/gaddr.kml"; sourceTree = SOURCE_ROOT; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
-		DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+DSExtensions.h"; sourceTree = "<group>"; };
-		DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+DSExtensions.m"; sourceTree = "<group>"; };
 		DDF31FF311DAB18C0068287A /* SimpleKMLDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLDocument.h; sourceTree = "<group>"; };
 		DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLDocument.m; sourceTree = "<group>"; };
 		DDF31FF711DAB2600068287A /* SimpleKMLFeature.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLFeature.h; sourceTree = "<group>"; };
@@ -190,6 +195,7 @@
 		DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLIconStyle.m; sourceTree = "<group>"; };
 		DDF3206C11DABE3D0068287A /* SimpleKML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML.h; sourceTree = "<group>"; };
 		DDF3206D11DABE3D0068287A /* SimpleKML.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML.m; sourceTree = "<group>"; };
+		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -204,6 +210,7 @@
 				DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */,
 				DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */,
 				DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */,
+				DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -235,7 +242,6 @@
 			children = (
 				080E96DDFE201D6D7F000001 /* Classes */,
 				DD48BEF311CAE76A00038969 /* Custom */,
-				DD70D91B11D188AE0002E222 /* Categories */,
 				DD48C45F11CC090400038969 /* Externals */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -279,6 +285,7 @@
 				DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */,
 				DD48C5D811CC1F7300038969 /* libMapView.a */,
 				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
+				DDF3221211DADD720068287A /* CoreLocation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -366,6 +373,8 @@
 			isa = PBXGroup;
 			children = (
 				DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */,
+				DDA1818811DB3D340080C528 /* gaddr.kml */,
+				DD90359011DBFBCC0075E8DF /* line_sample.kml */,
 			);
 			name = KML;
 			sourceTree = "<group>";
@@ -418,16 +427,6 @@
 			path = touchcode/TouchXML/Common/Source/Creation;
 			sourceTree = "<group>";
 		};
-		DD70D91B11D188AE0002E222 /* Categories */ = {
-			isa = PBXGroup;
-			children = (
-				DDCEB38711D160280096B339 /* UIImage+DSExtensions.h */,
-				DDCEB38811D160280096B339 /* UIImage+DSExtensions.m */,
-			);
-			name = Categories;
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
@@ -477,6 +476,8 @@
 				DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */,
 				DDF3206211DAB9610068287A /* SimpleKMLIconStyle.h */,
 				DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */,
+				DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */,
+				DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */,
 			);
 			name = "Simple KML";
 			sourceTree = "<group>";
@@ -562,6 +563,8 @@
 				DD70D96711D18EDC0002E222 /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */,
 				DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */,
 				DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */,
+				DDA1818911DB3D340080C528 /* gaddr.kml in Resources */,
+				DD90359111DBFBCC0075E8DF /* line_sample.kml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,7 +593,6 @@
 				DD6E3CB611D02362007691F3 /* CXMLElement_CreationExtensions.m in Sources */,
 				DD6E3CB711D02362007691F3 /* CXMLDocument.m in Sources */,
 				DD6E3CB811D02362007691F3 /* CXMLDocument_PrivateExtensions.m in Sources */,
-				DDCEB38911D160280096B339 /* UIImage+DSExtensions.m in Sources */,
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
 				DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */,
 				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
@@ -608,6 +610,7 @@
 				DDF3206111DAB9570068287A /* SimpleKMLLineStyle.m in Sources */,
 				DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */,
 				DDF3206E11DABE3D0068287A /* SimpleKML.m in Sources */,
+				DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
