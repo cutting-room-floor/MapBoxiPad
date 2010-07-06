@@ -23,12 +23,17 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
 
 @synthesize feature;
 
++ (SimpleKML *)KMLWithContentsofURL:(NSURL *)URL error:(NSError **)error
+{
+    return [[[self alloc] initWithContentsOfURL:URL error:error] autorelease];
+}
+
 + (SimpleKML *)KMLWithContentsOfFile:(NSString *)path error:(NSError **)error
 {
     return [[[self alloc] initWithContentsOfFile:path error:error] autorelease];
 }
 
-- (id)initWithContentsOfFile:(NSString *)path error:(NSError **)error
+- (id)initWithContentsOfURL:(NSURL *)URL error:(NSError **)error
 {
     self = [super init];
     
@@ -38,7 +43,7 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
         
         NSError *parseError = nil;
         
-        CXMLDocument *document = [[[CXMLDocument alloc] initWithContentsOfURL:[NSURL fileURLWithPath:path]
+        CXMLDocument *document = [[[CXMLDocument alloc] initWithContentsOfURL:URL
                                                                       options:0
                                                                         error:&parseError] autorelease];
         
@@ -75,7 +80,7 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
             CXMLNode *featureNode = [rootElement childAtIndex:1];
             
             Class featureClass = NSClassFromString([NSString stringWithFormat:@"SimpleKML%@", [featureNode name]]);
-
+            
             parseError = nil;
             
             feature = [[featureClass alloc] initWithXMLNode:featureNode error:&parseError];
@@ -102,6 +107,11 @@ NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
     }
     
     return self;
+}
+
+- (id)initWithContentsOfFile:(NSString *)path error:(NSError **)error
+{
+    return [self initWithContentsOfURL:[NSURL fileURLWithPath:path] error:error];
 }
 
 - (void)dealloc

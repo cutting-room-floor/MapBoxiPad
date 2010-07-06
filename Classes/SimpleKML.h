@@ -25,6 +25,9 @@ enum SimpleKMLErrorCode {
 
 @property (nonatomic, retain) SimpleKMLFeature *feature;
 
++ (SimpleKML *)KMLWithContentsofURL:(NSURL *)URL error:(NSError **)error;
 + (SimpleKML *)KMLWithContentsOfFile:(NSString *)path error:(NSError **)error;
+- (id)initWithContentsOfURL:(NSURL *)URL error:(NSError **)error;
+- (id)initWithContentsOfFile:(NSString *)path error:(NSError **)error;
 
 @end
