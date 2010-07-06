@@ -9,6 +9,8 @@
 #import "SimpleKMLPlacemark.h"
 #import "SimpleKMLGeometry.h"
 #import "SimpleKMLPoint.h"
+#import "SimpleKMLPolygon.h"
+#import "SimpleKMLLinearRing.h"
 
 extern NSString *SimpleKMLErrorDomain;
 
@@ -16,6 +18,8 @@ extern NSString *SimpleKMLErrorDomain;
 
 @synthesize geometry;
 @synthesize point;
+@synthesize polygon;
+@synthesize linearRing;
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error
 {
@@ -60,6 +64,22 @@ extern NSString *SimpleKMLErrorDomain;
 {
     if (self.geometry && [self.geometry isKindOfClass:[SimpleKMLPoint class]])
         return (SimpleKMLPoint *)geometry;
+    
+    return nil;
+}
+
+- (SimpleKMLPolygon *)polygon
+{
+    if (self.geometry && [self.geometry isKindOfClass:[SimpleKMLPolygon class]])
+        return (SimpleKMLPolygon *)geometry;
+    
+    return nil;
+}
+
+- (SimpleKMLLinearRing *)linearRing
+{
+    if (self.geometry && [self.geometry isKindOfClass:[SimpleKMLLinearRing class]])
+        return (SimpleKMLLinearRing *)geometry;
     
     return nil;
 }
