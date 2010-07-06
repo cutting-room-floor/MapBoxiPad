@@ -17,6 +17,9 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
 		DD01047E11D0394800B0079E /* kml-point.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01047D11D0394800B0079E /* kml-point.png */; };
 		DD01060C11D04E2000B0079E /* stripe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01060B11D04E2000B0079E /* stripe.png */; };
+		DD37914A11DE97FC00A3796A /* dhs-all.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD37914911DE97FC00A3796A /* dhs-all.kml */; };
+		DD37915011DEA54400A3796A /* SimpleKMLFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */; };
+		DD37915B11DEA88600A3796A /* SimpleKMLPolyStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */; };
 		DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
@@ -110,6 +113,11 @@
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		DD01047D11D0394800B0079E /* kml-point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point.png"; sourceTree = "<group>"; };
 		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripe.png; sourceTree = "<group>"; };
+		DD37914911DE97FC00A3796A /* dhs-all.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "dhs-all.kml"; sourceTree = "<group>"; };
+		DD37914E11DEA54400A3796A /* SimpleKMLFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLFolder.h; sourceTree = "<group>"; };
+		DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLFolder.m; sourceTree = "<group>"; };
+		DD37915911DEA88600A3796A /* SimpleKMLPolyStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLPolyStyle.h; sourceTree = "<group>"; };
+		DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLPolyStyle.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "page-flip-8.wav"; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2BE11CBF2FF00038969 /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -375,6 +383,7 @@
 				DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */,
 				DDA1818811DB3D340080C528 /* gaddr.kml */,
 				DD90359011DBFBCC0075E8DF /* line_sample.kml */,
+				DD37914911DE97FC00A3796A /* dhs-all.kml */,
 			);
 			name = KML;
 			sourceTree = "<group>";
@@ -460,6 +469,8 @@
 				DDF3201E11DAB32F0068287A /* SimpleKMLContainer.m */,
 				DDF31FF311DAB18C0068287A /* SimpleKMLDocument.h */,
 				DDF31FF411DAB18C0068287A /* SimpleKMLDocument.m */,
+				DD37914E11DEA54400A3796A /* SimpleKMLFolder.h */,
+				DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */,
 				DDF31FFD11DAB2920068287A /* SimpleKMLGeometry.h */,
 				DDF31FFE11DAB2920068287A /* SimpleKMLGeometry.m */,
 				DDF3200011DAB29B0068287A /* SimpleKMLPoint.h */,
@@ -474,6 +485,8 @@
 				DDF3205D11DAB94B0068287A /* SimpleKMLColorStyle.m */,
 				DDF3205F11DAB9570068287A /* SimpleKMLLineStyle.h */,
 				DDF3206011DAB9570068287A /* SimpleKMLLineStyle.m */,
+				DD37915911DEA88600A3796A /* SimpleKMLPolyStyle.h */,
+				DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */,
 				DDF3206211DAB9610068287A /* SimpleKMLIconStyle.h */,
 				DDF3206311DAB9610068287A /* SimpleKMLIconStyle.m */,
 				DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */,
@@ -565,6 +578,7 @@
 				DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */,
 				DDA1818911DB3D340080C528 /* gaddr.kml in Resources */,
 				DD90359111DBFBCC0075E8DF /* line_sample.kml in Resources */,
+				DD37914A11DE97FC00A3796A /* dhs-all.kml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,6 +625,8 @@
 				DDF3206411DAB9610068287A /* SimpleKMLIconStyle.m in Sources */,
 				DDF3206E11DABE3D0068287A /* SimpleKML.m in Sources */,
 				DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */,
+				DD37915011DEA54400A3796A /* SimpleKMLFolder.m in Sources */,
+				DD37915B11DEA88600A3796A /* SimpleKMLPolyStyle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
