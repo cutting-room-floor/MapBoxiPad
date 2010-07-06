@@ -37,7 +37,7 @@ extern NSString *SimpleKMLErrorDomain;
                 
                 // there should only be one child of this boundary
                 //
-                if ([boundaryChildren count] != 1)
+                if ([boundaryChildren count] != 3)
                 {
                     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (Invalid number of LinearRings in Polygon boundary)" 
                                                                          forKey:NSLocalizedFailureReasonErrorKey];
@@ -47,7 +47,7 @@ extern NSString *SimpleKMLErrorDomain;
                     return nil;
                 }
                 
-                outerBoundary = [[[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:0] error:NULL] autorelease];
+                outerBoundary = [[[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:1] error:NULL] autorelease];
             }
             else if ([[child name] isEqualToString:@"innerBoundaryIs"])
             {
@@ -55,7 +55,7 @@ extern NSString *SimpleKMLErrorDomain;
                 
                 // there should only be one child of this boundary
                 //
-                if ([boundaryChildren count] != 1)
+                if ([boundaryChildren count] != 3)
                 {
                     NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (Invalid number of LinearRings in Polygon boundary)" 
                                                                          forKey:NSLocalizedFailureReasonErrorKey];
@@ -65,7 +65,7 @@ extern NSString *SimpleKMLErrorDomain;
                     return nil;
                 }
                 
-                SimpleKMLLinearRing *thisBoundary = [[[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:0] error:NULL] autorelease];
+                SimpleKMLLinearRing *thisBoundary = [[[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:1] error:NULL] autorelease];
                 
                 if ( ! firstInnerBoundary)
                     firstInnerBoundary = thisBoundary;
