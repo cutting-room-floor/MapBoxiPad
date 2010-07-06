@@ -74,7 +74,7 @@ extern NSString *SimpleKMLErrorDomain;
             }
         }
         
-        innerBoundaries = [NSArray arrayWithArray:parsedInnerBoundaries];
+        innerBoundaries = [[NSArray arrayWithArray:parsedInnerBoundaries] retain];
 
         // there should be one outer boundary
         //

@@ -82,7 +82,7 @@ extern NSString *SimpleKMLErrorDomain;
                     }
                 }
                 
-                coordinates = [NSArray arrayWithArray:parsedCoordinates];
+                coordinates = [[NSArray arrayWithArray:parsedCoordinates] retain];
                 
                 // there should be four or more coordinates
                 //
