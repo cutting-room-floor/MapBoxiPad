@@ -20,6 +20,8 @@
 		DD37914A11DE97FC00A3796A /* dhs-all.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD37914911DE97FC00A3796A /* dhs-all.kml */; };
 		DD37915011DEA54400A3796A /* SimpleKMLFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */; };
 		DD37915B11DEA88600A3796A /* SimpleKMLPolyStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */; };
+		DD37916911E3981A00A3796A /* SimpleKMLPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37916811E3981A00A3796A /* SimpleKMLPolygon.m */; };
+		DD37916D11E3987700A3796A /* SimpleKMLLinearRing.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37916C11E3987700A3796A /* SimpleKMLLinearRing.m */; };
 		DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
@@ -118,6 +120,10 @@
 		DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLFolder.m; sourceTree = "<group>"; };
 		DD37915911DEA88600A3796A /* SimpleKMLPolyStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLPolyStyle.h; sourceTree = "<group>"; };
 		DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLPolyStyle.m; sourceTree = "<group>"; };
+		DD37916711E3981A00A3796A /* SimpleKMLPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLPolygon.h; sourceTree = "<group>"; };
+		DD37916811E3981A00A3796A /* SimpleKMLPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLPolygon.m; sourceTree = "<group>"; };
+		DD37916B11E3987700A3796A /* SimpleKMLLinearRing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLLinearRing.h; sourceTree = "<group>"; };
+		DD37916C11E3987700A3796A /* SimpleKMLLinearRing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLLinearRing.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "page-flip-8.wav"; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2BE11CBF2FF00038969 /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
@@ -475,6 +481,10 @@
 				DDF31FFE11DAB2920068287A /* SimpleKMLGeometry.m */,
 				DDF3200011DAB29B0068287A /* SimpleKMLPoint.h */,
 				DDF3200111DAB29B0068287A /* SimpleKMLPoint.m */,
+				DD37916B11E3987700A3796A /* SimpleKMLLinearRing.h */,
+				DD37916C11E3987700A3796A /* SimpleKMLLinearRing.m */,
+				DD37916711E3981A00A3796A /* SimpleKMLPolygon.h */,
+				DD37916811E3981A00A3796A /* SimpleKMLPolygon.m */,
 				DDF3200911DAB2CD0068287A /* SimpleKMLStyleSelector.h */,
 				DDF3200A11DAB2CD0068287A /* SimpleKMLStyleSelector.m */,
 				DDF3200C11DAB2D30068287A /* SimpleKMLStyle.h */,
@@ -627,6 +637,8 @@
 				DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */,
 				DD37915011DEA54400A3796A /* SimpleKMLFolder.m in Sources */,
 				DD37915B11DEA88600A3796A /* SimpleKMLPolyStyle.m in Sources */,
+				DD37916911E3981A00A3796A /* SimpleKMLPolygon.m in Sources */,
+				DD37916D11E3987700A3796A /* SimpleKMLLinearRing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
