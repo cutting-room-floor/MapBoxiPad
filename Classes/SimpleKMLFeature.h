@@ -29,7 +29,7 @@
 @property (nonatomic, retain) NSString *featureDescription;
 @property (nonatomic, retain) NSString *sharedStyleID;
 @property (nonatomic, assign) SimpleKMLStyle *sharedStyle;
-@property (nonatomic, assign) SimpleKMLStyle *inlineStyle;
+@property (nonatomic, retain) SimpleKMLStyle *inlineStyle;
 @property (nonatomic, assign) SimpleKMLContainer *container;
 @property (nonatomic, assign) SimpleKMLDocument *document;
 

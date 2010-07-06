@@ -8,6 +8,7 @@
 
 #import "SimpleKMLFeature.h"
 #import "SimpleKMLDocument.h"
+#import "SimpleKMLStyle.h"
 
 @implementation SimpleKMLFeature
 
@@ -33,7 +34,8 @@
             else if ([[child name] isEqualToString:@"description"])
                 featureDescription = [[[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] retain];
             
-#pragma mark TODO: parse inline style as well
+            else if ([[child name] isEqualToString:@"Style"])
+                inlineStyle = [[SimpleKMLStyle alloc] initWithXMLNode:child error:NULL];
             
 #pragma mark TODO: we really need case folding here
             else if ([[child name] isEqualToString:@"styleUrl"])
@@ -49,6 +51,7 @@
     [name release];
     [featureDescription release];
     [sharedStyleID release];
+    [inlineStyle release];
     
     [super dealloc];
 }
