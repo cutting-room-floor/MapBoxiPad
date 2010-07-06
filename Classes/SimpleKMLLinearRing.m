@@ -108,6 +108,8 @@ extern NSString *SimpleKMLErrorDomain;
             return nil;
         }
         
+        // the first and last coordinate should be the same
+        //
         if (((CLLocation *)[coordinates objectAtIndex:0]).coordinate.latitude  != ((CLLocation *)[coordinates lastObject]).coordinate.latitude ||
             ((CLLocation *)[coordinates objectAtIndex:0]).coordinate.longitude != ((CLLocation *)[coordinates lastObject]).coordinate.longitude)
         {
