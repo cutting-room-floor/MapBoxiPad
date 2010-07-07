@@ -21,6 +21,7 @@
     NSString *sharedStyleID;
     SimpleKMLStyle *sharedStyle;
     SimpleKMLStyle *inlineStyle;
+    SimpleKMLStyle *style;
     SimpleKMLContainer *container;
     SimpleKMLDocument *document;
 }
@@ -30,6 +31,7 @@
 @property (nonatomic, retain) NSString *sharedStyleID;
 @property (nonatomic, assign) SimpleKMLStyle *sharedStyle;
 @property (nonatomic, retain) SimpleKMLStyle *inlineStyle;
+@property (nonatomic, retain) SimpleKMLStyle *style;
 @property (nonatomic, assign) SimpleKMLContainer *container;
 @property (nonatomic, assign) SimpleKMLDocument *document;
 

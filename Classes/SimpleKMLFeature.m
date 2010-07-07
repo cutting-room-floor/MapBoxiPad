@@ -17,6 +17,7 @@
 @synthesize sharedStyleID;
 @synthesize sharedStyle;
 @synthesize inlineStyle;
+@synthesize style;
 @synthesize container;
 @synthesize document;
 
@@ -54,6 +55,21 @@
     [inlineStyle release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (SimpleKMLStyle *)style
+{
+    // inline style takes precedence
+    //
+    if (inlineStyle)
+        return (SimpleKMLStyle *)inlineStyle;
+    
+    else if (sharedStyle)
+        return (SimpleKMLStyle *)sharedStyle;
+    
+    return nil;
 }
 
 @end
