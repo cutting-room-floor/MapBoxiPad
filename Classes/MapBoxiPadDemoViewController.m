@@ -183,10 +183,12 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             {
                 UIImage *icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
                 
-                RMMarker *marker = [[[RMMarker alloc] initWithUIImage:icon] autorelease];
+                RMMarker *marker;
                 
                 if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
                 {
+                    marker = [[[RMMarker alloc] initWithUIImage:icon] autorelease];
+
                     // we setup a balloon for later
                     //
                     marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                        @"marker",
@@ -196,6 +198,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                 }
                 else
                 {
+                    marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kPlacemarkAlpha]] autorelease];
+
                     // we store the original icon & alpha value for later use in the pulse animation
                     //
                     marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
