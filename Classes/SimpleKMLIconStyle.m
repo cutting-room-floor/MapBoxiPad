@@ -69,7 +69,8 @@ extern NSString *SimpleKMLErrorDomain;
                     
                     data = [NSData dataWithContentsOfURL:imageURL];
                     
-                    [self setCacheObject:data forKey:[href stringValue]];
+                    if (data)
+                        [self setCacheObject:data forKey:[href stringValue]];
                 }
                 
                 baseIcon = [UIImage imageWithData:data];
