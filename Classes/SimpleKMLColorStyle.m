@@ -65,10 +65,10 @@ extern NSString *SimpleKMLErrorDomain;
                     [parts addObject:[NSNumber numberWithFloat:((CGFloat)wholeValue / (CGFloat)255)]];
                 }
                 
-                color = [[UIColor colorWithRed:[[parts objectAtIndex:0] floatValue]
-                                         green:[[parts objectAtIndex:1] floatValue]
-                                          blue:[[parts objectAtIndex:2] floatValue]
-                                         alpha:[[parts objectAtIndex:3] floatValue]] retain];
+                color = [[UIColor colorWithRed:[[parts objectAtIndex:3] floatValue]
+                                         green:[[parts objectAtIndex:2] floatValue]
+                                          blue:[[parts objectAtIndex:1] floatValue]
+                                         alpha:[[parts objectAtIndex:0] floatValue]] retain];
             }
         }
     }
