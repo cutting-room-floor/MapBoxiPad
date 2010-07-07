@@ -115,12 +115,30 @@
 
 - (float)minZoom
 {
-    return 5.0;
+    FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
+    
+    if ([db hadError])
+        return kDSDefaultMinTileZoom;
+    
+    [results next];
+    
+    double minZoom = [results doubleForColumnIndex:0];
+    
+    return (float)minZoom;
 }
 
 - (float)maxZoom
 {
-    return 16.0;
+    FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
+    
+    if ([db hadError])
+        return kDSDefaultMaxTileZoom;
+
+    [results next];
+    
+    double maxZoom = [results doubleForColumnIndex:0];
+    
+    return (float)maxZoom;
 }
 
 - (void)setMinZoom:(NSUInteger)aMinZoom
