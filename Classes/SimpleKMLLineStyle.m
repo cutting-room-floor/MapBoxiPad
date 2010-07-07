@@ -8,7 +8,7 @@
 
 #import "SimpleKMLLineStyle.h"
 
-#define kSimpleKMLLineStyleDefaultWidth 0.0f
+#define kSimpleKMLLineStyleDefaultWidth 1.0f
 
 @implementation SimpleKMLLineStyle
 
