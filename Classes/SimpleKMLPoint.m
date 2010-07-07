@@ -24,7 +24,7 @@ extern NSString *SimpleKMLErrorDomain;
         {
             if ([[child name] isEqualToString:@"coordinates"])
             {
-                NSString *coordinatesString = [child stringValue];
+                NSString *coordinatesString = [[child stringValue] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
                 
                 // coordinates should not have whitespace
                 //
