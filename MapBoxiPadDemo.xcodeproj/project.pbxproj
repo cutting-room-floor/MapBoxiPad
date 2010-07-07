@@ -35,9 +35,6 @@
 		DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84411CC423800038969 /* Wood-Texture.jpg */; };
 		DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */; };
 		DD48C86711CC43F100038969 /* 404803.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* 404803.jpg */; };
-		DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA111D00379007691F3 /* FMResultSet.m */; };
-		DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */; };
-		DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6E3AA511D00379007691F3 /* FMDatabase.m */; };
 		DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */; };
 		DD70D7C211D16AB50002E222 /* stick.png in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7C111D16AB50002E222 /* stick.png */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
@@ -54,6 +51,9 @@
 		DD72C37111E53C640030C637 /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C36211E53C640030C637 /* CXMLNode_XPathExtensions.m */; };
 		DD72C37211E53C640030C637 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C36411E53C640030C637 /* CXMLNode.m */; };
 		DD72C37311E53C640030C637 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C36711E53C640030C637 /* CTidy.m */; };
+		DD72C37A11E53CF20030C637 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C37511E53CF20030C637 /* FMDatabase.m */; };
+		DD72C37B11E53CF20030C637 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C37711E53CF20030C637 /* FMDatabaseAdditions.m */; };
+		DD72C37C11E53CF20030C637 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C37911E53CF20030C637 /* FMResultSet.m */; };
 		DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */; };
 		DDA106EB11E43B16008D00A7 /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA106EA11E43B16008D00A7 /* SimpleKMLBalloonStyle.m */; };
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
@@ -142,12 +142,6 @@
 		DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wood-Texture.jpg"; sourceTree = "<group>"; };
 		DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood-walnut-background-tile.jpg"; sourceTree = "<group>"; };
 		DD48C86611CC43F100038969 /* 404803.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 404803.jpg; sourceTree = "<group>"; };
-		DD6E3AA111D00379007691F3 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = fmdb/FMResultSet.m; sourceTree = "<group>"; };
-		DD6E3AA211D00379007691F3 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = fmdb/FMResultSet.h; sourceTree = "<group>"; };
-		DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		DD6E3AA411D00379007691F3 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		DD6E3AA511D00379007691F3 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = fmdb/FMDatabase.m; sourceTree = "<group>"; };
-		DD6E3AA611D00379007691F3 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = fmdb/FMDatabase.h; sourceTree = "<group>"; };
 		DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haiti_commune_term.kml; sourceTree = "<group>"; };
 		DD70D7C111D16AB50002E222 /* stick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stick.png; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
@@ -178,6 +172,12 @@
 		DD72C36611E53C640030C637 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		DD72C36711E53C640030C637 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		DD72C36811E53C640030C637 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = TouchXML/Common/Source/TouchXML.h; sourceTree = "<group>"; };
+		DD72C37411E53CF20030C637 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = FMDB/src/FMDatabase.h; sourceTree = "<group>"; };
+		DD72C37511E53CF20030C637 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = FMDB/src/FMDatabase.m; sourceTree = "<group>"; };
+		DD72C37611E53CF20030C637 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = FMDB/src/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		DD72C37711E53CF20030C637 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = FMDB/src/FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		DD72C37811E53CF20030C637 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = FMDB/src/FMResultSet.h; sourceTree = "<group>"; };
+		DD72C37911E53CF20030C637 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = FMDB/src/FMResultSet.m; sourceTree = "<group>"; };
 		DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML_UIImage.h; sourceTree = "<group>"; };
 		DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML_UIImage.m; sourceTree = "<group>"; };
 		DDA106E911E43B16008D00A7 /* SimpleKMLBalloonStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLBalloonStyle.h; sourceTree = "<group>"; };
@@ -362,24 +362,11 @@
 		DD48C45F11CC090400038969 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				DD72C37D11E53CF60030C637 /* FMDB */,
 				DD48C2CB11CBF30600038969 /* route-me */,
-				DD6E3AAA11D0037D007691F3 /* FMDB */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 			);
 			name = Externals;
-			sourceTree = "<group>";
-		};
-		DD6E3AAA11D0037D007691F3 /* FMDB */ = {
-			isa = PBXGroup;
-			children = (
-				DD6E3AA611D00379007691F3 /* FMDatabase.h */,
-				DD6E3AA511D00379007691F3 /* FMDatabase.m */,
-				DD6E3AA411D00379007691F3 /* FMDatabaseAdditions.h */,
-				DD6E3AA311D00379007691F3 /* FMDatabaseAdditions.m */,
-				DD6E3AA211D00379007691F3 /* FMResultSet.h */,
-				DD6E3AA111D00379007691F3 /* FMResultSet.m */,
-			);
-			name = FMDB;
 			sourceTree = "<group>";
 		};
 		DD6E3B6711D014A8007691F3 /* Textures */ = {
@@ -466,6 +453,19 @@
 			);
 			name = Tidy;
 			path = TouchXML/Common/Source/Tidy;
+			sourceTree = "<group>";
+		};
+		DD72C37D11E53CF60030C637 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				DD72C37411E53CF20030C637 /* FMDatabase.h */,
+				DD72C37511E53CF20030C637 /* FMDatabase.m */,
+				DD72C37611E53CF20030C637 /* FMDatabaseAdditions.h */,
+				DD72C37711E53CF20030C637 /* FMDatabaseAdditions.m */,
+				DD72C37811E53CF20030C637 /* FMResultSet.h */,
+				DD72C37911E53CF20030C637 /* FMResultSet.m */,
+			);
+			name = FMDB;
 			sourceTree = "<group>";
 		};
 		DDF31FF211DAB11E0068287A /* Simple KML */ = {
@@ -614,9 +614,6 @@
 				1D3623260D0F684500981E51 /* MapBoxiPadDemoAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */,
 				DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */,
-				DD6E3AA711D00379007691F3 /* FMResultSet.m in Sources */,
-				DD6E3AA811D00379007691F3 /* FMDatabaseAdditions.m in Sources */,
-				DD6E3AA911D00379007691F3 /* FMDatabase.m in Sources */,
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
 				DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */,
 				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
@@ -653,6 +650,9 @@
 				DD72C37111E53C640030C637 /* CXMLNode_XPathExtensions.m in Sources */,
 				DD72C37211E53C640030C637 /* CXMLNode.m in Sources */,
 				DD72C37311E53C640030C637 /* CTidy.m in Sources */,
+				DD72C37A11E53CF20030C637 /* FMDatabase.m in Sources */,
+				DD72C37B11E53CF20030C637 /* FMDatabaseAdditions.m in Sources */,
+				DD72C37C11E53CF20030C637 /* FMResultSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
