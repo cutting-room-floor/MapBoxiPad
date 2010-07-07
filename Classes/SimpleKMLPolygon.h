@@ -20,7 +20,7 @@
 }
 
 @property (nonatomic, retain) SimpleKMLLinearRing *outerBoundary;
-@property (nonatomic, retain) SimpleKMLLinearRing *firstInnerBoundary;
+@property (nonatomic, assign) SimpleKMLLinearRing *firstInnerBoundary;
 @property (nonatomic, retain) NSArray *innerBoundaries;
 
 @end

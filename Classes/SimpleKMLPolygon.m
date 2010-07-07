@@ -47,7 +47,7 @@ extern NSString *SimpleKMLErrorDomain;
                     return nil;
                 }
                 
-                outerBoundary = [[[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:1] error:NULL] autorelease];
+                outerBoundary = [[SimpleKMLLinearRing alloc] initWithXMLNode:[boundaryChildren objectAtIndex:1] error:NULL];
             }
             else if ([[child name] isEqualToString:@"innerBoundaryIs"])
             {
