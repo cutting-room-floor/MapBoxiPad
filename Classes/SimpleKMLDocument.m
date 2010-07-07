@@ -56,9 +56,9 @@
 
 - (SimpleKMLStyle *)sharedStyleWithID:(NSString *)styleID
 {
-    for (SimpleKMLStyle *style in self.sharedStyles)
-        if ([[style objectID] isEqualToString:styleID])
-            return style;
+    for (SimpleKMLStyle *theStyle in self.sharedStyles)
+        if ([[theStyle objectID] isEqualToString:styleID])
+            return theStyle;
     
     return nil;
 }
