@@ -1,8 +1,0 @@
-#labels TouchXML,TouchJSON,Bugs
-If you find a bug with either TouchJSON or TouchXML then please in addition to providing an adequate description of the bug also provide some sample source code (where possible limit the code to JUST the code that interfaces with the TouchCode library itself) and sample XML/JSON files.
-
-The bug page is here: http://code.google.com/p/touchcode/issues/list
-
-Please update and test against the latest code and not just whatever release you're using.
-
-I will be closing bugs as invalid if adequate sample data and source code is not provided.
