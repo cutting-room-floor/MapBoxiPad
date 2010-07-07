@@ -29,5 +29,6 @@ enum SimpleKMLErrorCode {
 + (SimpleKML *)KMLWithContentsOfFile:(NSString *)path error:(NSError **)error;
 - (id)initWithContentsOfURL:(NSURL *)URL error:(NSError **)error;
 - (id)initWithContentsOfFile:(NSString *)path error:(NSError **)error;
++ (UIColor *)colorForString:(NSString *)colorString;
 
 @end
