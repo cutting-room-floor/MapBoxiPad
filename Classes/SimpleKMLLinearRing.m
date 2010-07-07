@@ -33,7 +33,9 @@ extern NSString *SimpleKMLErrorDomain;
                 
                 for (NSString *coordinateString in coordinateStrings)
                 {
-                    if ([[coordinateString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] length])
+                    coordinateString = [coordinateString stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+                    if ([coordinateString length])
                     {
                         // coordinates should not have whitespace
                         //
