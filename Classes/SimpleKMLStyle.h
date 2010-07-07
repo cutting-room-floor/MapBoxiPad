@@ -12,14 +12,17 @@
 
 @class SimpleKMLIconStyle;
 @class SimpleKMLLineStyle;
+@class SimpleKMLPolyStyle;
 
 @interface SimpleKMLStyle : SimpleKMLStyleSelector
 {
     SimpleKMLIconStyle *iconStyle;
     SimpleKMLLineStyle *lineStyle;
+    SimpleKMLPolyStyle *polyStyle;
 }
 
 @property (nonatomic, retain) SimpleKMLIconStyle *iconStyle;
 @property (nonatomic, retain) SimpleKMLLineStyle *lineStyle;
+@property (nonatomic, retain) SimpleKMLPolyStyle *polyStyle;
 
 @end
