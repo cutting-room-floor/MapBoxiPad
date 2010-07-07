@@ -28,47 +28,7 @@ extern NSString *SimpleKMLErrorDomain;
             {
                 NSString *colorString = [child stringValue];
                 
-                // color string should be eight or nine characters (RGBA in hex, with or without '#' prefix)
-                //
-                if ([colorString length] < 8 || [colorString length] > 9)
-                {
-                    NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (ColorStyle color specifier is invalid length)" 
-                                                                         forKey:NSLocalizedFailureReasonErrorKey];
-                    
-                    *error = [NSError errorWithDomain:SimpleKMLErrorDomain code:SimpleKMLParseError userInfo:userInfo];
-                    
-                    return nil;
-                }
-
-                colorString = [colorString stringByReplacingOccurrencesOfString:@"#" withString:@""];
-                
-                NSMutableArray *parts = [NSMutableArray array];
-                
-                for (NSUInteger i = 0; i < 8; i = i + 2)
-                {
-                    NSString *part = [colorString substringWithRange:NSMakeRange(i, 2)];
-                    
-                    unsigned wholeValue;
-                    
-                    [[NSScanner scannerWithString:part] scanHexInt:&wholeValue];
-                    
-                    if (wholeValue < 0 || wholeValue > 255)
-                    {
-                        NSDictionary *userInfo = [NSDictionary dictionaryWithObject:@"Improperly formed KML (Invalid ColorStyle color specifier)" 
-                                                                             forKey:NSLocalizedFailureReasonErrorKey];
-                        
-                        *error = [NSError errorWithDomain:SimpleKMLErrorDomain code:SimpleKMLParseError userInfo:userInfo];
-                        
-                        return nil;
-                    }
-                    
-                    [parts addObject:[NSNumber numberWithFloat:((CGFloat)wholeValue / (CGFloat)255)]];
-                }
-                
-                color = [[UIColor colorWithRed:[[parts objectAtIndex:3] floatValue]
-                                         green:[[parts objectAtIndex:2] floatValue]
-                                          blue:[[parts objectAtIndex:1] floatValue]
-                                         alpha:[[parts objectAtIndex:0] floatValue]] retain];
+                color = [[SimpleKML colorForString:colorString] retain];
             }
         }
     }
