@@ -23,11 +23,18 @@
 #import "SimpleKMLStyle.h"
 #import "SimpleKMLIconStyle.h"
 #import "SimpleKML_UIImage.h"
+#import "SimpleKMLLineString.h"
+#import "SimpleKMLPolygon.h"
+#import "SimpleKMLLinearRing.h"
+#import "SimpleKMLLineStyle.h"
+#import "SimpleKMLPolyStyle.h"
+#import "RMPath.h"
+#import "DSMapBoxBalloonController.h"
 
-#define kStartingLat     19.5f
-#define kStartingLon    -74.0f
-#define kStartingZoom     8.0f
-#define kPlacemarkAlpha   0.7f
+#define kStartingLat    51.4791f
+#define kStartingLon     0.9f
+#define kStartingZoom    3.0f
+#define kPlacemarkAlpha  0.7f
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -58,7 +65,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                             centerLatLon:startingPoint
                                zoomLevel:kStartingZoom
                             maxZoomLevel:[source maxZoom]
-                            minZoomLevel:kStartingZoom - 1.0f
+                            minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];
 
     mapView.enableRotate = NO;
@@ -89,6 +96,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
     [timer release];
+    [kml release];
 
     [super dealloc];
 }
@@ -122,6 +130,29 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [mapView setNeedsDisplay];
 }
 
+- (void)openKMLFile:(NSURL *)fileURL
+{
+    NSError *error = nil;
+    
+    SimpleKML *newKML = [SimpleKML KMLWithContentsofURL:fileURL error:&error];
+
+    if (error)
+    {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable to parse KML file"
+                                                         message:[NSString stringWithFormat:@"Unable to parse the given KML file. The parser reported: %@", error] 
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
+    }
+    else if (newKML)
+    {
+        kml = [newKML retain];
+        [self tappedKMLButton:self];
+    }
+}
+
 - (IBAction)tappedKMLButton:(id)sender
 {
     if ([[mapView.contents.markerManager markers] count])
@@ -138,40 +169,109 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     [kmlButton setTitle:@"Turn KML Off"];
     
-    SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL];
-    
-    CGFloat zoom = mapView.contents.zoom;
-    CGFloat power;
-    
-    while (zoom > 1)
-    {
-        zoom = zoom / 2;
-        power++;
-    }
+    if ( ! kml)
+        kml = [[SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL] retain];
     
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
         for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
         {
             if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
-                ((SimpleKMLPlacemark *)feature).sharedStyle        && 
-                ((SimpleKMLPlacemark *)feature).sharedStyle.iconStyle)
+                ((SimpleKMLPlacemark *)feature).point              &&
+                ((SimpleKMLPlacemark *)feature).style              && 
+                ((SimpleKMLPlacemark *)feature).style.iconStyle)
             {
-                UIImage *icon = ((SimpleKMLPlacemark *)feature).sharedStyle.iconStyle.icon;
+                UIImage *icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
                 
-                RMMarker *marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kPlacemarkAlpha]] autorelease];
+                RMMarker *marker = [[[RMMarker alloc] initWithUIImage:icon] autorelease];
                 
-                // we store the original icon & alpha value for later use in the pulse animation
-                //
-                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
-                                                                         feature.name,                               @"label", 
-                                                                         icon,                                       @"icon",
-                                                                         [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
-                                                                         nil];
+                if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
+                {
+                    // we setup a balloon for later
+                    //
+                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                        @"marker",
+                                                                             feature,                       @"placemark",
+                                                                             [NSNumber numberWithBool:YES], @"hasBalloon",
+                                                                             nil];
+                }
+                else
+                {
+                    // we store the original icon & alpha value for later use in the pulse animation
+                    //
+                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
+                                                                             feature.name,                               @"label", 
+                                                                             icon,                                       @"icon",
+                                                                             [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
+                                                                             nil];
+                }
                 
                 [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
                 
                 [mapView.contents.markerManager addMarker:marker AtLatLong:((SimpleKMLPlacemark *)feature).point.coordinate];
+            }
+            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
+                     ((SimpleKMLPlacemark *)feature).lineString         &&
+                     ((SimpleKMLPlacemark *)feature).style              && 
+                     ((SimpleKMLPlacemark *)feature).style.lineStyle)
+            {
+                RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
+                
+                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
+                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                path.fillColor = [UIColor clearColor];
+                
+                SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
+                
+                BOOL hasStarted = NO;
+                
+                for (CLLocation *coordinate in lineString.coordinates)
+                {
+                    if ( ! hasStarted)
+                    {
+                        [path moveToLatLong:coordinate.coordinate];
+                        hasStarted = YES;
+                    }
+                    
+                    else
+                        [path addLineToLatLong:coordinate.coordinate];
+                }
+                
+                [mapView.contents.overlay addSublayer:path];
+            }
+            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
+                     ((SimpleKMLPlacemark *)feature).polygon            &&
+                     ((SimpleKMLPlacemark *)feature).style              &&
+                     ((SimpleKMLPlacemark *)feature).style.polyStyle)
+            {
+                RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
+                
+                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
+
+                if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
+                    path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
+                
+                else
+                    path.fillColor = [UIColor clearColor];
+                
+                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                
+                SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
+                
+                BOOL hasStarted = NO;
+                
+                for (CLLocation *coordinate in outerBoundary.coordinates)
+                {
+                    if ( ! hasStarted)
+                    {
+                        [path moveToLatLong:coordinate.coordinate];
+                        hasStarted = YES;
+                    }
+                    
+                    else
+                        [path addLineToLatLong:coordinate.coordinate];
+                }
+                
+                [mapView.contents.overlay addSublayer:path];
             }
         }
     }
@@ -313,47 +413,81 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     if ([clickLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
         return;
     
-    // return last marker to full alpha
-    //
-    if (lastMarkerInfo)
+    if ([((NSDictionary *)marker.data) objectForKey:@"hasBalloon"])
     {
-        [timer invalidate];
-        [timer release];
-
-        RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
-        UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
+        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[((NSDictionary *)marker.data) objectForKey:@"placemark"];
         
-        [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
+        DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+        
+        balloonController.name        = placemark.name;
+        balloonController.description = placemark.featureDescription;
+
+        UIPopoverController *balloonPopover = [[UIPopoverController alloc] initWithContentViewController:balloonController]; // released by delegate
+    
+        balloonPopover.popoverContentSize = CGSizeMake(320, 320);
+        balloonPopover.delegate = self;
+        
+        CGRect attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
+                                        [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+                                        1, 
+                                        1);
+        
+        [balloonPopover presentPopoverFromRect:attachPoint
+                                        inView:mapView 
+                      permittedArrowDirections:UIPopoverArrowDirectionAny
+                                      animated:NO];
     }
-    
-    // animate label swap
-    //
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-    [UIView setAnimationDelegate:self];
-    [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-    
-    if ([clickLabel.text isEqualToString:@""])
-        [UIView setAnimationDuration:0.0];
-    
-    CGPoint oldCenter  = clickLabel.center;
-    clickLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
-    
-            oldCenter  = clickStripe.center;
-    clickStripe.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
-    
-    [UIView commitAnimations];
-    
-    // update last marker & fire off pulse animation on this one
-    //
-    [lastMarkerInfo release];
-    lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
-    
-    timer = [[NSTimer scheduledTimerWithTimeInterval:0.1
-                                              target:self
-                                            selector:@selector(pulse:)
-                                            userInfo:nil
-                                             repeats:YES] retain];
+    else
+    {
+        // return last marker to full alpha
+        //
+        if (lastMarkerInfo)
+        {
+            [timer invalidate];
+            [timer release];
+            
+            RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
+            UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
+            
+            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
+        }
+        
+        // animate label swap
+        //
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+        
+        if ([clickLabel.text isEqualToString:@""])
+            [UIView setAnimationDuration:0.0];
+        
+        CGPoint oldCenter  = clickLabel.center;
+        clickLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        
+        oldCenter  = clickStripe.center;
+        clickStripe.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        
+        [UIView commitAnimations];
+        
+        // update last marker & fire off pulse animation on this one
+        //
+        [lastMarkerInfo release];
+        lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
+        
+        timer = [[NSTimer scheduledTimerWithTimeInterval:0.1
+                                                  target:self
+                                                selector:@selector(pulse:)
+                                                userInfo:nil
+                                                 repeats:YES] retain];
+    }
+}
+
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    [popoverController release];
 }
 
 @end

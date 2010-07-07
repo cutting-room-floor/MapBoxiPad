@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "RMMapView.h"
 
-@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate>
+@class SimpleKML;
+
+@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate, UIPopoverControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIToolbar *toolbar;
@@ -22,11 +24,13 @@
     UIPopoverController *popover;
     NSMutableDictionary *lastMarkerInfo;
     NSTimer *timer;
+    SimpleKML *kml;
 }
 
 - (IBAction)tappedAllowRotationButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedKMLButton:(id)sender;
 - (IBAction)tappedTilesButton:(id)sender;
+- (void)openKMLFile:(NSURL *)fileURL;
 
 @end

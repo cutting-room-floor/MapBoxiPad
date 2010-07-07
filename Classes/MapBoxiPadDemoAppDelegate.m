@@ -18,12 +18,22 @@
 #pragma mark -
 #pragma mark Application lifecycle
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {    
-    
-    // Override point for customization after app launch. 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{    
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 
+    if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+    {
+        NSURL *incomingURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+        
+        if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"])
+            [viewController openKMLFile:incomingURL];
+        
+        else
+            return NO;
+    }
+        
 	return YES;
 }
 
