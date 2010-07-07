@@ -10,12 +10,14 @@
 #import "SimpleKMLIconStyle.h"
 #import "SimpleKMLLineStyle.h"
 #import "SimpleKMLPolyStyle.h"
+#import "SimpleKMLBalloonStyle.h"
 
 @implementation SimpleKMLStyle
 
 @synthesize iconStyle;
 @synthesize lineStyle;
 @synthesize polyStyle;
+@synthesize balloonStyle;
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error
 {
@@ -23,9 +25,10 @@
     
     if (self != nil)
     {
-        iconStyle = nil;
-        lineStyle = nil;
-        polyStyle = nil;
+        iconStyle    = nil;
+        lineStyle    = nil;
+        polyStyle    = nil;
+        balloonStyle = nil;
         
         for (CXMLNode *child in [node children])
         {
@@ -45,6 +48,9 @@
 
                     else if ([thisSubStyle isKindOfClass:[SimpleKMLPolyStyle class]])
                         polyStyle = [thisSubStyle retain];
+
+                    else if ([thisSubStyle isKindOfClass:[SimpleKMLBalloonStyle class]])
+                        balloonStyle = [thisSubStyle retain];
                 }
             }
         }
@@ -58,6 +64,7 @@
     [iconStyle release];
     [lineStyle release];
     [polyStyle release];
+    [balloonStyle release];
     
     [super dealloc];
 }
