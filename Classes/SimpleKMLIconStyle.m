@@ -13,8 +13,6 @@
 #define kSimpleKMLIconStyleDefaultHeading  0.0f
 #define kSimpleKMLIconStyleBaseIconSize   32.0f
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLIconStyle
 
 @synthesize icon;

@@ -9,8 +9,6 @@
 #import "SimpleKMLLineString.h"
 #import <CoreLocation/CoreLocation.h>
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLLineString
 
 @synthesize coordinates;

@@ -9,8 +9,6 @@
 #import "SimpleKMLPolygon.h"
 #import "SimpleKMLLinearRing.h"
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLPolygon
 
 @synthesize outerBoundary;

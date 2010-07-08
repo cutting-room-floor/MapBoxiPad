@@ -13,8 +13,6 @@
 #import "SimpleKMLLineString.h"
 #import "SimpleKMLLinearRing.h"
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLPlacemark
 
 @synthesize geometry;

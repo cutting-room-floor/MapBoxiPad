@@ -8,8 +8,6 @@
 
 #import "SimpleKMLColorStyle.h"
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLColorStyle
 
 @synthesize color;

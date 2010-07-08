@@ -8,8 +8,6 @@
 
 #import "SimpleKMLPoint.h"
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLPoint
 
 - (id)initWithXMLNode:(CXMLNode *)node error:(NSError **)error

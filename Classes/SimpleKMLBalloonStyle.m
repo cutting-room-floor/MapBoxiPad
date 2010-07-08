@@ -8,8 +8,6 @@
 
 #import "SimpleKMLBalloonStyle.h"
 
-extern NSString *SimpleKMLErrorDomain;
-
 @implementation SimpleKMLBalloonStyle
 
 @synthesize backgroundColor;
