@@ -11,6 +11,7 @@
 #import "DSMapBoxGeoRSSBrowserController.h"
 
 @class SimpleKML;
+@class DSMapBoxOverlayManager;
 
 @interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxGeoRSSBrowserControllerDelegate>
 {
@@ -26,6 +27,7 @@
     NSMutableDictionary *lastMarkerInfo;
     NSTimer *timer;
     SimpleKML *kml;
+    DSMapBoxOverlayManager *overlayManager;
 }
 
 - (IBAction)tappedAllowRotationButton:(id)sender;

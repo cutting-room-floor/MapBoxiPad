@@ -56,6 +56,7 @@
 		DD72C37C11E53CF20030C637 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C37911E53CF20030C637 /* FMResultSet.m */; };
 		DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */; };
 		DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */; };
+		DD72C69311E673EF0030C637 /* DSMapBoxOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */; };
 		DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */; };
 		DDA106EB11E43B16008D00A7 /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA106EA11E43B16008D00A7 /* SimpleKMLBalloonStyle.m */; };
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
@@ -183,6 +184,8 @@
 		DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxGeoRSSBrowserController.h; sourceTree = "<group>"; };
 		DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxGeoRSSBrowserController.m; sourceTree = "<group>"; };
 		DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxGeoRSSBrowserController.xib; sourceTree = "<group>"; };
+		DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxOverlayManager.h; sourceTree = "<group>"; };
+		DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxOverlayManager.m; sourceTree = "<group>"; };
 		DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML_UIImage.h; sourceTree = "<group>"; };
 		DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML_UIImage.m; sourceTree = "<group>"; };
 		DDA106E911E43B16008D00A7 /* SimpleKMLBalloonStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLBalloonStyle.h; sourceTree = "<group>"; };
@@ -338,6 +341,8 @@
 				DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */,
 				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
 				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
+				DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */,
+				DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */,
 				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
 				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
 				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
@@ -663,6 +668,7 @@
 				DD72C37B11E53CF20030C637 /* FMDatabaseAdditions.m in Sources */,
 				DD72C37C11E53CF20030C637 /* FMResultSet.m in Sources */,
 				DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */,
+				DD72C69311E673EF0030C637 /* DSMapBoxOverlayManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

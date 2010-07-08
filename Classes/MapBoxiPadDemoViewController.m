@@ -7,34 +7,28 @@
 //
 
 #import "MapBoxiPadDemoViewController.h"
+
 #import "DSMapBoxSQLiteTileSource.h"
-#import "RMMapContents.h"
-#import "TouchXML.h"
-#import "RMMarker.h"
-#import "RMMarkerManager.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
-#import <AudioToolbox/AudioToolbox.h>
+#import "DSMapBoxBalloonController.h"
+#import "DSMapBoxOverlayManager.h"
+
 #import "SimpleKML.h"
-#import "SimpleKMLFeature.h"
-#import "SimpleKMLContainer.h"
+#import "SimpleKML_UIImage.h"
 #import "SimpleKMLPlacemark.h"
 #import "SimpleKMLPoint.h"
-#import "SimpleKMLStyle.h"
-#import "SimpleKMLIconStyle.h"
-#import "SimpleKML_UIImage.h"
-#import "SimpleKMLLineString.h"
-#import "SimpleKMLPolygon.h"
-#import "SimpleKMLLinearRing.h"
-#import "SimpleKMLLineStyle.h"
-#import "SimpleKMLPolyStyle.h"
-#import "RMPath.h"
-#import "DSMapBoxBalloonController.h"
+
+#import "RMMapContents.h"
+#import "RMMarker.h"
+
+#import "TouchXML.h"
+
+#import <AudioToolbox/AudioToolbox.h>
 
 #define kStartingLat    51.4791f
 #define kStartingLon     0.9f
 #define kStartingZoom    3.0f
-#define kPlacemarkAlpha  0.7f
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -68,6 +62,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                             minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];
 
+    overlayManager = [[DSMapBoxOverlayManager alloc] initWithMapView:mapView];
+
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
@@ -95,6 +91,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
+    [overlayManager release];
     [timer release];
     [kml release];
 
@@ -155,11 +152,11 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (IBAction)tappedKMLButton:(id)sender
 {
-    if ([[mapView.contents.markerManager markers] count])
+    if ([[overlayManager overlays] count])
     {
         [kmlButton setTitle:@"Turn KML On"];
 
-        [mapView.contents.markerManager removeMarkers];
+        [overlayManager removeAllOverlays];
         
         clickStripe.hidden = YES;
         clickLabel.text = @"";
@@ -172,115 +169,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     if ( ! kml)
         kml = [[SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL] retain];
     
-    // TODO: this stuff should get broken out into a separate controller, something like a bridge between KML and map drawing
-    //
-    if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
-    {
-        for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
-        {
-            if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
-                ((SimpleKMLPlacemark *)feature).point              &&
-                ((SimpleKMLPlacemark *)feature).style              && 
-                ((SimpleKMLPlacemark *)feature).style.iconStyle)
-            {
-                UIImage *icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
-                
-                RMMarker *marker;
-                
-                if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
-                {
-                    marker = [[[RMMarker alloc] initWithUIImage:icon] autorelease];
-
-                    // we setup a balloon for later
-                    //
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                        @"marker",
-                                                                             feature,                       @"placemark",
-                                                                             [NSNumber numberWithBool:YES], @"hasBalloon",
-                                                                             nil];
-                }
-                else
-                {
-                    marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kPlacemarkAlpha]] autorelease];
-
-                    // we store the original icon & alpha value for later use in the pulse animation
-                    //
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
-                                                                             feature.name,                               @"label", 
-                                                                             icon,                                       @"icon",
-                                                                             [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
-                                                                             nil];
-                }
-                
-                [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
-                
-                [mapView.contents.markerManager addMarker:marker AtLatLong:((SimpleKMLPlacemark *)feature).point.coordinate];
-            }
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
-                     ((SimpleKMLPlacemark *)feature).lineString         &&
-                     ((SimpleKMLPlacemark *)feature).style              && 
-                     ((SimpleKMLPlacemark *)feature).style.lineStyle)
-            {
-                RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
-                
-                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
-                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
-                path.fillColor = [UIColor clearColor];
-                
-                SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
-                
-                BOOL hasStarted = NO;
-                
-                for (CLLocation *coordinate in lineString.coordinates)
-                {
-                    if ( ! hasStarted)
-                    {
-                        [path moveToLatLong:coordinate.coordinate];
-                        hasStarted = YES;
-                    }
-                    
-                    else
-                        [path addLineToLatLong:coordinate.coordinate];
-                }
-                
-                [mapView.contents.overlay addSublayer:path];
-            }
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
-                     ((SimpleKMLPlacemark *)feature).polygon            &&
-                     ((SimpleKMLPlacemark *)feature).style              &&
-                     ((SimpleKMLPlacemark *)feature).style.polyStyle)
-            {
-                RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
-                
-                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
-
-                if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
-                    path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
-                
-                else
-                    path.fillColor = [UIColor clearColor];
-                
-                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
-                
-                SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
-                
-                BOOL hasStarted = NO;
-                
-                for (CLLocation *coordinate in outerBoundary.coordinates)
-                {
-                    if ( ! hasStarted)
-                    {
-                        [path moveToLatLong:coordinate.coordinate];
-                        hasStarted = YES;
-                    }
-                    
-                    else
-                        [path addLineToLatLong:coordinate.coordinate];
-                }
-                
-                [mapView.contents.overlay addSublayer:path];
-            }
-        }
-    }
+    [overlayManager addOverlayForKML:kml];
 }
 
 - (IBAction)tappedGeoRSSButton:(id)sender
@@ -512,7 +401,11 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 
 - (void)browserController:(DSMapBoxGeoRSSBrowserController *)controller didVisitFeedURL:(NSURL *)feedURL
 {
-    NSLog(@"%@", feedURL);
+    NSError *error = nil;
+    
+    NSString *rss = [NSString stringWithContentsOfURL:feedURL encoding:NSUTF8StringEncoding error:&error];
+    
+    [overlayManager addOverlayForGeoRSS:rss];
 }
 
 @end
