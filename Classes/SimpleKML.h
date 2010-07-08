@@ -8,8 +8,10 @@
 //  http://code.google.com/apis/kml/documentation/kmlreference.html#kml
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "TouchXML.h"
+
+extern NSString *const SimpleKMLErrorDomain;
 
 enum SimpleKMLErrorCode {
     SimpleKMLParseError    = 1000,

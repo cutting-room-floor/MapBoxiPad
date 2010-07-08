@@ -9,7 +9,7 @@
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
 
-NSString *SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
+NSString *const SimpleKMLErrorDomain = @"SimpleKMLErrorDomain";
 
 @interface SimpleKML (SimpleKMLPrivate)
 
