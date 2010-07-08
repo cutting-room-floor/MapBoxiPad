@@ -11,6 +11,7 @@
 #import "DSMapBoxBalloonController.h"
 
 #import "RMMapView.h"
+#import "RMProjection.h"
 #import "RMMarkerManager.h"
 #import "RMLayerCollection.h"
 #import "RMPath.h"
@@ -203,12 +204,19 @@
             NSString *date        = [[[item elementsForName:@"pubDate"]     objectAtIndex:0] stringValue];
             NSString *coordinate  = [[[item elementsForName:@"point"]       objectAtIndex:0] stringValue];
             
+            NSString *balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><em>%@</em><br/><br/><a href=\"%@\">more</a>", description, date, link];
+            
             CLLocationCoordinate2D point;
 
             point.latitude  = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
             point.longitude = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];
             
             RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+            
+            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
+                                                                     title,                         @"title",
+                                                                     balloonBlurb,                  @"description",
+                                                                     nil];
             
             [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
             
@@ -284,31 +292,49 @@
     if ([stripeViewLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
         return;
     
-    if ([((NSDictionary *)marker.data) objectForKey:@"hasBalloon"])
+    NSDictionary *markerData = ((NSDictionary *)marker.data);
+    
+    if ([markerData objectForKey:@"hasBalloon"]) // balloon popover
     {
-        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[((NSDictionary *)marker.data) objectForKey:@"placemark"];
-        
         DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+        CGRect attachPoint;
         
-        balloonController.name        = placemark.name;
-        balloonController.description = placemark.featureDescription;
+        if ([markerData objectForKey:@"placemark"]) // KML placemark
+        {
+            SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[markerData objectForKey:@"placemark"];
+            
+            balloonController.name        = placemark.name;
+            balloonController.description = placemark.featureDescription;
+            
+            attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
+                                     [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+                                     1, 
+                                     1);
+        }
+        else // GeoRSS item
+        {
+            balloonController.name        = [markerData objectForKey:@"title"];
+            balloonController.description = [markerData objectForKey:@"description"];
+            
+            RMLatLong latLong = [mapView.contents.projection pointToLatLong:marker.projectedLocation];
+            
+            attachPoint = CGRectMake([mapView.contents latLongToPixel:latLong].x,
+                                     [mapView.contents latLongToPixel:latLong].y, 
+                                     1, 
+                                     1);
+        }
         
         UIPopoverController *balloonPopover = [[UIPopoverController alloc] initWithContentViewController:balloonController]; // released by delegate
         
         balloonPopover.popoverContentSize = CGSizeMake(320, 320);
         balloonPopover.delegate = self;
         
-        CGRect attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
-                                        [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
-                                        1, 
-                                        1);
-        
         [balloonPopover presentPopoverFromRect:attachPoint
                                         inView:mapView 
                       permittedArrowDirections:UIPopoverArrowDirectionAny
                                       animated:NO];
     }
-    else
+    else // balloon-less label on animated stripe
     {
         // return last marker to full alpha
         //
