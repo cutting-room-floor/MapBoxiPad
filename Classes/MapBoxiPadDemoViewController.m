@@ -172,6 +172,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     if ( ! kml)
         kml = [[SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL] retain];
     
+    // TODO: this stuff should get broken out into a separate controller, something like a bridge between KML and map drawing
+    //
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
         for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
@@ -279,6 +281,16 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             }
         }
     }
+}
+
+- (IBAction)tappedGeoRSSButton:(id)sender
+{
+    DSMapBoxGeoRSSBrowserController *browser = [[[DSMapBoxGeoRSSBrowserController alloc] initWithNibName:nil bundle:nil] autorelease];
+    
+    browser.modalPresentationStyle = UIModalPresentationPageSheet;
+    browser.delegate = self;
+    
+    [self presentModalViewController:browser animated:YES];
 }
 
 - (IBAction)tappedTilesButton:(id)sender
@@ -410,6 +422,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 
 #pragma mark -
 
+// TODO: this is another good candidate for breaking out into a separate controller to handle events
+//
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {
     // don't respond to clicks on currently highlighted marker
@@ -492,6 +506,13 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
     [popoverController release];
+}
+
+#pragma mark -
+
+- (void)browserController:(DSMapBoxGeoRSSBrowserController *)controller didVisitFeedURL:(NSURL *)feedURL
+{
+    NSLog(@"%@", feedURL);
 }
 
 @end

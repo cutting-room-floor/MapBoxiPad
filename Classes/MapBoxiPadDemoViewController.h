@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "RMMapView.h"
+#import "DSMapBoxGeoRSSBrowserController.h"
 
 @class SimpleKML;
 
-@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate, UIPopoverControllerDelegate>
+@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxGeoRSSBrowserControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIToolbar *toolbar;
@@ -30,6 +31,7 @@
 - (IBAction)tappedAllowRotationButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedKMLButton:(id)sender;
+- (IBAction)tappedGeoRSSButton:(id)sender;
 - (IBAction)tappedTilesButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 
