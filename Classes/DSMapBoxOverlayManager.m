@@ -8,6 +8,8 @@
 
 #import "DSMapBoxOverlayManager.h"
 
+#import "DSMapBoxBalloonController.h"
+
 #import "RMMapView.h"
 #import "RMMarkerManager.h"
 #import "RMLayerCollection.h"
@@ -48,6 +50,7 @@
 {
     [mapView release];
     [overlays release];
+    [animationTimer release];
     
     [super dealloc];
 }
@@ -78,9 +81,9 @@
                     // we setup a balloon for later
                     //
                     marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                        @"marker",
-                                   feature,                       @"placemark",
-                                   [NSNumber numberWithBool:YES], @"hasBalloon",
-                                   nil];
+                                                                             feature,                       @"placemark",
+                                                                             [NSNumber numberWithBool:YES], @"hasBalloon",
+                                                                             nil];
                 }
                 else
                 {
@@ -89,10 +92,10 @@
                     // we store the original icon & alpha value for later use in the pulse animation
                     //
                     marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
-                                   feature.name,                               @"label", 
-                                   icon,                                       @"icon",
-                                   [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
-                                   nil];
+                                                                             feature.name,                               @"label", 
+                                                                             icon,                                       @"icon",
+                                                                             [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
+                                                                             nil];
                 }
                 
                 [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
@@ -224,12 +227,155 @@
     [mapView.contents.markerManager removeMarkers];
     mapView.contents.overlay.sublayers = nil;
     
+    stripeView.hidden = YES;
+    stripeViewLabel.text = @"";
+    
     [overlays removeAllObjects];
 }
 
 - (NSArray *)overlays
 {
     return [NSArray arrayWithArray:overlays];
+}
+
+- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
+{
+    stripeView.hidden = NO;
+    
+    stripeViewLabel.text = [lastMarkerInfo objectForKey:@"label"];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    
+    CGPoint oldCenter = stripeViewLabel.center;
+    stripeViewLabel.center  = CGPointMake(oldCenter.x + 200, oldCenter.y);
+    
+    oldCenter = stripeView.center;
+    stripeView.center = CGPointMake(oldCenter.x + 200, oldCenter.y);
+    
+    [UIView commitAnimations];
+}
+
+- (void)pulse:(NSTimer *)aTimer
+{
+    // we go after the stored marker metadata since you can't get the original sized image nor the alpha from an RMMarker
+    //
+    RMMarker *marker = [lastMarkerInfo  objectForKey:@"marker"];
+    UIImage  *image  = [lastMarkerInfo  objectForKey:@"icon"];
+    CGFloat   alpha  = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
+    
+    if (alpha >= kPlacemarkAlpha)
+        alpha = 0.1;
+    
+    else
+        alpha = alpha + 0.1;
+    
+    [marker replaceUIImage:[image imageWithAlphaComponent:alpha]];
+    
+    [lastMarkerInfo setObject:[NSNumber numberWithFloat:alpha] forKey:@"alpha"];
+}
+
+#pragma mark -
+
+- (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
+{
+    // don't respond to clicks on currently highlighted marker
+    //
+    if ([stripeViewLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
+        return;
+    
+    if ([((NSDictionary *)marker.data) objectForKey:@"hasBalloon"])
+    {
+        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[((NSDictionary *)marker.data) objectForKey:@"placemark"];
+        
+        DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+        
+        balloonController.name        = placemark.name;
+        balloonController.description = placemark.featureDescription;
+        
+        UIPopoverController *balloonPopover = [[UIPopoverController alloc] initWithContentViewController:balloonController]; // released by delegate
+        
+        balloonPopover.popoverContentSize = CGSizeMake(320, 320);
+        balloonPopover.delegate = self;
+        
+        CGRect attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
+                                        [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+                                        1, 
+                                        1);
+        
+        [balloonPopover presentPopoverFromRect:attachPoint
+                                        inView:mapView 
+                      permittedArrowDirections:UIPopoverArrowDirectionAny
+                                      animated:NO];
+    }
+    else
+    {
+        // return last marker to full alpha
+        //
+        if (lastMarkerInfo)
+        {
+            [animationTimer invalidate];
+            [animationTimer release];
+            
+            RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
+            UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
+            
+            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
+        }
+        
+        // load stripe if needed
+        //
+        if ( ! stripeView)
+        {
+            [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxOverlayStripeView" owner:self options:nil];
+            
+            stripeViewLabel.text = @"";
+            stripeView.hidden = YES;
+            
+            [mapView addSubview:stripeView];
+            
+            stripeView.frame = CGRectMake(mapView.frame.origin.x - 10, 
+                                          mapView.frame.size.height - stripeView.frame.size.height - 10, 
+                                          stripeView.frame.size.width, 
+                                          stripeView.frame.size.height);
+        }
+        
+        // animate label swap
+        //
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+        [UIView setAnimationDelegate:self];
+        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+        
+        if ([stripeViewLabel.text isEqualToString:@""])
+            [UIView setAnimationDuration:0.0];
+        
+        CGPoint oldCenter  = stripeViewLabel.center;
+        stripeViewLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        
+        oldCenter  = stripeView.center;
+        stripeView.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        
+        [UIView commitAnimations];
+        
+        // update last marker & fire off pulse animation on this one
+        //
+        [lastMarkerInfo release];
+        lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
+        
+        animationTimer = [[NSTimer scheduledTimerWithTimeInterval:0.1
+                                                           target:self
+                                                         selector:@selector(pulse:)
+                                                         userInfo:nil
+                                                          repeats:YES] retain];
+    }
+}
+
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    [popoverController release];
 }
 
 @end

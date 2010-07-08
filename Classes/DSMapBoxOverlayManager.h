@@ -8,15 +8,21 @@
 
 #import <UIKit/UIKit.h>
 
+#import "RMMapView.h"
+
 #define kPlacemarkAlpha  0.7f
 
 @class RMMapView;
 @class SimpleKML;
 
-@interface DSMapBoxOverlayManager : NSObject
+@interface DSMapBoxOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
 {
     RMMapView *mapView;
     NSMutableArray *overlays;
+    IBOutlet UIView *stripeView;
+    IBOutlet UILabel *stripeViewLabel;
+    NSMutableDictionary *lastMarkerInfo;
+    NSTimer *animationTimer;
 }
 
 - (id)initWithMapView:(RMMapView *)inMapView;

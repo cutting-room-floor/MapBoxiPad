@@ -11,7 +11,6 @@
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
-#import "DSMapBoxBalloonController.h"
 #import "DSMapBoxOverlayManager.h"
 
 #import "SimpleKML.h"
@@ -69,10 +68,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
     mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"404803.jpg"]];
     
-    mapView.delegate = self;
-    
-    clickLabel.text = @"";
-    clickStripe.hidden = YES;
+    mapView.delegate = overlayManager;
     
     [self updateTilesButtonTitle];
     
@@ -92,7 +88,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
     [overlayManager release];
-    [timer release];
     [kml release];
 
     [super dealloc];
@@ -157,9 +152,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         [kmlButton setTitle:@"Turn KML On"];
 
         [overlayManager removeAllOverlays];
-        
-        clickStripe.hidden = YES;
-        clickLabel.text = @"";
 
         return;
     }
@@ -184,63 +176,26 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (IBAction)tappedTilesButton:(id)sender
 {
-    [popover dismissPopoverAnimated:YES];
-    [popover release];
-    popover = nil;
+    [tilesPopover dismissPopoverAnimated:YES];
+    [tilesPopover release];
+    tilesPopover = nil;
     
     DSMapBoxTileSetChooserController *chooser = [[[DSMapBoxTileSetChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    popover = [[UIPopoverController alloc] initWithContentViewController:chooser];
+    tilesPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
     
-    [popover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    [tilesPopover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     
-    popover.passthroughViews = nil;
-}
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-    clickStripe.hidden = NO;
-    
-    clickLabel.text = [lastMarkerInfo objectForKey:@"label"];
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-
-    CGPoint oldCenter = clickLabel.center;
-    clickLabel.center  = CGPointMake(oldCenter.x + 200, oldCenter.y);
-    
-    oldCenter = clickStripe.center;
-    clickStripe.center = CGPointMake(oldCenter.x + 200, oldCenter.y);
-    
-    [UIView commitAnimations];
-}
-
-- (void)pulse:(NSTimer *)aTimer
-{
-    // we go after the stored marker metadata since you can't get the original sized image nor the alpha from an RMMarker
-    //
-    RMMarker *marker = [lastMarkerInfo  objectForKey:@"marker"];
-    UIImage  *image  = [lastMarkerInfo  objectForKey:@"icon"];
-    CGFloat   alpha  = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
-    
-    if (alpha >= kPlacemarkAlpha)
-        alpha = 0.1;
-
-    else
-        alpha = alpha + 0.1;
-
-    [marker replaceUIImage:[image imageWithAlphaComponent:alpha]];
-
-    [lastMarkerInfo setObject:[NSNumber numberWithFloat:alpha] forKey:@"alpha"];
+    tilesPopover.passthroughViews = nil;
 }
 
 - (void)tileSetDidChange:(NSNotification *)notification
 {
-    if (popover)
+    if (tilesPopover)
     {
-        [popover dismissPopoverAnimated:NO];
-        [popover release];
-        popover = nil;
+        [tilesPopover dismissPopoverAnimated:NO];
+        [tilesPopover release];
+        tilesPopover = nil;
     }
 
     [self updateTilesButtonTitle];
@@ -307,94 +262,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)updateTilesButtonTitle
 {
     tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
-}
-
-#pragma mark -
-
-// TODO: this is another good candidate for breaking out into a separate controller to handle events
-//
-- (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
-{
-    // don't respond to clicks on currently highlighted marker
-    //
-    if ([clickLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
-        return;
-    
-    if ([((NSDictionary *)marker.data) objectForKey:@"hasBalloon"])
-    {
-        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[((NSDictionary *)marker.data) objectForKey:@"placemark"];
-        
-        DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
-        
-        balloonController.name        = placemark.name;
-        balloonController.description = placemark.featureDescription;
-
-        UIPopoverController *balloonPopover = [[UIPopoverController alloc] initWithContentViewController:balloonController]; // released by delegate
-    
-        balloonPopover.popoverContentSize = CGSizeMake(320, 320);
-        balloonPopover.delegate = self;
-        
-        CGRect attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
-                                        [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
-                                        1, 
-                                        1);
-        
-        [balloonPopover presentPopoverFromRect:attachPoint
-                                        inView:mapView 
-                      permittedArrowDirections:UIPopoverArrowDirectionAny
-                                      animated:NO];
-    }
-    else
-    {
-        // return last marker to full alpha
-        //
-        if (lastMarkerInfo)
-        {
-            [timer invalidate];
-            [timer release];
-            
-            RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
-            UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
-            
-            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
-        }
-        
-        // animate label swap
-        //
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
-        
-        if ([clickLabel.text isEqualToString:@""])
-            [UIView setAnimationDuration:0.0];
-        
-        CGPoint oldCenter  = clickLabel.center;
-        clickLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
-        
-        oldCenter  = clickStripe.center;
-        clickStripe.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
-        
-        [UIView commitAnimations];
-        
-        // update last marker & fire off pulse animation on this one
-        //
-        [lastMarkerInfo release];
-        lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
-        
-        timer = [[NSTimer scheduledTimerWithTimeInterval:0.1
-                                                  target:self
-                                                selector:@selector(pulse:)
-                                                userInfo:nil
-                                                 repeats:YES] retain];
-    }
-}
-
-#pragma mark -
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    [popoverController release];
 }
 
 #pragma mark -

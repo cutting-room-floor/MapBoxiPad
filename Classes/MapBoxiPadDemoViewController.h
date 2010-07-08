@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RMMapView.h"
+
 #import "DSMapBoxGeoRSSBrowserController.h"
 
+@class RMMapView;
 @class SimpleKML;
 @class DSMapBoxOverlayManager;
 
-@interface MapBoxiPadDemoViewController : UIViewController <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxGeoRSSBrowserControllerDelegate>
+@interface MapBoxiPadDemoViewController : UIViewController <DSMapBoxGeoRSSBrowserControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIToolbar *toolbar;
@@ -21,11 +22,7 @@
     IBOutlet UIBarButtonItem *rotationButton;
     IBOutlet UIBarButtonItem *recenterButton;
     IBOutlet UIBarButtonItem *tilesButton;
-    IBOutlet UILabel *clickLabel;
-    IBOutlet UIImageView *clickStripe;
-    UIPopoverController *popover;
-    NSMutableDictionary *lastMarkerInfo;
-    NSTimer *timer;
+    UIPopoverController *tilesPopover;
     SimpleKML *kml;
     DSMapBoxOverlayManager *overlayManager;
 }
