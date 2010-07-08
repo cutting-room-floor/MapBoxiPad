@@ -15,7 +15,6 @@
 		2899E5220DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
-		DD01047E11D0394800B0079E /* kml-point.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01047D11D0394800B0079E /* kml-point.png */; };
 		DD01060C11D04E2000B0079E /* stripe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01060B11D04E2000B0079E /* stripe.png */; };
 		DD37915011DEA54400A3796A /* SimpleKMLFolder.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */; };
 		DD37915B11DEA88600A3796A /* SimpleKMLPolyStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD37915A11DEA88600A3796A /* SimpleKMLPolyStyle.m */; };
@@ -57,6 +56,7 @@
 		DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */; };
 		DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */; };
+		DD72C76311E6847C0030C637 /* georss_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* georss_circle.png */; };
 		DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */; };
 		DDA106EB11E43B16008D00A7 /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA106EA11E43B16008D00A7 /* SimpleKMLBalloonStyle.m */; };
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
@@ -118,7 +118,6 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MapBoxiPadDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPadDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		DD01047D11D0394800B0079E /* kml-point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point.png"; sourceTree = "<group>"; };
 		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripe.png; sourceTree = "<group>"; };
 		DD37914E11DEA54400A3796A /* SimpleKMLFolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLFolder.h; sourceTree = "<group>"; };
 		DD37914F11DEA54400A3796A /* SimpleKMLFolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLFolder.m; sourceTree = "<group>"; };
@@ -186,6 +185,7 @@
 		DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxGeoRSSBrowserController.xib; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxOverlayManager.m; sourceTree = "<group>"; };
+		DD72C76211E6847C0030C637 /* georss_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = georss_circle.png; sourceTree = "<group>"; };
 		DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML_UIImage.h; sourceTree = "<group>"; };
 		DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML_UIImage.m; sourceTree = "<group>"; };
 		DDA106E911E43B16008D00A7 /* SimpleKMLBalloonStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLBalloonStyle.h; sourceTree = "<group>"; };
@@ -413,9 +413,9 @@
 		DD70D91D11D188DA0002E222 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				DD01047D11D0394800B0079E /* kml-point.png */,
 				DD01060B11D04E2000B0079E /* stripe.png */,
 				DD70D7C111D16AB50002E222 /* stick.png */,
+				DD72C76211E6847C0030C637 /* georss_circle.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -605,7 +605,6 @@
 				DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */,
 				DD48C86711CC43F100038969 /* 404803.jpg in Resources */,
 				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
-				DD01047E11D0394800B0079E /* kml-point.png in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
 				DD70D7C211D16AB50002E222 /* stick.png in Resources */,
 				DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */,
@@ -614,6 +613,7 @@
 				DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */,
 				DDA1073C11E4436E008D00A7 /* balloon.html in Resources */,
 				DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */,
+				DD72C76311E6847C0030C637 /* georss_circle.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

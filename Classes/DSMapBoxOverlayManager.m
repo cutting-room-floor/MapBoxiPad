@@ -27,6 +27,8 @@
 #import "SimpleKMLPolyStyle.h"
 #import "SimpleKML_UIImage.h"
 
+#import "TouchXML.h"
+
 @implementation DSMapBoxOverlayManager
 
 - (id)initWithMapView:(RMMapView *)inMapView
@@ -176,7 +178,45 @@
 
 - (void)addOverlayForGeoRSS:(NSString *)rss
 {
-    NSLog(@"adding %@", rss);
+    NSMutableArray *overlay = [NSMutableArray array];
+    
+    NSError *error = nil;
+    
+    CXMLDocument *doc = [[[CXMLDocument alloc] initWithXMLString:rss options:0 error:&error] autorelease];
+    
+    if ( ! error)
+    {
+        UIImage *image = [[[UIImage imageNamed:@"georss_circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kPlacemarkAlpha];
+        
+        NSArray *items = [doc nodesForXPath:@"//item[georss:point!='0 0']" 
+                          namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.georss.org/georss" forKey:@"georss"] 
+                                      error:NULL];
+        
+        for (CXMLElement *item in items)
+        {
+            NSString *title       = [[[item elementsForName:@"title"]       objectAtIndex:0] stringValue];
+            NSString *description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
+            NSString *link        = [[[item elementsForName:@"link"]        objectAtIndex:0] stringValue];
+            NSString *date        = [[[item elementsForName:@"pubDate"]     objectAtIndex:0] stringValue];
+            NSString *coordinate  = [[[item elementsForName:@"point"]       objectAtIndex:0] stringValue];
+            
+            CLLocationCoordinate2D point;
+
+            point.latitude  = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
+            point.longitude = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];
+            
+            RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+            
+            [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
+            
+            [mapView.contents.markerManager addMarker:marker AtLatLong:point];
+            
+            [overlay addObject:marker];
+        }
+    }
+    
+    if ([overlay count])
+        [overlays addObject:overlay];
 }
 
 - (void)removeAllOverlays
