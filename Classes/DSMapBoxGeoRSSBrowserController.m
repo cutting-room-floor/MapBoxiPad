@@ -8,6 +8,8 @@
 
 #import "DSMapBoxGeoRSSBrowserController.h"
 
+#define kBrowserStartURL @"http://localhost/~incanus/testing.html"
+
 @implementation DSMapBoxGeoRSSBrowserController
 
 @synthesize delegate;
@@ -18,7 +20,7 @@
     
     [addressField becomeFirstResponder];
     
-    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost/~incanus/testing.html"]]];
+    [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kBrowserStartURL]]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
