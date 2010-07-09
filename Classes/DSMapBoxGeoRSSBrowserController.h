@@ -23,6 +23,7 @@
     IBOutlet UITextField *addressField;
     IBOutlet UIWebView *webView;
     id <DSMapBoxGeoRSSBrowserControllerDelegate>delegate;
+    NSString *browserURLString;
 }
 
 @property (nonatomic, assign) id <DSMapBoxGeoRSSBrowserControllerDelegate>delegate;

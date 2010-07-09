@@ -8,7 +8,7 @@
 
 #import "DSMapBoxGeoRSSBrowserController.h"
 
-#define kBrowserStartURL @"http://localhost/~incanus/testing.html"
+#define kBrowserStartURL @"http://www.google.com"
 
 @implementation DSMapBoxGeoRSSBrowserController
 
@@ -18,14 +18,19 @@
 {
     [super viewDidLoad];
     
-    [addressField becomeFirstResponder];
-    
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:kBrowserStartURL]]];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
+}
+
+- (void)dealloc
+{
+    [browserURLString release];
+    
+    [super dealloc];
 }
 
 #pragma mark -
@@ -52,9 +57,7 @@
     NSURL *requestURL = [NSURL URLWithString:textField.text];
     
     if (requestURL)
-    {
-        [webView loadRequest:[NSURLRequest requestWithURL:requestURL]];
-    }
+        [webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:textField.text]]];
 }
 
 #pragma mark -
@@ -70,14 +73,24 @@
     }
     
     else if ([[[request URL] scheme] hasPrefix:@"http"])
+    {
+        [browserURLString release];
+        browserURLString = [[[request URL] absoluteString] retain];
+
         return YES;
+    }
     
     return NO;
 }
 
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    addressField.text = browserURLString;
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    // update URL bar
+    addressField.text = browserURLString;
 }
 
 @end
