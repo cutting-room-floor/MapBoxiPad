@@ -26,8 +26,8 @@
 }
 
 - (id)initWithMapView:(RMMapView *)inMapView;
-- (void)addOverlayForKML:(SimpleKML *)kml;
-- (void)addOverlayForGeoRSS:(NSString *)rss;
+- (NSArray *)addOverlayForKML:(SimpleKML *)kml;
+- (NSArray *)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
 - (NSArray *)overlays;
 

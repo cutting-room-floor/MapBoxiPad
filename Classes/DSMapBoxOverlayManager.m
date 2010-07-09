@@ -9,6 +9,9 @@
 #import "DSMapBoxOverlayManager.h"
 
 #import "DSMapBoxBalloonController.h"
+#import "DSMapBoxFeedParser.h"
+
+#import <CoreLocation/CoreLocation.h>
 
 #import "RMMapView.h"
 #import "RMProjection.h"
@@ -29,8 +32,6 @@
 #import "SimpleKMLLineStyle.h"
 #import "SimpleKMLPolyStyle.h"
 #import "SimpleKML_UIImage.h"
-
-#import "TouchXML.h"
 
 @implementation DSMapBoxOverlayManager
 
@@ -58,7 +59,7 @@
 
 #pragma mark -
 
-- (void)addOverlayForKML:(SimpleKML *)kml
+- (NSArray *)addOverlayForKML:(SimpleKML *)kml
 {
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
@@ -176,58 +177,57 @@
         }
         
         if ([overlay count])
-            [overlays addObject:overlay];
-    }
-}
-
-- (void)addOverlayForGeoRSS:(NSString *)rss
-{
-    NSMutableArray *overlay = [NSMutableArray array];
-    
-    NSError *error = nil;
-    
-    CXMLDocument *doc = [[[CXMLDocument alloc] initWithXMLString:rss options:0 error:&error] autorelease];
-    
-    if ( ! error)
-    {
-        UIImage *image = [[[UIImage imageNamed:@"georss_circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kPlacemarkAlpha];
-        
-        NSArray *items = [doc nodesForXPath:@"//item[georss:point!='0 0']" 
-                          namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.georss.org/georss" forKey:@"georss"] 
-                                      error:NULL];
-        
-        for (CXMLElement *item in items)
         {
-            NSString *title       = [[[item elementsForName:@"title"]       objectAtIndex:0] stringValue];
-            NSString *description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
-            NSString *link        = [[[item elementsForName:@"link"]        objectAtIndex:0] stringValue];
-            NSString *date        = [[[item elementsForName:@"pubDate"]     objectAtIndex:0] stringValue];
-            NSString *coordinate  = [[[item elementsForName:@"point"]       objectAtIndex:0] stringValue];
-            
-            NSString *balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><em>%@</em><br/><br/><a href=\"%@\">more</a>", description, date, link];
-            
-            CLLocationCoordinate2D point;
+            [overlays addObject:overlay];
 
-            point.latitude  = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
-            point.longitude = [[[coordinate componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];
-            
-            RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
-            
-            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
-                                                                     title,                         @"title",
-                                                                     balloonBlurb,                  @"description",
-                                                                     nil];
-            
-            [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
-            
-            [mapView.contents.markerManager addMarker:marker AtLatLong:point];
-            
-            [overlay addObject:marker];
+            return [NSArray arrayWithArray:overlay];
         }
     }
     
+    return [NSArray array];
+}
+
+- (NSArray *)addOverlayForGeoRSS:(NSString *)rss
+{
+    NSMutableArray *overlay = [NSMutableArray array];
+    
+    UIImage *image = [[[UIImage imageNamed:@"georss_circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kPlacemarkAlpha];
+
+    NSArray *items = [DSMapBoxFeedParser itemsForFeed:rss];
+    
+    for (NSDictionary *item in items)
+    {
+        NSString *balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><em>%@</em><br/><br/><a href=\"%@\">more</a>", 
+                                     [item objectForKey:@"description"], 
+                                     [item objectForKey:@"date"], 
+                                     [item objectForKey:@"link"]];
+        
+        RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+        
+        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
+                                                                 [item objectForKey:@"title"],  @"title",
+                                                                 balloonBlurb,                  @"description",
+                                                                 nil];
+        
+        [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
+        
+        CLLocationCoordinate2D coordinate;
+        coordinate.latitude  = [[item objectForKey:@"latitude"]  floatValue];
+        coordinate.longitude = [[item objectForKey:@"longitude"] floatValue];
+        
+        [mapView.contents.markerManager addMarker:marker AtLatLong:coordinate];
+        
+        [overlay addObject:marker];
+    }
+    
     if ([overlay count])
+    {
         [overlays addObject:overlay];
+
+        return [NSArray arrayWithArray:overlay];
+    }
+    
+    return [NSArray array];
 }
 
 - (void)removeAllOverlays

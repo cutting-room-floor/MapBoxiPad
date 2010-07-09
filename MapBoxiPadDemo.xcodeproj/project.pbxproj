@@ -59,6 +59,9 @@
 		DD72C76311E6847C0030C637 /* georss_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* georss_circle.png */; };
 		DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */; };
 		DD99DFE111DD3213007CA29A /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */; };
+		DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */; };
+		DDA0745D11E79F8D0049865F /* DSMapBoxFeedParserRSS.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */; };
+		DDA0748A11E7A41F0049865F /* DSMapBoxFeedParserAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */; };
 		DDA106EB11E43B16008D00A7 /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA106EA11E43B16008D00A7 /* SimpleKMLBalloonStyle.m */; };
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
@@ -190,6 +193,12 @@
 		DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DSMapBoxOverlayStripeView.xib; path = ../DSMapBoxOverlayStripeView.xib; sourceTree = "<group>"; };
 		DD99DFDF11DD3213007CA29A /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKML_UIImage.h; sourceTree = "<group>"; };
 		DD99DFE011DD3213007CA29A /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKML_UIImage.m; sourceTree = "<group>"; };
+		DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParser.h; sourceTree = "<group>"; };
+		DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParser.m; sourceTree = "<group>"; };
+		DDA0745B11E79F8D0049865F /* DSMapBoxFeedParserRSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParserRSS.h; sourceTree = "<group>"; };
+		DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParserRSS.m; sourceTree = "<group>"; };
+		DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParserAtom.h; sourceTree = "<group>"; };
+		DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParserAtom.m; sourceTree = "<group>"; };
 		DDA106E911E43B16008D00A7 /* SimpleKMLBalloonStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SimpleKMLBalloonStyle.h; sourceTree = "<group>"; };
 		DDA106EA11E43B16008D00A7 /* SimpleKMLBalloonStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SimpleKMLBalloonStyle.m; sourceTree = "<group>"; };
 		DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxBalloonController.h; sourceTree = "<group>"; };
@@ -349,6 +358,12 @@
 				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
 				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
 				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
+				DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */,
+				DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */,
+				DDA0745B11E79F8D0049865F /* DSMapBoxFeedParserRSS.h */,
+				DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */,
+				DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */,
+				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
 				DDCDD60111D96CF600568320 /* RMCircle.h */,
 				DDCDD60211D96CF600568320 /* RMCircle.m */,
 				DDF31FF211DAB11E0068287A /* Simple KML */,
@@ -673,6 +688,9 @@
 				DD72C37C11E53CF20030C637 /* FMResultSet.m in Sources */,
 				DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */,
 				DD72C69311E673EF0030C637 /* DSMapBoxOverlayManager.m in Sources */,
+				DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */,
+				DDA0745D11E79F8D0049865F /* DSMapBoxFeedParserRSS.m in Sources */,
+				DDA0748A11E7A41F0049865F /* DSMapBoxFeedParserAtom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
