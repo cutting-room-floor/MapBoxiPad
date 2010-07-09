@@ -76,10 +76,24 @@
             [self.delegate browserController:self didVisitFeedURL:[request URL]];
         
         [self tappedCancel:self];
+        
+        return NO;
     }
     
     else if ([[[request URL] scheme] hasPrefix:@"http"])
     {
+        NSString *contents = [NSString stringWithContentsOfURL:[request URL] encoding:NSUTF8StringEncoding error:NULL];
+        
+        if ([contents hasPrefix:@"<?xml "])
+        {
+            if (self.delegate && [(NSObject *)self.delegate respondsToSelector:@selector(browserController:didVisitFeedURL:)])
+                [self.delegate browserController:self didVisitFeedURL:[request URL]];
+            
+            [self tappedCancel:self];
+            
+            return NO;
+        }
+
         [browserURLString release];
         browserURLString = [[[request URL] absoluteString] retain];
 
