@@ -28,6 +28,7 @@
 
 @property (nonatomic, assign) id <DSMapBoxGeoRSSBrowserControllerDelegate>delegate;
 
+- (IBAction)tappedBackButton:(id)sender;
 - (IBAction)tappedCancel:(id)sender;
 
 @end

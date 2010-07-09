@@ -35,6 +35,12 @@
 
 #pragma mark -
 
+- (IBAction)tappedBackButton:(id)sender
+{
+    [webView stopLoading];
+    [webView goBack];
+}
+
 - (IBAction)tappedCancel:(id)sender
 {
     [self.parentViewController dismissModalViewControllerAnimated:YES];
