@@ -18,6 +18,8 @@
 #import "RMMarkerManager.h"
 #import "RMLayerCollection.h"
 #import "RMPath.h"
+#import "RMLatLong.h"
+#import "RMGlobalConstants.h"
 
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
@@ -59,11 +61,16 @@
 
 #pragma mark -
 
-- (NSArray *)addOverlayForKML:(SimpleKML *)kml
+- (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml
 {
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
         NSMutableArray *overlay = [NSMutableArray array];
+        
+        CGFloat minLat =  kMaxLat;
+        CGFloat maxLat = -kMaxLat;
+        CGFloat minLon =  kMaxLong;
+        CGFloat maxLon = -kMaxLong;
         
         for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
         {
@@ -100,9 +107,23 @@
                                                                              nil];
                 }
                 
+                CLLocationCoordinate2D coordinate = ((SimpleKMLPlacemark *)feature).point.coordinate;
+                
+                if (coordinate.latitude < minLat)
+                    minLat = coordinate.latitude;
+                
+                if (coordinate.latitude > maxLat)
+                    maxLat = coordinate.latitude;
+                
+                if (coordinate.longitude < minLon)
+                    minLon = coordinate.longitude;
+                
+                if (coordinate.longitude > maxLon)
+                    maxLon = coordinate.longitude;
+                
                 [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
                 
-                [mapView.contents.markerManager addMarker:marker AtLatLong:((SimpleKMLPlacemark *)feature).point.coordinate];
+                [mapView.contents.markerManager addMarker:marker AtLatLong:coordinate];
                 
                 [overlay addObject:marker];
             }
@@ -131,6 +152,22 @@
                     
                     else
                         [path addLineToLatLong:coordinate.coordinate];
+                
+                    // this could be possibly be done per-path instead of per-point using
+                    // a bounding box but I wasn't having much luck with it & it's 
+                    // probably only worth it on very large & complicated paths
+                    //
+                    if (coordinate.coordinate.latitude < minLat)
+                        minLat = coordinate.coordinate.latitude;
+                    
+                    if (coordinate.coordinate.latitude > maxLat)
+                        maxLat = coordinate.coordinate.latitude;
+                    
+                    if (coordinate.coordinate.longitude < minLon)
+                        minLon = coordinate.coordinate.longitude;
+                    
+                    if (coordinate.coordinate.longitude > maxLon)
+                        maxLon = coordinate.coordinate.longitude;
                 }
                 
                 [mapView.contents.overlay addSublayer:path];
@@ -168,6 +205,22 @@
                     
                     else
                         [path addLineToLatLong:coordinate.coordinate];
+                
+                    // this could be possibly be done per-path instead of per-point using
+                    // a bounding box but I wasn't having much luck with it & it's 
+                    // probably only worth it on very large & complicated paths
+                    //
+                    if (coordinate.coordinate.latitude < minLat)
+                        minLat = coordinate.coordinate.latitude;
+                    
+                    if (coordinate.coordinate.latitude > maxLat)
+                        maxLat = coordinate.coordinate.latitude;
+                    
+                    if (coordinate.coordinate.longitude < minLon)
+                        minLon = coordinate.coordinate.longitude;
+                    
+                    if (coordinate.coordinate.longitude > maxLon)
+                        maxLon = coordinate.coordinate.longitude;
                 }
                 
                 [mapView.contents.overlay addSublayer:path];
@@ -180,16 +233,34 @@
         {
             [overlays addObject:overlay];
 
-            return [NSArray arrayWithArray:overlay];
+            // calculate bounds showing all points plus a 10% border on the edges
+            //
+            RMSphericalTrapezium overlayBounds = { 
+                .northeast = {
+                    .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+                    .longitude = maxLon + (0.1 * (maxLon - minLon))
+                },
+                .southwest = {
+                    .latitude  = minLat - (0.1 * (maxLat - minLat)),
+                    .longitude = minLon - (0.1 * (maxLat - minLat))
+                }
+            };
+            
+            return overlayBounds;
         }
     }
     
-    return [NSArray array];
+    return [mapView.contents latitudeLongitudeBoundingBoxForScreen];
 }
 
-- (NSArray *)addOverlayForGeoRSS:(NSString *)rss
+- (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss
 {
     NSMutableArray *overlay = [NSMutableArray array];
+    
+    CGFloat minLat =   90;
+    CGFloat maxLat =  -90;
+    CGFloat minLon =  180;
+    CGFloat maxLon = -180;
     
     UIImage *image = [[[UIImage imageNamed:@"georss_circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kPlacemarkAlpha];
 
@@ -215,6 +286,18 @@
         coordinate.latitude  = [[item objectForKey:@"latitude"]  floatValue];
         coordinate.longitude = [[item objectForKey:@"longitude"] floatValue];
         
+        if (coordinate.latitude < minLat)
+            minLat = coordinate.latitude;
+
+        if (coordinate.latitude > maxLat)
+            maxLat = coordinate.latitude;
+
+        if (coordinate.longitude < minLon)
+            minLon = coordinate.longitude;
+        
+        if (coordinate.longitude > maxLon)
+            maxLon = coordinate.longitude;
+        
         [mapView.contents.markerManager addMarker:marker AtLatLong:coordinate];
         
         [overlay addObject:marker];
@@ -224,10 +307,23 @@
     {
         [overlays addObject:overlay];
 
-        return [NSArray arrayWithArray:overlay];
+        // calculate bounds showing all points plus a 10% border on the edges
+        //
+        RMSphericalTrapezium overlayBounds = { 
+            .northeast = {
+                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+                .longitude = maxLon + (0.1 * (maxLon - minLon))
+            },
+            .southwest = {
+                .latitude  = minLat - (0.1 * (maxLat - minLat)),
+                .longitude = minLon - (0.1 * (maxLat - minLat))
+            }
+        };
+        
+        return overlayBounds;
     }
     
-    return [NSArray array];
+    return [mapView.contents latitudeLongitudeBoundingBoxForScreen];
 }
 
 - (void)removeAllOverlays

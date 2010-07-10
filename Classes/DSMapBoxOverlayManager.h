@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "RMMapView.h"
+#import "RMLatLong.h"
 
 #define kPlacemarkAlpha  0.7f
 
@@ -26,8 +27,8 @@
 }
 
 - (id)initWithMapView:(RMMapView *)inMapView;
-- (NSArray *)addOverlayForKML:(SimpleKML *)kml;
-- (NSArray *)addOverlayForGeoRSS:(NSString *)rss;
+- (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
+- (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
 - (NSArray *)overlays;
 

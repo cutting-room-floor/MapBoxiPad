@@ -161,7 +161,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     if ( ! kml)
         kml = [[SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL] retain];
     
-    [overlayManager addOverlayForKML:kml];
+    RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForKML:kml];
+    
+    [mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 - (IBAction)tappedGeoRSSButton:(id)sender
@@ -272,7 +274,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     
     NSString *rss = [NSString stringWithContentsOfURL:feedURL encoding:NSUTF8StringEncoding error:&error];
     
-    [overlayManager addOverlayForGeoRSS:rss];
+    RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForGeoRSS:rss];
+    
+    [mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 @end
