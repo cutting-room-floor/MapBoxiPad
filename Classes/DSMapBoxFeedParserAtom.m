@@ -32,10 +32,10 @@
         
         for (CXMLElement *item in items)
         {
-            NSString *title       = [[[item elementsForName:@"title"]       objectAtIndex:0] stringValue];
-            NSString *description = [[[item elementsForName:@"content"]     objectAtIndex:0] stringValue];
-            NSString *date        = [[[item elementsForName:@"published"]   objectAtIndex:0] stringValue];
-            NSString *point       = [[[item elementsForName:@"point"]       objectAtIndex:0] stringValue];
+            NSString *title       = [[[item elementsForName:@"title"]     objectAtIndex:0] stringValue];
+            NSString *description = [[[item elementsForName:@"content"]   objectAtIndex:0] stringValue];
+            NSString *date        = [[[item elementsForName:@"published"] objectAtIndex:0] stringValue];
+            NSString *point       = [[[item elementsForName:@"point"]     objectAtIndex:0] stringValue];
 
             CXMLElement *linkElement = [[item nodesForXPath:@"atom:link[@rel='alternate']" 
                                           namespaceMappings:namespaces 

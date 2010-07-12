@@ -163,7 +163,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForKML:kml];
     
-    [mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
+    //[mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 - (IBAction)tappedGeoRSSButton:(id)sender
@@ -276,7 +276,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     
     RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForGeoRSS:rss];
     
-    [mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
+    //[mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 @end
