@@ -164,7 +164,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 1 && indexPath.row == [tableView numberOfRowsInSection:1] - 1)
-        [[DSMapBoxTileSetManager defaultManager] importTileSetFromURL:[NSURL URLWithString:DS_EXTERNAL_TILESET]];
+        return;
+        //[[DSMapBoxTileSetManager defaultManager] importTileSetFromURL:[NSURL URLWithString:DS_EXTERNAL_TILESET]];
         
     else
         if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[tableView cellForRowAtIndexPath:indexPath].textLabel.text])
