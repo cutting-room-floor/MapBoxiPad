@@ -8,7 +8,7 @@
 
 #import "DSMapBoxGeoRSSBrowserController.h"
 
-#define kBrowserStartURL @"http://www.google.com"
+#define kBrowserStartURL @"http://reliefweb.managingnews.com/feeds"
 
 @implementation DSMapBoxGeoRSSBrowserController
 
