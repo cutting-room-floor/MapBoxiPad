@@ -163,7 +163,7 @@
 
 - (NSString *)uniqueTilecacheKey
 {
-    return @"MapBoxSQLite";
+    return [[[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] path] lastPathComponent];
 }
 
 - (NSString *)shortName
