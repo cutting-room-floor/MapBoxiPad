@@ -1,0 +1,12 @@
+[submodule "Externals/route-me"]
+	path = Externals/route-me
+	url = git@github.com:developmentseed/route-me-svn.git
+[submodule "Externals/FMDB"]
+	path = Externals/FMDB
+	url = http://github.com/ccgus/fmdb.git
+[submodule "Externals/TouchXML"]
+	path = Externals/TouchXML
+	url = http://github.com/schwa/TouchXML.git
+[submodule "Externals/Simple KML"]
+	path = Externals/Simple KML
+	url = git@github.com:incanus/Simple-KML.git
