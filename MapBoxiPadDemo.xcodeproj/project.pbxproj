@@ -51,6 +51,7 @@
 		DD0F618811ED5ACF0050174D /* CXMLNode_XPathExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617911ED5ACF0050174D /* CXMLNode_XPathExtensions.m */; };
 		DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617B11ED5ACF0050174D /* CXMLNode.m */; };
 		DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617E11ED5ACF0050174D /* CTidy.m */; };
+		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
 		DD4401AC11E3D2950094344C /* World-Light_z0-10_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD4401AB11E3D2950094344C /* World-Light_z0-10_v1.mbtiles */; };
 		DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
@@ -195,6 +196,7 @@
 		DD0F617E11ED5ACF0050174D /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
 		DD0F617F11ED5ACF0050174D /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Common/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
+		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
 		DD4401AB11E3D2950094344C /* World-Light_z0-10_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "World-Light_z0-10_v1.mbtiles"; path = "../stuff to not backup/World-Light_z0-10_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "page-flip-8.wav"; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -505,6 +507,7 @@
 				DD01060B11D04E2000B0079E /* stripe.png */,
 				DD70D7C111D16AB50002E222 /* stick.png */,
 				DD72C76211E6847C0030C637 /* georss_circle.png */,
+				DD10184411EE51FC00DF286F /* mapbox.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -633,6 +636,7 @@
 				DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */,
 				DD72C76311E6847C0030C637 /* georss_circle.png in Resources */,
 				DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */,
+				DD10184511EE51FC00DF286F /* mapbox.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
