@@ -723,11 +723,7 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPadDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
@@ -753,18 +749,14 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPadDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
@@ -829,18 +821,14 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPadDemo-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
+					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
 				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
+					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
