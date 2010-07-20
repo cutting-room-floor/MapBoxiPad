@@ -19,7 +19,6 @@
     IBOutlet RMMapView *mapView;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *kmlButton;
-    IBOutlet UIBarButtonItem *rotationButton;
     IBOutlet UIBarButtonItem *recenterButton;
     IBOutlet UIBarButtonItem *tilesButton;
     UIPopoverController *tilesPopover;
@@ -27,7 +26,6 @@
     DSMapBoxOverlayManager *overlayManager;
 }
 
-- (IBAction)tappedAllowRotationButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedKMLButton:(id)sender;
 - (IBAction)tappedGeoRSSButton:(id)sender;

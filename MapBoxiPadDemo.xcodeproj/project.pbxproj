@@ -60,11 +60,7 @@
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
-		DD48C84611CC423800038969 /* Wood_Plank_Look_Tile.JPG in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */; };
-		DD48C84711CC423800038969 /* Wood-Pattern12.png in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84311CC423800038969 /* Wood-Pattern12.png */; };
-		DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84411CC423800038969 /* Wood-Texture.jpg */; };
-		DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */; };
-		DD48C86711CC43F100038969 /* 404803.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* 404803.jpg */; };
+		DD48C86711CC43F100038969 /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen.jpg */; };
 		DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */; };
 		DD70D7C211D16AB50002E222 /* stick.png in Resources */ = {isa = PBXBuildFile; fileRef = DD70D7C111D16AB50002E222 /* stick.png */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
@@ -206,11 +202,7 @@
 		DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxSQLiteTileSource.h; sourceTree = "<group>"; };
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
-		DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = Wood_Plank_Look_Tile.JPG; sourceTree = "<group>"; };
-		DD48C84311CC423800038969 /* Wood-Pattern12.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wood-Pattern12.png"; sourceTree = "<group>"; };
-		DD48C84411CC423800038969 /* Wood-Texture.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "Wood-Texture.jpg"; sourceTree = "<group>"; };
-		DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "wood-walnut-background-tile.jpg"; sourceTree = "<group>"; };
-		DD48C86611CC43F100038969 /* 404803.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 404803.jpg; sourceTree = "<group>"; };
+		DD48C86611CC43F100038969 /* linen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen.jpg; sourceTree = "<group>"; };
 		DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haiti_commune_term.kml; sourceTree = "<group>"; };
 		DD70D7C111D16AB50002E222 /* stick.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stick.png; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
@@ -310,7 +302,6 @@
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD70D91D11D188DA0002E222 /* Images */,
-				DD6E3B6711D014A8007691F3 /* Textures */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD6E3C8C11D02099007691F3 /* KML */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
@@ -473,18 +464,6 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
-		DD6E3B6711D014A8007691F3 /* Textures */ = {
-			isa = PBXGroup;
-			children = (
-				DD48C84211CC423800038969 /* Wood_Plank_Look_Tile.JPG */,
-				DD48C84311CC423800038969 /* Wood-Pattern12.png */,
-				DD48C84411CC423800038969 /* Wood-Texture.jpg */,
-				DD48C84511CC423800038969 /* wood-walnut-background-tile.jpg */,
-				DD48C86611CC43F100038969 /* 404803.jpg */,
-			);
-			name = Textures;
-			sourceTree = "<group>";
-		};
 		DD6E3C8C11D02099007691F3 /* KML */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,6 +483,7 @@
 		DD70D91D11D188DA0002E222 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DD48C86611CC43F100038969 /* linen.jpg */,
 				DD01060B11D04E2000B0079E /* stripe.png */,
 				DD70D7C111D16AB50002E222 /* stick.png */,
 				DD72C76211E6847C0030C637 /* georss_circle.png */,
@@ -620,11 +600,7 @@
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
 				2899E5220DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib in Resources */,
 				DD48C3C211CBFA9700038969 /* routeme.plist in Resources */,
-				DD48C84611CC423800038969 /* Wood_Plank_Look_Tile.JPG in Resources */,
-				DD48C84711CC423800038969 /* Wood-Pattern12.png in Resources */,
-				DD48C84811CC423800038969 /* Wood-Texture.jpg in Resources */,
-				DD48C84911CC423800038969 /* wood-walnut-background-tile.jpg in Resources */,
-				DD48C86711CC43F100038969 /* 404803.jpg in Resources */,
+				DD48C86711CC43F100038969 /* linen.jpg in Resources */,
 				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
 				DD70D7C211D16AB50002E222 /* stick.png in Resources */,

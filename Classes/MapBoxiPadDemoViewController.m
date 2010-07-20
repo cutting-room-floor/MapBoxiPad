@@ -66,7 +66,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
-    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"404803.jpg"]];
+    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
     
     mapView.delegate = overlayManager;
     
@@ -94,17 +94,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 }
 
 #pragma mark -
-
-- (IBAction)tappedAllowRotationButton:(id)sender
-{
-    mapView.enableRotate = ! mapView.enableRotate;
-    
-    [rotationButton setTitle:(mapView.enableRotate ? @"Disallow Rotation" : @"Allow Rotation")];
-    
-    mapView.rotation = 0.0f;
-    
-    [mapView setNeedsDisplay];
-}
 
 - (IBAction)tappedRecenterButton:(id)sender
 {
