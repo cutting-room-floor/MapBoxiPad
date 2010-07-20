@@ -69,11 +69,6 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 
-    BOOL isDir = NO;
-    
-    if ( ! [[NSFileManager defaultManager] fileExistsAtPath:[userPaths objectAtIndex:0] isDirectory:&isDir] || ! isDir)
-        [[NSFileManager defaultManager] createDirectoryAtPath:[userPaths objectAtIndex:0] attributes:nil];
-    
     return [userPaths objectAtIndex:0];
 }
 
