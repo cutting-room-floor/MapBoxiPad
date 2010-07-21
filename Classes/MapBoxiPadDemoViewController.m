@@ -20,6 +20,7 @@
 
 #import "RMMapContents.h"
 #import "RMMarker.h"
+#import "RMTileSource.h"
 
 #import "TouchXML.h"
 
@@ -205,28 +206,32 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [self.view insertSubview:snapshotView belowSubview:toolbar];
     [mapView removeFromSuperview];
     
-    // adjust map view to new settings
+    // adjust map view to new auto-reloaded tile source settings
     //
-    DSMapBoxSQLiteTileSource *newSource = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
+    id <RMTileSource>tileSource = mapView.contents.tileSource;
     
     float newZoom = -1;
     
-    if (mapView.contents.zoom < [newSource minZoom])
-        newZoom = [newSource minZoom];
+    if (mapView.contents.zoom < [tileSource minZoom])
+        newZoom = [tileSource minZoom];
     
-    else if (mapView.contents.zoom > [newSource maxZoom])
-        newZoom = [newSource maxZoom];
+    else if (mapView.contents.zoom > [tileSource maxZoom])
+        newZoom = [tileSource maxZoom];
     
     if (newZoom >= 0)
         mapView.contents.zoom = newZoom;
-    
-    [mapView.contents removeAllCachedImages];
-    
-    mapView.contents.minZoom = [newSource minZoom];
-    mapView.contents.maxZoom = [newSource maxZoom];
-    
-    mapView.contents.tileSource = newSource;
 
+    mapView.contents.minZoom = [tileSource minZoom];
+    mapView.contents.maxZoom = [tileSource maxZoom];
+
+    // clear cache & jiggle the map a bit to reload
+    //
+    [mapView.contents removeAllCachedImages];
+
+    float currentZoom = mapView.contents.zoom;
+    mapView.contents.zoom = currentZoom * 0.01;
+    mapView.contents.zoom = currentZoom;
+    
     // start up page turn sound effect
     //
     NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page-flip-8" ofType:@"wav"]];
