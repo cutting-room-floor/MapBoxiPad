@@ -12,13 +12,13 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
 #import "DSMapBoxOverlayManager.h"
+#import "DSMapContents.h"
 
 #import "SimpleKML.h"
 #import "SimpleKML_UIImage.h"
 #import "SimpleKMLPlacemark.h"
 #import "SimpleKMLPoint.h"
 
-#import "RMMapContents.h"
 #import "RMMarker.h"
 #import "RMTileSource.h"
 
@@ -54,7 +54,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
     
-	[[[RMMapContents alloc] initWithView:mapView 
+	[[[DSMapContents alloc] initWithView:mapView 
                               tilesource:source
                             centerLatLon:startingPoint
                                zoomLevel:kStartingZoom
@@ -208,7 +208,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     // adjust map view to new auto-reloaded tile source settings
     //
-    id <RMTileSource>tileSource = mapView.contents.tileSource;
+    DSMapBoxSQLiteTileSource *tileSource = mapView.contents.tileSource;
     
     float newZoom = -1;
     
@@ -224,12 +224,16 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     mapView.contents.minZoom = [tileSource minZoom];
     mapView.contents.maxZoom = [tileSource maxZoom];
 
-    // clear cache & jiggle the map a bit to reload
+    // jiggle the map a bit to reload
     //
-    [mapView.contents removeAllCachedImages];
-
     float currentZoom = mapView.contents.zoom;
-    mapView.contents.zoom = currentZoom * 0.01;
+    
+    if (currentZoom < [tileSource maxZoom])
+        mapView.contents.zoom = currentZoom + 1.0;
+    
+    else if (currentZoom > [tileSource minZoom])
+        mapView.contents.zoom = currentZoom - 1.0;
+
     mapView.contents.zoom = currentZoom;
     
     // start up page turn sound effect

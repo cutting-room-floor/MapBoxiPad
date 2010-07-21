@@ -79,6 +79,7 @@
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
+		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -230,6 +231,8 @@
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
+		DDFB5ED611F784CA00695B89 /* DSMapContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapContents.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -415,6 +418,8 @@
 		DD48BEF311CAE76A00038969 /* Custom */ = {
 			isa = PBXGroup;
 			children = (
+				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
+				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
 				DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */,
 				DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
@@ -671,6 +676,7 @@
 				DD0F618811ED5ACF0050174D /* CXMLNode_XPathExtensions.m in Sources */,
 				DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */,
 				DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */,
+				DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
