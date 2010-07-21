@@ -7,9 +7,9 @@
 		<dict>
 			<key>type</key>
 			<string>db-cache</string>
-			<key>capacity</key>
+			<key>xcapacity</key>
 			<integer>500</integer>
-			<key>strategy</key>
+			<key>xstrategy</key>
 			<string>FIFO</string>
 			<key>useCachesDirectory</key>
 			<true/>
