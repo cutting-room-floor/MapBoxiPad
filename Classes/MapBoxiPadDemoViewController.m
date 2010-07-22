@@ -12,7 +12,10 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
 #import "DSMapBoxOverlayManager.h"
+#import "DSMapBoxKMLChooserController.h"
 #import "DSMapContents.h"
+
+#import "UIApplication_Additions.h"
 
 #import "SimpleKML.h"
 #import "SimpleKML_UIImage.h"
@@ -88,8 +91,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
+    [kmlPopover release];
+    [tilesPopover release];
     [overlayManager release];
-    [kml release];
 
     [super dealloc];
 }
@@ -130,30 +134,36 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
     else if (newKML)
     {
-        kml = [newKML retain];
+        NSString *source      = [fileURL relativePath];
+        NSString *filename    = [[fileURL relativePath] lastPathComponent];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        
+        [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
+        
         [self tappedKMLButton:self];
     }
 }
 
 - (IBAction)tappedKMLButton:(id)sender
 {
-    if ([[overlayManager overlays] count])
+    if (kmlPopover.popoverVisible)
+        [kmlPopover dismissPopoverAnimated:YES];
+    
+    else
     {
-        [kmlButton setTitle:@"Turn KML On"];
-
-        [overlayManager removeAllOverlays];
-
-        return;
+        if ( ! kmlPopover)
+        {
+            DSMapBoxKMLChooserController *chooser = [[[DSMapBoxKMLChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
+            
+            chooser.overlayManager = overlayManager;
+            
+            kmlPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
+            
+            kmlPopover.passthroughViews = nil;            
+        }
+        
+        [kmlPopover presentPopoverFromBarButtonItem:kmlButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
-    
-    [kmlButton setTitle:@"Turn KML Off"];
-    
-    if ( ! kml)
-        kml = [[SimpleKML KMLWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"haiti_commune_term" ofType:@"kml"] error:NULL] retain];
-    
-    RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForKML:kml];
-    
-    //[mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 - (IBAction)tappedGeoRSSButton:(id)sender
@@ -175,10 +185,10 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     DSMapBoxTileSetChooserController *chooser = [[[DSMapBoxTileSetChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
     
     tilesPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
-    
-    [tilesPopover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    
+        
     tilesPopover.passthroughViews = nil;
+
+    [tilesPopover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (void)tileSetDidChange:(NSNotification *)notification
@@ -238,7 +248,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     // start up page turn sound effect
     //
-    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page-flip-8" ofType:@"wav"]];
+    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
     SystemSoundID sound;
     AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
     AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, SoundCompletionProc, self);

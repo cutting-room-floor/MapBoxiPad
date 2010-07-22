@@ -231,8 +231,12 @@
         
         if ([overlay count])
         {
-            [overlays addObject:overlay];
-
+            NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
+                                                                                   overlay, @"overlay",
+                                                                                   nil];
+            
+            [overlays addObject:overlayDict];
+            
             // calculate bounds showing all points plus a 10% border on the edges
             //
             RMSphericalTrapezium overlayBounds = { 
@@ -305,8 +309,12 @@
     
     if ([overlay count])
     {
-        [overlays addObject:overlay];
-
+        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:rss,     @"source", 
+                                                                               overlay, @"overlay",
+                                                                               nil];
+        
+        [overlays addObject:overlayDict];
+        
         // calculate bounds showing all points plus a 10% border on the edges
         //
         RMSphericalTrapezium overlayBounds = { 
@@ -335,6 +343,21 @@
     stripeViewLabel.text = @"";
     
     [overlays removeAllObjects];
+}
+
+- (void)removeOverlayWithSource:(NSString *)source
+{
+    for (NSDictionary *overlayDict in overlays)
+    {
+        if ([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
+            [[[overlayDict objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source])
+        {
+            NSArray *components = [overlayDict objectForKey:@"overlay"];
+            
+            for (id component in components)
+                [(CALayer *)component removeFromSuperlayer];
+        }
+    }
 }
 
 - (NSArray *)overlays

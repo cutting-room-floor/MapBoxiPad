@@ -7,10 +7,10 @@
 //
 
 #import "DSMapBoxTileSetManager.h"
+#import "UIApplication_Additions.h"
 
 @interface DSMapBoxTileSetManager (DSMapBoxTileSetManagerPrivate)
 
-- (NSString *)documentsFolderPathString;
 - (NSArray *)alternateTileSetPaths;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection;
@@ -65,23 +65,16 @@ static DSMapBoxTileSetManager *defaultManager;
 
 #pragma mark -
 
-- (NSString *)documentsFolderPathString
-{
-    NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-
-    return [userPaths objectAtIndex:0];
-}
-
 - (NSArray *)alternateTileSetPaths
 {
-    NSArray *docsContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self documentsFolderPathString] error:NULL];
+    NSArray *docsContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
     
     NSArray *alternateFileNames = [docsContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF ENDSWITH '.mbtiles'"]];
 
     NSMutableArray *results = [NSMutableArray array];
     
     for (NSString *fileName in alternateFileNames)
-        [results addObject:[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [self documentsFolderPathString], fileName]]];
+        [results addObject:[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], fileName]]];
     
     return [NSArray arrayWithArray:results];
 }
@@ -158,7 +151,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     NSString *baseName = [[[importURL relativePath] componentsSeparatedByString:@"/"] lastObject];
     
-    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", [self documentsFolderPathString], baseName] error:NULL];
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], baseName] error:NULL];
     
     [connection scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
     [connection start];
@@ -229,7 +222,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
     
-    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [[UIApplication sharedApplication] documentsFolderPathString], baseName];
     
     [[NSFileManager defaultManager] removeItemAtPath:inProgress error:NULL];
     
@@ -246,7 +239,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
     
-    [[NSFileManager defaultManager] createFileAtPath:[NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName]
+    [[NSFileManager defaultManager] createFileAtPath:[NSString stringWithFormat:@"%@/%@.mbdownload", [[UIApplication sharedApplication] documentsFolderPathString], baseName]
                                             contents:[NSData data]
                                           attributes:nil];
     
@@ -265,7 +258,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
 
-    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [[UIApplication sharedApplication] documentsFolderPathString], baseName];
     
     NSFileHandle *fileHandle = [NSFileHandle fileHandleForWritingAtPath:inProgress];
     
@@ -282,10 +275,10 @@ static DSMapBoxTileSetManager *defaultManager;
     
     NSString *baseName = [[[download objectForKey:@"url"] componentsSeparatedByString:@"/"] lastObject];
     
-    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [self documentsFolderPathString], baseName];
+    NSString *inProgress = [NSString stringWithFormat:@"%@/%@.mbdownload", [[UIApplication sharedApplication] documentsFolderPathString], baseName];
     
     [[NSFileManager defaultManager] moveItemAtPath:inProgress 
-                                            toPath:[NSString stringWithFormat:@"%@/%@", [self documentsFolderPathString], baseName] 
+                                            toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], baseName] 
                                              error:NULL];
     
     [_activeDownloads removeObject:download];
