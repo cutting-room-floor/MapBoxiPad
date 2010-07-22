@@ -53,7 +53,7 @@
 		DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617E11ED5ACF0050174D /* CTidy.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
 		DD4401AC11E3D2950094344C /* World-Light_z0-10_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD4401AB11E3D2950094344C /* World-Light_z0-10_v1.mbtiles */; };
-		DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */; };
+		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
 		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
@@ -61,10 +61,8 @@
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C86711CC43F100038969 /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen.jpg */; };
-		DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */; };
-		DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */; };
 		DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */; };
 		DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */; };
@@ -76,9 +74,12 @@
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
+		DDA291E811F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */; };
+		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
+		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -119,7 +120,7 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* MapBoxiPadDemo_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPadDemo_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
-		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stripe.png; sourceTree = "<group>"; };
+		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stripe.png; path = ../stripe.png; sourceTree = "<group>"; };
 		DD0F611E11ED5A9F0050174D /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML_UIImage.h; path = "Externals/Simple KML/SimpleKML_UIImage.h"; sourceTree = "<group>"; };
 		DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKML_UIImage.m; path = "Externals/Simple KML/SimpleKML_UIImage.m"; sourceTree = "<group>"; };
 		DD0F612011ED5A9F0050174D /* SimpleKML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML.h; path = "Externals/Simple KML/SimpleKML.h"; sourceTree = "<group>"; };
@@ -194,7 +195,7 @@
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
 		DD4401AB11E3D2950094344C /* World-Light_z0-10_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "World-Light_z0-10_v1.mbtiles"; path = "../stuff to not backup/World-Light_z0-10_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
-		DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "page-flip-8.wav"; sourceTree = "<group>"; };
+		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
 		DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
@@ -203,18 +204,16 @@
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C86611CC43F100038969 /* linen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen.jpg; sourceTree = "<group>"; };
-		DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = haiti_commune_term.kml; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetChooserController.h; sourceTree = "<group>"; };
 		DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetChooserController.m; sourceTree = "<group>"; };
-		DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxTileSetChooserController.xib; sourceTree = "<group>"; };
 		DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxGeoRSSBrowserController.h; sourceTree = "<group>"; };
 		DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxGeoRSSBrowserController.m; sourceTree = "<group>"; };
 		DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxGeoRSSBrowserController.xib; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxOverlayManager.m; sourceTree = "<group>"; };
-		DD72C76211E6847C0030C637 /* georss_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = georss_circle.png; sourceTree = "<group>"; };
+		DD72C76211E6847C0030C637 /* georss_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = georss_circle.png; path = ../georss_circle.png; sourceTree = "<group>"; };
 		DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DSMapBoxOverlayStripeView.xib; path = ../DSMapBoxOverlayStripeView.xib; sourceTree = "<group>"; };
 		DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParser.h; sourceTree = "<group>"; };
 		DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParser.m; sourceTree = "<group>"; };
@@ -225,11 +224,17 @@
 		DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxBalloonController.h; sourceTree = "<group>"; };
 		DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxBalloonController.m; sourceTree = "<group>"; };
 		DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxBalloonController.xib; sourceTree = "<group>"; };
-		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = balloon.html; sourceTree = "<group>"; };
+		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
+		DDA291E511F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxKMLChooserController.h; sourceTree = "<group>"; };
+		DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxKMLChooserController.m; sourceTree = "<group>"; };
+		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
+		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
+		DDFB5ED611F784CA00695B89 /* DSMapContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapContents.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,7 +256,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Classes */ = {
+		080E96DDFE201D6D7F000001 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				1D3623240D0F684500981E51 /* MapBoxiPadDemoAppDelegate.h */,
@@ -260,6 +265,7 @@
 				28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */,
 				2899E5210DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib */,
 			);
+			name = Main;
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -274,8 +280,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Classes */,
-				DD48BEF311CAE76A00038969 /* Custom */,
+				DDA291DD11F8ADD6000FFFF4 /* Classes */,
 				DD48C45F11CC090400038969 /* Externals */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -300,10 +305,8 @@
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
-				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD70D91D11D188DA0002E222 /* Images */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
-				DD6E3C8C11D02099007691F3 /* KML */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
 			);
 			name = Resources;
@@ -407,41 +410,9 @@
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
-				DD48AC3F11D3D79A000AF79E /* page-flip-8.wav */,
+				DD48AC3F11D3D79A000AF79E /* page_flip.wav */,
 			);
 			name = Sounds;
-			sourceTree = "<group>";
-		};
-		DD48BEF311CAE76A00038969 /* Custom */ = {
-			isa = PBXGroup;
-			children = (
-				DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */,
-				DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */,
-				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
-				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
-				DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */,
-				DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */,
-				DD70D9A911D1922C0002E222 /* DSMapBoxTileSetChooserController.xib */,
-				DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */,
-				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
-				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
-				DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */,
-				DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */,
-				DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */,
-				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
-				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
-				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
-				DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */,
-				DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */,
-				DDA0745B11E79F8D0049865F /* DSMapBoxFeedParserRSS.h */,
-				DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */,
-				DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */,
-				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
-				DDCDD60111D96CF600568320 /* RMCircle.h */,
-				DDCDD60211D96CF600568320 /* RMCircle.m */,
-			);
-			name = Custom;
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		DD48C2CB11CBF30600038969 /* route-me */ = {
@@ -464,14 +435,6 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
-		DD6E3C8C11D02099007691F3 /* KML */ = {
-			isa = PBXGroup;
-			children = (
-				DD6E3C8A11D02094007691F3 /* haiti_commune_term.kml */,
-			);
-			name = KML;
-			sourceTree = "<group>";
-		};
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
@@ -485,8 +448,6 @@
 			children = (
 				DDFB5CB011F656EE00695B89 /* icon.png */,
 				DD48C86611CC43F100038969 /* linen.jpg */,
-				DD01060B11D04E2000B0079E /* stripe.png */,
-				DD72C76211E6847C0030C637 /* georss_circle.png */,
 				DD10184411EE51FC00DF286F /* mapbox.png */,
 			);
 			name = Images;
@@ -529,6 +490,90 @@
 				DD0F616311ED5ABC0050174D /* FMResultSet.m */,
 			);
 			name = FMDB;
+			sourceTree = "<group>";
+		};
+		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
+			isa = PBXGroup;
+			children = (
+				DDCDD60111D96CF600568320 /* RMCircle.h */,
+				DDCDD60211D96CF600568320 /* RMCircle.m */,
+				DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */,
+				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
+			);
+			name = "Categories & Additions";
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDA291D711F8AD79000FFFF4 /* Overlays */ = {
+			isa = PBXGroup;
+			children = (
+				DD72C69111E673EF0030C637 /* DSMapBoxOverlayManager.h */,
+				DD72C69211E673EF0030C637 /* DSMapBoxOverlayManager.m */,
+				DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */,
+				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
+				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
+				DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */,
+				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
+				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
+				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
+				DDA291E511F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.h */,
+				DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */,
+				DDA291DC11F8ADAF000FFFF4 /* Resources */,
+			);
+			name = Overlays;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDA291D811F8AD7C000FFFF4 /* Feeds */ = {
+			isa = PBXGroup;
+			children = (
+				DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */,
+				DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */,
+				DDA0745B11E79F8D0049865F /* DSMapBoxFeedParserRSS.h */,
+				DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */,
+				DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */,
+				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
+			);
+			name = Feeds;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDA291D911F8AD87000FFFF4 /* Tiles */ = {
+			isa = PBXGroup;
+			children = (
+				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
+				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
+				DD48C3EC11CC026B00038969 /* DSMapBoxSQLiteTileSource.h */,
+				DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */,
+				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
+				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
+				DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */,
+				DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */,
+			);
+			name = Tiles;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDA291DC11F8ADAF000FFFF4 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD01060B11D04E2000B0079E /* stripe.png */,
+				DDA1073B11E4436E008D00A7 /* balloon.html */,
+				DD72C76211E6847C0030C637 /* georss_circle.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		DDA291DD11F8ADD6000FFFF4 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Main */,
+				DDA291D911F8AD87000FFFF4 /* Tiles */,
+				DDA291D711F8AD79000FFFF4 /* Overlays */,
+				DDA291D811F8AD7C000FFFF4 /* Feeds */,
+				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
+			);
+			name = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -601,10 +646,8 @@
 				2899E5220DE3E06400AC0155 /* MapBoxiPadDemoViewController.xib in Resources */,
 				DD48C3C211CBFA9700038969 /* routeme.plist in Resources */,
 				DD48C86711CC43F100038969 /* linen.jpg in Resources */,
-				DD6E3C8B11D02094007691F3 /* haiti_commune_term.kml in Resources */,
 				DD01060C11D04E2000B0079E /* stripe.png in Resources */,
-				DD70D9AB11D1922C0002E222 /* DSMapBoxTileSetChooserController.xib in Resources */,
-				DD48AC4011D3D79A000AF79E /* page-flip-8.wav in Resources */,
+				DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */,
 				DD4401AC11E3D2950094344C /* World-Light_z0-10_v1.mbtiles in Resources */,
 				DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */,
 				DDA1073C11E4436E008D00A7 /* balloon.html in Resources */,
@@ -671,6 +714,9 @@
 				DD0F618811ED5ACF0050174D /* CXMLNode_XPathExtensions.m in Sources */,
 				DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */,
 				DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */,
+				DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */,
+				DDA291E811F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m in Sources */,
+				DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

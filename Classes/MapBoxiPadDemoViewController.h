@@ -11,7 +11,6 @@
 #import "DSMapBoxGeoRSSBrowserController.h"
 
 @class RMMapView;
-@class SimpleKML;
 @class DSMapBoxOverlayManager;
 
 @interface MapBoxiPadDemoViewController : UIViewController <DSMapBoxGeoRSSBrowserControllerDelegate>
@@ -21,8 +20,8 @@
     IBOutlet UIBarButtonItem *kmlButton;
     IBOutlet UIBarButtonItem *recenterButton;
     IBOutlet UIBarButtonItem *tilesButton;
+    UIPopoverController *kmlPopover;
     UIPopoverController *tilesPopover;
-    SimpleKML *kml;
     DSMapBoxOverlayManager *overlayManager;
 }
 

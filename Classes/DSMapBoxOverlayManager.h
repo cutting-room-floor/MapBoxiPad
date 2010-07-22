@@ -11,7 +11,7 @@
 #import "RMMapView.h"
 #import "RMLatLong.h"
 
-#define kPlacemarkAlpha  0.7f
+#define kPlacemarkAlpha 0.7f
 
 @class RMMapView;
 @class SimpleKML;
@@ -30,6 +30,7 @@
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
+- (void)removeOverlayWithSource:(NSString *)source;
 - (NSArray *)overlays;
 
 @end

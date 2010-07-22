@@ -88,13 +88,13 @@
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="242908024">
-								<string key="IBUITitle">Turn KML On</string>
+								<string key="IBUITitle">KML</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="429059261">
-								<string key="IBUITitle">Find GeoRSS</string>
+								<string key="IBUITitle">GeoRSS</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -176,14 +176,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">kmlButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="242908024"/>
-					</object>
-					<int key="connectionID">37</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
 						<string key="label">recenterButton</string>
 						<reference key="source" ref="841351856"/>
 						<reference key="destination" ref="514991390"/>
@@ -213,6 +205,14 @@
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">43</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">kmlButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="242908024"/>
+					</object>
+					<int key="connectionID">46</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -350,7 +350,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">45</int>
+			<int key="maxID">46</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -362,7 +362,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>tappedAllowRotationButton:</string>
 							<string>tappedGeoRSSButton:</string>
 							<string>tappedKMLButton:</string>
 							<string>tappedRecenterButton:</string>
@@ -370,7 +369,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -381,7 +379,6 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>tappedAllowRotationButton:</string>
 							<string>tappedGeoRSSButton:</string>
 							<string>tappedKMLButton:</string>
 							<string>tappedRecenterButton:</string>
@@ -389,10 +386,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBActionInfo">
-								<string key="name">tappedAllowRotationButton:</string>
-								<string key="candidateClassName">id</string>
-							</object>
 							<object class="IBActionInfo">
 								<string key="name">tappedGeoRSSButton:</string>
 								<string key="candidateClassName">id</string>
@@ -418,7 +411,6 @@
 							<string>kmlButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
-							<string>rotationButton</string>
 							<string>tilesButton</string>
 							<string>toolbar</string>
 						</object>
@@ -426,7 +418,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
 							<string>RMMapView</string>
-							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
@@ -439,7 +430,6 @@
 							<string>kmlButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
-							<string>rotationButton</string>
 							<string>tilesButton</string>
 							<string>toolbar</string>
 						</object>
@@ -455,10 +445,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">recenterButton</string>
-								<string key="candidateClassName">UIBarButtonItem</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">rotationButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
