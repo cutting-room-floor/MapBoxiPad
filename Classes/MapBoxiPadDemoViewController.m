@@ -80,6 +80,11 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                                              selector:@selector(tileSetDidChange:)
                                                  name:DSMapBoxTileSetChangedNotification
                                                object:nil];
+
+    // workaround for compiler optimization bug in Release builds on RMMapView in .xib file
+    // http://stackoverflow.com/questions/1725881/unknown-class-myclass-in-interface-builder-file-error-at-runtime
+    //
+    [RMMapView description];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
