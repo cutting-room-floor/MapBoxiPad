@@ -8,7 +8,7 @@
 
 #import "DSMapBoxLayerManager.h"
 
-#import "DSMapBoxOverlayManager.h";
+#import "DSMapBoxDataOverlayManager.h";
 
 @implementation DSMapBoxLayerManager
 
@@ -18,8 +18,19 @@
 @synthesize tileLayerCount;
 @synthesize dataLayerCount;
 
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager;
+{
+    self = [super init];
+
+    if (self != nil)
+        dataOverlayManager = [overlayManager retain];
+
+    return self;
+}
+
 - (void)dealloc
 {
+    [dataOverlayManager release];
     [layers release];
     [tileLayers release];
     [dataLayers release];

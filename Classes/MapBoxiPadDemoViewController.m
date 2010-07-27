@@ -66,7 +66,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                          backgroundImage:nil] autorelease];
 
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-
+    layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager];
+    
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
@@ -99,6 +100,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [kmlPopover release];
     [layersPopover release];
     [tilesPopover release];
+    [layerManager release];
     [dataOverlayManager release];
 
     [super dealloc];
