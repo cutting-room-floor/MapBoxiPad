@@ -21,6 +21,7 @@
     IBOutlet UIBarButtonItem *recenterButton;
     IBOutlet UIBarButtonItem *tilesButton;
     UIPopoverController *kmlPopover;
+    UIPopoverController *layersPopover;
     UIPopoverController *tilesPopover;
     DSMapBoxOverlayManager *overlayManager;
 }
@@ -28,6 +29,8 @@
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedKMLButton:(id)sender;
 - (IBAction)tappedGeoRSSButton:(id)sender;
+- (IBAction)tappedLayersButton:(id)sender;
+- (IBAction)tappedLibraryButton:(id)sender;
 - (IBAction)tappedTilesButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 
