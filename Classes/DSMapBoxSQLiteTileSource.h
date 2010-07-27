@@ -25,6 +25,7 @@
 }
 
 - (id)init;
+- (id)initWithTileSetAtURL:(NSURL *)tileSetURL;
 - (int)tileSideLength;
 - (void)setTileSideLength:(NSUInteger)aTileSideLength;
 - (RMTileImage *)tileImage:(RMTile)tile;

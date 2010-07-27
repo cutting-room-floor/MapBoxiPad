@@ -26,6 +26,11 @@
 
 - (id)init
 {
+    return [self initWithTileSetAtURL:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]];
+}
+
+- (id)initWithTileSetAtURL:(NSURL *)tileSetURL
+{
 	if ( ! [super init])
 		return nil;
 	
@@ -34,7 +39,7 @@
                                                                  maxZoom:kDSDefaultMaxTileZoom 
                                                                  minZoom:kDSDefaultMinTileZoom];
 	
-    db = [[FMDatabase databaseWithPath:[[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath]] retain];
+    db = [[FMDatabase databaseWithPath:[tileSetURL relativePath]] retain];
     
     if ( ! [db open])
         return nil;
