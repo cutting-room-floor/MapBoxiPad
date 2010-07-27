@@ -13,5 +13,6 @@
 }
 
 - (IBAction)tappedEditButton:(id)sender;
+- (IBAction)tappedDoneButton:(id)sender;
 
 @end
