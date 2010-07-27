@@ -1,12 +1,12 @@
 //
-//  DSMapBoxOverlayManager.m
+//  DSMapBoxDataOverlayManager.m
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 7/8/10.
 //  Copyright 2010 Code Sorcery Workshop. All rights reserved.
 //
 
-#import "DSMapBoxOverlayManager.h"
+#import "DSMapBoxDataOverlayManager.h"
 
 #import "DSMapBoxBalloonController.h"
 #import "DSMapBoxFeedParser.h"
@@ -35,7 +35,7 @@
 #import "SimpleKMLPolyStyle.h"
 #import "SimpleKML_UIImage.h"
 
-@implementation DSMapBoxOverlayManager
+@implementation DSMapBoxDataOverlayManager
 
 - (id)initWithMapView:(RMMapView *)inMapView
 {

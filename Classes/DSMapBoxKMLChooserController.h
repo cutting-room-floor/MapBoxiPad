@@ -8,14 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@class DSMapBoxOverlayManager;
+@class DSMapBoxDataOverlayManager;
 
 @interface DSMapBoxKMLChooserController : UITableViewController
 {
-    DSMapBoxOverlayManager *overlayManager;
+    DSMapBoxDataOverlayManager *overlayManager;
     NSMutableArray *entities;
 }
 
-@property (nonatomic, retain) DSMapBoxOverlayManager *overlayManager;
+@property (nonatomic, retain) DSMapBoxDataOverlayManager *overlayManager;
 
 @end

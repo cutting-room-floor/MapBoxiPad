@@ -1,5 +1,5 @@
 //
-//  DSMapBoxOverlayManager.h
+//  DSMapBoxDataOverlayManager.h
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 7/8/10.
@@ -16,7 +16,7 @@
 @class RMMapView;
 @class SimpleKML;
 
-@interface DSMapBoxOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
+@interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
 {
     RMMapView *mapView;
     NSMutableArray *overlays;

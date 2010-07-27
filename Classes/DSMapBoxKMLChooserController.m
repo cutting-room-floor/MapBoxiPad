@@ -7,7 +7,7 @@
 //
 
 #import "DSMapBoxKMLChooserController.h"
-#import "DSMapBoxOverlayManager.h"
+#import "DSMapBoxDataOverlayManager.h"
 #import "UIApplication_Additions.h"
 #import "SimpleKML.h"
 

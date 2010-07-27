@@ -11,7 +11,7 @@
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
-#import "DSMapBoxOverlayManager.h"
+#import "DSMapBoxDataOverlayManager.h"
 #import "DSMapBoxKMLChooserController.h"
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
@@ -65,14 +65,14 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                             minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];
 
-    overlayManager = [[DSMapBoxOverlayManager alloc] initWithMapView:mapView];
+    dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
 
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
     mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
     
-    mapView.delegate = overlayManager;
+    mapView.delegate = dataOverlayManager;
     
     [self updateTilesButtonTitle];
     
@@ -99,7 +99,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [kmlPopover release];
     [layersPopover release];
     [tilesPopover release];
-    [overlayManager release];
+    [dataOverlayManager release];
 
     [super dealloc];
 }
@@ -161,7 +161,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         {
             DSMapBoxKMLChooserController *chooser = [[[DSMapBoxKMLChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
             
-            chooser.overlayManager = overlayManager;
+            chooser.overlayManager = dataOverlayManager;
             
             kmlPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
             
@@ -320,7 +320,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     
     NSString *rss = [NSString stringWithContentsOfURL:feedURL encoding:NSUTF8StringEncoding error:&error];
     
-    RMSphericalTrapezium overlayBounds = [overlayManager addOverlayForGeoRSS:rss];
+    RMSphericalTrapezium overlayBounds = [dataOverlayManager addOverlayForGeoRSS:rss];
     
     //[mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }

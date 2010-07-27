@@ -11,7 +11,7 @@
 #import "DSMapBoxGeoRSSBrowserController.h"
 
 @class RMMapView;
-@class DSMapBoxOverlayManager;
+@class DSMapBoxDataOverlayManager;
 
 @interface MapBoxiPadDemoViewController : UIViewController <DSMapBoxGeoRSSBrowserControllerDelegate>
 {
@@ -23,7 +23,7 @@
     UIPopoverController *kmlPopover;
     UIPopoverController *layersPopover;
     UIPopoverController *tilesPopover;
-    DSMapBoxOverlayManager *overlayManager;
+    DSMapBoxDataOverlayManager *dataOverlayManager;
 }
 
 - (IBAction)tappedRecenterButton:(id)sender;
