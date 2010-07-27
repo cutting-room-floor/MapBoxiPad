@@ -480,7 +480,7 @@
             [mapView addSubview:stripeView];
             
             stripeView.frame = CGRectMake(mapView.frame.origin.x - 10, 
-                                          mapView.frame.size.height - stripeView.frame.size.height - 10, 
+                                          10, 
                                           stripeView.frame.size.width, 
                                           stripeView.frame.size.height);
         }
