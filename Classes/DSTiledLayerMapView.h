@@ -12,9 +12,9 @@
 {
     /* Setting this to another map view will cause us to respond to overlay 
      * (i.e., marker) touches, but not regular pan/zoom touches. Those instead will
-     * be passed on to the master map view.
+     * be forwarded to the master map view.
      *
-     * Not setting this will cause us to default to not accepting user touches.
+     * Not setting this will cause us to pass user touches as if we didn't exist.
      *
      * This is useful for tile layer map views where we want to the top-most one
      * to own the markers & their touch events, but to pass pan/zoom events to the 
