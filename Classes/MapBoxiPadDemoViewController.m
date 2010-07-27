@@ -14,6 +14,7 @@
 #import "DSMapBoxOverlayManager.h"
 #import "DSMapBoxKMLChooserController.h"
 #import "DSMapContents.h"
+#import "DSMapBoxLayerController.h"
 
 #import "UIApplication_Additions.h"
 
@@ -22,6 +23,7 @@
 #import "SimpleKMLPlacemark.h"
 #import "SimpleKMLPoint.h"
 
+#import "RMMapView.h"
 #import "RMMarker.h"
 #import "RMTileSource.h"
 
@@ -29,9 +31,9 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-#define kStartingLat    51.4791f
-#define kStartingLon     0.9f
-#define kStartingZoom    3.0f
+#define kStartingLat   18.533333f
+#define kStartingLon  -72.333333f
+#define kStartingZoom  10.0f
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -48,8 +50,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     [super viewDidLoad];
 
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"wood-walnut-background-tile.jpg"]];
-    
     CLLocationCoordinate2D startingPoint;
     
 	startingPoint.latitude  = kStartingLat;
@@ -97,6 +97,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
     [kmlPopover release];
+    [layersPopover release];
     [tilesPopover release];
     [overlayManager release];
 
@@ -179,6 +180,38 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     browser.delegate = self;
     
     [self presentModalViewController:browser animated:YES];
+}
+
+- (IBAction)tappedLayersButton:(id)sender
+{
+    if (layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:YES];
+    
+    else
+    {
+        if ( ! layersPopover)
+        {
+            DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
+            
+            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
+            
+            layerController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Library" 
+                                                                                                 style:UIBarButtonItemStylePlain 
+                                                                                                target:self
+                                                                                                action:@selector(tappedLibraryButton:)] autorelease];
+            
+            layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+            
+            layersPopover.passthroughViews = nil;
+        }
+        
+        [layersPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
+- (IBAction)tappedLibraryButton:(id)sender
+{
+    NSLog(@"show library");
 }
 
 - (IBAction)tappedTilesButton:(id)sender
