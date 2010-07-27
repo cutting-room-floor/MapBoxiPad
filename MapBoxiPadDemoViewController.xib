@@ -45,26 +45,6 @@
 					<object class="IBUIView" id="750562466">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">306</int>
-						<object class="NSMutableArray" key="NSSubviews">
-							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIImageView" id="954110628">
-								<reference key="NSNextResponder" ref="750562466"/>
-								<int key="NSvFlags">268</int>
-								<string key="NSFrame">{{5, 677}, {80, 22}}</string>
-								<reference key="NSSuperview" ref="750562466"/>
-								<object class="NSColor" key="IBUIBackgroundColor">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MSAwAA</bytes>
-								</object>
-								<bool key="IBUIOpaque">NO</bool>
-								<bool key="IBUIUserInteractionEnabled">NO</bool>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">mapbox.png</string>
-								</object>
-							</object>
-						</object>
 						<string key="NSFrame">{{0, 44}, {1024, 704}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="753705919">
@@ -75,6 +55,23 @@
 							</object>
 						</object>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+					</object>
+					<object class="IBUIImageView" id="954110628">
+						<reference key="NSNextResponder" ref="766721923"/>
+						<int key="NSvFlags">268</int>
+						<string key="NSFrame">{{5, 721}, {80, 22}}</string>
+						<reference key="NSSuperview" ref="766721923"/>
+						<object class="NSColor" key="IBUIBackgroundColor">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MSAwAA</bytes>
+						</object>
+						<bool key="IBUIOpaque">NO</bool>
+						<bool key="IBUIUserInteractionEnabled">NO</bool>
+						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+						<object class="NSCustomResource" key="IBUIImage">
+							<string key="NSClassName">NSImage</string>
+							<string key="NSResourceName">mapbox.png</string>
+						</object>
 					</object>
 					<object class="IBUIToolbar" id="459560094">
 						<reference key="NSNextResponder" ref="766721923"/>
@@ -95,6 +92,12 @@
 							</object>
 							<object class="IBUIBarButtonItem" id="429059261">
 								<string key="IBUITitle">GeoRSS</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="459560094"/>
+							</object>
+							<object class="IBUIBarButtonItem" id="294852452">
+								<string key="IBUITitle">Layers</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -214,6 +217,14 @@
 					</object>
 					<int key="connectionID">46</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">tappedLayersButton:</string>
+						<reference key="source" ref="294852452"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">62</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -242,6 +253,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="750562466"/>
 							<reference ref="459560094"/>
+							<reference ref="954110628"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -250,7 +262,6 @@
 						<reference key="object" ref="750562466"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="954110628"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -264,6 +275,7 @@
 							<reference ref="825666617"/>
 							<reference ref="492247442"/>
 							<reference ref="429059261"/>
+							<reference ref="294852452"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -295,7 +307,12 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">45</int>
 						<reference key="object" ref="954110628"/>
-						<reference key="parent" ref="750562466"/>
+						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">61</int>
+						<reference key="object" ref="294852452"/>
+						<reference key="parent" ref="459560094"/>
 					</object>
 				</object>
 			</object>
@@ -316,6 +333,7 @@
 					<string>4.IBPluginDependency</string>
 					<string>42.IBPluginDependency</string>
 					<string>45.IBPluginDependency</string>
+					<string>61.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -329,6 +347,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>RMMapView</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -350,7 +369,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">46</int>
+			<int key="maxID">62</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -364,11 +383,15 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedGeoRSSButton:</string>
 							<string>tappedKMLButton:</string>
+							<string>tappedLayersButton:</string>
+							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
 							<string>tappedTilesButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -381,6 +404,8 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedGeoRSSButton:</string>
 							<string>tappedKMLButton:</string>
+							<string>tappedLayersButton:</string>
+							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
 							<string>tappedTilesButton:</string>
 						</object>
@@ -392,6 +417,14 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">tappedKMLButton:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">tappedLayersButton:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">tappedLibraryButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
