@@ -358,6 +358,9 @@
                 [(CALayer *)component removeFromSuperlayer];
         }
     }
+    
+    stripeView.hidden = YES;
+    stripeViewLabel.text = @"";
 }
 
 - (NSArray *)overlays
