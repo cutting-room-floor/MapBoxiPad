@@ -70,7 +70,7 @@
             return @"Base Layer";
 
         case 1:
-            return @"Tiled Layers";
+            return @"Tile Layers";
             
         case 2:
             return @"Data Layers";
