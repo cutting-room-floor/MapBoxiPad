@@ -17,9 +17,9 @@
    inkscape:version="0.47 r22583"
    sodipodi:docname="icon.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/aj/Projects/Development Seed/MapBox/MapBox-Takeout-256.png"
-   inkscape:export-xdpi="360"
-   inkscape:export-ydpi="360"
+   inkscape:export-filename="/Users/diggersf/src/MapBoxiPad/iTunesArtwork.png"
+   inkscape:export-xdpi="90"
+   inkscape:export-ydpi="90"
    version="1.1"
    style="display:inline">
   <defs
@@ -27,7 +27,7 @@
     <linearGradient
        id="linearGradient3907">
       <stop
-         style="stop-color:#323232;stop-opacity:1;"
+         style="stop-color:#181818;stop-opacity:1"
          offset="0"
          id="stop3909" />
       <stop
@@ -2026,9 +2026,9 @@
        xlink:href="#linearGradient3907"
        id="linearGradient3913"
        x1="-4"
-       y1="-5"
+       y1="67"
        x2="-4"
-       y2="48"
+       y2="14.828124"
        gradientUnits="userSpaceOnUse"
        gradientTransform="matrix(7.1111111,0,0,7.1111111,24.444444,-410.44444)" />
   </defs>
@@ -2040,7 +2040,7 @@
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="292.56715"
+     inkscape:cx="412.56715"
      inkscape:cy="272.70871"
      inkscape:current-layer="layer4"
      showgrid="false"
@@ -2078,7 +2078,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -2154,7 +2154,7 @@
      inkscape:label="Layer"
      style="display:inline">
     <path
-       inkscape:export-filename="/Users/diggersf/src/MapBoxiPad/icon.png"
+       inkscape:export-filename="/Users/diggersf/src/MapBoxiPad/iTunesArtwork.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90"
        style="fill:url(#linearGradient3913);fill-opacity:1;stroke:none;display:inline"
@@ -2511,5 +2511,20 @@
        inkscape:export-filename="/home/aj/Projects/devseed/MapBox/logo7.png"
        inkscape:export-xdpi="270"
        inkscape:export-ydpi="270" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Highlight">
+    <path
+       sodipodi:type="arc"
+       style="fill:#ffffff;fill-opacity:0.0892857;stroke:none"
+       id="path3949"
+       sodipodi:cx="246"
+       sodipodi:cy="-321"
+       sodipodi:rx="425"
+       sodipodi:ry="166"
+       d="m 671,-321 a 425,166 0 1 1 -850,0 425,166 0 1 1 850,0 z"
+       transform="translate(6,-13)" />
   </g>
 </svg>
