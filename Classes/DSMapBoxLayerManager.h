@@ -45,6 +45,7 @@ typedef enum {
 @property (nonatomic, readonly, assign) NSUInteger *tileLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger *dataLayerCount;
 
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager;
 - (void)moveLayerAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
 - (void)archiveLayerAtIndex:(NSUInteger)index;
 - (void)toggleLayerAtIndex:(NSUInteger)index;

@@ -15,6 +15,7 @@
 #import "DSMapBoxKMLChooserController.h"
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
+#import "DSMapBoxLayerManager.h"
 
 #import "UIApplication_Additions.h"
 
