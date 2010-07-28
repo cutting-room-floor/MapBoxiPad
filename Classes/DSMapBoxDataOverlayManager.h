@@ -36,6 +36,8 @@
     NSTimer *animationTimer;
 }
 
+@property (nonatomic, retain) RMMapView *mapView;
+
 - (id)initWithMapView:(RMMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;

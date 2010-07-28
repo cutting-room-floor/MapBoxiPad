@@ -37,6 +37,8 @@
 
 @implementation DSMapBoxDataOverlayManager
 
+@synthesize mapView;
+
 - (id)initWithMapView:(RMMapView *)inMapView
 {
     self = [super init];
@@ -57,6 +59,16 @@
     [animationTimer release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (void)setMapView:(RMMapView *)inMapView
+{
+    [mapView release];
+    mapView = [inMapView retain];
+    
+    // TODO: switch overlay sublayers to new map view
 }
 
 #pragma mark -
