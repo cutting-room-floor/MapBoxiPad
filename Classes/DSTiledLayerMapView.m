@@ -96,11 +96,9 @@
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if ([self checkForOverlayTouches:touches])
-        [super touchesMoved:touches withEvent:event];
-
-    else
-        [masterView touchesMoved:touches withEvent:event];
+    // don't allow moves on the marker overlay
+    //
+    [masterView touchesMoved:touches withEvent:event];
 }
 
 #pragma mark -
