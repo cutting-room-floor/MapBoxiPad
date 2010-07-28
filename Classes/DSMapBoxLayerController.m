@@ -176,11 +176,7 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    // TODO: check for same section
-    
     [layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
-
-    [self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -204,6 +200,18 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"Archive";
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
+{
+    if (sourceIndexPath.section < proposedDestinationIndexPath.section)
+        return [NSIndexPath indexPathForRow:0 inSection:sourceIndexPath.section];
+
+    else if (sourceIndexPath.section > proposedDestinationIndexPath.section)
+        return [NSIndexPath indexPathForRow:([[tableView dataSource] tableView:tableView numberOfRowsInSection:sourceIndexPath.section] - 1) 
+                                  inSection:sourceIndexPath.section];
+    
+    return proposedDestinationIndexPath;
 }
 
 @end
