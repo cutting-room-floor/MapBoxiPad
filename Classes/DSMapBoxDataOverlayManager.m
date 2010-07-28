@@ -361,8 +361,10 @@
 {
     for (NSDictionary *overlayDict in overlays)
     {
-        if ([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
-            [[[overlayDict objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source])
+        if (([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
+            [[[overlayDict objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source]) ||
+            [[overlayDict objectForKey:@"source"] isKindOfClass:[NSString class]] &&
+            [[overlayDict objectForKey:@"source"] isEqualToString:source])
         {
             NSArray *components = [overlayDict objectForKey:@"overlay"];
             

@@ -13,6 +13,8 @@
 
 #import "UIApplication_Additions.h"
 
+#import "SimpleKML.h"
+
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
 
 - (void)reloadLayers;
@@ -111,27 +113,27 @@
         {
             NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
             
-            NSMutableDictionary *entity = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
-                                                                                            [path lastPathComponent],                      @"name",
-                                                                                            description,                                   @"description",
-                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
-                                                                                            [NSNumber numberWithBool:NO],                  @"selected",
-                                                                                            nil];
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
+                                                                                           [path lastPathComponent],                      @"name",
+                                                                                           description,                                   @"description",
+                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
+                                                                                           [NSNumber numberWithBool:NO],                  @"selected",
+                                                                                           nil];
             
-            [mutableDataLayers addObject:entity];
+            [mutableDataLayers addObject:layer];
         }
         else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
             NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
             
-            NSMutableDictionary *entity = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
-                                                                                            [path lastPathComponent],                         @"name",
-                                                                                            description,                                      @"description",
-                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
-                                                                                            [NSNumber numberWithBool:NO],                     @"selected",
-                                                                                            nil];
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
+                                                                                           [path lastPathComponent],                         @"name",
+                                                                                           description,                                      @"description",
+                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
+                                                                                           [NSNumber numberWithBool:NO],                     @"selected",
+                                                                                           nil];
             
-            [mutableDataLayers addObject:entity];
+            [mutableDataLayers addObject:layer];
         }
     }
     
@@ -175,9 +177,31 @@
             
         case 2:
             
-            NSLog(@"toggle data layer at row %i", indexPath.row);
-
             layer = [dataLayers objectAtIndex:indexPath.row];
+            
+            if ( ! [layer objectForKey:@"source"])
+            {
+                NSString *source = [NSString stringWithContentsOfFile:[layer objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
+                
+                [layer setObject:source forKey:@"source"];
+            }
+            
+            if ([[layer objectForKey:@"selected"] boolValue])
+                [dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
+
+            else
+            {
+                if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML)
+                {
+                    SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[layer objectForKey:@"path"] error:NULL];
+                    
+                    [dataOverlayManager addOverlayForKML:kml];
+                }
+                else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
+                {
+                    [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                }
+            }
 
             break;
     }
