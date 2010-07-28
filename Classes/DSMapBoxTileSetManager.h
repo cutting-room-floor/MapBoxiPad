@@ -17,6 +17,8 @@
 
 + (DSMapBoxTileSetManager *)defaultManager;
 
+- (NSArray *)alternateTileSetPaths;
+- (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
 - (NSUInteger)tileSetCount;

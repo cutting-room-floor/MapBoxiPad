@@ -11,8 +11,6 @@
 
 @interface DSMapBoxTileSetManager (DSMapBoxTileSetManagerPrivate)
 
-- (NSArray *)alternateTileSetPaths;
-- (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection;
 
 @end
