@@ -181,7 +181,28 @@
             
             if ([[layer objectForKey:@"selected"] boolValue])
             {
-                NSLog(@"remove tile layer");
+                for (UIView *baseMapPeer in baseMapView.superview.subviews)
+                {
+                    if ([baseMapPeer isKindOfClass:[DSTiledLayerMapView class]])
+                    {
+                        if ([((DSTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"path"]])
+                        {
+                            // disassociate with master map
+                            //
+                            NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)baseMapView.contents).layerMapViews];
+                            [layerMapViews removeObject:baseMapPeer];
+                            ((DSMapContents *)baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+
+                            // remove from view hierarchy
+                            //
+                            [baseMapPeer removeFromSuperview];
+                            
+                            // transfer data overlay status
+                            //
+                            dataOverlayManager.mapView = ([layerMapViews count] ? [layerMapViews lastObject] : baseMapView);
+                        }
+                    }
+                }
             }
             else
             {

@@ -65,12 +65,13 @@
 
 - (void)setMapView:(RMMapView *)inMapView
 {
-    RMLayerCollection *overlay = mapView.contents.overlay;
+    RMLayerCollection *newOverlay = [[[RMLayerCollection alloc] initForContents:inMapView.contents] autorelease];
+    newOverlay.sublayers = mapView.contents.overlay.sublayers;
+    
+    inMapView.contents.overlay = newOverlay;
     
     [mapView release];
     mapView = [inMapView retain];
-    
-    mapView.contents.overlay = overlay;
 }
 
 #pragma mark -
