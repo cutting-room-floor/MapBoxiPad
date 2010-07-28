@@ -65,10 +65,12 @@
 
 - (void)setMapView:(RMMapView *)inMapView
 {
+    RMLayerCollection *overlay = mapView.contents.overlay;
+    
     [mapView release];
     mapView = [inMapView retain];
     
-    // TODO: switch overlay sublayers to new map view
+    mapView.contents.overlay = overlay;
 }
 
 #pragma mark -

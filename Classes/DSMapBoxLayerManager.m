@@ -149,8 +149,6 @@
     
     [dataLayers release];
     dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
-    
-    // TODO: check state in dataOverlayManager.overlays
 }
 
 #pragma mark -
