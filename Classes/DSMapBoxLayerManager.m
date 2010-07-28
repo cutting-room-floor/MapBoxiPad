@@ -9,10 +9,10 @@
 #import "DSMapBoxLayerManager.h"
 
 #import "DSMapBoxDataOverlayManager.h";
+#import "DSMapBoxTileSetManager.h"
 
 @implementation DSMapBoxLayerManager
 
-@synthesize layers;
 @synthesize tileLayers;
 @synthesize dataLayers;
 @synthesize tileLayerCount;
@@ -23,7 +23,22 @@
     self = [super init];
 
     if (self != nil)
+    {
         dataOverlayManager = [overlayManager retain];
+
+        NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths];
+        
+        NSMutableArray *mutableTileLayers = [NSMutableArray array];
+        
+        for (NSURL *tileSetPath in tileSetPaths)
+        {
+            [mutableTileLayers addObject:[NSDictionary dictionaryWithObjectsAndKeys:tileSetPath,                  @"path",
+                                                                                    [NSNumber numberWithBool:NO], @"visible",
+                                                                                    nil]];
+        }
+        
+        tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+    }
 
     return self;
 }
@@ -31,26 +46,41 @@
 - (void)dealloc
 {
     [dataOverlayManager release];
-    [layers release];
     [tileLayers release];
-    [dataLayers release];
     
     [super dealloc];
 }
 
 #pragma mark -
 
-- (void)moveLayerAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
+- (NSArray *)dataLayers
+{
+    return dataOverlayManager.overlays;
+}
+
+- (NSUInteger)tileLayerCount
+{
+    return [tileLayers count];
+}
+
+- (NSUInteger)dataLayerCount
+{
+    return [self.dataLayers count];
+}
+
+#pragma mark -
+
+- (void)moveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
 {
     
 }
 
-- (void)archiveLayerAtIndex:(NSUInteger)index
+- (void)archiveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index
 {
     
 }
 
-- (void)toggleLayerAtIndex:(NSUInteger)index
+- (void)toggleLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index
 {
     
 }

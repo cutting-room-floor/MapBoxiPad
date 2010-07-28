@@ -32,23 +32,17 @@ typedef enum {
 @interface DSMapBoxLayerManager : NSObject
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
-    NSArray *layers;
     NSArray *tileLayers;
-    NSArray *dataLayers;
-    NSUInteger *tileLayerCount;
-    NSUInteger *dataLayerCount;
 }
 
-@property (nonatomic, readonly, retain) NSArray *layers;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;
 @property (nonatomic, readonly, retain) NSArray *dataLayers;
-@property (nonatomic, readonly, assign) NSUInteger *tileLayerCount;
-@property (nonatomic, readonly, assign) NSUInteger *dataLayerCount;
+@property (nonatomic, readonly, assign) NSUInteger tileLayerCount;
+@property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager;
-- (void)moveLayerAtIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
-- (void)archiveLayerAtIndex:(NSUInteger)index;
-- (void)toggleLayerAtIndex:(NSUInteger)index;
-//- (void)setAlpha:(CGFloat)alpha forLayerAtIndex:(NSUInteger)index;
+- (void)moveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex;
+- (void)archiveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index;
+- (void)toggleLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index;
 
 @end
