@@ -74,7 +74,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-    layerManager       = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
+    dataOverlayManager.mapView = mapView;
+    mapView.delegate = dataOverlayManager;
+    layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     
     // remainder of setup
     //

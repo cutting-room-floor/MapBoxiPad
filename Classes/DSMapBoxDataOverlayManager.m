@@ -72,6 +72,9 @@
     
     [mapView release];
     mapView = [inMapView retain];
+    
+    [stripeView removeFromSuperview];
+    [mapView addSubview:stripeView];
 }
 
 #pragma mark -
