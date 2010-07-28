@@ -183,8 +183,6 @@
     }
     
     [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
-    
-    [self reloadLayers];
 }
 
 @end
