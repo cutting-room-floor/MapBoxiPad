@@ -119,7 +119,8 @@
         
         if ([[path pathExtension] isEqualToString:@"kml"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
-            NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
+            NSString *description = @""; // TODO: better description
+            //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
                                                                                            [path lastPathComponent],                      @"name",
@@ -132,7 +133,8 @@
         }
         else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
-            NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
+            NSString *description = @""; // TODO: better description
+            //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
                                                                                            [path lastPathComponent],                         @"name",
@@ -169,14 +171,12 @@
     
     switch (indexPath.section)
     {
-        case 0:
+        case 0: // TODO: change base layers via this UI
             
             return;
             
-        case 1:
+        case 1: // tile layers
             
-            NSLog(@"toggle tile layer at row %i", indexPath.row);
-
             layer = [tileLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
@@ -262,7 +262,7 @@
 
             break;
             
-        case 2:
+        case 2: // data layers
             
             layer = [dataLayers objectAtIndex:indexPath.row];
             
