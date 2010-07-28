@@ -162,7 +162,46 @@
 
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"archive %i at %i", indexPath.section, indexPath.row);
+    // TODO: change this from a deletion into a library archival
+    
+    NSMutableDictionary *layer;
+
+    switch (indexPath.section)
+    {
+        case 0: // can't archive base layers (for now)
+            
+            return;
+            
+        case 1: // tile layers
+            
+            layer = [tileLayers objectAtIndex:indexPath.row];
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
+            
+            NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+            
+            [mutableTileLayers removeObject:layer];
+            
+            [tileLayers release];
+            tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+            
+            break;
+            
+        case 2: // data layers
+            
+            layer = [dataLayers objectAtIndex:indexPath.row];
+
+            [[NSFileManager defaultManager] removeItemAtPath:[layer objectForKey:@"path"] error:NULL];
+            
+            NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
+            
+            [mutableDataLayers removeObject:layer];
+            
+            [dataLayers release];
+            dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
+            
+            break;
+    }
 }
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
