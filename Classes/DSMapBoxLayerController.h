@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class DSMapBoxLayerManager;
+
 @interface DSMapBoxLayerController : UITableViewController
 {
+    DSMapBoxLayerManager *layerManager;
 }
+
+@property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
 
 - (IBAction)tappedEditButton:(id)sender;
 - (IBAction)tappedDoneButton:(id)sender;

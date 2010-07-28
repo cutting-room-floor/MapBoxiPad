@@ -24,15 +24,16 @@
 @class DSMapBoxDataOverlayManager;
 
 typedef enum {
-    DSMapBoxLayerTypeTile,
-    DSMapBoxLayerTypeKML,
-    DSMapBoxLayerTypeGeoRSS,
+    DSMapBoxLayerTypeTile   = 0,
+    DSMapBoxLayerTypeKML    = 1,
+    DSMapBoxLayerTypeGeoRSS = 2,
 } DSMapBoxLayerType;
 
 @interface DSMapBoxLayerManager : NSObject
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
     NSArray *tileLayers;
+    NSArray *dataLayers;
 }
 
 @property (nonatomic, readonly, retain) NSArray *tileLayers;

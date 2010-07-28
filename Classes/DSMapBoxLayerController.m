@@ -8,7 +8,12 @@
 
 #import "DSMapBoxLayerController.h"
 
+#import "DSMapBoxTileSetManager.h"
+#import "DSMapBoxLayerManager.h"
+
 @implementation DSMapBoxLayerController
+
+@synthesize layerManager;
 
 - (void)viewDidLoad
 {
@@ -31,6 +36,13 @@
     [super viewWillDisappear:animated];
     
     [self tappedDoneButton:self];
+}
+
+- (void)dealloc
+{
+    [layerManager release];
+    
+    [super dealloc];
 }
 
 #pragma mark -
@@ -84,11 +96,13 @@
     switch (section)
     {
         case 0:
+            return 1;
+            
         case 1:
-            return 2;
+            return layerManager.tileLayerCount;
 
         case 2:
-            return 4;
+            return layerManager.dataLayerCount;
     }
 
     return 0;
@@ -106,47 +120,26 @@
     switch (indexPath.section)
     {
         case 0:
-            cell.accessoryType = (indexPath.row == 0 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.accessoryType  = UITableViewCellAccessoryCheckmark;
+            cell.textLabel.text = [[DSMapBoxTileSetManager defaultManager] activeTileSetName];
             
             break;
             
         case 1:
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            cell.detailTextLabel.text = (indexPath.row == 0 ? @"One thing to show" : @"Another thing to show");
+            cell.accessoryType        = ([[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"path"] relativePath] lastPathComponent];
             
             break;
             
         case 2:
-            cell.accessoryType = (indexPath.row == 1 ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-            cell.imageView.image = [UIImage imageNamed:(indexPath.row % 2 ? @"kml.png" : @"rss.png")];
-
-            switch (indexPath.row)
-            {
-                case 0:
-                    cell.detailTextLabel.text = @"5 Points, 1 Polygon";
-
-                    break;
-                    
-                case 1:
-                    cell.detailTextLabel.text = @"36 Points";
-                    
-                    break;
-                    
-                case 2:
-                    cell.detailTextLabel.text = @"17 Points, 4 Lines";
-                    
-                    break;
-                    
-                case 3:
-                    cell.detailTextLabel.text = @"1 Point";
-                    
-                    break;
-            }
+            cell.accessoryType        = ([[[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            cell.imageView.image      = [UIImage imageNamed:([[[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
             
             break;
     }
-    
-    cell.textLabel.text = [NSString stringWithFormat:@"Testing %i, %i", indexPath.section, indexPath.row];
     
     return cell;
 }
@@ -183,12 +176,12 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    //
+    [layerManager moveLayerOfType:fromIndexPath.section atIndex:fromIndexPath.row toIndex:toIndexPath.row];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //
+    [layerManager archiveLayerOfType:indexPath.section atIndex:indexPath.row];
 }
 
 #pragma mark -
@@ -197,7 +190,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSLog(@"%@", indexPath);
+    [layerManager toggleLayerOfType:indexPath.section atIndex:indexPath.row];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath

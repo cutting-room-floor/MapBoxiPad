@@ -236,6 +236,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         {
             DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
             
+            layerController.layerManager = layerManager;
+            
             UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
             
             layerController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Library" 
