@@ -17,6 +17,7 @@
 @interface MapBoxiPadDemoViewController : UIViewController <DSMapBoxGeoRSSBrowserControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
+    IBOutlet UIImageView *watermarkView;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *kmlButton;
     IBOutlet UIBarButtonItem *recenterButton;
