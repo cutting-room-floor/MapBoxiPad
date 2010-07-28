@@ -128,7 +128,7 @@
         case 1:
             cell.accessoryType        = ([[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
             cell.textLabel.text       = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"path"] relativePath] lastPathComponent];
+            cell.detailTextLabel.text = [[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             
             break;
             
@@ -176,12 +176,18 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    [layerManager moveLayerOfType:fromIndexPath.section atIndex:fromIndexPath.row toIndex:toIndexPath.row];
+    // TODO: check for same section
+    
+    [layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
+
+    [self.tableView reloadData];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [layerManager archiveLayerOfType:indexPath.section atIndex:indexPath.row];
+    [layerManager archiveLayerAtIndexPath:indexPath];
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark -
@@ -190,7 +196,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    [layerManager toggleLayerOfType:indexPath.section atIndex:indexPath.row];
+    [layerManager toggleLayerAtIndexPath:indexPath];
+    
+    [self.tableView reloadData];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath

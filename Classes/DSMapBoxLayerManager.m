@@ -13,6 +13,14 @@
 
 #import "UIApplication_Additions.h"
 
+@interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
+
+- (void)reloadLayers;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerManager
 
 @synthesize tileLayers;
@@ -28,21 +36,10 @@
     {
         dataOverlayManager = [overlayManager retain];
 
-        NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths];
+        tileLayers = [[NSArray array] retain];
+        dataLayers = [[NSArray array] retain];
         
-        NSMutableArray *mutableTileLayers = [NSMutableArray array];
-        
-        for (NSURL *tileSetPath in tileSetPaths)
-        {
-            NSString *name = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetPath];
-            
-            [mutableTileLayers addObject:[NSDictionary dictionaryWithObjectsAndKeys:tileSetPath,                  @"path",
-                                                                                    name,                         @"name",
-                                                                                    [NSNumber numberWithBool:NO], @"selected",
-                                                                                    nil]];
-        }
-        
-        tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+        [self reloadLayers];
     }
 
     return self;
@@ -52,15 +49,57 @@
 {
     [dataOverlayManager release];
     [tileLayers release];
+    [dataLayers release];
     
     [super dealloc];
 }
 
 #pragma mark -
 
-- (NSArray *)dataLayers
+- (NSUInteger)tileLayerCount
 {
-    NSMutableArray *entities = [NSMutableArray array];
+    return [self.tileLayers count];
+}
+
+- (NSUInteger)dataLayerCount
+{
+    return [self.dataLayers count];
+}
+
+#pragma mark -
+
+- (void)reloadLayers
+{
+    // tile layers
+    //
+    NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths];
+    
+    NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+    
+    for (NSURL *tileSetPath in tileSetPaths)
+    {
+        if ( ! [[mutableTileLayers valueForKeyPath:@"path"] containsObject:tileSetPath])
+        {
+            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetPath];
+            NSString *description = [[tileSetPath relativePath] lastPathComponent];
+            
+            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                                    @"path",
+                                                                                           name,                                           @"name",
+                                                                                           description,                                    @"description",
+                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeTile], @"type",
+                                                                                           [NSNumber numberWithBool:NO],                   @"selected",
+                                                                                           nil]];
+        }
+    }
+    
+    [mutableTileLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
+
+    [tileLayers release];
+    tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+
+    // data layers
+    //
+    NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
     
     NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
     
@@ -68,7 +107,7 @@
     {
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
         
-        if ([[path pathExtension] isEqualToString:@"kml"] && ! [[entities valueForKeyPath:@"path"] containsObject:path])
+        if ([[path pathExtension] isEqualToString:@"kml"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
             NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
             
@@ -79,9 +118,9 @@
                                                                                             [NSNumber numberWithBool:NO],                  @"selected",
                                                                                             nil];
             
-            [entities addObject:entity];
+            [mutableDataLayers addObject:entity];
         }
-        else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[entities valueForKeyPath:@"path"] containsObject:path])
+        else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
             NSString *description = @""; //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
             
@@ -92,42 +131,60 @@
                                                                                             [NSNumber numberWithBool:NO],                     @"selected",
                                                                                             nil];
             
-            [entities addObject:entity];
+            [mutableDataLayers addObject:entity];
         }
     }
     
-    [entities sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
+    [mutableDataLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
     
-    return [NSArray arrayWithArray:entities];
+    [dataLayers release];
+    dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
     
     // TODO: check state in dataOverlayManager.overlays
 }
 
-- (NSUInteger)tileLayerCount
-{
-    return [tileLayers count];
-}
-
-- (NSUInteger)dataLayerCount
-{
-    return [self.dataLayers count];
-}
-
 #pragma mark -
 
-- (void)moveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)fromIndex toIndex:(NSUInteger)toIndex
+- (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSLog(@"move %i from %i to %i", layerType, fromIndex, toIndex);
+    NSLog(@"move %i from %i to %i", fromIndexPath.section, fromIndexPath.row, toIndexPath.row);
 }
 
-- (void)archiveLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index
+- (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"archive %i at %i", layerType, index);
+    NSLog(@"archive %i at %i", indexPath.section, indexPath.row);
 }
 
-- (void)toggleLayerOfType:(DSMapBoxLayerType)layerType atIndex:(NSUInteger)index
+- (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"toggle %i at %i", layerType, index);
+    NSMutableDictionary *layer;
+    
+    switch (indexPath.section)
+    {
+        case 0:
+            
+            return;
+            
+        case 1:
+            
+            NSLog(@"toggle tile layer at row %i", indexPath.row);
+
+            layer = [tileLayers objectAtIndex:indexPath.row];
+
+            break;
+            
+        case 2:
+            
+            NSLog(@"toggle data layer at row %i", indexPath.row);
+
+            layer = [dataLayers objectAtIndex:indexPath.row];
+
+            break;
+    }
+    
+    [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
+    
+    [self reloadLayers];
 }
 
 @end
