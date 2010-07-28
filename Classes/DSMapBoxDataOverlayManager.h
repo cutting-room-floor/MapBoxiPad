@@ -37,12 +37,12 @@
 }
 
 @property (nonatomic, retain) RMMapView *mapView;
+@property (nonatomic, readonly, retain) NSArray *overlays;
 
 - (id)initWithMapView:(RMMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
-- (NSArray *)overlays;
 
 @end
