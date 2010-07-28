@@ -22,6 +22,7 @@
 #import <UIKit/UIKit.h>
 
 @class DSMapBoxDataOverlayManager;
+@class RMMapView;
 
 typedef enum {
     DSMapBoxLayerTypeTile   = 0,
@@ -32,16 +33,18 @@ typedef enum {
 @interface DSMapBoxLayerManager : NSObject
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
+    RMMapView *baseMapView;
     NSArray *tileLayers;
     NSArray *dataLayers;
 }
 
+@property (nonatomic, retain) RMMapView *baseMapView;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;
 @property (nonatomic, readonly, retain) NSArray *dataLayers;
 @property (nonatomic, readonly, assign) NSUInteger tileLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
 
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;

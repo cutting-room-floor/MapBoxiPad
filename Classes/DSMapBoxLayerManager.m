@@ -10,10 +10,15 @@
 
 #import "DSMapBoxDataOverlayManager.h";
 #import "DSMapBoxTileSetManager.h"
+#import "DSMapBoxSQLiteTileSource.h"
+#import "DSTiledLayerMapView.h"
+#import "DSMapContents.h"
 
 #import "UIApplication_Additions.h"
 
 #import "SimpleKML.h"
+
+#import "RMMapView.h"
 
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
 
@@ -25,19 +30,21 @@
 
 @implementation DSMapBoxLayerManager
 
+@synthesize baseMapView;
 @synthesize tileLayers;
 @synthesize dataLayers;
 @synthesize tileLayerCount;
 @synthesize dataLayerCount;
 
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
 {
     self = [super init];
 
     if (self != nil)
     {
         dataOverlayManager = [overlayManager retain];
-
+        baseMapView        = [mapView retain];
+        
         tileLayers = [[NSArray array] retain];
         dataLayers = [[NSArray array] retain];
         
@@ -50,6 +57,7 @@
 - (void)dealloc
 {
     [dataOverlayManager release];
+    [baseMapView release];
     [tileLayers release];
     [dataLayers release];
     
@@ -172,6 +180,66 @@
             NSLog(@"toggle tile layer at row %i", indexPath.row);
 
             layer = [tileLayers objectAtIndex:indexPath.row];
+            
+            if ([[layer objectForKey:@"selected"] boolValue])
+            {
+                NSLog(@"remove tile layer");
+            }
+            else
+            {
+                // create tile source & map view
+                //
+                NSURL *tileSetURL = [[[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths] objectAtIndex:indexPath.row];
+                
+                DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
+                
+                DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:baseMapView.frame] autorelease];
+                
+                layerMapView.tileSetURL = tileSetURL;
+                
+                // insert below toolbar & watermark
+                //
+                [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 2)];
+                
+                // copy main map view attributes
+                //
+                layerMapView.autoresizingMask = baseMapView.autoresizingMask;
+                layerMapView.enableRotate     = baseMapView.enableRotate;
+                layerMapView.deceleration     = baseMapView.deceleration;
+
+                // setup the new map view contents
+                //
+                [[[DSMapContents alloc] initWithView:layerMapView 
+                                          tilesource:source
+                                        centerLatLon:baseMapView.contents.mapCenter
+                                           zoomLevel:baseMapView.contents.zoom
+                                        maxZoomLevel:[source maxZoom]
+                                        minZoomLevel:[source minZoom]
+                                     backgroundImage:nil] autorelease];
+
+                // get peer layer map views
+                //
+                NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)baseMapView.contents).layerMapViews];
+
+                // disassociate peers with master
+                //
+                for (DSTiledLayerMapView *mapView in layerMapViews)
+                {
+                    mapView.masterView = nil;
+                    mapView.delegate   = nil;
+                }
+                
+                // associate new with master
+                //
+                [layerMapViews addObject:layerMapView];
+                ((DSMapContents *)baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+                layerMapView.masterView = baseMapView;
+
+                // associate new with data overlay manager
+                //
+                layerMapView.delegate = dataOverlayManager;
+                dataOverlayManager.mapView = layerMapView;
+            }
 
             break;
             
@@ -187,8 +255,9 @@
             }
             
             if ([[layer objectForKey:@"selected"] boolValue])
+            {
                 [dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
-
+            }
             else
             {
                 if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML)

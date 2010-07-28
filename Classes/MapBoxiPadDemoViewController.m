@@ -78,10 +78,11 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-    layerManager       = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager];
+    layerManager       = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     
     // tile map views
     //
+    /*
     NSMutableArray *layerMapViews = [NSMutableArray array];
     
     for (NSUInteger i = 0; i < 2; i++)
@@ -117,7 +118,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     ((DSTiledLayerMapView *)[layerMapViews lastObject]).delegate   = dataOverlayManager;
     
     dataOverlayManager.mapView = ((DSTiledLayerMapView *)[layerMapViews lastObject]);
-    
+    */
     // remainder of setup
     //
     [self updateTilesButtonTitle];

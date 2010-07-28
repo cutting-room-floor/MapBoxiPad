@@ -43,7 +43,7 @@
 
 - (void)setMasterView:(RMMapView *)mapView
 {
-    NSAssert([mapView isMemberOfClass:[RMMapView class]], @"Master view must be an instance of RMMapView");
+    NSAssert(([mapView isMemberOfClass:[RMMapView class]] || ! mapView), @"Master view must be an instance of RMMapView or nil");
     
     [masterView release];
     masterView = [mapView retain];
