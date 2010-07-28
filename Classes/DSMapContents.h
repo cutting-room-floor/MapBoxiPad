@@ -10,6 +10,9 @@
 
 @interface DSMapContents : RMMapContents
 {
+    NSArray *layerMapViews;
 }
+
+@property (nonatomic, retain) NSArray *layerMapViews;
 
 @end
