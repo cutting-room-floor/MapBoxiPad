@@ -12,7 +12,6 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSetChooserController.h"
 #import "DSMapBoxDataOverlayManager.h"
-#import "DSMapBoxKMLChooserController.h"
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
@@ -138,7 +137,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
-    [kmlPopover release];
     [layersPopover release];
     [tilesPopover release];
     [layerManager release];
@@ -189,29 +187,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
-        [self tappedKMLButton:self];
-    }
-}
-
-- (IBAction)tappedKMLButton:(id)sender
-{
-    if (kmlPopover.popoverVisible)
-        [kmlPopover dismissPopoverAnimated:YES];
-    
-    else
-    {
-        if ( ! kmlPopover)
-        {
-            DSMapBoxKMLChooserController *chooser = [[[DSMapBoxKMLChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
-            
-            chooser.overlayManager = dataOverlayManager;
-            
-            kmlPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
-            
-            kmlPopover.passthroughViews = nil;            
-        }
-        
-        [kmlPopover presentPopoverFromBarButtonItem:kmlButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self tappedLayersButton:self];
     }
 }
 
@@ -250,7 +226,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             layersPopover.passthroughViews = nil;
         }
         
-        [layersPopover presentPopoverFromBarButtonItem:sender permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [layersPopover presentPopoverFromBarButtonItem:layersButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
 }
 

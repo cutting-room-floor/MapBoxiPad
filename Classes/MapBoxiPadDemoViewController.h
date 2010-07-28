@@ -19,10 +19,9 @@
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;
     IBOutlet UIToolbar *toolbar;
-    IBOutlet UIBarButtonItem *kmlButton;
+    IBOutlet UIBarButtonItem *layersButton;
     IBOutlet UIBarButtonItem *recenterButton;
     IBOutlet UIBarButtonItem *tilesButton;
-    UIPopoverController *kmlPopover;
     UIPopoverController *layersPopover;
     UIPopoverController *tilesPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
@@ -30,7 +29,6 @@
 }
 
 - (IBAction)tappedRecenterButton:(id)sender;
-- (IBAction)tappedKMLButton:(id)sender;
 - (IBAction)tappedGeoRSSButton:(id)sender;
 - (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedLibraryButton:(id)sender;

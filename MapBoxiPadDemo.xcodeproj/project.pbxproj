@@ -80,7 +80,6 @@
 		DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */; };
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
-		DDA291E811F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
 		DDAB147711FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDAB147611FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
@@ -241,8 +240,6 @@
 		DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxBalloonController.m; sourceTree = "<group>"; };
 		DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxBalloonController.xib; sourceTree = "<group>"; };
 		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
-		DDA291E511F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxKMLChooserController.h; sourceTree = "<group>"; };
-		DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxKMLChooserController.m; sourceTree = "<group>"; };
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
 		DDAB147611FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Haiti-Terrain_z5-16_v1.mbtiles"; path = "../stuff to not backup/Haiti-Terrain_z5-16_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
@@ -546,8 +543,6 @@
 				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
 				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
 				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
-				DDA291E511F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.h */,
-				DDA291E611F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
 			name = "Data Overlays";
@@ -758,7 +753,6 @@
 				DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */,
 				DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */,
 				DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */,
-				DDA291E811F8AFB2000FFFF4 /* DSMapBoxKMLChooserController.m in Sources */,
 				DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */,
 				DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */,
 				DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */,

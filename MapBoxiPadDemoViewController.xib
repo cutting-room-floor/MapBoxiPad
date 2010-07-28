@@ -84,20 +84,14 @@
 						<int key="IBUIBarStyle">1</int>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="242908024">
-								<string key="IBUITitle">KML</string>
+							<object class="IBUIBarButtonItem" id="294852452">
+								<string key="IBUITitle">Layers</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
 							</object>
 							<object class="IBUIBarButtonItem" id="429059261">
-								<string key="IBUITitle">GeoRSS</string>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="459560094"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="294852452">
-								<string key="IBUITitle">Layers</string>
+								<string key="IBUITitle">GeoRSS Browser</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -163,14 +157,6 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">tappedKMLButton:</string>
-						<reference key="source" ref="242908024"/>
-						<reference key="destination" ref="841351856"/>
-					</object>
-					<int key="connectionID">22</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedRecenterButton:</string>
 						<reference key="source" ref="514991390"/>
 						<reference key="destination" ref="841351856"/>
@@ -210,14 +196,6 @@
 					<int key="connectionID">43</int>
 				</object>
 				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">kmlButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="242908024"/>
-					</object>
-					<int key="connectionID">46</int>
-				</object>
-				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedLayersButton:</string>
 						<reference key="source" ref="294852452"/>
@@ -232,6 +210,14 @@
 						<reference key="destination" ref="954110628"/>
 					</object>
 					<int key="connectionID">64</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">layersButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="294852452"/>
+					</object>
+					<int key="connectionID">65</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -279,22 +265,16 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="514991390"/>
-							<reference ref="242908024"/>
 							<reference ref="825666617"/>
 							<reference ref="492247442"/>
-							<reference ref="429059261"/>
 							<reference ref="294852452"/>
+							<reference ref="429059261"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">23</int>
 						<reference key="object" ref="514991390"/>
-						<reference key="parent" ref="459560094"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">19</int>
-						<reference key="object" ref="242908024"/>
 						<reference key="parent" ref="459560094"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -331,7 +311,6 @@
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
 					<string>18.IBPluginDependency</string>
-					<string>19.IBPluginDependency</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
 					<string>23.IBPluginDependency</string>
@@ -347,7 +326,6 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>MapBoxiPadDemoViewController</string>
 					<string>UIResponder</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{241, 254}, {1024, 768}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -377,7 +355,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">64</int>
+			<int key="maxID">65</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -390,7 +368,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedGeoRSSButton:</string>
-							<string>tappedKMLButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
@@ -398,7 +375,6 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -411,7 +387,6 @@
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedGeoRSSButton:</string>
-							<string>tappedKMLButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
@@ -421,10 +396,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBActionInfo">
 								<string key="name">tappedGeoRSSButton:</string>
-								<string key="candidateClassName">id</string>
-							</object>
-							<object class="IBActionInfo">
-								<string key="name">tappedKMLButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -449,7 +420,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>kmlButton</string>
+							<string>layersButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
 							<string>tilesButton</string>
@@ -470,7 +441,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>kmlButton</string>
+							<string>layersButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
 							<string>tilesButton</string>
@@ -480,7 +451,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBToOneOutletInfo">
-								<string key="name">kmlButton</string>
+								<string key="name">layersButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
