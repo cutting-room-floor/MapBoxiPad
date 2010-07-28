@@ -20,6 +20,8 @@
 
 #import "RMMapView.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
 
 - (void)reloadLayersFromDisk;
@@ -207,7 +209,26 @@
     
     if ([visibleDataLayers count] > 1)
     {
+        // find the superlayer of all live paths
         //
+        CALayer *superlayer = [[[[dataOverlayManager.overlays lastObject] objectForKey:@"overlay"] lastObject] superlayer];
+        
+        // remove all live paths from the superlayer
+        //
+        for (NSDictionary *overlay in dataOverlayManager.overlays)
+            [[overlay objectForKey:@"overlay"] makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+        
+        // find which overlay matches each data layer in turn & re-add them
+        //
+        for (NSUInteger i = 0; i < [visibleDataLayers count]; i++)
+        {
+            NSString *source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
+            
+            for (NSDictionary *overlay in dataOverlayManager.overlays)
+                if ([[[overlay objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source])
+                    for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
+                        [superlayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
+        }
     }
 }
 
