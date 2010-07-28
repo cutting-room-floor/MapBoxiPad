@@ -93,6 +93,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         
         DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:mapView.frame] autorelease];
         
+        layerMapView.tileSetURL = tileSetURL;
+        
         [[mapView superview] insertSubview:layerMapView belowSubview:watermarkView];
         
         layerMapView.autoresizingMask = mapView.autoresizingMask;

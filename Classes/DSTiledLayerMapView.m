@@ -29,10 +29,12 @@
 @implementation DSTiledLayerMapView
 
 @synthesize masterView;
+@synthesize tileSetURL;
 
 - (void)dealloc
 {
     [masterView release];
+    [tileSetURL release];
     
     [super dealloc];
 }

@@ -25,5 +25,6 @@
 }
 
 @property (nonatomic, retain) RMMapView *masterView;
+@property (nonatomic, retain) NSURL *tileSetURL;
 
 @end
