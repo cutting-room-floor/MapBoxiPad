@@ -15,22 +15,18 @@
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
-#import "DSTiledLayerMapView.h"
 
 #import "UIApplication_Additions.h"
 
 #import "SimpleKML.h"
-#import "SimpleKML_UIImage.h"
-#import "SimpleKMLPlacemark.h"
-#import "SimpleKMLPoint.h"
 
 #import "RMMapView.h"
-#import "RMMarker.h"
 #import "RMTileSource.h"
 
 #import "TouchXML.h"
 
 #import <AudioToolbox/AudioToolbox.h>
+#import <QuartzCore/QuartzCore.h>
 
 #define kStartingLat   18.533333f
 #define kStartingLon  -72.333333f
@@ -80,45 +76,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
     layerManager       = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     
-    // tile map views
-    //
-    /*
-    NSMutableArray *layerMapViews = [NSMutableArray array];
-    
-    for (NSUInteger i = 0; i < 2; i++)
-    {
-        NSURL *tileSetURL = [[[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths] objectAtIndex:i];
-        
-        DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
-        
-        DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:mapView.frame] autorelease];
-        
-        layerMapView.tileSetURL = tileSetURL;
-        
-        [[mapView superview] insertSubview:layerMapView belowSubview:watermarkView];
-        
-        layerMapView.autoresizingMask = mapView.autoresizingMask;
-        layerMapView.enableRotate     = mapView.enableRotate;
-        layerMapView.deceleration     = mapView.deceleration;
-        
-        [[[DSMapContents alloc] initWithView:layerMapView 
-                                  tilesource:source
-                                centerLatLon:startingPoint
-                                   zoomLevel:kStartingZoom
-                                maxZoomLevel:[source maxZoom]
-                                minZoomLevel:[source minZoom]
-                             backgroundImage:nil] autorelease];
-        
-        [layerMapViews addObject:layerMapView];
-    }
-    
-    ((DSMapContents *)mapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
-    
-    ((DSTiledLayerMapView *)[layerMapViews lastObject]).masterView = mapView;
-    ((DSTiledLayerMapView *)[layerMapViews lastObject]).delegate   = dataOverlayManager;
-    
-    dataOverlayManager.mapView = ((DSTiledLayerMapView *)[layerMapViews lastObject]);
-    */
     // remainder of setup
     //
     [self updateTilesButtonTitle];
