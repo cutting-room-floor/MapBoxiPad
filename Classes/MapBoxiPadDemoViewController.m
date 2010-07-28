@@ -16,6 +16,7 @@
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
+#import "DSTiledLayerMapView.h"
 
 #import "UIApplication_Additions.h"
 
@@ -51,11 +52,15 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     [super viewDidLoad];
 
+    // starting setup info
+    //
     CLLocationCoordinate2D startingPoint;
     
-	startingPoint.latitude  = kStartingLat;
-	startingPoint.longitude = kStartingLon;
+    startingPoint.latitude  = kStartingLat;
+    startingPoint.longitude = kStartingLon;
     
+    // base map view
+    //
     DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
     
 	[[[DSMapContents alloc] initWithView:mapView 
@@ -65,17 +70,55 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                             maxZoomLevel:[source maxZoom]
                             minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];
-
-    dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-    layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager];
     
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
     mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
     
-    mapView.delegate = dataOverlayManager;
+    // data overlay & layer managers
+    //
+    dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
+    layerManager       = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager];
     
+    // tile map views
+    //
+    NSMutableArray *layerMapViews = [NSMutableArray array];
+    
+    for (NSUInteger i = 0; i < 2; i++)
+    {
+        NSURL *tileSetURL = [[[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths] objectAtIndex:i];
+        
+        DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
+        
+        DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:mapView.frame] autorelease];
+        
+        [[mapView superview] insertSubview:layerMapView belowSubview:watermarkView];
+        
+        layerMapView.autoresizingMask = mapView.autoresizingMask;
+        layerMapView.enableRotate     = mapView.enableRotate;
+        layerMapView.deceleration     = mapView.deceleration;
+        
+        [[[DSMapContents alloc] initWithView:layerMapView 
+                                  tilesource:source
+                                centerLatLon:startingPoint
+                                   zoomLevel:kStartingZoom
+                                maxZoomLevel:[source maxZoom]
+                                minZoomLevel:[source minZoom]
+                             backgroundImage:nil] autorelease];
+        
+        [layerMapViews addObject:layerMapView];
+    }
+    
+    ((DSMapContents *)mapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+    
+    ((DSTiledLayerMapView *)[layerMapViews lastObject]).masterView = mapView;
+    ((DSTiledLayerMapView *)[layerMapViews lastObject]).delegate   = dataOverlayManager;
+    
+    dataOverlayManager.mapView = ((DSTiledLayerMapView *)[layerMapViews lastObject]);
+    
+    // remainder of setup
+    //
     [self updateTilesButtonTitle];
     
     [[NSNotificationCenter defaultCenter] addObserver:self
