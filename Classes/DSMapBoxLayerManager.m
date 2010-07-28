@@ -102,8 +102,6 @@
         }
     }
     
-    [mutableTileLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
-
     [tileLayers release];
     tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
 
@@ -146,9 +144,7 @@
             [mutableDataLayers addObject:layer];
         }
     }
-    
-    [mutableDataLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
-    
+        
     [dataLayers release];
     dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
 }
@@ -157,12 +153,50 @@
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSLog(@"move %i from %i to %i", fromIndexPath.section, fromIndexPath.row, toIndexPath.row);
+    NSMutableDictionary *layer;
+    
+    switch (fromIndexPath.section)
+    {
+        case 0: // can't move base layers
+            
+            return;
+            
+        case 1: // tile layers
+            
+            layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
+
+            NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+            
+            [mutableTileLayers removeObject:layer];
+            [mutableTileLayers insertObject:layer atIndex:toIndexPath.row];
+
+            [tileLayers release];
+            tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+            
+            break;
+            
+        case 2: // data layers
+            
+            layer = [self.dataLayers objectAtIndex:fromIndexPath.row];
+            
+            NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
+            
+            [mutableDataLayers removeObject:layer];
+            [mutableDataLayers insertObject:layer atIndex:toIndexPath.row];
+            
+            [dataLayers release];
+            dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
+            
+            break;
+    }
+    
+    [self reloadLayers];
 }
 
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
 {
     // TODO: change this from a deletion into a library archival
+    // TODO: remove from display if active
     
     NSMutableDictionary *layer;
 
@@ -174,7 +208,7 @@
             
         case 1: // tile layers
             
-            layer = [tileLayers objectAtIndex:indexPath.row];
+            layer = [self.tileLayers objectAtIndex:indexPath.row];
             
             [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
             
@@ -189,7 +223,7 @@
             
         case 2: // data layers
             
-            layer = [dataLayers objectAtIndex:indexPath.row];
+            layer = [self.dataLayers objectAtIndex:indexPath.row];
 
             [[NSFileManager defaultManager] removeItemAtPath:[layer objectForKey:@"path"] error:NULL];
             
@@ -216,7 +250,7 @@
             
         case 1: // tile layers
             
-            layer = [tileLayers objectAtIndex:indexPath.row];
+            layer = [self.tileLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
             {
@@ -303,7 +337,7 @@
             
         case 2: // data layers
             
-            layer = [dataLayers objectAtIndex:indexPath.row];
+            layer = [self.dataLayers objectAtIndex:indexPath.row];
             
             if ( ! [layer objectForKey:@"source"])
             {
