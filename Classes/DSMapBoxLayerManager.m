@@ -22,7 +22,8 @@
 
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
 
-- (void)reloadLayers;
+- (void)reloadLayersFromDisk;
+- (void)reorderLayerDisplay;
 
 @end
 
@@ -48,7 +49,7 @@
         tileLayers = [[NSArray array] retain];
         dataLayers = [[NSArray array] retain];
         
-        [self reloadLayers];
+        [self reloadLayersFromDisk];
     }
 
     return self;
@@ -78,7 +79,7 @@
 
 #pragma mark -
 
-- (void)reloadLayers
+- (void)reloadLayersFromDisk
 {
     // tile layers
     //
@@ -149,6 +150,67 @@
     dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
 }
 
+- (void)reorderLayerDisplay
+{
+    // check tile layers
+    //
+    NSArray *visibleTileLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+
+    if ([visibleTileLayers count] > 1)
+    {
+        // track map views in order
+        //
+        NSMutableArray *orderedMaps = [NSMutableArray array];
+        
+        // remove all tile layer maps from superview
+        //
+        [((DSMapContents *)baseMapView.contents).layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        
+        // iterate visible layers, finding map for each & inserting it on top (but below toolbar & watermark)
+        //
+        for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
+        {
+            DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"path"]]] lastObject];
+            
+            [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 2)];
+            
+            [orderedMaps addObject:layerMapView];
+        }
+        
+        // find the new top-most map
+        //
+        DSTiledLayerMapView *topMostMap = [orderedMaps lastObject];
+
+        // pass the data overlay baton to it
+        //
+        dataOverlayManager.mapView = topMostMap;
+
+        // setup the master map & data manager connections
+        //
+        topMostMap.masterView = baseMapView;
+        topMostMap.delegate   = dataOverlayManager;
+        
+        // zero out the non-top-most map connections
+        //
+        [orderedMaps removeLastObject];
+
+        for (DSTiledLayerMapView *orderedMap in orderedMaps)
+        {
+            orderedMap.masterView = nil;
+            orderedMap.delegate   = nil;
+        }
+    }
+    
+    // check data layers
+    //
+    NSArray *visibleDataLayers = [self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+    
+    if ([visibleDataLayers count] > 1)
+    {
+        //
+    }
+}
+
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -190,7 +252,8 @@
             break;
     }
     
-    [self reloadLayers];
+    [self reloadLayersFromDisk];
+    [self reorderLayerDisplay];
 }
 
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
@@ -281,7 +344,7 @@
             {
                 // create tile source & map view
                 //
-                NSURL *tileSetURL = [[[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths] objectAtIndex:indexPath.row];
+                NSURL *tileSetURL = [layer objectForKey:@"path"];
                 
                 DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
                 
@@ -368,6 +431,9 @@
     }
     
     [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
+    
+    if ([[layer objectForKey:@"selected"] boolValue])
+        [self reorderLayerDisplay];
 }
 
 @end
