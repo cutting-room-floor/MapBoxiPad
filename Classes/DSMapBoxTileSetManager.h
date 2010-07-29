@@ -8,6 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
+
+typedef enum {
+    DSMapBoxTileSetTypeBaselayer = 0,
+    DSMapBoxTileSetTypeOverlay   = 1,
+} DSMapBoxTileSetType;
+
 @interface DSMapBoxTileSetManager : NSObject
 {
     NSURL *_activeTileSetURL;
@@ -17,13 +24,11 @@
 
 + (DSMapBoxTileSetManager *)defaultManager;
 
-- (NSArray *)alternateTileSetPaths;
+- (NSArray *)alternateTileSetPathsOfType:(DSMapBoxTileSetType)tileSetType;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
-- (NSUInteger)tileSetCount;
-- (NSArray *)tileSetNames;
 - (BOOL)importTileSetFromURL:(NSURL *)importURL;
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
 - (NSURL *)activeTileSetURL;

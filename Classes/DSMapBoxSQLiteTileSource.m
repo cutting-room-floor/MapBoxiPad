@@ -12,7 +12,6 @@
 #import "RMFractalTileProjection.h"
 #import "FMDatabase.h"
 #import "DSMapBoxTileSetManager.h"
-#import "DSMapBoxTileSetChooserController.h"
 
 @interface DSMapBoxSQLiteTileSource (DSMapBoxSQLiteTileSourcePrivate)
 

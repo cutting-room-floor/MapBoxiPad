@@ -64,18 +64,42 @@ static DSMapBoxTileSetManager *defaultManager;
 
 #pragma mark -
 
-- (NSArray *)alternateTileSetPaths
+- (NSArray *)alternateTileSetPathsOfType:(DSMapBoxTileSetType)tileSetType
 {
     NSArray *docsContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
     
     NSArray *alternateFileNames = [docsContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF ENDSWITH '.mbtiles'"]];
 
-    NSMutableArray *results = [NSMutableArray array];
+    NSMutableArray *paths = [NSMutableArray array];
     
-    for (NSString *fileName in alternateFileNames)
-        [results addObject:[NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], fileName]]];
-    
-    return [NSArray arrayWithArray:results];
+    for (NSString *alternateFileName in alternateFileNames)
+    {
+        NSString *path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], alternateFileName];
+        
+        FMDatabase *db = [FMDatabase databaseWithPath:path];
+
+        if ( ! [db open])
+            continue;
+        
+        FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'type'"];
+        
+        if ([db hadError] && [db close])
+            continue;
+        
+        [results next];
+        
+        if (tileSetType == DSMapBoxTileSetTypeBaselayer && [[results stringForColumn:@"value"] isEqualToString:@"baselayer"])
+            [paths addObject:[NSURL fileURLWithPath:path]];
+        
+        else if (tileSetType == DSMapBoxTileSetTypeOverlay && [[results stringForColumn:@"value"] isEqualToString:@"overlay"])
+            [paths addObject:[NSURL fileURLWithPath:path]];
+        
+        [results close];
+        
+        [db close];
+    }
+
+    return [NSArray arrayWithArray:paths];
 }
 
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL
@@ -164,25 +188,6 @@ static DSMapBoxTileSetManager *defaultManager;
 - (NSString *)defaultTileSetName
 {
     return [self displayNameForTileSetAtURL:_defaultTileSetURL];
-}
-
-- (NSUInteger)tileSetCount
-{
-    return [[self alternateTileSetPaths] count] + 1;
-}
-
-- (NSArray *)tileSetNames
-{
-    NSMutableArray *alternateDisplayNames = [NSMutableArray array];
-    
-    for (NSURL *alternatePath in [self alternateTileSetPaths])
-        [alternateDisplayNames addObject:[self displayNameForTileSetAtURL:alternatePath]];
-    
-    [alternateDisplayNames sortUsingSelector:@selector(compare:)];
-
-    [alternateDisplayNames insertObject:[self defaultTileSetName] atIndex:0];
-    
-    return [NSArray arrayWithArray:alternateDisplayNames];
 }
 
 - (BOOL)importTileSetFromURL:(NSURL *)importURL

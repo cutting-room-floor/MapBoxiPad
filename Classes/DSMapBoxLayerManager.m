@@ -85,7 +85,7 @@
 {
     // tile layers
     //
-    NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPaths];
+    NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeOverlay];
     
     NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
     
@@ -98,7 +98,7 @@
             
             [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                                    @"path",
                                                                                            name,                                           @"name",
-                                                                                           description,                                    @"description",
+                                                                                           (description ? description : @""),              @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeTile], @"type",
                                                                                            [NSNumber numberWithBool:NO],                   @"selected",
                                                                                            nil]];
@@ -125,7 +125,7 @@
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
                                                                                            [path lastPathComponent],                      @"name",
-                                                                                           description,                                   @"description",
+                                                                                           (description ? description : @""),             @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
                                                                                            [NSNumber numberWithBool:NO],                  @"selected",
                                                                                            nil];
@@ -139,7 +139,7 @@
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
                                                                                            [path lastPathComponent],                         @"name",
-                                                                                           description,                                      @"description",
+                                                                                           (description ? description : @""),                @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
                                                                                            [NSNumber numberWithBool:NO],                     @"selected",
                                                                                            nil];
