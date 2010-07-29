@@ -17,10 +17,13 @@ typedef enum {
 
 @interface DSMapBoxTileSetManager : NSObject
 {
-    NSURL *_activeTileSetURL;
-    NSURL *_defaultTileSetURL;
+    NSURL *activeTileSetURL;
+    NSURL *defaultTileSetURL;
     NSMutableArray *_activeDownloads;
 }
+
+@property (nonatomic, retain) NSURL *activeTileSetURL;
+@property (nonatomic, retain) NSURL *defaultTileSetURL;
 
 + (DSMapBoxTileSetManager *)defaultManager;
 

@@ -34,8 +34,10 @@
 @implementation DSMapBoxLayerManager
 
 @synthesize baseMapView;
+@synthesize baseLayers;
 @synthesize tileLayers;
 @synthesize dataLayers;
+@synthesize baseLayerCount;
 @synthesize tileLayerCount;
 @synthesize dataLayerCount;
 
@@ -48,6 +50,7 @@
         dataOverlayManager = [overlayManager retain];
         baseMapView        = [mapView retain];
         
+        baseLayers = [[NSArray array] retain];
         tileLayers = [[NSArray array] retain];
         dataLayers = [[NSArray array] retain];
         
@@ -61,6 +64,7 @@
 {
     [dataOverlayManager release];
     [baseMapView release];
+    [baseLayers release];
     [tileLayers release];
     [dataLayers release];
     
@@ -68,6 +72,11 @@
 }
 
 #pragma mark -
+
+- (NSUInteger)baseLayerCount
+{
+    return [self.baseLayers count];
+}
 
 - (NSUInteger)tileLayerCount
 {
@@ -83,6 +92,39 @@
 
 - (void)reloadLayersFromDisk
 {
+    // base layers
+    //
+    NSArray *baseSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeBaselayer];
+    
+    NSMutableArray *mutableBaseLayers = [NSMutableArray array];
+    
+    [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName], @"name",
+                                                                                   [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]], @"description",
+                                                                                   [NSNumber numberWithBool:[[DSMapBoxTileSetManager defaultManager] isUsingDefaultTileSet]], @"selected",
+                                                                                   nil]];
+    
+    for (NSURL *baseSetPath in baseSetPaths)
+    {
+        if ( ! [[mutableBaseLayers valueForKeyPath:@"path"] containsObject:baseSetPath])
+        {
+            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:baseSetPath];
+            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:baseSetPath];
+            
+            BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name];
+            
+            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetPath,                                    @"path",
+                                                                                           name,                                           @"name",
+                                                                                           (description ? description : @""),              @"description",
+                                                                                           [NSNumber numberWithBool:isSelected],           @"selected",
+                                                                                           nil]];
+        }
+    }
+    
+    [mutableBaseLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
+    
+    [baseLayers release];
+    baseLayers = [[NSArray arrayWithArray:mutableBaseLayers] retain];
+    
     // tile layers
     //
     NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeOverlay];
@@ -99,7 +141,6 @@
             [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                                    @"path",
                                                                                            name,                                           @"name",
                                                                                            (description ? description : @""),              @"description",
-                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeTile], @"type",
                                                                                            [NSNumber numberWithBool:NO],                   @"selected",
                                                                                            nil]];
         }

@@ -22,6 +22,9 @@
 
 static DSMapBoxTileSetManager *defaultManager;
 
+@synthesize activeTileSetURL;
+@synthesize defaultTileSetURL;
+
 + (DSMapBoxTileSetManager *)defaultManager
 {
     @synchronized(@"DSMapBoxTileSetManager")
@@ -45,8 +48,8 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *path = [[bundledTileSets sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
         
-        _activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
-        _defaultTileSetURL = [_activeTileSetURL copy];
+        activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
+        defaultTileSetURL = [activeTileSetURL copy];
         _activeDownloads   = [[NSMutableArray array] retain];
     }
     
@@ -55,8 +58,8 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (void)dealloc
 {
-    [_activeTileSetURL  release];
-    [_defaultTileSetURL release];
+    [activeTileSetURL  release];
+    [defaultTileSetURL release];
     [_activeDownloads   release];
     
     [super dealloc];
@@ -182,12 +185,12 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (BOOL)isUsingDefaultTileSet
 {
-    return [_activeTileSetURL isEqual:_defaultTileSetURL];
+    return [self.activeTileSetURL isEqual:self.defaultTileSetURL];
 }
 
 - (NSString *)defaultTileSetName
 {
-    return [self displayNameForTileSetAtURL:_defaultTileSetURL];
+    return [self displayNameForTileSetAtURL:self.defaultTileSetURL];
 }
 
 - (BOOL)importTileSetFromURL:(NSURL *)importURL
@@ -221,14 +224,9 @@ static DSMapBoxTileSetManager *defaultManager;
     return NO;
 }
 
-- (NSURL *)activeTileSetURL
-{
-    return _activeTileSetURL;
-}
-
 - (NSString *)activeTileSetName
 {
-    return [self displayNameForTileSetAtURL:_activeTileSetURL];
+    return [self displayNameForTileSetAtURL:self.activeTileSetURL];
 }
 
 - (NSArray *)activeDownloads
@@ -240,15 +238,12 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSLog(@"activating %@", tileSetName);
     
-    NSURL *currentPath = [[_activeTileSetURL copy] autorelease];
+    NSURL *currentPath = [[self.activeTileSetURL copy] autorelease];
     
-    if ([tileSetName isEqualToString:[self displayNameForTileSetAtURL:_defaultTileSetURL]])
+    if ([tileSetName isEqualToString:[self displayNameForTileSetAtURL:self.defaultTileSetURL]])
     {
-        if ( ! [currentPath isEqual:_defaultTileSetURL])
-        {
-            [_activeTileSetURL release];
-            _activeTileSetURL = [_defaultTileSetURL copy];
-        }
+        if ( ! [currentPath isEqual:self.defaultTileSetURL])
+            self.activeTileSetURL = [[self.defaultTileSetURL copy] autorelease];
     }
     else
     {
@@ -256,15 +251,14 @@ static DSMapBoxTileSetManager *defaultManager;
         {
             if ([[self displayNameForTileSetAtURL:alternatePath] isEqualToString:tileSetName])
             {
-                [_activeTileSetURL release];
-                _activeTileSetURL = [alternatePath copy];
+                self.activeTileSetURL = [[alternatePath copy] autorelease];
                 
                 break;
             }
         }
     }
     
-    return ! [currentPath isEqual:_activeTileSetURL];
+    return ! [currentPath isEqual:self.activeTileSetURL];
 }
 
 #pragma mark -

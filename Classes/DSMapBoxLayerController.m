@@ -79,7 +79,7 @@
     switch (section)
     {
         case 0:
-            return @"Base Layer";
+            return @"Base Layers";
 
         case 1:
             return [self tableView:tableView numberOfRowsInSection:section] ? @"Overlay Layers" : nil;
@@ -96,7 +96,7 @@
     switch (section)
     {
         case 0:
-            return 1;
+            return layerManager.baseLayerCount;
             
         case 1:
             return layerManager.tileLayerCount;
@@ -120,8 +120,9 @@
     switch (indexPath.section)
     {
         case 0:
-            cell.accessoryType  = UITableViewCellAccessoryCheckmark;
-            cell.textLabel.text = [[DSMapBoxTileSetManager defaultManager] activeTileSetName];
+            cell.accessoryType        = ([[[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             
             break;
             

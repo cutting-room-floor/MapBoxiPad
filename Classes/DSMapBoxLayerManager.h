@@ -34,13 +34,16 @@ typedef enum {
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
     RMMapView *baseMapView;
+    NSArray *baseLayers;
     NSArray *tileLayers;
     NSArray *dataLayers;
 }
 
 @property (nonatomic, retain) RMMapView *baseMapView;
+@property (nonatomic, readonly, retain) NSArray *baseLayers;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;
 @property (nonatomic, readonly, retain) NSArray *dataLayers;
+@property (nonatomic, readonly, assign) NSUInteger baseLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger tileLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
 
