@@ -82,7 +82,7 @@
             return @"Base Layer";
 
         case 1:
-            return [self tableView:tableView numberOfRowsInSection:section] ? @"Tile Layers" : nil;
+            return [self tableView:tableView numberOfRowsInSection:section] ? @"Overlay Layers" : nil;
             
         case 2:
             return [self tableView:tableView numberOfRowsInSection:section] ? @"Data Layers" : nil;
