@@ -8,6 +8,7 @@
 
 #import "DSMapBoxTileSetManager.h"
 #import "UIApplication_Additions.h"
+#import "FMDatabase.h"
 
 @interface DSMapBoxTileSetManager (DSMapBoxTileSetManagerPrivate)
 
@@ -79,16 +80,44 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL
 {
-    NSString *base = [[[tileSetURL relativePath] componentsSeparatedByString:@"/"] lastObject];
+    NSString *defaultName = [[tileSetURL relativePath] lastPathComponent];
     
-    NSArray *parts = [[base stringByReplacingOccurrencesOfString:@".mbtiles" withString:@""] componentsSeparatedByString:@"_"];
+    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
     
-    NSAssert([parts count] == 3, @"Unable to parse tile set name");
+    if ( ! [db open])
+        return defaultName;
     
-    NSString *displayName = [[parts objectAtIndex:0] stringByReplacingOccurrencesOfString:@"-" withString:@" "];
-    NSString *versionName = [[parts objectAtIndex:2] isEqualToString:@"v1"] ? @"" : [NSString stringWithFormat:@" (%@)", [parts objectAtIndex:2]];
+    FMResultSet *nameResults = [db executeQuery:@"select value from metadata where name = 'name'"];
     
-    return [NSString stringWithFormat:@"%@%@", displayName, versionName];
+    if ([db hadError])
+        return defaultName;
+    
+    [nameResults next];
+    
+    NSString *displayName = [nameResults stringForColumn:@"value"];
+    
+    [nameResults close];
+    
+    FMResultSet *versionResults = [db executeQuery:@"select value from metadata where name = 'version'"];
+    
+    if ([db hadError])
+        return defaultName;
+    
+    [versionResults next];
+    
+    NSString *version = [versionResults stringForColumn:@"value"];
+    
+    [versionResults close];
+
+    [db close];
+    
+    if ([version isEqualToString:@"1.0"])
+        return displayName;
+    
+    else
+        return [NSString stringWithFormat:@"%@ (%@)", displayName, version];
+    
+    return defaultName;
 }
 
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection
