@@ -19,6 +19,7 @@
 
 - (NSArray *)alternateTileSetPaths;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
+- (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
 - (NSUInteger)tileSetCount;

@@ -89,7 +89,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     FMResultSet *nameResults = [db executeQuery:@"select value from metadata where name = 'name'"];
     
-    if ([db hadError])
+    if ([db hadError] && [db close])
         return defaultName;
     
     [nameResults next];
@@ -100,7 +100,7 @@ static DSMapBoxTileSetManager *defaultManager;
     
     FMResultSet *versionResults = [db executeQuery:@"select value from metadata where name = 'version'"];
     
-    if ([db hadError])
+    if ([db hadError] && [db close])
         return defaultName;
     
     [versionResults next];
@@ -118,6 +118,31 @@ static DSMapBoxTileSetManager *defaultManager;
         return [NSString stringWithFormat:@"%@ (%@)", displayName, version];
     
     return defaultName;
+}
+
+- (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL
+{
+    NSString *defaultDescription = @"";
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
+    
+    if ( ! [db open])
+        return defaultDescription;
+    
+    FMResultSet *descriptionResults = [db executeQuery:@"select value from metadata where name = 'description'"];
+    
+    if ([db hadError] && [db close])
+        return defaultDescription;
+    
+    [descriptionResults next];
+    
+    NSString *description = [descriptionResults stringForColumn:@"value"];
+    
+    [descriptionResults close];
+    
+    [db close];
+    
+    return description;
 }
 
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection

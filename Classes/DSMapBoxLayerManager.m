@@ -94,7 +94,7 @@
         if ( ! [[mutableTileLayers valueForKeyPath:@"path"] containsObject:tileSetPath])
         {
             NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetPath];
-            NSString *description = [[tileSetPath relativePath] lastPathComponent];
+            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetPath];
             
             [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                                    @"path",
                                                                                            name,                                           @"name",
