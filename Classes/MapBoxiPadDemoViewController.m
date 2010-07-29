@@ -10,7 +10,6 @@
 
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxTileSetManager.h"
-#import "DSMapBoxTileSetChooserController.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
@@ -40,7 +39,6 @@
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
 void SoundCompletionProc (SystemSoundID sound, void *clientData);
-- (void)updateTilesButtonTitle;
 
 @end
 
@@ -83,10 +81,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     mapView.delegate = dataOverlayManager;
     layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     
-    // remainder of setup
+    // watch for tile changes
     //
-    [self updateTilesButtonTitle];
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(tileSetDidChange:)
                                                  name:DSMapBoxTileSetChangedNotification
@@ -103,7 +99,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     
     [layersPopover release];
-    [tilesPopover release];
     [layerManager release];
     [dataOverlayManager release];
 
@@ -190,32 +185,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     NSLog(@"show library");
 }
 
-- (IBAction)tappedTilesButton:(id)sender
-{
-    [tilesPopover dismissPopoverAnimated:YES];
-    [tilesPopover release];
-    tilesPopover = nil;
-    
-    DSMapBoxTileSetChooserController *chooser = [[[DSMapBoxTileSetChooserController alloc] initWithNibName:nil bundle:nil] autorelease];
-    
-    tilesPopover = [[UIPopoverController alloc] initWithContentViewController:chooser];
-        
-    tilesPopover.passthroughViews = nil;
-
-    [tilesPopover presentPopoverFromBarButtonItem:tilesButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-}
-
 - (void)tileSetDidChange:(NSNotification *)notification
 {
-    if (tilesPopover)
-    {
-        [tilesPopover dismissPopoverAnimated:NO];
-        [tilesPopover release];
-        tilesPopover = nil;
-    }
-
-    [self updateTilesButtonTitle];
-    
     // get an image of the current map
     //
     UIGraphicsBeginImageContext(mapView.bounds.size);
@@ -281,11 +252,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 void SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
-}
-
-- (void)updateTilesButtonTitle
-{
-    tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
 }
 
 @end
