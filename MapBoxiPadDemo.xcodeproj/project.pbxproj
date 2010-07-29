@@ -53,6 +53,7 @@
 		DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617B11ED5ACF0050174D /* CXMLNode.m */; };
 		DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617E11ED5ACF0050174D /* CTidy.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
+		DD1DE1DC120224F700683B80 /* World-Light_z0-10_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE1DB120224F700683B80 /* World-Light_z0-10_v1.mbtiles */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
@@ -82,7 +83,6 @@
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
-		DDAB147711FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDAB147611FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
@@ -203,6 +203,7 @@
 		DD0F617F11ED5ACF0050174D /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Common/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
+		DD1DE1DB120224F700683B80 /* World-Light_z0-10_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "World-Light_z0-10_v1.mbtiles"; path = "/Volumes/Scratch Space/World-Light_z0-10_v1.mbtiles"; sourceTree = "<absolute>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -244,7 +245,6 @@
 		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
-		DDAB147611FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Haiti-Terrain_z5-16_v1.mbtiles"; path = "../stuff to not backup/Haiti-Terrain_z5-16_v1.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
@@ -456,7 +456,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DDAB147611FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles */,
+				DD1DE1DB120224F700683B80 /* World-Light_z0-10_v1.mbtiles */,
 			);
 			name = "Tile Sets";
 			sourceTree = "<group>";
@@ -691,13 +691,13 @@
 				DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */,
 				DD10184511EE51FC00DF286F /* mapbox.png in Resources */,
 				DDFB5CB111F656EE00695B89 /* icon.png in Resources */,
-				DDAB147711FA1B000048099F /* Haiti-Terrain_z5-16_v1.mbtiles in Resources */,
 				DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */,
 				DD86B6F111FE792D00165CDF /* kml.png in Resources */,
 				DD86B6F311FE793300165CDF /* rss.png in Resources */,
 				DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */,
 				DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */,
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
+				DD1DE1DC120224F700683B80 /* World-Light_z0-10_v1.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

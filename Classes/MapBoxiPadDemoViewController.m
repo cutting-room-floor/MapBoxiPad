@@ -28,9 +28,14 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 
-#define kStartingLat   18.533333f
-#define kStartingLon  -72.333333f
-#define kStartingZoom  10.0f
+#define kStartingLat   42.0f
+#define kStartingLon   55.0f
+#define kStartingZoom   4.0f
+
+#define kCenteringLat  33.919241123962202f
+#define kCenteringLon  66.074245801675474f
+#define kCenteringZoom  6.0f
+
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -111,12 +116,12 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     CLLocationCoordinate2D center;
     
-    center.latitude  =  18.835861f;
-    center.longitude = -73.296875f;
+    center.latitude  = kCenteringLat;
+    center.longitude = kCenteringLon;
     
     [mapView moveToLatLong:center];
     
-    mapView.contents.zoom = kStartingZoom;
+    mapView.contents.zoom = kCenteringZoom;
 
     [mapView setRotation:0.0];
     
