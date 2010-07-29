@@ -320,7 +320,6 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 				28AD733E0D9D9553002E5188 /* MainWindow.xib */,
 				8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
@@ -470,6 +469,7 @@
 				DD10184411EE51FC00DF286F /* mapbox.png */,
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
+				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 			);
 			name = Images;
 			sourceTree = "<group>";
