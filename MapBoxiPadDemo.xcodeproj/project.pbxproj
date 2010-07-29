@@ -67,8 +67,6 @@
 		DD48C86711CC43F100038969 /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen.jpg */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */; };
-		DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */; };
-		DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* georss_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* georss_circle.png */; };
 		DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */; };
@@ -221,9 +219,6 @@
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD70D9A711D1922C0002E222 /* DSMapBoxTileSetChooserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetChooserController.h; sourceTree = "<group>"; };
 		DD70D9A811D1922C0002E222 /* DSMapBoxTileSetChooserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetChooserController.m; sourceTree = "<group>"; };
-		DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxGeoRSSBrowserController.h; sourceTree = "<group>"; };
-		DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxGeoRSSBrowserController.m; sourceTree = "<group>"; };
-		DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxGeoRSSBrowserController.xib; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDataOverlayManager.m; sourceTree = "<group>"; };
 		DD72C76211E6847C0030C637 /* georss_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = georss_circle.png; path = ../georss_circle.png; sourceTree = "<group>"; };
@@ -543,9 +538,6 @@
 				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
 				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
 				DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */,
-				DD72C44B11E557230030C637 /* DSMapBoxGeoRSSBrowserController.h */,
-				DD72C44C11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m */,
-				DD72C44D11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
 			name = "Data Overlays";
@@ -686,7 +678,6 @@
 				DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */,
 				DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */,
 				DDA1073C11E4436E008D00A7 /* balloon.html in Resources */,
-				DD72C44F11E557230030C637 /* DSMapBoxGeoRSSBrowserController.xib in Resources */,
 				DD72C76311E6847C0030C637 /* georss_circle.png in Resources */,
 				DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */,
 				DD10184511EE51FC00DF286F /* mapbox.png in Resources */,
@@ -716,7 +707,6 @@
 				DD70D9AA11D1922C0002E222 /* DSMapBoxTileSetChooserController.m in Sources */,
 				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
 				DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */,
-				DD72C44E11E557230030C637 /* DSMapBoxGeoRSSBrowserController.m in Sources */,
 				DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */,
 				DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */,
 				DDA0745D11E79F8D0049865F /* DSMapBoxFeedParserRSS.m in Sources */,

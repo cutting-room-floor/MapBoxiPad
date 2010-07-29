@@ -8,13 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-#import "DSMapBoxGeoRSSBrowserController.h"
-
 @class RMMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 
-@interface MapBoxiPadDemoViewController : UIViewController <DSMapBoxGeoRSSBrowserControllerDelegate>
+@interface MapBoxiPadDemoViewController : UIViewController
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;
@@ -29,7 +27,6 @@
 }
 
 - (IBAction)tappedRecenterButton:(id)sender;
-- (IBAction)tappedGeoRSSButton:(id)sender;
 - (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedLibraryButton:(id)sender;
 - (IBAction)tappedTilesButton:(id)sender;

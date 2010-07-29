@@ -156,16 +156,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
 }
 
-- (IBAction)tappedGeoRSSButton:(id)sender
-{
-    DSMapBoxGeoRSSBrowserController *browser = [[[DSMapBoxGeoRSSBrowserController alloc] initWithNibName:nil bundle:nil] autorelease];
-    
-    browser.modalPresentationStyle = UIModalPresentationPageSheet;
-    browser.delegate = self;
-    
-    [self presentModalViewController:browser animated:YES];
-}
-
 - (IBAction)tappedLayersButton:(id)sender
 {
     if (layersPopover.popoverVisible)
@@ -296,19 +286,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)updateTilesButtonTitle
 {
     tilesButton.title = [NSString stringWithFormat:@"Tiles: %@", [[DSMapBoxTileSetManager defaultManager] activeTileSetName]];
-}
-
-#pragma mark -
-
-- (void)browserController:(DSMapBoxGeoRSSBrowserController *)controller didVisitFeedURL:(NSURL *)feedURL
-{
-    NSError *error = nil;
-    
-    NSString *rss = [NSString stringWithContentsOfURL:feedURL encoding:NSUTF8StringEncoding error:&error];
-    
-    RMSphericalTrapezium overlayBounds = [dataOverlayManager addOverlayForGeoRSS:rss];
-    
-    //[mapView.contents zoomWithLatLngBoundsNorthEast:overlayBounds.northeast SouthWest:overlayBounds.southwest];
 }
 
 @end
