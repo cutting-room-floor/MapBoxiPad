@@ -193,21 +193,9 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    if (indexPath.section == 0) // base tiles
-    {
-        // TODO: hide popover & switch tileset
+    [layerManager toggleLayerAtIndexPath:indexPath];
         
-        /*
-        if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[tableView cellForRowAtIndexPath:indexPath].textLabel.text])
-            [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification object:nil]];
-        */
-    }
-    else
-    {
-        [layerManager toggleLayerAtIndexPath:indexPath];
-        
-        [self.tableView reloadData];
-    }
+    [self.tableView reloadData];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath

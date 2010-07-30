@@ -187,6 +187,10 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)tileSetDidChange:(NSNotification *)notification
 {
+    // hide layers popover
+    //
+    [layersPopover dismissPopoverAnimated:NO];
+    
     // get an image of the current map
     //
     UIGraphicsBeginImageContext(mapView.bounds.size);

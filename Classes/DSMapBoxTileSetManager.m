@@ -247,7 +247,7 @@ static DSMapBoxTileSetManager *defaultManager;
     }
     else
     {
-        for (NSURL *alternatePath in [self alternateTileSetPaths])
+        for (NSURL *alternatePath in [self alternateTileSetPathsOfType:DSMapBoxTileSetTypeBaselayer])
         {
             if ([[self displayNameForTileSetAtURL:alternatePath] isEqualToString:tileSetName])
             {

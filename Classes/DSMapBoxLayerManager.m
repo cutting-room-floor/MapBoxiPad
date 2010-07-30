@@ -367,9 +367,25 @@
 {
     NSMutableDictionary *layer;
     
+    NSMutableDictionary *newLayer;
+    NSMutableDictionary *oldLayer;
+    
     switch (indexPath.section)
     {
-        case 0: // TODO: change base layers via this UI
+        case 0:
+            
+            newLayer = [self.baseLayers objectAtIndex:indexPath.row];
+
+            if ([[newLayer objectForKey:@"selected"] boolValue]) // already active
+                return;
+
+            oldLayer = [[self.baseLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] lastObject];
+            
+            [oldLayer setObject:[NSNumber numberWithBool:NO]  forKey:@"selected"];
+            [newLayer setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
+            
+             if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"]])
+                 [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification object:nil]];
             
             return;
             
