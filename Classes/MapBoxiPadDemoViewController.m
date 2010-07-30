@@ -202,7 +202,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     //
     UIImageView *snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
     snapshotView.image = snapshot;
-    [self.view insertSubview:snapshotView belowSubview:toolbar];
+    [self.view insertSubview:snapshotView atIndex:0];
     [mapView removeFromSuperview];
     
     // adjust map view to new auto-reloaded tile source settings
@@ -249,7 +249,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
     [UIView setAnimationDuration:0.8];
     [snapshotView removeFromSuperview];
-    [self.view insertSubview:mapView belowSubview:toolbar];
+    [self.view insertSubview:mapView atIndex:0];
     [UIView commitAnimations];
 }
 
