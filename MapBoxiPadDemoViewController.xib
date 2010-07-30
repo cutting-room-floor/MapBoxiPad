@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="18"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -96,7 +96,10 @@
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
 							<object class="IBUIBarButtonItem" id="514991390">
-								<string key="IBUITitle">Re-Center</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">74-location.png</string>
+								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -318,11 +321,9 @@
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
-							<string>tappedTilesButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -335,7 +336,6 @@
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
 							<string>tappedRecenterButton:</string>
-							<string>tappedTilesButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -351,10 +351,6 @@
 								<string key="name">tappedRecenterButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
-							<object class="IBActionInfo">
-								<string key="name">tappedTilesButton:</string>
-								<string key="candidateClassName">id</string>
-							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -364,7 +360,6 @@
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
-							<string>tilesButton</string>
 							<string>toolbar</string>
 							<string>watermarkView</string>
 						</object>
@@ -372,7 +367,6 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>UIBarButtonItem</string>
 							<string>RMMapView</string>
-							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 							<string>UIImageView</string>
@@ -385,7 +379,6 @@
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>recenterButton</string>
-							<string>tilesButton</string>
 							<string>toolbar</string>
 							<string>watermarkView</string>
 						</object>
@@ -401,10 +394,6 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">recenterButton</string>
-								<string key="candidateClassName">UIBarButtonItem</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">tilesButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
@@ -685,8 +674,17 @@
 		<string key="IBDocument.LastKnownRelativeProjectPath">MapBoxiPadDemo.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="NS.key.0">mapbox.png</string>
-			<string key="NS.object.0">{80, 22}</string>
+			<bool key="EncodedWithXMLCoder">YES</bool>
+			<object class="NSArray" key="dict.sortedKeys">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>74-location.png</string>
+				<string>mapbox.png</string>
+			</object>
+			<object class="NSMutableArray" key="dict.values">
+				<bool key="EncodedWithXMLCoder">YES</bool>
+				<string>{20, 20}</string>
+				<string>{80, 22}</string>
+			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>
 	</data>
