@@ -165,7 +165,7 @@
             //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
-                                                                                           [path lastPathComponent],                      @"name",
+                                                                                           [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".kml" withString:@""], @"name",
                                                                                            (description ? description : @""),             @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
                                                                                            [NSNumber numberWithBool:NO],                  @"selected",
@@ -179,7 +179,7 @@
             //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
             
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
-                                                                                           [path lastPathComponent],                         @"name",
+                                                                                           [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".rss" withString:@""], @"name",
                                                                                            (description ? description : @""),                @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
                                                                                            [NSNumber numberWithBool:NO],                     @"selected",
