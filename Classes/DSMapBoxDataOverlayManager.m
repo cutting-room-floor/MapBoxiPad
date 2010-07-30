@@ -398,10 +398,10 @@
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     
     CGPoint oldCenter = stripeViewLabel.center;
-    stripeViewLabel.center  = CGPointMake(oldCenter.x + 200, oldCenter.y);
+    stripeViewLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
     
     oldCenter = stripeView.center;
-    stripeView.center = CGPointMake(oldCenter.x + 200, oldCenter.y);
+    stripeView.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
     
     [UIView commitAnimations];
 }
@@ -502,8 +502,8 @@
             
             [mapView addSubview:stripeView];
             
-            stripeView.frame = CGRectMake(mapView.frame.origin.x - 10, 
-                                          10, 
+            stripeView.frame = CGRectMake(mapView.frame.size.width  - stripeView.frame.size.width + 10, 
+                                          mapView.frame.size.height - stripeView.frame.size.height - 10, 
                                           stripeView.frame.size.width, 
                                           stripeView.frame.size.height);
         }
@@ -519,10 +519,10 @@
             [UIView setAnimationDuration:0.0];
         
         CGPoint oldCenter  = stripeViewLabel.center;
-        stripeViewLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        stripeViewLabel.center  = CGPointMake(oldCenter.x + 200, oldCenter.y);
         
         oldCenter  = stripeView.center;
-        stripeView.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
+        stripeView.center = CGPointMake(oldCenter.x + 200, oldCenter.y);
         
         [UIView commitAnimations];
         
