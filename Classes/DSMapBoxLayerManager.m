@@ -420,12 +420,27 @@
             }
             else
             {
-                // create tile source & map view
+                // create tile source
                 //
                 NSURL *tileSetURL = [layer objectForKey:@"path"];
                 
                 DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
                 
+                // zoom the base map as necessary to show this overlay's source
+                //
+                CGFloat newZoom = -1;
+                
+                if (baseMapView.contents.zoom < [source minZoom] && [source minZoom] >= [baseMapView.contents.tileSource minZoom])
+                    newZoom = [source minZoom];
+                
+                else if (baseMapView.contents.zoom > [source maxZoom] && [source maxZoom] <= [baseMapView.contents.tileSource maxZoom])
+                    newZoom = [source maxZoom];
+                
+                if (newZoom >= 0)
+                    baseMapView.contents.zoom = newZoom;
+                
+                // create the overlay map view
+                //
                 DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:baseMapView.frame] autorelease];
                 
                 layerMapView.tileSetURL = tileSetURL;
