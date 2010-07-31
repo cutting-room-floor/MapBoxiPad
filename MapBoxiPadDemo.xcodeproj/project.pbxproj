@@ -53,13 +53,13 @@
 		DD0F618911ED5ACF0050174D /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617B11ED5ACF0050174D /* CXMLNode.m */; };
 		DD0F618A11ED5ACF0050174D /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F617E11ED5ACF0050174D /* CTidy.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
-		DD1DE24212022BDE00683B80 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE24112022BDE00683B80 /* World_Light_1.0.mbtiles */; };
 		DD1DE3FA1202652600683B80 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE3F91202652600683B80 /* 74-location.png */; };
 		DD1DE4171202697100683B80 /* kml-point-blue.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE4121202697100683B80 /* kml-point-blue.png */; };
 		DD1DE4181202697100683B80 /* kml-point-green.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE4131202697100683B80 /* kml-point-green.png */; };
 		DD1DE4191202697100683B80 /* kml-point-magenta.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE4141202697100683B80 /* kml-point-magenta.png */; };
 		DD1DE41A1202697100683B80 /* kml-point-orange.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE4151202697100683B80 /* kml-point-orange.png */; };
 		DD1DE41B1202697100683B80 /* kml-point-red.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE4161202697100683B80 /* kml-point-red.png */; };
+		DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
@@ -206,13 +206,13 @@
 		DD0F617F11ED5ACF0050174D /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Common/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
-		DD1DE24112022BDE00683B80 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "/Volumes/Scratch Space/World_Light_1.0.mbtiles"; sourceTree = "<absolute>"; };
 		DD1DE3F91202652600683B80 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "74-location.png"; sourceTree = "<group>"; };
 		DD1DE4121202697100683B80 /* kml-point-blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point-blue.png"; sourceTree = SOURCE_ROOT; };
 		DD1DE4131202697100683B80 /* kml-point-green.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point-green.png"; sourceTree = SOURCE_ROOT; };
 		DD1DE4141202697100683B80 /* kml-point-magenta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point-magenta.png"; sourceTree = SOURCE_ROOT; };
 		DD1DE4151202697100683B80 /* kml-point-orange.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point-orange.png"; sourceTree = SOURCE_ROOT; };
 		DD1DE4161202697100683B80 /* kml-point-red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "kml-point-red.png"; sourceTree = SOURCE_ROOT; };
+		DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "../stuff to not backup/World_Light_1.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -460,7 +460,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DD1DE24112022BDE00683B80 /* World_Light_1.0.mbtiles */,
+				DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */,
 			);
 			name = "Tile Sets";
 			sourceTree = "<group>";
@@ -701,13 +701,13 @@
 				DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */,
 				DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */,
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
-				DD1DE24212022BDE00683B80 /* World_Light_1.0.mbtiles in Resources */,
 				DD1DE3FA1202652600683B80 /* 74-location.png in Resources */,
 				DD1DE4171202697100683B80 /* kml-point-blue.png in Resources */,
 				DD1DE4181202697100683B80 /* kml-point-green.png in Resources */,
 				DD1DE4191202697100683B80 /* kml-point-magenta.png in Resources */,
 				DD1DE41A1202697100683B80 /* kml-point-orange.png in Resources */,
 				DD1DE41B1202697100683B80 /* kml-point-red.png in Resources */,
+				DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
