@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/419/trunk/samples/MapTestbedTwoMaps/Classes
+END
+FlipsideView.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/FlipsideView.h
+END
+FlipsideViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/FlipsideViewController.h
+END
+FlipsideView.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/FlipsideView.m
+END
+MainView.h
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/MainView.h
+END
+MapTestbedTwoMapsAppDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/419/trunk/samples/MapTestbedTwoMaps/Classes/MapTestbedTwoMapsAppDelegate.h
+END
+RootViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/RootViewController.h
+END
+MainViewController.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/419/trunk/samples/MapTestbedTwoMaps/Classes/MainViewController.h
+END
+FlipsideViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/FlipsideViewController.m
+END
+MapTestbedTwoMapsAppDelegate.m
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/svn/!svn/ver/419/trunk/samples/MapTestbedTwoMaps/Classes/MapTestbedTwoMapsAppDelegate.m
+END
+MainView.m
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/MainView.m
+END
+RootViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/310/trunk/samples/MapTestbedTwoMaps/Classes/RootViewController.m
+END
+MainViewController.m
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/!svn/ver/419/trunk/samples/MapTestbedTwoMaps/Classes/MainViewController.m
+END

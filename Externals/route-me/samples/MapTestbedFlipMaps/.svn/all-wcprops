@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/!svn/ver/618/trunk/samples/MapTestbedFlipMaps
+END
+main.m
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/main.m
+END
+MainView.xib
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/!svn/ver/607/trunk/samples/MapTestbedFlipMaps/MainView.xib
+END
+loading.png
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/590/trunk/samples/MapTestbedFlipMaps/loading.png
+END
+Info.plist
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/Info.plist
+END
+marker-blue.png
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/marker-blue.png
+END
+FlipsideView.xib
+K 25
+svn:wc:ra_dav:version-url
+V 67
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/FlipsideView.xib
+END
+missing.png
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/590/trunk/samples/MapTestbedFlipMaps/missing.png
+END
+error.png
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/590/trunk/samples/MapTestbedFlipMaps/error.png
+END
+MainWindow.xib
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/MainWindow.xib
+END
+MapTestbed_Prefix.pch
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/!svn/ver/315/trunk/samples/MapTestbedFlipMaps/MapTestbed_Prefix.pch
+END
