@@ -6,6 +6,28 @@
 	<string>English</string>
 	<key>CFBundleDisplayName</key>
 	<string>${PRODUCT_NAME}</string>
+	<key>UTExportedTypeDeclarations</key>
+	<dict>
+		<key>Item 0</key>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.item</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Google Earth KMZ Document</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.google.earth.kmz</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<string>kmz</string>
+				<key>public.mime-type</key>
+				<string>application/vnd.google-earth.kmz</string>
+			</dict>
+		</dict>
+	</dict>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>
@@ -14,6 +36,14 @@
 			<key>LSItemContentTypes</key>
 			<array>
 				<string>com.google.earth.kml</string>
+			</array>
+		</dict>
+		<dict>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>com.google.earth.kmz</string>
 			</array>
 		</dict>
 	</array>

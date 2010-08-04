@@ -27,7 +27,7 @@
     {
         NSURL *incomingURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
         
-        if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"])
+        if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"] || [[[incomingURL path] lastPathComponent] hasSuffix:@"kmz"])
             [viewController openKMLFile:incomingURL];
         
         else
