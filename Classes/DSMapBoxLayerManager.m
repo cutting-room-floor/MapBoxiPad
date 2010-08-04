@@ -159,14 +159,18 @@
     {
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
         
-        if ([[path pathExtension] isEqualToString:@"kml"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
+        if (([[path pathExtension] isEqualToString:@"kml"] || [[path pathExtension] isEqualToString:@"kmz"]) && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
-            NSString *description = @""; // TODO: better description
-            //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"<Point>"] count] - 1)];
+            NSString *description = [[path pathExtension] isEqualToString:@"kml"] ? @"KML File" : @"KMZ Archive";
             
+            NSString *name = [path lastPathComponent];
+            
+            name = [name stringByReplacingOccurrencesOfString:@".kml" withString:@""];
+            name = [name stringByReplacingOccurrencesOfString:@".kmz" withString:@""];
+
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
-                                                                                           [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".kml" withString:@""], @"name",
-                                                                                           (description ? description : @""),             @"description",
+                                                                                           name,                                          @"name",
+                                                                                           description,                                   @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
                                                                                            [NSNumber numberWithBool:NO],                  @"selected",
                                                                                            nil];
@@ -175,12 +179,15 @@
         }
         else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
-            NSString *description = @""; // TODO: better description
-            //[NSString stringWithFormat:@"%i Points", ([[[NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:NULL] componentsSeparatedByString:@"georss:point"] count] - 1)];
-            
+            NSString *description = @"GeoRSS Feed";
+
+            NSString *name = [path lastPathComponent];
+        
+            name = [name stringByReplacingOccurrencesOfString:@".rss" withString:@""];
+                        
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
-                                                                                           [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".rss" withString:@""], @"name",
-                                                                                           (description ? description : @""),                @"description",
+                                                                                           name,                                             @"name",
+                                                                                           description,                                      @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
                                                                                            [NSNumber numberWithBool:NO],                     @"selected",
                                                                                            nil];
@@ -266,7 +273,7 @@
             NSString *source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
             
             for (NSDictionary *overlay in dataOverlayManager.overlays)
-                if ([[[overlay objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source])
+                if ([[overlay objectForKey:@"source"] isEqualToString:source])
                     for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
                         [superlayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
         }
@@ -495,27 +502,27 @@
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
             
-            if ( ! [layer objectForKey:@"source"])
-            {
-                NSString *source = [NSString stringWithContentsOfFile:[layer objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
-                
-                [layer setObject:source forKey:@"source"];
-            }
-            
             if ([[layer objectForKey:@"selected"] boolValue])
             {
                 [dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
             }
             else
             {
-                if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML)
+                if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML || [[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKMZ)
                 {
                     SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[layer objectForKey:@"path"] error:NULL];
                     
                     [dataOverlayManager addOverlayForKML:kml];
+                    
+                    if ( ! [layer objectForKey:@"source"])
+                        [layer setObject:[kml source] forKey:@"source"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
+                    if ( ! [layer objectForKey:@"source"])
+                        [layer setObject:[NSString stringWithContentsOfFile:[layer objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL]
+                                  forKey:@"source"];
+                    
                     [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
                 }
             }

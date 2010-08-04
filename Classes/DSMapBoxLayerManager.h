@@ -27,7 +27,8 @@
 typedef enum {
     DSMapBoxLayerTypeTile   = 0,
     DSMapBoxLayerTypeKML    = 1,
-    DSMapBoxLayerTypeGeoRSS = 2,
+    DSMapBoxLayerTypeKMZ    = 2,
+    DSMapBoxLayerTypeGeoRSS = 4,
 } DSMapBoxLayerType;
 
 @interface DSMapBoxLayerManager : NSObject
