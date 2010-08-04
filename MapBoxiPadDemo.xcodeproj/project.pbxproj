@@ -557,6 +557,19 @@
 			name = "Objective-Zip";
 			sourceTree = "<group>";
 		};
+		DD1ADB8A120A270B00B052E9 /* Layer Management */ = {
+			isa = PBXGroup;
+			children = (
+				DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */,
+				DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */,
+				DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */,
+				DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */,
+				DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */,
+			);
+			name = "Layer Management";
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -682,7 +695,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DDA291D811F8AD7C000FFFF4 /* Feeds */ = {
+		DDA291D811F8AD7C000FFFF4 /* Feed Parsing */ = {
 			isa = PBXGroup;
 			children = (
 				DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */,
@@ -693,18 +706,13 @@
 				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
 				DD86B6D611FE743B00165CDF /* Resources */,
 			);
-			name = Feeds;
+			name = "Feed Parsing";
 			path = Classes;
 			sourceTree = "<group>";
 		};
 		DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */ = {
 			isa = PBXGroup;
 			children = (
-				DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */,
-				DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */,
-				DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */,
-				DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */,
-				DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */,
 				DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */,
 				DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */,
 				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
@@ -732,9 +740,10 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Main */,
+				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays */,
-				DDA291D811F8AD7C000FFFF4 /* Feeds */,
+				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
 			name = Classes;
