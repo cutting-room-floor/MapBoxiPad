@@ -17,6 +17,7 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD01060C11D04E2000B0079E /* stripe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD01060B11D04E2000B0079E /* stripe.png */; };
+		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
 		DD0F614911ED5A9F0050174D /* SimpleKML.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F612111ED5A9F0050174D /* SimpleKML.m */; };
 		DD0F614A11ED5A9F0050174D /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F612311ED5A9F0050174D /* SimpleKMLBalloonStyle.m */; };
@@ -74,6 +75,7 @@
 		DD1ADA291208DBEA00B052E9 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA111208DBEA00B052E9 /* mztools.c */; };
 		DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA131208DBEA00B052E9 /* unzip.c */; };
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
+		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
 		DD1DE3FA1202652600683B80 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE3F91202652600683B80 /* 74-location.png */; };
 		DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
@@ -89,7 +91,7 @@
 		DD48C86711CC43F100038969 /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen.jpg */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
-		DD72C76311E6847C0030C637 /* georss_circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* georss_circle.png */; };
+		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
 		DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */; };
@@ -149,6 +151,8 @@
 		8D1107310486CEB800E47090 /* MapBoxiPadDemo-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPadDemo-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		DD01060B11D04E2000B0079E /* stripe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = stripe.png; path = ../stripe.png; sourceTree = "<group>"; };
+		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
+		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0F611E11ED5A9F0050174D /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML_UIImage.h; path = "Externals/Simple KML/SimpleKML_UIImage.h"; sourceTree = "<group>"; };
 		DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKML_UIImage.m; path = "Externals/Simple KML/SimpleKML_UIImage.m"; sourceTree = "<group>"; };
 		DD0F612011ED5A9F0050174D /* SimpleKML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML.h; path = "Externals/Simple KML/SimpleKML.h"; sourceTree = "<group>"; };
@@ -263,6 +267,8 @@
 		DD1ADA141208DBEA00B052E9 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		DD1ADA151208DBEA00B052E9 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		DD1ADA161208DBEA00B052E9 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
+		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD1DE3F91202652600683B80 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "74-location.png"; sourceTree = "<group>"; };
 		DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "../stuff to not backup/World_Light_1.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -282,7 +288,7 @@
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDataOverlayManager.m; sourceTree = "<group>"; };
-		DD72C76211E6847C0030C637 /* georss_circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = georss_circle.png; path = ../georss_circle.png; sourceTree = "<group>"; };
+		DD72C76211E6847C0030C637 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle.png; path = ../circle.png; sourceTree = "<group>"; };
 		DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = DSMapBoxOverlayStripeView.xib; path = ../DSMapBoxOverlayStripeView.xib; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
@@ -689,6 +695,10 @@
 				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
 				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
 				DD72C79411E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib */,
+				DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */,
+				DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */,
+				DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */,
+				DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
 			name = "Data Overlays";
@@ -731,7 +741,7 @@
 			children = (
 				DD01060B11D04E2000B0079E /* stripe.png */,
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
-				DD72C76211E6847C0030C637 /* georss_circle.png */,
+				DD72C76211E6847C0030C637 /* circle.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -823,7 +833,7 @@
 				DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */,
 				DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */,
 				DDA1073C11E4436E008D00A7 /* balloon.html in Resources */,
-				DD72C76311E6847C0030C637 /* georss_circle.png in Resources */,
+				DD72C76311E6847C0030C637 /* circle.png in Resources */,
 				DD72C79511E68A9C0030C637 /* DSMapBoxOverlayStripeView.xib in Resources */,
 				DD10184511EE51FC00DF286F /* mapbox.png in Resources */,
 				DDFB5CB111F656EE00695B89 /* icon.png in Resources */,
@@ -917,6 +927,8 @@
 				DD1ADA291208DBEA00B052E9 /* mztools.c in Sources */,
 				DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */,
 				DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */,
+				DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */,
+				DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -273,9 +273,14 @@
             NSString *source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
             
             for (NSDictionary *overlay in dataOverlayManager.overlays)
-                if ([[overlay objectForKey:@"source"] isEqualToString:source])
+            {
+                id overlaySource = [overlay objectForKey:@"source"];
+                
+                if (([overlaySource isKindOfClass:[SimpleKML class]] && [[overlaySource source] isEqualToString:source]) ||
+                    ([overlaySource isKindOfClass:[NSString class]]  && [overlaySource isEqualToString:source]))
                     for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
                         [superlayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
+            }
         }
     }
 }

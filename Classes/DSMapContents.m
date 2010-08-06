@@ -8,6 +8,7 @@
 
 #import "DSMapContents.h"
 #import "DSMapBoxSQLiteTileSource.h"
+#import "DSMapBoxMarkerManager.h"
 
 #import "RMProjection.h"
 #import "RMTileLoader.h"
@@ -17,6 +18,32 @@
 @implementation DSMapContents
 
 @synthesize layerMapViews;
+
+- (id)initWithView:(UIView*)newView
+		tilesource:(id<RMTileSource>)newTilesource
+	  centerLatLon:(CLLocationCoordinate2D)initialCenter
+		 zoomLevel:(float)initialZoomLevel
+	  maxZoomLevel:(float)maxZoomLevel
+	  minZoomLevel:(float)minZoomLevel
+   backgroundImage:(UIImage *)backgroundImage
+{
+    self = [super initWithView:newView 
+                    tilesource:newTilesource 
+                  centerLatLon:initialCenter 
+                     zoomLevel:initialZoomLevel 
+                  maxZoomLevel:maxZoomLevel 
+                  minZoomLevel:minZoomLevel 
+               backgroundImage:backgroundImage];
+    
+    if (self)
+    {
+        [markerManager release];
+        
+        markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
+    }
+    
+    return self;
+}
 
 - (void)dealloc
 {
@@ -38,11 +65,16 @@
 
 - (void)zoomByFactor:(float)zoomFactor near:(CGPoint)pivot animated:(BOOL)animated withCallback:(id <RMMapContentsAnimationCallback>)callback
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) selector:@selector(recalculateClusters) object:nil];
+    
     [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
     
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
+    
+    if ([self.markerManager markers])
+        [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) withObject:nil afterDelay:0.1];
 }
 
 - (void)removeAllCachedImages

@@ -10,12 +10,12 @@
 
 #import "DSMapBoxBalloonController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxMarkerManager.h"
 
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMMapView.h"
 #import "RMProjection.h"
-#import "RMMarkerManager.h"
 #import "RMLayerCollection.h"
 #import "RMPath.h"
 #import "RMLatLong.h"
@@ -114,14 +114,19 @@
                 }
                 else
                 {
-                    marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kPlacemarkAlpha]] autorelease];
+                    marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]] autorelease];
                     
-                    // we store the original icon & alpha value for later use in the pulse animation
+                    // we store the original icon & alpha value for later use in the pulse animation and
+                    // the coordinate location for use in clustering
                     //
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                     @"marker", 
-                                                                             feature.name,                               @"label", 
-                                                                             icon,                                       @"icon",
-                                                                             [NSNumber numberWithFloat:kPlacemarkAlpha], @"alpha",
+                    CLLocation *location = [[[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
+                                                                       longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude] autorelease];
+                    
+                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                       @"marker", 
+                                                                             feature.name,                                 @"label", 
+                                                                             icon,                                         @"icon",
+                                                                             [NSNumber numberWithFloat:kDSPlacemarkAlpha], @"alpha",
+                                                                             location,                                     @"location",
                                                                              nil];
                 }
                 
@@ -139,9 +144,7 @@
                 if (coordinate.longitude > maxLon)
                     maxLon = coordinate.longitude;
                 
-                [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
-                
-                [mapView.contents.markerManager addMarker:marker AtLatLong:coordinate];
+                [((DSMapBoxMarkerManager *)mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
                 
                 [overlay addObject:marker];
             }
@@ -247,6 +250,8 @@
             }
         }
         
+        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
+        
         if ([overlay count])
         {
             NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
@@ -284,7 +289,7 @@
     CGFloat minLon =  180;
     CGFloat maxLon = -180;
     
-    UIImage *image = [[[UIImage imageNamed:@"georss_circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kPlacemarkAlpha];
+    UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
 
     NSArray *items = [DSMapBoxFeedParser itemsForFeed:rss];
     
@@ -297,17 +302,18 @@
         
         RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
         
-        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
-                                                                 [item objectForKey:@"title"],  @"title",
-                                                                 balloonBlurb,                  @"description",
-                                                                 nil];
-        
-        [[[RMMarkerManager alloc] initWithContents:mapView.contents] autorelease];
-        
         CLLocationCoordinate2D coordinate;
         coordinate.latitude  = [[item objectForKey:@"latitude"]  floatValue];
         coordinate.longitude = [[item objectForKey:@"longitude"] floatValue];
+
+        CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
         
+        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
+                                                                 [item objectForKey:@"title"],  @"title",
+                                                                 balloonBlurb,                  @"description",
+                                                                 location,                      @"location",
+                                                                 nil];
+                
         if (coordinate.latitude < minLat)
             minLat = coordinate.latitude;
 
@@ -320,13 +326,15 @@
         if (coordinate.longitude > maxLon)
             maxLon = coordinate.longitude;
         
-        [mapView.contents.markerManager addMarker:marker AtLatLong:coordinate];
+        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
         
         [overlay addObject:marker];
     }
     
     if ([overlay count])
     {
+        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
+        
         NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:rss,     @"source", 
                                                                                overlay, @"overlay",
                                                                                nil];
@@ -375,7 +383,10 @@
             NSArray *components = [overlayDict objectForKey:@"overlay"];
             
             for (id component in components)
-                [(CALayer *)component removeFromSuperlayer];
+                if ([component isKindOfClass:[RMMarker class]])
+                    [((DSMapBoxMarkerManager *)mapView.contents.markerManager) removeMarker:component recalculatingImmediately:NO];
+                
+            [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
         }
     }
     
@@ -414,7 +425,7 @@
     UIImage  *image  = [lastMarkerInfo  objectForKey:@"icon"];
     CGFloat   alpha  = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
     
-    if (alpha >= kPlacemarkAlpha)
+    if (alpha >= kDSPlacemarkAlpha)
         alpha = 0.1;
     
     else
@@ -488,7 +499,7 @@
             RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
             UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
             
-            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kPlacemarkAlpha]];
+            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kDSPlacemarkAlpha]];
         }
         
         // load stripe if needed
