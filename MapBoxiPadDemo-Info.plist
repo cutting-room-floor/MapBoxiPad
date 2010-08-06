@@ -46,6 +46,14 @@
 				<string>com.google.earth.kmz</string>
 			</array>
 		</dict>
+		<dict>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.rss</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
