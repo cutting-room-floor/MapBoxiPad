@@ -289,7 +289,7 @@
     CGFloat minLon =  180;
     CGFloat maxLon = -180;
     
-    UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithWidth:32.0 height:32.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
+    UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
 
     NSArray *items = [DSMapBoxFeedParser itemsForFeed:rss];
     
