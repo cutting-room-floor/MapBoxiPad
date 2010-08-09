@@ -55,6 +55,11 @@
         dataLayers = [[NSArray array] retain];
         
         [self reloadLayersFromDisk];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadLayersFromDisk)
+                                                     name:DSMapBoxTileSetChangedNotification
+                                                   object:nil];
     }
 
     return self;
@@ -62,6 +67,8 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
+
     [dataOverlayManager release];
     [baseMapView release];
     [baseLayers release];
@@ -396,8 +403,7 @@
             [oldLayer setObject:[NSNumber numberWithBool:NO]  forKey:@"selected"];
             [newLayer setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
             
-             if ([[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"]])
-                 [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification object:nil]];
+            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"] animated:YES];
             
             return;
             
