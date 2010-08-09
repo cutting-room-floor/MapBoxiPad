@@ -136,6 +136,22 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         
         [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
     }
+    
+    // load tile overlay state(s)
+    //
+    for (NSString *tileOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"])
+        for (NSDictionary *tileLayer in layerManager.tileLayers)
+            if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath])
+                [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
+                                                                        inSection:DSMapBoxLayerSectionTile]];
+    
+    // load data overlay state(s)
+    //
+    for (NSString *dataOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"])
+        for (NSDictionary *dataLayer in layerManager.dataLayers)
+            if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath])
+                [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
+                                                                        inSection:DSMapBoxLayerSectionData]];
 }
 
 - (void)saveState
@@ -160,19 +176,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     // save data overlay state(s)
     //
-    NSArray *dataOverlaySources = [dataOverlayManager.overlays valueForKeyPath:@"source"];
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
     
-    NSMutableArray *dataOverlayState = [NSMutableArray array];
-
-    for (id component in dataOverlaySources)
-    {
-        if ([component isKindOfClass:[SimpleKML class]])
-            [dataOverlayState addObject:[component valueForKeyPath:@"source"]];
-
-        else if ([component isKindOfClass:[NSString class]])
-            [dataOverlayState addObject:component];
-    }
-
     [[NSUserDefaults standardUserDefaults] setObject:dataOverlayState forKey:@"dataOverlayState"];
 
     // flush to disk to be sure to save

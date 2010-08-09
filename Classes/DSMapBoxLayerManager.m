@@ -119,10 +119,10 @@
             
             BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name];
             
-            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetPath,                                    @"path",
-                                                                                           name,                                           @"name",
-                                                                                           (description ? description : @""),              @"description",
-                                                                                           [NSNumber numberWithBool:isSelected],           @"selected",
+            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetPath,                          @"path",
+                                                                                           name,                                 @"name",
+                                                                                           (description ? description : @""),    @"description",
+                                                                                           [NSNumber numberWithBool:isSelected], @"selected",
                                                                                            nil]];
         }
     }
@@ -145,10 +145,10 @@
             NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetPath];
             NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetPath];
             
-            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                                    @"path",
-                                                                                           name,                                           @"name",
-                                                                                           (description ? description : @""),              @"description",
-                                                                                           [NSNumber numberWithBool:NO],                   @"selected",
+            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                       @"path",
+                                                                                           name,                              @"name",
+                                                                                           (description ? description : @""), @"description",
+                                                                                           [NSNumber numberWithBool:NO],      @"selected",
                                                                                            nil]];
         }
     }
@@ -300,11 +300,11 @@
     
     switch (fromIndexPath.section)
     {
-        case 0: // can't move base layers
+        case DSMapBoxLayerSectionBase: // can't move base layers
             
             return;
             
-        case 1: // tile layers
+        case DSMapBoxLayerSectionTile: // tile layers
             
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
 
@@ -318,7 +318,7 @@
             
             break;
             
-        case 2: // data layers
+        case DSMapBoxLayerSectionData: // data layers
             
             layer = [self.dataLayers objectAtIndex:fromIndexPath.row];
             
@@ -346,11 +346,11 @@
 
     switch (indexPath.section)
     {
-        case 0: // can't archive base layers (for now)
+        case DSMapBoxLayerSectionBase: // can't archive base layers (for now)
             
             return;
             
-        case 1: // tile layers
+        case DSMapBoxLayerSectionTile: // tile layers
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
@@ -365,7 +365,7 @@
             
             break;
             
-        case 2: // data layers
+        case DSMapBoxLayerSectionData: // data layers
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
 
@@ -391,7 +391,7 @@
     
     switch (indexPath.section)
     {
-        case 0:
+        case DSMapBoxLayerSectionBase:
             
             newLayer = [self.baseLayers objectAtIndex:indexPath.row];
 
@@ -407,7 +407,7 @@
             
             return;
             
-        case 1: // tile layers
+        case DSMapBoxLayerSectionTile: // tile layers
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
@@ -509,7 +509,7 @@
 
             break;
             
-        case 2: // data layers
+        case DSMapBoxLayerSectionData: // data layers
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
             

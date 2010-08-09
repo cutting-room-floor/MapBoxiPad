@@ -31,6 +31,12 @@ typedef enum {
     DSMapBoxLayerTypeGeoRSS = 4,
 } DSMapBoxLayerType;
 
+typedef enum {
+    DSMapBoxLayerSectionBase = 0,
+    DSMapBoxLayerSectionTile = 1,
+    DSMapBoxLayerSectionData = 2,
+} DSMapBoxLayerSection;
+
 @interface DSMapBoxLayerManager : NSObject
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
