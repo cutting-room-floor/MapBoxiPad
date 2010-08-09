@@ -144,6 +144,8 @@
     
     double minZoom = [results doubleForColumnIndex:0];
     
+    [results close];
+    
     return (float)minZoom;
 }
 
@@ -157,6 +159,8 @@
     [results next];
     
     double maxZoom = [results doubleForColumnIndex:0];
+    
+    [results close];
     
     return (float)maxZoom;
 }
