@@ -132,16 +132,21 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
         
         NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
-        NSString *restoreTileSetName      = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
         
-        [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
+        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
+        {        
+            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
+            
+            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
+        }
     }
     
     // load tile overlay state(s)
     //
     for (NSString *tileOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"])
         for (NSDictionary *tileLayer in layerManager.tileLayers)
-            if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath])
+            if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
+                [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
                 [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
                                                                         inSection:DSMapBoxLayerSectionTile]];
     
@@ -149,7 +154,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     //
     for (NSString *dataOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"])
         for (NSDictionary *dataLayer in layerManager.dataLayers)
-            if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath])
+            if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
+                [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
                 [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
                                                                         inSection:DSMapBoxLayerSectionData]];
 }
