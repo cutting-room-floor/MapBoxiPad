@@ -54,6 +54,15 @@
 
 #pragma mark -
 
+- (void)moveToProjectedPoint: (RMProjectedPoint)aPoint
+{
+    [super moveToProjectedPoint:aPoint];
+    
+    if (self.layerMapViews)
+        for (RMMapView *layerMapView in layerMapViews)
+            [layerMapView.contents moveToProjectedPoint:aPoint];
+}
+
 - (void)moveBy:(CGSize)delta
 {
     [super moveBy:delta];
