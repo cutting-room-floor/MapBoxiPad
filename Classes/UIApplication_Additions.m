@@ -17,4 +17,11 @@
     return [userPaths objectAtIndex:0];
 }
 
+- (NSString *)preferencesFolderPathString
+{
+    NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    
+    return [NSString stringWithFormat:@"%@/Preferences", [userPaths objectAtIndex:0]];
+}
+
 @end

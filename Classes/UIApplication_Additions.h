@@ -11,5 +11,6 @@
 @interface UIApplication (UIApplication_Additions)
 
 - (NSString *)documentsFolderPathString;
+- (NSString *)preferencesFolderPathString;
 
 @end

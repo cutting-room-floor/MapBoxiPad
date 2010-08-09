@@ -234,7 +234,7 @@ static DSMapBoxTileSetManager *defaultManager;
     return _activeDownloads;
 }
 
-- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName
+- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated
 {
     NSLog(@"activating %@", tileSetName);
     
@@ -257,7 +257,11 @@ static DSMapBoxTileSetManager *defaultManager;
             }
         }
     }
-    
+
+    if ( ! [currentPath isEqual:self.activeTileSetURL])
+        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification 
+                                                                                             object:[NSNumber numberWithBool:animated]]];
+
     return ! [currentPath isEqual:self.activeTileSetURL];
 }
 

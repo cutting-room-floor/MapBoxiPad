@@ -10,7 +10,8 @@
 
 @class MapBoxiPadDemoViewController;
 
-@interface MapBoxiPadDemoAppDelegate : NSObject <UIApplicationDelegate> {
+@interface MapBoxiPadDemoAppDelegate : NSObject <UIApplicationDelegate>
+{
     UIWindow *window;
     MapBoxiPadDemoViewController *viewController;
 }
@@ -19,4 +20,3 @@
 @property (nonatomic, retain) IBOutlet MapBoxiPadDemoViewController *viewController;
 
 @end
-

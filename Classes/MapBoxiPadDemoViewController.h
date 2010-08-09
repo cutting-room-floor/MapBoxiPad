@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <CoreLocation/CoreLocation.h>
+
 @class RMMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
@@ -22,8 +24,11 @@
     UIPopoverController *layersPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
+    CLLocationCoordinate2D postRotationMapCenter;
 }
 
+- (void)restoreState;
+- (void)saveState;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedLibraryButton:(id)sender;

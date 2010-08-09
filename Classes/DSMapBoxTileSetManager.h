@@ -37,6 +37,6 @@ typedef enum {
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
 - (NSArray *)activeDownloads;
-- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName;
+- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated;
 
 @end

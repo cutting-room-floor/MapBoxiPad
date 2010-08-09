@@ -39,6 +39,7 @@
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
 void SoundCompletionProc (SystemSoundID sound, void *clientData);
+- (UIImage *)mapSnapshot;
 
 @end
 
@@ -87,11 +88,22 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                                              selector:@selector(tileSetDidChange:)
                                                  name:DSMapBoxTileSetChangedNotification
                                                object:nil];
+    
+    // restore app state
+    //
+    [self restoreState];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    postRotationMapCenter = mapView.contents.mapCenter;
+    
     return YES;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    mapView.contents.mapCenter = postRotationMapCenter;
 }
 
 - (void)dealloc
@@ -106,6 +118,72 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 }
 
 #pragma mark -
+
+- (void)restoreState
+{
+    // load base map state
+    //
+    NSDictionary *baseMapState = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseMapState"];
+    
+    if (baseMapState)
+    {
+        CLLocationCoordinate2D mapCenter = {
+            .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
+            .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
+        };
+        
+        mapView.contents.mapCenter = mapCenter;
+        
+        mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+        
+        NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
+        NSString *restoreTileSetName      = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
+        
+        [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
+    }
+}
+
+- (void)saveState
+{
+    // save base map state
+    //
+    NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     UIImagePNGRepresentation([self mapSnapshot]),                              @"mapSnapshot",
+                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
+                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
+                                     nil];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:baseMapState forKey:@"baseMapState"];
+
+    // save tile overlay state(s)
+    //
+    NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:tileOverlayState forKey:@"tileOverlayState"];
+    
+    // save data overlay state(s)
+    //
+    NSArray *dataOverlaySources = [dataOverlayManager.overlays valueForKeyPath:@"source"];
+    
+    NSMutableArray *dataOverlayState = [NSMutableArray array];
+
+    for (id component in dataOverlaySources)
+    {
+        if ([component isKindOfClass:[SimpleKML class]])
+            [dataOverlayState addObject:[component valueForKeyPath:@"source"]];
+
+        else if ([component isKindOfClass:[NSString class]])
+            [dataOverlayState addObject:component];
+    }
+
+    [[NSUserDefaults standardUserDefaults] setObject:dataOverlayState forKey:@"dataOverlayState"];
+
+    // flush to disk to be sure to save
+    //
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (IBAction)tappedRecenterButton:(id)sender
 {
@@ -185,25 +263,33 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     NSLog(@"show library");
 }
 
+#pragma mark -
+
 - (void)tileSetDidChange:(NSNotification *)notification
 {
     // hide layers popover
     //
     [layersPopover dismissPopoverAnimated:NO];
     
-    // get an image of the current map
+    // determine if we should animate
     //
-    UIGraphicsBeginImageContext(mapView.bounds.size);
-    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    BOOL animated = [[notification object] boolValue];
+
+    UIImageView *snapshotView = nil;
     
-    // swap map view with image view
-    //
-    UIImageView *snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
-    snapshotView.image = snapshot;
-    [self.view insertSubview:snapshotView atIndex:0];
-    [mapView removeFromSuperview];
+    if (animated)
+    {
+        // get an image of the current map
+        //
+        UIImage *snapshot = [self mapSnapshot];
+        
+        // swap map view with image view
+        //
+        snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
+        snapshotView.image = snapshot;
+        [self.view insertSubview:snapshotView atIndex:0];
+        [mapView removeFromSuperview];
+    }
     
     // adjust map view to new auto-reloaded tile source settings
     //
@@ -232,30 +318,43 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     else if (currentZoom > [tileSource minZoom])
         mapView.contents.zoom = currentZoom - 1.0;
-
+    
     mapView.contents.zoom = currentZoom;
     
-    // start up page turn sound effect
-    //
-    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, SoundCompletionProc, self);
-    AudioServicesPlaySystemSound(sound);
-    
-    // animate swap from old snapshot to new map
-    //
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
-    [UIView setAnimationDuration:0.8];
-    [snapshotView removeFromSuperview];
-    [self.view insertSubview:mapView atIndex:0];
-    [UIView commitAnimations];
+    if (animated)
+    {
+        // start up page turn sound effect
+        //
+        NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
+        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, SoundCompletionProc, self);
+        AudioServicesPlaySystemSound(sound);
+        
+        // animate swap from old snapshot to new map
+        //
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+        [UIView setAnimationDuration:0.8];
+        [snapshotView removeFromSuperview];
+        [self.view insertSubview:mapView atIndex:0];
+        [UIView commitAnimations];
+    }
 }
 
 void SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
+}
+
+- (UIImage *)mapSnapshot
+{
+    UIGraphicsBeginImageContext(mapView.bounds.size);
+    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return snapshot;
 }
 
 @end
