@@ -83,6 +83,15 @@
         [self.view addSubview:trashButton];
         trashButton.frame = CGRectMake(310, 20 + count * 60, 50, 50);
         
+        // add last modified stamp
+        //
+        UILabel *dateLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
+        NSString *fullPath = [NSString stringWithFormat:@"%@/%@.plist", saveFolderPath, saveFile];
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fullPath error:NULL];
+        dateLabel.text = [[attributes objectForKey:NSFileModificationDate] description];
+        [self.view addSubview:dateLabel];
+        dateLabel.frame = CGRectMake(380, 20 + count * 60, 250, 50);
+        
         count++;
     }
 }
