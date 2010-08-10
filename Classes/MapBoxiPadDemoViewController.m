@@ -14,6 +14,8 @@
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
+#import "DSMapBoxDocumentSaveController.h"
+#import "DSMapBoxDocumentLoadController.h"
 
 #import "UIApplication_Additions.h"
 
@@ -86,7 +88,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     // restore app state
     //
-    [self restoreState];
+    [self restoreState:self];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -114,81 +116,108 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 #pragma mark -
 
-- (void)restoreState
+- (void)restoreState:(id)sender
 {
-    // load base map state
-    //
-    NSDictionary *baseMapState = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseMapState"];
-    
-    if (baseMapState)
+    if ([sender isKindOfClass:[UIBarButtonItem class]])
     {
-        CLLocationCoordinate2D mapCenter = {
-            .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
-            .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
-        };
-        
-        mapView.contents.mapCenter = mapCenter;
-        
-        mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
-        
-        NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
-        
-        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
-        {        
-            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
-            
-            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
-        }
+        NSLog(@"restore from user action");
     }
-    
-    // load tile overlay state(s)
-    //
-    for (NSString *tileOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"])
-        for (NSDictionary *tileLayer in layerManager.tileLayers)
-            if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
-                [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
-                [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
-                                                                        inSection:DSMapBoxLayerSectionTile]];
-    
-    // load data overlay state(s)
-    //
-    for (NSString *dataOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"])
-        for (NSDictionary *dataLayer in layerManager.dataLayers)
-            if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
-                [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
-                [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
-                                                                        inSection:DSMapBoxLayerSectionData]];
+    else
+    {
+        // load base map state
+        //
+        NSDictionary *baseMapState = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseMapState"];
+        
+        if (baseMapState)
+        {
+            CLLocationCoordinate2D mapCenter = {
+                .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
+                .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
+            };
+            
+            mapView.contents.mapCenter = mapCenter;
+            
+            mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+            
+            NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
+            
+            if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
+            {        
+                NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
+                
+                [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
+            }
+        }
+        
+        // load tile overlay state(s)
+        //
+        for (NSString *tileOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"])
+            for (NSDictionary *tileLayer in layerManager.tileLayers)
+                if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
+                    [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
+                                                                            inSection:DSMapBoxLayerSectionTile]];
+        
+        // load data overlay state(s)
+        //
+        for (NSString *dataOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"])
+            for (NSDictionary *dataLayer in layerManager.dataLayers)
+                if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
+                    [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
+                                                                            inSection:DSMapBoxLayerSectionData]];
+    }
 }
 
-- (void)saveState
+- (void)saveState:(id)sender
 {
-    // save base map state
-    //
-    NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     UIImagePNGRepresentation([self mapSnapshot]),                              @"mapSnapshot",
-                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
-                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
-                                     nil];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:baseMapState forKey:@"baseMapState"];
+    if ([sender isKindOfClass:[UIBarButtonItem class]])
+    {
+        NSLog(@"save from user action");
+        
+        [self dismissModalViewControllerAnimated:YES];
+    }
+    else
+    {
+        // save base map state
+        //
+        NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
+                                      UIImagePNGRepresentation([self mapSnapshot]),                              @"mapSnapshot",
+                                      [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
+                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
+                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
+                                      [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
+                                      nil];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:baseMapState forKey:@"baseMapState"];
+        
+        // save tile overlay state(s)
+        //
+        NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:tileOverlayState forKey:@"tileOverlayState"];
+        
+        // save data overlay state(s)
+        //
+        NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
+        
+        [[NSUserDefaults standardUserDefaults] setObject:dataOverlayState forKey:@"dataOverlayState"];
+        
+        // flush to disk to be sure to save
+        //
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+}
 
-    // save tile overlay state(s)
-    //
-    NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+- (IBAction)tappedDocumentsButton:(id)sender
+{
+    UIActionSheet *documentsSheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:nil
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"Load Map", @"Save Map", nil] autorelease];
     
-    [[NSUserDefaults standardUserDefaults] setObject:tileOverlayState forKey:@"tileOverlayState"];
-    
-    // save data overlay state(s)
-    //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
-    
-    [[NSUserDefaults standardUserDefaults] setObject:dataOverlayState forKey:@"dataOverlayState"];
-
-    // flush to disk to be sure to save
-    //
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [documentsSheet showFromBarButtonItem:sender animated:YES];
 }
 
 - (IBAction)tappedRecenterButton:(id)sender
@@ -355,12 +384,75 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 
 - (UIImage *)mapSnapshot
 {
-    UIGraphicsBeginImageContext(mapView.bounds.size);
-    [mapView.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
+    // get full screen
+    //
+    UIGraphicsBeginImageContext(self.view.bounds.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *full = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    
+    // crop out top toolbar
+    //
+    CGImageRef cropped = CGImageCreateWithImageInRect(full.CGImage, CGRectMake(0, 
+                                                                               toolbar.frame.size.height, 
+                                                                               full.size.width, 
+                                                                               full.size.height - toolbar.frame.size.height));
+    
+    // convert & clean up
+    //
+    UIImage *snapshot = [UIImage imageWithCGImage:cropped];
+    CGImageRelease(cropped);
 
     return snapshot;
+}
+
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.firstOtherButtonIndex)
+    {
+        DSMapBoxDocumentLoadController *loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
+
+        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
+        
+        wrapper.navigationBar.barStyle = UIBarStyleBlack;
+        
+        loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                             style:UIBarButtonItemStylePlain
+                                                                                            target:self
+                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+        
+        wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
+        wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
+
+        [self presentModalViewController:wrapper animated:YES];
+    }
+    else
+    {
+        DSMapBoxDocumentSaveController *saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
+        
+        saveController.snapshot = [self mapSnapshot];
+        saveController.name     = [[NSDate date] description];
+
+        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:saveController] autorelease];
+        
+        wrapper.navigationBar.barStyle = UIBarStyleBlack;
+        
+        saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                             style:UIBarButtonItemStylePlain
+                                                                                            target:self
+                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+        
+        saveController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Save" 
+                                                                                             style:UIBarButtonItemStyleDone 
+                                                                                            target:self
+                                                                                            action:@selector(saveState:)] autorelease];
+        
+        wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+
+        [self presentModalViewController:wrapper animated:YES];
+    }
 }
 
 @end

@@ -14,7 +14,7 @@
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 
-@interface MapBoxiPadDemoViewController : UIViewController
+@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;
@@ -27,8 +27,9 @@
     CLLocationCoordinate2D postRotationMapCenter;
 }
 
-- (void)restoreState;
-- (void)saveState;
+- (void)restoreState:(id)sender;
+- (void)saveState:(id)sender;
+- (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
 - (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedLibraryButton:(id)sender;

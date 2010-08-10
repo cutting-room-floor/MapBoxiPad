@@ -45,7 +45,7 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [viewController saveState];
+    [viewController saveState:self];
 }
 
 @end

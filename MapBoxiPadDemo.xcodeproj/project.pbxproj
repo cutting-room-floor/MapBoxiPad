@@ -104,6 +104,11 @@
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
+		DDBA88D51210E69900E5B572 /* 103-map.png in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88D41210E69900E5B572 /* 103-map.png */; };
+		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
+		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
+		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
+		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
@@ -307,6 +312,13 @@
 		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
+		DDBA88D41210E69900E5B572 /* 103-map.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "103-map.png"; sourceTree = "<group>"; };
+		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
+		DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentLoadController.m; sourceTree = "<group>"; };
+		DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentLoadController.xib; sourceTree = "<group>"; };
+		DDBA89861210EF4600E5B572 /* DSMapBoxDocumentSaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentSaveController.h; sourceTree = "<group>"; };
+		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
+		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
@@ -622,6 +634,7 @@
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 				DD1DE3F91202652600683B80 /* 74-location.png */,
+				DDBA88D41210E69900E5B572 /* 103-map.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -750,6 +763,7 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Main */,
+				DDBA88E21210E71000E5B572 /* Document Management */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays */,
@@ -757,6 +771,20 @@
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		DDBA88E21210E71000E5B572 /* Document Management */ = {
+			isa = PBXGroup;
+			children = (
+				DDBA89861210EF4600E5B572 /* DSMapBoxDocumentSaveController.h */,
+				DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */,
+				DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */,
+				DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */,
+				DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */,
+				DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */,
+			);
+			name = "Document Management";
+			path = Classes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -845,6 +873,9 @@
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
 				DD1DE3FA1202652600683B80 /* 74-location.png in Resources */,
 				DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */,
+				DDBA88D51210E69900E5B572 /* 103-map.png in Resources */,
+				DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */,
+				DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -929,6 +960,8 @@
 				DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */,
 				DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */,
 				DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */,
+				DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */,
+				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
