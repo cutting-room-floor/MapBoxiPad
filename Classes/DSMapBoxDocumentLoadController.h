@@ -8,8 +8,23 @@
 
 #import <UIKit/UIKit.h>
 
+#define kDSSaveFolderName @"Saved Maps"
+
+@class DSMapBoxDocumentLoadController;
+
+@protocol DSMapBoxDocumentLoadControllerDelegate
+
+- (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller didLoadDocumentWithName:(NSString *)name;
+
+@end
+
+#pragma mark -
+
 @interface DSMapBoxDocumentLoadController : UIViewController
 {
+    id <DSMapBoxDocumentLoadControllerDelegate>delegate;
 }
+
+@property (nonatomic, assign) id <DSMapBoxDocumentLoadControllerDelegate>delegate;
 
 @end

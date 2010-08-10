@@ -8,15 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+#import "DSMapBoxDocumentLoadController.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 @class RMMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 @class DSMapBoxDocumentSaveController;
-@class DSMapBoxDocumentLoadController;
 
-@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate>
+@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate, DSMapBoxDocumentLoadControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;

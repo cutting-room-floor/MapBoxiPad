@@ -15,7 +15,6 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxDocumentSaveController.h"
-#import "DSMapBoxDocumentLoadController.h"
 
 #import "UIApplication_Additions.h"
 
@@ -118,55 +117,95 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)restoreState:(id)sender
 {
-    if ([sender isKindOfClass:[UIBarButtonItem class]])
+    NSDictionary *baseMapState;
+    NSArray *tileOverlayState;
+    NSArray *dataOverlayState;
+    
+    // determine if document or global restore
+    //
+    if ([sender isKindOfClass:[NSString class]])
     {
-        NSLog(@"restore from user action");
+        NSString *saveFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName, sender];
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:saveFile];
+        
+        baseMapState = [data objectForKey:@"baseMapState"];
+        tileOverlayState  = [data objectForKey:@"tileOverlayState"];
+        dataOverlayState  = [data objectForKey:@"dataOverlayState"];
     }
     else
     {
-        // load base map state
-        //
-        NSDictionary *baseMapState = [[NSUserDefaults standardUserDefaults] objectForKey:@"baseMapState"];
+        baseMapState = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"baseMapState"];
+        tileOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"];
+        dataOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"];
+    }
+    
+    // load it up
+    //
+    if (baseMapState)
+    {
+        CLLocationCoordinate2D mapCenter = {
+            .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
+            .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
+        };
         
-        if (baseMapState)
-        {
-            CLLocationCoordinate2D mapCenter = {
-                .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
-                .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
-            };
+        mapView.contents.mapCenter = mapCenter;
+        
+        mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+        
+        NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
+        
+        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
+        {        
+            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
             
-            mapView.contents.mapCenter = mapCenter;
-            
-            mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
-            
-            NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
-            
-            if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
-            {        
-                NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
-                
-                [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
-            }
+            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
         }
-        
-        // load tile overlay state(s)
+    }
+    
+    // load tile overlay state(s)
+    //
+    if (tileOverlayState)
+    {
+        // remove current layers
         //
-        for (NSString *tileOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"])
+        NSArray *activeTileLayers = [layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+        for (NSDictionary *tileLayer in activeTileLayers)
+            [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer]
+                                                                    inSection:DSMapBoxLayerSectionTile]];
+        
+        // toggle new ones
+        //
+        for (NSString *tileOverlayPath in tileOverlayState)
             for (NSDictionary *tileLayer in layerManager.tileLayers)
                 if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
                     [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
                                                                             inSection:DSMapBoxLayerSectionTile]];
-        
-        // load data overlay state(s)
+    }
+    
+    // load data overlay state(s)
+    //
+    if (dataOverlayState)
+    {
+        // remove current layers
         //
-        for (NSString *dataOverlayPath in [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"])
+        NSArray *activeDataLayers = [layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+        for (NSDictionary *dataLayer in activeDataLayers)
+            [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer]
+                                                                    inSection:DSMapBoxLayerSectionData]];
+
+        // toggle new ones
+        //
+        for (NSString *dataOverlayPath in dataOverlayState)
             for (NSDictionary *dataLayer in layerManager.dataLayers)
                 if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
                     [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
                                                                             inSection:DSMapBoxLayerSectionData]];
     }
+
+    if ([sender isKindOfClass:[NSString class]])
+        [self dismissModalViewControllerAnimated:YES];
 }
 
 - (void)saveState:(id)sender
@@ -196,7 +235,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     //
     if ([sender isKindOfClass:[UIBarButtonItem class]])
     {
-        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/Saved Maps", [[UIApplication sharedApplication] preferencesFolderPathString]];
+        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
         
         BOOL isDirectory = NO;
         
@@ -233,6 +272,9 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (IBAction)tappedDocumentsButton:(id)sender
 {
+    if (layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:NO];
+
     UIActionSheet *documentsSheet = [[[UIActionSheet alloc] initWithTitle:nil
                                                                  delegate:self
                                                         cancelButtonTitle:nil
@@ -445,12 +487,14 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
                                                                                             target:self
                                                                                             action:@selector(dismissModalViewControllerAnimated:)] autorelease];
         
+        loadController.delegate = self;
+        
         wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
         wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
 
         [self presentModalViewController:wrapper animated:YES];
     }
-    else
+    else if (buttonIndex > -1)
     {
         saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
         
@@ -475,6 +519,13 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 
         [self presentModalViewController:wrapper animated:YES];
     }
+}
+
+#pragma mark -
+
+- (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller didLoadDocumentWithName:(NSString *)name
+{
+    [self restoreState:name];
 }
 
 @end
