@@ -171,40 +171,62 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)saveState:(id)sender
 {
+    // get snapshot
+    //
+    NSData *mapSnapshot = UIImagePNGRepresentation([self mapSnapshot]);
+    
+    // get base map state
+    //
+    NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
+                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
+                                     nil];
+    
+    // get tile overlay state(s)
+    //
+    NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+    
+    // get data overlay state(s)
+    //
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
+
+    // determine if document or global save
+    //
     if ([sender isKindOfClass:[UIBarButtonItem class]])
     {
-        NSLog(@"save from user action");
+        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/Saved Maps", [[UIApplication sharedApplication] preferencesFolderPathString]];
         
-        [self dismissModalViewControllerAnimated:YES];
+        BOOL isDirectory = NO;
+        
+        if ( ! [[NSFileManager defaultManager] fileExistsAtPath:saveFolderPath isDirectory:&isDirectory] || ! isDirectory)
+            [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath attributes:nil];
+        
+        NSString *stateName = saveController.name;
+        
+        if ([stateName length] && [[stateName componentsSeparatedByString:@"/"] count] < 2) // no slashes
+        {
+            NSDictionary *state = [NSDictionary dictionaryWithObjectsAndKeys:mapSnapshot,      @"mapSnapshot", 
+                                                                             baseMapState,     @"baseMapState", 
+                                                                             tileOverlayState, @"tileOverlayState", 
+                                                                             dataOverlayState, @"dataOverlayState", 
+                                                                             nil];
+            
+            NSString *savePath = [NSString stringWithFormat:@"%@/%@.plist", saveFolderPath, stateName];
+            
+            [state writeToFile:savePath atomically:YES];
+            
+            [self dismissModalViewControllerAnimated:YES];
+        }
     }
     else
     {
-        // save base map state
-        //
-        NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      UIImagePNGRepresentation([self mapSnapshot]),                              @"mapSnapshot",
-                                      [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
-                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
-                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
-                                      [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
-                                      nil];
-        
-        [[NSUserDefaults standardUserDefaults] setObject:baseMapState forKey:@"baseMapState"];
-        
-        // save tile overlay state(s)
-        //
-        NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
-        
+        [[NSUserDefaults standardUserDefaults] setObject:mapSnapshot      forKey:@"mapSnapshot"];
+        [[NSUserDefaults standardUserDefaults] setObject:baseMapState     forKey:@"baseMapState"];
         [[NSUserDefaults standardUserDefaults] setObject:tileOverlayState forKey:@"tileOverlayState"];
-        
-        // save data overlay state(s)
-        //
-        NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
-        
         [[NSUserDefaults standardUserDefaults] setObject:dataOverlayState forKey:@"dataOverlayState"];
-        
-        // flush to disk to be sure to save
-        //
+
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -412,7 +434,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     if (buttonIndex == actionSheet.firstOtherButtonIndex)
     {
-        DSMapBoxDocumentLoadController *loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
+        loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
 
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
         
@@ -430,7 +452,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
     }
     else
     {
-        DSMapBoxDocumentSaveController *saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
+        saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
         
         saveController.snapshot = [self mapSnapshot];
         saveController.name     = [[NSDate date] description];

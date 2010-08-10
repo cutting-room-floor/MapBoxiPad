@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DSMapBoxDocumentSaveController : UIViewController
+@interface DSMapBoxDocumentSaveController : UIViewController <UITextFieldDelegate>
 {
     IBOutlet UIImageView *snapshotView;
     IBOutlet UITextField *nameTextField;

@@ -13,6 +13,8 @@
 @class RMMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
+@class DSMapBoxDocumentSaveController;
+@class DSMapBoxDocumentLoadController;
 
 @interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate>
 {
@@ -25,6 +27,8 @@
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
     CLLocationCoordinate2D postRotationMapCenter;
+    DSMapBoxDocumentSaveController *saveController;
+    DSMapBoxDocumentLoadController *loadController;
 }
 
 - (void)restoreState:(id)sender;

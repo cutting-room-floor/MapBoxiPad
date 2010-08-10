@@ -17,8 +17,15 @@
 {
     [super viewDidLoad];
     
-    snapshotView.image = snapshot;
-    nameTextField.text = name;
+    snapshotView.image = self.snapshot;
+    nameTextField.text = self.name;
+    
+    nameTextField.clearButtonMode = UITextFieldViewModeAlways;
+        
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(updateName:)
+                                                 name:UITextFieldTextDidChangeNotification
+                                               object:nameTextField];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -35,10 +42,25 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nameTextField];
+    
     [snapshot release];
     [name release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (void)updateName:(NSNotification *)notification
+{
+    self.name = nameTextField.text;
+    
+    if ([self.name length] && [[self.name componentsSeparatedByString:@"/"] count] < 2) // no slashes
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    
+    else
+        self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
 @end
