@@ -20,7 +20,7 @@
 
 #pragma mark -
 
-@interface DSMapBoxDocumentLoadController : UIViewController
+@interface DSMapBoxDocumentLoadController : UIViewController <UIAlertViewDelegate>
 {
     id <DSMapBoxDocumentLoadControllerDelegate>delegate;
 }

@@ -8,7 +8,17 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
+#import "DSAlertView.h"
+
 #import "UIApplication_Additions.h"
+
+@interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
+
+- (void)reload;
+
+@end
+
+#pragma mark -
 
 @implementation DSMapBoxDocumentLoadController
 
@@ -17,6 +27,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [self reload];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
+}
+
+#pragma mark -
+
+- (void)reload
+{
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
     
@@ -41,34 +65,59 @@
         // strip extension
         //
         saveFile = [saveFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-                                                                         
-        // add button
+        
+        // add load button
         //
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [button addTarget:self action:@selector(tappedFileButton:) forControlEvents:UIControlEventTouchUpInside];
-        [button setTitle:saveFile forState:UIControlStateNormal];
-        [self.view addSubview:button];
-        button.frame = CGRectMake(90, 20 + count * 60, 200, 50);
+        UIButton *loadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [loadButton addTarget:self action:@selector(tappedLoadButton:) forControlEvents:UIControlEventTouchUpInside];
+        [loadButton setTitle:saveFile forState:UIControlStateNormal];
+        [self.view addSubview:loadButton];
+        loadButton.frame = CGRectMake(90, 20 + count * 60, 200, 50);
+        
+        // add trash button
+        //
+        UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        [trashButton addTarget:self action:@selector(tappedTrashButton:) forControlEvents:UIControlEventTouchUpInside];
+        [trashButton setTitle:saveFile forState:UIControlStateDisabled];
+        [trashButton setImage:[UIImage imageNamed:@"trash.png"] forState:UIControlStateNormal];
+        [self.view addSubview:trashButton];
+        trashButton.frame = CGRectMake(310, 20 + count * 60, 50, 50);
         
         count++;
     }
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)tappedLoadButton:(id)sender
 {
-    return YES;
+    [self.delegate documentLoadController:self didLoadDocumentWithName:((UIButton *)sender).titleLabel.text];
 }
 
-- (void)dealloc
+- (void)tappedTrashButton:(id)sender
 {
-    [super dealloc];
+    DSAlertView *alert = [[[DSAlertView alloc] initWithTitle:@"Delete Saved Map?"
+                                                     message:[NSString stringWithFormat:@"Are you sure that you want to delete the '%@' saved map?", [(UIButton *)sender titleForState:UIControlStateDisabled]]
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Delete", nil] autorelease];
+    
+    alert.contextInfo = [(UIButton *)sender titleForState:UIControlStateDisabled];
+    
+    [alert show];
 }
 
 #pragma mark -
 
-- (void)tappedFileButton:(id)sender
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    [self.delegate documentLoadController:self didLoadDocumentWithName:((UIButton *)sender).titleLabel.text];
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+    {
+        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@.plist", saveFolderPath, ((DSAlertView *)alertView).contextInfo];
+        
+        [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
+        
+        [self reload];
+    }
 }
 
 @end
