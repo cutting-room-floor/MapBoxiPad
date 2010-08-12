@@ -116,7 +116,7 @@
     
     // scroll left if swiped to left & room to scroll
     //
-    if (delta < 0 && currentX < self.contentSize.width - (kDSDocumentWidth * 3))
+    if (delta < -44.00 && currentX < self.contentSize.width - (kDSDocumentWidth * 3))
     {
         index = index + 1;
         [self setContentOffset:CGPointMake(currentX + kDSDocumentWidth, 0) animated:YES];
@@ -125,7 +125,7 @@
     
     // scroll right if swiped to right & room to scroll
     //
-    else if (delta > 0 && currentX > 0)
+    else if (delta > 44.0 && currentX > 0)
     {
         index = index - 1;
         [self setContentOffset:CGPointMake(currentX - kDSDocumentWidth, 0) animated:YES];
@@ -134,7 +134,7 @@
     
     // consider as a tap selection if on current subview
     //
-    else if (delta == 0.0)
+    else if (delta >= -44.0 && delta <= 44.0)
     {
         CGFloat currentViewLeftX  = currentX;
         CGFloat currentViewRightX = currentX + kDSDocumentWidth;
