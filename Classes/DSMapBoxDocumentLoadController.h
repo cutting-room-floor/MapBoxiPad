@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "DSMapBoxDocumentScrollView.h"
+
 #define kDSSaveFolderName @"Saved Maps"
 
 @class DSMapBoxDocumentLoadController;
@@ -20,11 +22,16 @@
 
 #pragma mark -
 
-@interface DSMapBoxDocumentLoadController : UIViewController <UIAlertViewDelegate>
+@interface DSMapBoxDocumentLoadController : UIViewController <UIAlertViewDelegate, DSMapBoxDocumentScrollViewDelegate>
 {
-    id <DSMapBoxDocumentLoadControllerDelegate>delegate;
+    IBOutlet DSMapBoxDocumentScrollView *scroller;
+    IBOutlet UILabel *nameLabel;
+    IBOutlet UILabel *dateLabel;
+    id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 }
 
-@property (nonatomic, assign) id <DSMapBoxDocumentLoadControllerDelegate>delegate;
+@property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
+
+- (IBAction)tappedTrashButton:(id)sender;
 
 @end

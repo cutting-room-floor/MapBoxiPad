@@ -9,12 +9,15 @@
 #import "DSMapBoxDocumentLoadController.h"
 
 #import "DSAlertView.h"
+#import "DSMapBoxLargeSnapshotView.h"
 
 #import "UIApplication_Additions.h"
 
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
 
 - (void)reload;
+- (NSString *)saveFolderPath;
+- (NSArray *)saveFiles;
 
 @end
 
@@ -28,6 +31,8 @@
 {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
+    
     [self reload];
 }
 
@@ -40,76 +45,50 @@
 
 - (void)reload
 {
-    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
-    NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
-    
-    NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:saveFolderPath error:NULL];
-    
-    NSUInteger count = 0;
-    
-    for (NSString *saveFile in saveFiles)
+    // iterate documents
+    //
+    NSMutableArray *documentViews = [NSMutableArray array];
+
+    for (NSString *saveFile in [self saveFiles])
     {
         // get snapshot
         //
-        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", saveFolderPath, saveFile]];
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [self saveFolderPath], saveFile]];
         UIImage *snapshot  = [UIImage imageWithData:[data objectForKey:@"mapSnapshot"]];
         
-        // add image view
+        // create & add snapshot view
         //
-        UIImageView *imageView = [[[UIImageView alloc] initWithImage:snapshot] autorelease];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        [self.view addSubview:imageView];
-        imageView.frame = CGRectMake(20, 20 + count * 60, 50, 50);
-        
-        // strip extension
-        //
-        saveFile = [saveFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-        
-        // add load button
-        //
-        UIButton *loadButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [loadButton addTarget:self action:@selector(tappedLoadButton:) forControlEvents:UIControlEventTouchUpInside];
-        [loadButton setTitle:saveFile forState:UIControlStateNormal];
-        [self.view addSubview:loadButton];
-        loadButton.frame = CGRectMake(90, 20 + count * 60, 200, 50);
-        
-        // add trash button
-        //
-        UIButton *trashButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-        [trashButton addTarget:self action:@selector(tappedTrashButton:) forControlEvents:UIControlEventTouchUpInside];
-        [trashButton setTitle:saveFile forState:UIControlStateDisabled];
-        [trashButton setImage:[UIImage imageNamed:@"trash.png"] forState:UIControlStateNormal];
-        [self.view addSubview:trashButton];
-        trashButton.frame = CGRectMake(310, 20 + count * 60, 50, 50);
-        
-        // add last modified stamp
-        //
-        UILabel *dateLabel = [[[UILabel alloc] initWithFrame:CGRectZero] autorelease];
-        NSString *fullPath = [NSString stringWithFormat:@"%@/%@.plist", saveFolderPath, saveFile];
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:fullPath error:NULL];
-        dateLabel.text = [[attributes objectForKey:NSFileModificationDate] description];
-        [self.view addSubview:dateLabel];
-        dateLabel.frame = CGRectMake(380, 20 + count * 60, 250, 50);
-        
-        count++;
+        [documentViews addObject:[[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease]];
     }
+
+    // assign snapshots to scroll view
+    //
+    scroller.documentViews = documentViews;
 }
 
-- (void)tappedLoadButton:(id)sender
+- (NSString *)saveFolderPath
 {
-    [self.delegate documentLoadController:self didLoadDocumentWithName:((UIButton *)sender).titleLabel.text];
+    return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
 }
 
-- (void)tappedTrashButton:(id)sender
+- (NSArray *)saveFiles
+{
+    NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self saveFolderPath] error:NULL];
+    
+    return saveFiles;
+}
+
+#pragma mark -
+
+- (IBAction)tappedTrashButton:(id)sender
 {
     DSAlertView *alert = [[[DSAlertView alloc] initWithTitle:@"Delete Saved Map?"
-                                                     message:[NSString stringWithFormat:@"Are you sure that you want to delete the '%@' saved map?", [(UIButton *)sender titleForState:UIControlStateDisabled]]
+                                                     message:[NSString stringWithFormat:@"Are you sure that you want to delete the '%@' saved map?", nameLabel.text]
                                                     delegate:self
                                            cancelButtonTitle:@"Cancel"
                                            otherButtonTitles:@"Delete", nil] autorelease];
     
-    alert.contextInfo = [(UIButton *)sender titleForState:UIControlStateDisabled];
+    alert.contextInfo = nameLabel.text;
     
     [alert show];
 }
@@ -120,13 +99,36 @@
 {
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
-        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@.plist", saveFolderPath, ((DSAlertView *)alertView).contextInfo];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@.plist", [self saveFolderPath], ((DSAlertView *)alertView).contextInfo];
         
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         
         [self reload];
     }
+}
+
+#pragma mark -
+
+- (void)documentScrollView:(DSMapBoxDocumentScrollView *)scrollView didScrollToIndex:(NSUInteger)index
+{
+    self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
+
+    nameLabel.text = [[[self saveFiles] objectAtIndex:index] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
+        
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]] error:NULL];
+        
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];
+}
+
+- (void)documentScrollView:(DSMapBoxDocumentScrollView *)scrollView didTapItemAtIndex:(NSUInteger)index
+{
+    if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
+        [self.delegate documentLoadController:self didLoadDocumentWithName:[[[self saveFiles] objectAtIndex:index] stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
 }
 
 @end
