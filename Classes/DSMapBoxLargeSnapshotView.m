@@ -22,6 +22,8 @@
     
     if (self != nil)
     {
+        // convert to JPEG to avoid alpha performance issues
+        //
         UIImageView *imageView = [[[UIImageView alloc] initWithImage:[UIImage imageWithData:UIImageJPEGRepresentation(snapshot, 1.0)]] autorelease];
         
         [self addSubview:imageView];
