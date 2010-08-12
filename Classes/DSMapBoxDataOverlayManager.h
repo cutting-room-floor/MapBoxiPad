@@ -28,10 +28,8 @@
 {
     RMMapView *mapView;
     NSMutableArray *overlays;
-    IBOutlet UIView *stripeView;
-    IBOutlet UILabel *stripeViewLabel;
     NSMutableDictionary *lastMarkerInfo;
-    NSTimer *animationTimer;
+    UIPopoverController *balloon;
 }
 
 @property (nonatomic, retain) RMMapView *mapView;

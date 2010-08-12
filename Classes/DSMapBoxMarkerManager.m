@@ -10,6 +10,7 @@
 #import "DSMapBoxMarkerCluster.h"
 
 #import "SimpleKML_UIImage.h"
+#import "SimpleKMLPlacemark.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -230,14 +231,34 @@
                     
                     marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
                     
-                    labelText      = [NSString stringWithFormat:@"%i", [[cluster markers] count]];
+                    labelText      = [NSString stringWithFormat:@"%i",        [[cluster markers] count]];
                     touchLabelText = [NSString stringWithFormat:@"%i Points", [[cluster markers] count]];
                     
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                       @"marker", 
-                                                                             touchLabelText,                               @"label", 
-                                                                             image,                                        @"icon",
-                                                                             [NSNumber numberWithFloat:kDSPlacemarkAlpha], @"alpha",
-                                                                             nil];
+                    // build up summary of clustered points
+                    //
+                    NSMutableArray *descriptions = [NSMutableArray array];
+                    
+                    for (RMMarker *clusterMarker in [cluster markers])
+                    {
+                        NSDictionary *clusterMarkerData = ((NSDictionary *)clusterMarker.data);
+                        
+                        if ([clusterMarkerData objectForKey:@"placemark"])
+                        {
+                            SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[clusterMarkerData objectForKey:@"placemark"];
+                            
+                            [descriptions addObject:placemark.name];
+                        }
+
+                        else if ([clusterMarkerData objectForKey:@"title"])
+                            [descriptions addObject:[clusterMarkerData objectForKey:@"title"]];
+                    }
+                    
+                    [descriptions sortUsingSelector:@selector(compare:)];
+                    
+                    marker.data    = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                @"title",
+                                                                                [descriptions componentsJoinedByString:@", "], @"description",
+                                                                                [NSNumber numberWithBool:YES],                 @"isCluster",
+                                                                                nil];
                     
                     [marker changeLabelUsingText:labelText
                                             font:[RMMarker defaultFont]

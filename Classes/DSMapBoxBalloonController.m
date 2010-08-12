@@ -13,6 +13,19 @@
 @synthesize name;
 @synthesize description;
 
+- (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
+{
+    self = [super initWithNibName:nibName bundle:nibBundle];
+
+    if (self != nil)
+    {
+        name        = [[NSString stringWithString:@""] retain];
+        description = [[NSString stringWithString:@""] retain];
+    }
+    
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -33,6 +46,30 @@
     [description release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (void)setName:(NSString *)inName
+{
+    [name release];
+    
+    if ( ! inName)
+        name = [[NSString stringWithString:@"Untitled"] retain];
+    
+    else
+        name = [inName retain];
+}
+
+- (void)setDescription:(NSString *)inDescription
+{
+    [description release];
+    
+    if ( ! inDescription)
+        description = [[NSString stringWithString:@"(no description)"] retain];
+    
+    else
+        description = [inDescription retain];
 }
 
 #pragma mark -

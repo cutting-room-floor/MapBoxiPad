@@ -56,7 +56,6 @@
 {
     [mapView release];
     [overlays release];
-    [animationTimer release];
     
     [super dealloc];
 }
@@ -72,9 +71,11 @@
     
     [mapView release];
     mapView = [inMapView retain];
-    
-    [stripeView removeFromSuperview];
-    [mapView addSubview:stripeView];
+}
+
+- (NSArray *)overlays
+{
+    return [NSArray arrayWithArray:overlays];
 }
 
 #pragma mark -
@@ -92,6 +93,8 @@
         
         for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
         {
+            // draw placemarks as RMMarkers with popups
+            //
             if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
                 ((SimpleKMLPlacemark *)feature).point              &&
                 ((SimpleKMLPlacemark *)feature).style              && 
@@ -101,35 +104,20 @@
                 
                 RMMarker *marker;
                 
+                CLLocation *location = [[[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
+                                                                   longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude] autorelease];
+
                 if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
                 {
-                    marker = [[[RMMarker alloc] initWithUIImage:icon] autorelease];
-                    
-                    // we setup a balloon for later
-                    //
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                        @"marker",
-                                                                             feature,                       @"placemark",
-                                                                             [NSNumber numberWithBool:YES], @"hasBalloon",
-                                                                             nil];
-                }
-                else
-                {
-                    marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]] autorelease];
-                    
-                    // we store the original icon & alpha value for later use in the pulse animation and
-                    // the coordinate location for use in clustering
-                    //
-                    CLLocation *location = [[[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
-                                                                       longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude] autorelease];
-                    
-                    marker.data = [NSDictionary dictionaryWithObjectsAndKeys:marker,                                       @"marker", 
-                                                                             feature.name,                                 @"label", 
-                                                                             icon,                                         @"icon",
-                                                                             [NSNumber numberWithFloat:kDSPlacemarkAlpha], @"alpha",
-                                                                             location,                                     @"location",
-                                                                             nil];
+                    // TODO: style the balloon according to the given style
                 }
                 
+                marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]] autorelease];
+
+                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:feature,  @"placemark",
+                                                                         location, @"location",
+                                                                         nil];
+
                 CLLocationCoordinate2D coordinate = ((SimpleKMLPlacemark *)feature).point.coordinate;
                 
                 if (coordinate.latitude < minLat)
@@ -148,6 +136,9 @@
                 
                 [overlay addObject:marker];
             }
+            
+            // draw lines as RMPaths
+            //
             else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
                      ((SimpleKMLPlacemark *)feature).lineString         &&
                      ((SimpleKMLPlacemark *)feature).style              && 
@@ -195,6 +186,9 @@
                 
                 [overlay addObject:path];
             }
+            
+            // draw polygons as RMPaths
+            //
             else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
                      ((SimpleKMLPlacemark *)feature).polygon            &&
                      ((SimpleKMLPlacemark *)feature).style              &&
@@ -308,10 +302,11 @@
 
         CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
         
-        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithBool:YES], @"hasBalloon",
-                                                                 [item objectForKey:@"title"],  @"title",
-                                                                 balloonBlurb,                  @"description",
-                                                                 location,                      @"location",
+        // create a generic point with the RSS item's attributes plus location for clustering
+        //
+        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[item objectForKey:@"title"], @"title",
+                                                                 balloonBlurb,                 @"description",
+                                                                 location,                     @"location",
                                                                  nil];
                 
         if (coordinate.latitude < minLat)
@@ -365,8 +360,7 @@
     [mapView.contents.markerManager removeMarkers];
     mapView.contents.overlay.sublayers = nil;
     
-    stripeView.hidden = YES;
-    stripeViewLabel.text = @"";
+    [balloon dismissPopoverAnimated:NO];
     
     [overlays removeAllObjects];
 }
@@ -390,164 +384,70 @@
         }
     }
     
-    stripeView.hidden = YES;
-    stripeViewLabel.text = @"";
-}
-
-- (NSArray *)overlays
-{
-    return [NSArray arrayWithArray:overlays];
-}
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-    stripeView.hidden = NO;
-    
-    stripeViewLabel.text = [lastMarkerInfo objectForKey:@"label"];
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    
-    CGPoint oldCenter = stripeViewLabel.center;
-    stripeViewLabel.center  = CGPointMake(oldCenter.x - 200, oldCenter.y);
-    
-    oldCenter = stripeView.center;
-    stripeView.center = CGPointMake(oldCenter.x - 200, oldCenter.y);
-    
-    [UIView commitAnimations];
-}
-
-- (void)pulse:(NSTimer *)aTimer
-{
-    // we go after the stored marker metadata since you can't get the original sized image nor the alpha from an RMMarker
-    //
-    RMMarker *marker = [lastMarkerInfo  objectForKey:@"marker"];
-    UIImage  *image  = [lastMarkerInfo  objectForKey:@"icon"];
-    CGFloat   alpha  = [[lastMarkerInfo objectForKey:@"alpha"] floatValue];
-    
-    if (alpha >= kDSPlacemarkAlpha)
-        alpha = 0.1;
-    
-    else
-        alpha = alpha + 0.1;
-    
-    [marker replaceUIImage:[image imageWithAlphaComponent:alpha]];
-    
-    [lastMarkerInfo setObject:[NSNumber numberWithFloat:alpha] forKey:@"alpha"];
+    [balloon dismissPopoverAnimated:NO];
 }
 
 #pragma mark -
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {
-    // don't respond to clicks on currently highlighted marker
-    //
-    if ([stripeViewLabel.text isEqualToString:[((NSDictionary *)marker.data) objectForKey:@"label"]])
-        return;
-    
     NSDictionary *markerData = ((NSDictionary *)marker.data);
     
-    if ([markerData objectForKey:@"hasBalloon"]) // balloon popover
+    DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+    CGRect attachPoint;
+    
+    // init with generic view controller
+    //
+    balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+    
+    balloon.delegate = self;
+    
+    // KML placemarks have their own title & description
+    //
+    if ([markerData objectForKey:@"placemark"])
     {
-        DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
-        CGRect attachPoint;
+        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[markerData objectForKey:@"placemark"];
         
-        if ([markerData objectForKey:@"placemark"]) // KML placemark
-        {
-            SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[markerData objectForKey:@"placemark"];
-            
-            balloonController.name        = placemark.name;
-            balloonController.description = placemark.featureDescription;
-            
-            attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
-                                     [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
-                                     1, 
-                                     1);
-        }
-        else // GeoRSS item
-        {
-            balloonController.name        = [markerData objectForKey:@"title"];
-            balloonController.description = [markerData objectForKey:@"description"];
-            
-            RMLatLong latLong = [mapView.contents.projection pointToLatLong:marker.projectedLocation];
-            
-            attachPoint = CGRectMake([mapView.contents latLongToPixel:latLong].x,
-                                     [mapView.contents latLongToPixel:latLong].y, 
-                                     1, 
-                                     1);
-        }
+        balloonController.name        = placemark.name;
+        balloonController.description = placemark.featureDescription;
         
-        UIPopoverController *balloonPopover = [[UIPopoverController alloc] initWithContentViewController:balloonController]; // released by delegate
+        attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
+                                 [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+                                 1, 
+                                 1);
         
-        balloonPopover.popoverContentSize = CGSizeMake(320, 320);
-        balloonPopover.delegate = self;
-        
-        [balloonPopover presentPopoverFromRect:attachPoint
-                                        inView:mapView 
-                      permittedArrowDirections:UIPopoverArrowDirectionAny
-                                      animated:NO];
+        balloon.popoverContentSize = CGSizeMake(320, 160); // smaller rectangle with less room for description
     }
-    else // balloon-less label on animated stripe
+    
+    // GeoRSS points have a title & description from the feed
+    //
+    else
     {
-        // return last marker to full alpha
-        //
-        if (lastMarkerInfo)
-        {
-            [animationTimer invalidate];
-            [animationTimer release];
-            
-            RMMarker *lastMarker      = [lastMarkerInfo objectForKey:@"marker"];
-            UIImage  *lastMarkerImage = [lastMarkerInfo objectForKey:@"icon"];
-            
-            [lastMarker replaceUIImage:[lastMarkerImage imageWithAlphaComponent:kDSPlacemarkAlpha]];
-        }
+        balloonController.name        = [markerData objectForKey:@"title"];
+        balloonController.description = [markerData objectForKey:@"description"];
         
-        // load stripe if needed
-        //
-        if ( ! stripeView)
-        {
-            [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxOverlayStripeView" owner:self options:nil];
-            
-            stripeViewLabel.text = @"";
-            stripeView.hidden = YES;
-            
-            [mapView addSubview:stripeView];
-            
-            stripeView.frame = CGRectMake(mapView.frame.size.width  - stripeView.frame.size.width + 10, 
-                                          mapView.frame.size.height - stripeView.frame.size.height - 10, 
-                                          stripeView.frame.size.width, 
-                                          stripeView.frame.size.height);
-        }
+        RMLatLong latLong = [mapView.contents.projection pointToLatLong:marker.projectedLocation];
         
-        // animate label swap
-        //
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-        [UIView setAnimationDelegate:self];
-        [UIView setAnimationDidStopSelector:@selector(animationDidStop:finished:context:)];
+        attachPoint = CGRectMake([mapView.contents latLongToPixel:latLong].x,
+                                 [mapView.contents latLongToPixel:latLong].y, 
+                                 1, 
+                                 1);
         
-        if ([stripeViewLabel.text isEqualToString:@""])
-            [UIView setAnimationDuration:0.0];
-        
-        CGPoint oldCenter  = stripeViewLabel.center;
-        stripeViewLabel.center  = CGPointMake(oldCenter.x + 200, oldCenter.y);
-        
-        oldCenter  = stripeView.center;
-        stripeView.center = CGPointMake(oldCenter.x + 200, oldCenter.y);
-        
-        [UIView commitAnimations];
-        
-        // update last marker & fire off pulse animation on this one
-        //
-        [lastMarkerInfo release];
-        lastMarkerInfo = [[NSMutableDictionary dictionaryWithDictionary:((NSDictionary *)marker.data)] retain];
-        
-        animationTimer = [[NSTimer scheduledTimerWithTimeInterval:0.1
-                                                           target:self
-                                                         selector:@selector(pulse:)
-                                                         userInfo:nil
-                                                          repeats:YES] retain];
+        if ([markerData objectForKey:@"isCluster"])
+            balloon.popoverContentSize = CGSizeMake(320, 160); // smaller rectangle with less room for big description
+
+        else
+            balloon.popoverContentSize = CGSizeMake(320, 320); // square with room for big description
     }
+    
+    // replace with balloon view controller
+    //
+    [balloon setContentViewController:balloonController];
+    
+    [balloon presentPopoverFromRect:attachPoint
+                             inView:mapView 
+           permittedArrowDirections:UIPopoverArrowDirectionAny
+                           animated:YES];
 }
 
 #pragma mark -
