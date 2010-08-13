@@ -75,7 +75,6 @@
 		DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA131208DBEA00B052E9 /* unzip.c */; };
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
-		DD1DE3FA1202652600683B80 /* 74-location.png in Resources */ = {isa = PBXBuildFile; fileRef = DD1DE3F91202652600683B80 /* 74-location.png */; };
 		DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -276,7 +275,6 @@
 		DD1ADA161208DBEA00B052E9 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
-		DD1DE3F91202652600683B80 /* 74-location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "74-location.png"; sourceTree = "<group>"; };
 		DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "../stuff to not backup/World_Light_1.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
@@ -642,7 +640,6 @@
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
-				DD1DE3F91202652600683B80 /* 74-location.png */,
 				DDFEF1DD1214DBA3002729B3 /* 15-tags.png */,
 				DDBA88D41210E69900E5B572 /* 103-map.png */,
 			);
@@ -892,7 +889,6 @@
 				DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */,
 				DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */,
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
-				DD1DE3FA1202652600683B80 /* 74-location.png in Resources */,
 				DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */,
 				DDBA88D51210E69900E5B572 /* 103-map.png in Resources */,
 				DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */,
