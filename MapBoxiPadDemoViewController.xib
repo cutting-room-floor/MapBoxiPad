@@ -113,15 +113,6 @@
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
 							</object>
-							<object class="IBUIBarButtonItem" id="514991390">
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">74-location.png</string>
-								</object>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="459560094"/>
-							</object>
 						</object>
 					</object>
 				</object>
@@ -163,22 +154,6 @@
 						<reference key="destination" ref="459560094"/>
 					</object>
 					<int key="connectionID">20</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchEventConnection" key="connection">
-						<string key="label">tappedRecenterButton:</string>
-						<reference key="source" ref="514991390"/>
-						<reference key="destination" ref="841351856"/>
-					</object>
-					<int key="connectionID">26</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">recenterButton</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="514991390"/>
-					</object>
-					<int key="connectionID">39</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -273,18 +248,12 @@
 						<reference key="object" ref="459560094"/>
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<reference ref="514991390"/>
 							<reference ref="825666617"/>
 							<reference ref="294852452"/>
 							<reference ref="455809617"/>
 							<reference ref="245884156"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">23</int>
-						<reference key="object" ref="514991390"/>
-						<reference key="parent" ref="459560094"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">31</int>
@@ -322,7 +291,6 @@
 					<string>18.IBPluginDependency</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
-					<string>23.IBPluginDependency</string>
 					<string>31.IBPluginDependency</string>
 					<string>4.CustomClassName</string>
 					<string>4.IBPluginDependency</string>
@@ -337,7 +305,6 @@
 					<string>UIResponder</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>{{241, 254}, {1024, 768}}</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>RMMapView</string>
@@ -382,11 +349,9 @@
 							<string>tappedDocumentsButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
-							<string>tappedRecenterButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -405,7 +370,6 @@
 							<string>tappedDocumentsButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedLibraryButton:</string>
-							<string>tappedRecenterButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -433,10 +397,6 @@
 								<string key="name">tappedLibraryButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
-							<object class="IBActionInfo">
-								<string key="name">tappedRecenterButton:</string>
-								<string key="candidateClassName">id</string>
-							</object>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="outlets">
@@ -446,7 +406,6 @@
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
-							<string>recenterButton</string>
 							<string>toolbar</string>
 							<string>watermarkView</string>
 						</object>
@@ -455,7 +414,6 @@
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>RMMapView</string>
-							<string>UIBarButtonItem</string>
 							<string>UIToolbar</string>
 							<string>UIImageView</string>
 						</object>
@@ -467,7 +425,6 @@
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
-							<string>recenterButton</string>
 							<string>toolbar</string>
 							<string>watermarkView</string>
 						</object>
@@ -484,10 +441,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">mapView</string>
 								<string key="candidateClassName">RMMapView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">recenterButton</string>
-								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolbar</string>
@@ -772,14 +725,12 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>103-map.png</string>
 				<string>15-tags.png</string>
-				<string>74-location.png</string>
 				<string>mapbox.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{26, 21}</string>
 				<string>{24, 25}</string>
-				<string>{20, 20}</string>
 				<string>{80, 22}</string>
 			</object>
 		</object>

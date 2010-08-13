@@ -285,22 +285,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [documentsSheet showFromBarButtonItem:sender animated:YES];
 }
 
-- (IBAction)tappedRecenterButton:(id)sender
-{
-    CLLocationCoordinate2D center;
-    
-    center.latitude  = kStartingLat;
-    center.longitude = kStartingLon;
-    
-    [mapView moveToLatLong:center];
-    
-    mapView.contents.zoom = kStartingZoom;
-
-    [mapView setRotation:0.0];
-    
-    [mapView setNeedsDisplay];
-}
-
 - (void)openKMLFile:(NSURL *)fileURL
 {
     NSError *error = nil;
