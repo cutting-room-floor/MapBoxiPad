@@ -23,6 +23,7 @@
     IBOutlet UIImageView *watermarkView;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
+    IBOutlet UIBarButtonItem *clusteringButton;
     IBOutlet UIBarButtonItem *recenterButton;
     UIPopoverController *layersPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
@@ -34,9 +35,10 @@
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;
+- (IBAction)tappedLayersButton:(id)sender;
+- (IBAction)tappedClusteringButton:(id)sender;
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedRecenterButton:(id)sender;
-- (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedLibraryButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 

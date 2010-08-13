@@ -56,6 +56,9 @@
 
 - (void)setClusteringEnabled:(BOOL)flag
 {
+    if (flag == clusteringEnabled)
+        return;
+    
     clusteringEnabled = flag;
     
     [self recalculateClusters];
@@ -70,16 +73,10 @@
 
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point recalculatingImmediately:(BOOL)flag
 {
-    if (clusteringEnabled)
-    {
-        [self clusterMarker:marker inClusters:&clusters];
-        
-        if (flag)
-            [self redrawClusters];
-    }
-
-    else
-        [super addMarker:marker AtLatLong:point];
+    [self clusterMarker:marker inClusters:&clusters];
+    
+    if (flag)
+        [self redrawClusters];
 }
 
 - (void)removeMarkers
@@ -134,33 +131,44 @@
 {
     NSAssert(*inClusters, @"Invalid clusters passed to cluster routine");
     
-    CGFloat threshold = [contents.mercatorToScreenProjection metersPerPixel] * kDSMapBoxMarkerClusterPixels;
-    
-    NSDictionary *data = (NSDictionary *)marker.data;
-    
-    NSAssert([data objectForKey:@"location"], @"RMMarker must include location data for clustering");
-    
-    RMLatLong point = ((CLLocation *)[data objectForKey:@"location"]).coordinate;
-    
-    CLLocation *markerLocation = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
-    
-    BOOL clustered = NO;
-    
-    for (DSMapBoxMarkerCluster *cluster in *inClusters)
+    if (clusteringEnabled)
     {
-        CLLocation *clusterLocation = [[[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude] autorelease];
+        CGFloat threshold = [contents.mercatorToScreenProjection metersPerPixel] * kDSMapBoxMarkerClusterPixels;
         
-        if ([clusterLocation distanceFromLocation:markerLocation] <= threshold)
+        NSDictionary *data = (NSDictionary *)marker.data;
+        
+        NSAssert([data objectForKey:@"location"], @"RMMarker must include location data for clustering");
+        
+        RMLatLong point = ((CLLocation *)[data objectForKey:@"location"]).coordinate;
+        
+        CLLocation *markerLocation = [[CLLocation alloc] initWithLatitude:point.latitude longitude:point.longitude];
+        
+        BOOL clustered = NO;
+        
+        for (DSMapBoxMarkerCluster *cluster in *inClusters)
         {
+            CLLocation *clusterLocation = [[[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude] autorelease];
+            
+            if ([clusterLocation distanceFromLocation:markerLocation] <= threshold)
+            {
+                [cluster addMarker:marker];
+                
+                clustered = YES;
+                
+                break;
+            }
+        }
+        
+        if ( ! clustered)
+        {
+            DSMapBoxMarkerCluster *cluster = [[[DSMapBoxMarkerCluster alloc] init] autorelease];
+            
             [cluster addMarker:marker];
             
-            clustered = YES;
-            
-            break;
+            [*inClusters addObject:cluster];
         }
     }
-    
-    if ( ! clustered)
+    else
     {
         DSMapBoxMarkerCluster *cluster = [[[DSMapBoxMarkerCluster alloc] init] autorelease];
         
@@ -187,91 +195,92 @@
 {
     [super removeMarkers];
     
-    if (clusteringEnabled)
+    NSUInteger count = 0;
+    
+    for (DSMapBoxMarkerCluster *cluster in clusters)
+        count += [[cluster markers] count];
+    
+    if ([clusters count] == count)
     {
-        NSUInteger count = 0;
+        // no need to cluster; cluster count equals marker count
+        //
+        for (DSMapBoxMarkerCluster *cluster in clusters)
+            for (RMMarker *marker in [cluster markers])
+                [super addMarker:marker AtLatLong:((CLLocation *)[((NSDictionary *)marker.data) objectForKey:@"location"]).coordinate];
+    }
+    else
+    {
+        // get largest cluster marker count
+        //
+        NSUInteger maxMarkerCount = 0;
         
         for (DSMapBoxMarkerCluster *cluster in clusters)
-            count += [[cluster markers] count];
+            if ([[cluster markers] count] > maxMarkerCount)
+                maxMarkerCount = [[cluster markers] count];
         
-        if ([clusters count] == count)
+        for (DSMapBoxMarkerCluster *cluster in clusters)
         {
-            // no need to cluster; cluster count equals marker count
-            //
-            for (DSMapBoxMarkerCluster *cluster in clusters)
-                for (RMMarker *marker in [cluster markers])
-                    [super addMarker:marker AtLatLong:((CLLocation *)[((NSDictionary *)marker.data) objectForKey:@"location"]).coordinate];
-        }
-        else
-        {
-            // get largest cluster marker count
-            //
-            NSUInteger maxMarkerCount = 0;
+            RMMarker *marker;
             
-            for (DSMapBoxMarkerCluster *cluster in clusters)
-                if ([[cluster markers] count] > maxMarkerCount)
-                    maxMarkerCount = [[cluster markers] count];
+            NSString *labelText;
+            NSString *touchLabelText;
             
-            for (DSMapBoxMarkerCluster *cluster in clusters)
+            // add marker for cluster if multiple markers
+            //
+            if ([[cluster markers] count] > 1)
             {
-                RMMarker *marker;
-                
-                NSString *labelText;
-                NSString *touchLabelText;
-                
-                // create cluster if necessary
+                CGFloat size = 44.0 + (kDSMapBoxMarkerClusterPixels * (((CGFloat)[[cluster markers] count]) / (CGFloat)maxMarkerCount));
+
+                // TODO: allow for use of other images?
                 //
-                if ([[cluster markers] count] > 1)
+                UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:kDSPlacemarkAlpha] imageWithWidth:size height:size];
+                
+                marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+                
+                labelText      = [NSString stringWithFormat:@"%i",        [[cluster markers] count]];
+                touchLabelText = [NSString stringWithFormat:@"%i Points", [[cluster markers] count]];
+                
+                // build up summary of clustered points
+                //
+                NSMutableArray *descriptions = [NSMutableArray array];
+                
+                for (RMMarker *clusterMarker in [cluster markers])
                 {
-                    CGFloat size = 44.0 + (kDSMapBoxMarkerClusterPixels * (((CGFloat)[[cluster markers] count]) / (CGFloat)maxMarkerCount));
-
-                    // TODO: allow for use of other images?
-                    //
-                    UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:kDSPlacemarkAlpha] imageWithWidth:size height:size];
+                    NSDictionary *clusterMarkerData = ((NSDictionary *)clusterMarker.data);
                     
-                    marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
-                    
-                    labelText      = [NSString stringWithFormat:@"%i",        [[cluster markers] count]];
-                    touchLabelText = [NSString stringWithFormat:@"%i Points", [[cluster markers] count]];
-                    
-                    // build up summary of clustered points
-                    //
-                    NSMutableArray *descriptions = [NSMutableArray array];
-                    
-                    for (RMMarker *clusterMarker in [cluster markers])
+                    if ([clusterMarkerData objectForKey:@"placemark"])
                     {
-                        NSDictionary *clusterMarkerData = ((NSDictionary *)clusterMarker.data);
+                        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[clusterMarkerData objectForKey:@"placemark"];
                         
-                        if ([clusterMarkerData objectForKey:@"placemark"])
-                        {
-                            SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[clusterMarkerData objectForKey:@"placemark"];
-                            
-                            [descriptions addObject:placemark.name];
-                        }
-
-                        else if ([clusterMarkerData objectForKey:@"title"])
-                            [descriptions addObject:[clusterMarkerData objectForKey:@"title"]];
+                        [descriptions addObject:placemark.name];
                     }
-                    
-                    [descriptions sortUsingSelector:@selector(compare:)];
-                    
-                    marker.data    = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                @"title",
-                                                                                [descriptions componentsJoinedByString:@", "], @"description",
-                                                                                [NSNumber numberWithBool:YES],                 @"isCluster",
-                                                                                nil];
-                    
-                    [marker changeLabelUsingText:labelText
-                                            font:[RMMarker defaultFont]
-                                 foregroundColor:[UIColor whiteColor]
-                                 backgroundColor:[UIColor clearColor]];
-                }
 
-                // use regular marker otherwise
-                //
-                else
-                    marker = [[cluster markers] lastObject];
+                    else if ([clusterMarkerData objectForKey:@"title"])
+                        [descriptions addObject:[clusterMarkerData objectForKey:@"title"]];
+                }
+                
+                [descriptions sortUsingSelector:@selector(compare:)];
+                
+                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                @"title",
+                                                                         [descriptions componentsJoinedByString:@", "], @"description",
+                                                                         [NSNumber numberWithBool:YES],                 @"isCluster",
+                                                                         nil];
+                
+                [marker changeLabelUsingText:labelText
+                                        font:[RMMarker defaultFont]
+                             foregroundColor:[UIColor whiteColor]
+                             backgroundColor:[UIColor clearColor]];
                 
                 [super addMarker:marker AtLatLong:cluster.center];
+            }
+
+            // otherwise add marker (the cluster's only) directly
+            //
+            else
+            {
+                marker = [[cluster markers] lastObject];
+
+                [super addMarker:marker AtLatLong:((CLLocation *)[((NSDictionary *)marker.data) objectForKey:@"location"]).coordinate];
             }
         }
     }

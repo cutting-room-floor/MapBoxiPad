@@ -15,6 +15,7 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxDocumentSaveController.h"
+#import "DSMapBoxMarkerManager.h"
 
 #import "UIApplication_Additions.h"
 
@@ -360,6 +361,13 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (IBAction)tappedLibraryButton:(id)sender
 {
     NSLog(@"show library");
+}
+
+- (IBAction)tappedClusteringButton:(id)sender
+{
+    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.contents.markerManager;
+    
+    markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
 }
 
 #pragma mark -
