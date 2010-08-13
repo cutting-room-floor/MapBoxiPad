@@ -34,5 +34,6 @@
 
 @property (nonatomic, retain) NSArray *documentViews;
 @property (nonatomic, assign) id <NSObject, UIScrollViewDelegate, DSMapBoxDocumentScrollViewDelegate>delegate;
+@property (nonatomic, readonly, assign) NSUInteger index;
 
 @end

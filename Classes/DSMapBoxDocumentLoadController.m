@@ -8,7 +8,6 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
-#import "DSAlertView.h"
 #import "DSMapBoxLargeSnapshotView.h"
 
 #import "UIApplication_Additions.h"
@@ -82,24 +81,24 @@
 
 - (IBAction)tappedTrashButton:(id)sender
 {
-    DSAlertView *alert = [[[DSAlertView alloc] initWithTitle:@"Delete Saved Map?"
-                                                     message:[NSString stringWithFormat:@"Are you sure that you want to delete the '%@' saved map?", nameLabel.text]
-                                                    delegate:self
-                                           cancelButtonTitle:@"Cancel"
-                                           otherButtonTitles:@"Delete", nil] autorelease];
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                        delegate:self
+                                               cancelButtonTitle:nil
+                                          destructiveButtonTitle:@"Delete Map"
+                                               otherButtonTitles:nil] autorelease];
     
-    alert.contextInfo = nameLabel.text;
+    UIButton *trashButton = (UIButton *)sender;
     
-    [alert show];
+    [sheet showFromRect:trashButton.bounds inView:trashButton animated:YES];
 }
 
 #pragma mark -
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == alertView.firstOtherButtonIndex)
+    if (buttonIndex == actionSheet.destructiveButtonIndex)
     {
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@.plist", [self saveFolderPath], ((DSAlertView *)alertView).contextInfo];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:scroller.index]];
         
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         

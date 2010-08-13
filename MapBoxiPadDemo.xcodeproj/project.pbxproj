@@ -110,7 +110,6 @@
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
-		DDE77D7B12120F0D00201ACE /* DSAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE77D7A12120F0D00201ACE /* DSAlertView.m */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
@@ -327,8 +326,6 @@
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
-		DDE77D7912120F0D00201ACE /* DSAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSAlertView.h; sourceTree = "<group>"; };
-		DDE77D7A12120F0D00201ACE /* DSAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSAlertView.m; sourceTree = "<group>"; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -704,8 +701,6 @@
 				DDCDD60211D96CF600568320 /* RMCircle.m */,
 				DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */,
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
-				DDE77D7912120F0D00201ACE /* DSAlertView.h */,
-				DDE77D7A12120F0D00201ACE /* DSAlertView.m */,
 			);
 			name = "Categories & Additions";
 			path = Classes;
@@ -985,7 +980,6 @@
 				DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */,
 				DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */,
 				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
-				DDE77D7B12120F0D00201ACE /* DSAlertView.m in Sources */,
 				DD540EEB121310E200C5899E /* DSMapBoxDocumentScrollView.m in Sources */,
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
 			);

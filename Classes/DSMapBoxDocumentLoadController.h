@@ -22,7 +22,7 @@
 
 #pragma mark -
 
-@interface DSMapBoxDocumentLoadController : UIViewController <UIAlertViewDelegate, DSMapBoxDocumentScrollViewDelegate>
+@interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, DSMapBoxDocumentScrollViewDelegate>
 {
     IBOutlet DSMapBoxDocumentScrollView *scroller;
     IBOutlet UILabel *nameLabel;

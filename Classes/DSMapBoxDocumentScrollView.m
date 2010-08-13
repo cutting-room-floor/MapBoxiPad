@@ -21,6 +21,7 @@
 
 @synthesize documentViews;
 @synthesize delegate;
+@synthesize index;
 
 - (id)initWithFrame:(CGRect)aRect
 {
