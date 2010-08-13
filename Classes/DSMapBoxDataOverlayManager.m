@@ -360,7 +360,8 @@
     [mapView.contents.markerManager removeMarkers];
     mapView.contents.overlay.sublayers = nil;
     
-    [balloon dismissPopoverAnimated:NO];
+    if (balloon.popoverVisible)
+        [balloon dismissPopoverAnimated:NO];
     
     [overlays removeAllObjects];
 }
@@ -384,7 +385,8 @@
         }
     }
     
-    [balloon dismissPopoverAnimated:NO];
+    if (balloon.popoverVisible)
+        [balloon dismissPopoverAnimated:NO];
 }
 
 #pragma mark -
