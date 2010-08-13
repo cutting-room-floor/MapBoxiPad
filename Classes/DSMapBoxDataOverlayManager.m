@@ -444,6 +444,8 @@
     
     // replace with balloon view controller
     //
+    balloonController.view.frame = CGRectMake(0, 0, balloon.popoverContentSize.width, balloon.popoverContentSize.height);
+
     [balloon setContentViewController:balloonController];
     
     [balloon presentPopoverFromRect:attachPoint
