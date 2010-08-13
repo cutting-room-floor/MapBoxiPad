@@ -116,6 +116,7 @@
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
 		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
 		DDFEF1DF1214DBA3002729B3 /* 15-tags.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFEF1DD1214DBA3002729B3 /* 15-tags.png */; };
+		DDFEF2051214DED8002729B3 /* 60-signpost.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFEF2041214DED8002729B3 /* 60-signpost.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -334,6 +335,7 @@
 		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
 		DDFB5ED611F784CA00695B89 /* DSMapContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapContents.m; sourceTree = "<group>"; };
 		DDFEF1DD1214DBA3002729B3 /* 15-tags.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "15-tags.png"; sourceTree = "<group>"; };
+		DDFEF2041214DED8002729B3 /* 60-signpost.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "60-signpost.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -640,6 +642,7 @@
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
+				DDFEF2041214DED8002729B3 /* 60-signpost.png */,
 				DDFEF1DD1214DBA3002729B3 /* 15-tags.png */,
 				DDBA88D41210E69900E5B572 /* 103-map.png */,
 			);
@@ -895,6 +898,7 @@
 				DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */,
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DDFEF1DF1214DBA3002729B3 /* 15-tags.png in Resources */,
+				DDFEF2051214DED8002729B3 /* 60-signpost.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

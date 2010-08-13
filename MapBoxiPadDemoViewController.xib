@@ -85,7 +85,10 @@
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="294852452">
-								<string key="IBUITitle">Layers</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">60-signpost.png</string>
+								</object>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -725,12 +728,14 @@
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>103-map.png</string>
 				<string>15-tags.png</string>
+				<string>60-signpost.png</string>
 				<string>mapbox.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<string>{26, 21}</string>
 				<string>{24, 25}</string>
+				<string>{22, 28}</string>
 				<string>{80, 22}</string>
 			</object>
 		</object>
