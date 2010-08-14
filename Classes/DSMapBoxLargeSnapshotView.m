@@ -8,13 +8,14 @@
 
 #import "DSMapBoxLargeSnapshotView.h"
 
-#import "DSMapBoxDocumentScrollView.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 #define kDSSnapshotInset kDSDocumentWidth / 32.0f
 
 @implementation DSMapBoxLargeSnapshotView
+
+@synthesize snapshotName;
+@synthesize delegate;
 
 - (id)initWithSnapshot:(UIImage *)snapshot
 {
@@ -52,8 +53,9 @@
 
         // TODO: add image shadow here (performance concerns)
         //
-        //imageView.layer.shadowOpacity = 1.0;
-        //imageView.layer.shadowOffset  = CGSizeMake(0.0, 1.0);
+        //imageView.layer.shadowOpacity   = 1.0;
+        //imageView.layer.shadowOffset    = CGSizeMake(0.0, 1.0);
+        //imageView.layer.shouldRasterize = YES;
 
         /*
          * Here we could do some fancy stuff like rotate the image slightly,
@@ -63,6 +65,14 @@
     }
     
     return self;
+}
+
+#pragma mark -
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if ([self.delegate respondsToSelector:@selector(snapshotViewWasTapped:withName:)])
+        [self.delegate snapshotViewWasTapped:self withName:snapshotName];
 }
 
 @end

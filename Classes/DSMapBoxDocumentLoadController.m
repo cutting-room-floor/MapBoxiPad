@@ -8,8 +8,6 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
-#import "DSMapBoxLargeSnapshotView.h"
-
 #import "UIApplication_Additions.h"
 
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
@@ -17,6 +15,7 @@
 - (void)reload;
 - (NSString *)saveFolderPath;
 - (NSArray *)saveFiles;
+- (void)updateMetadata;
 
 @end
 
@@ -44,10 +43,10 @@
 
 - (void)reload
 {
+    [scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     // iterate documents
     //
-    NSMutableArray *documentViews = [NSMutableArray array];
-
     for (NSString *saveFile in [self saveFiles])
     {
         // get snapshot
@@ -57,12 +56,16 @@
         
         // create & add snapshot view
         //
-        [documentViews addObject:[[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease]];
+        DSMapBoxLargeSnapshotView *snapshotView = [[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease];
+        snapshotView.snapshotName = saveFile;
+        snapshotView.delegate = self;
+        [scroller addSubview:snapshotView];
+        snapshotView.frame = CGRectMake(kDSDocumentWidth * ([scroller.subviews count] - 1), 0, kDSDocumentWidth, kDSDocumentHeight);
     }
-
-    // assign snapshots to scroll view
-    //
-    scroller.documentViews = documentViews;
+    
+    scroller.contentSize = CGSizeMake(kDSDocumentWidth * [scroller.subviews count], kDSDocumentHeight);
+    
+    [self scrollViewDidScroll:scroller];
 }
 
 - (NSString *)saveFolderPath
@@ -75,6 +78,38 @@
     NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self saveFolderPath] error:NULL];
     
     return saveFiles;
+}
+
+- (void)updateMetadata
+{
+    CGFloat minX  = 0.0;
+    CGFloat maxX  = ([scroller.subviews count] - 1) * kDSDocumentWidth;
+    
+    CGFloat offset = scroller.contentOffset.x;
+    
+    if (offset < minX)
+        offset = minX;
+    
+    else if (offset > maxX)
+        offset = maxX;
+    
+    NSUInteger index = offset / kDSDocumentWidth;
+    
+    self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
+    
+    NSString *currentFile = [[self saveFiles] objectAtIndex:index];
+    
+    nameLabel.text = [currentFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
+    
+    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:
+                                [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], currentFile] error:NULL];
+    
+    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    
+    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+    
+    dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];    
 }
 
 #pragma mark -
@@ -98,7 +133,9 @@
 {
     if (buttonIndex == actionSheet.destructiveButtonIndex)
     {
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:scroller.index]];
+        NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
+        
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]];
         
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         
@@ -108,26 +145,19 @@
 
 #pragma mark -
 
-- (void)documentScrollView:(DSMapBoxDocumentScrollView *)scrollView didScrollToIndex:(NSUInteger)index
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
-
-    nameLabel.text = [[[self saveFiles] objectAtIndex:index] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-        
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]] error:NULL];
-        
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateMetadata) object:nil];
     
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    
-    dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];
+    [self performSelector:@selector(updateMetadata) withObject:nil afterDelay:0.0];
 }
 
-- (void)documentScrollView:(DSMapBoxDocumentScrollView *)scrollView didTapItemAtIndex:(NSUInteger)index
+#pragma mark -
+
+- (void)snapshotViewWasTapped:(DSMapBoxLargeSnapshotView *)snapshotView withName:(NSString *)snapshotName
 {
     if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
-        [self.delegate documentLoadController:self didLoadDocumentWithName:[[[self saveFiles] objectAtIndex:index] stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
+        [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
 }
 
 @end

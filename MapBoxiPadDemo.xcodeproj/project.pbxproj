@@ -87,7 +87,6 @@
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C86711CC43F100038969 /* linen.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen.jpg */; };
-		DD540EEB121310E200C5899E /* DSMapBoxDocumentScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540EEA121310E200C5899E /* DSMapBoxDocumentScrollView.m */; };
 		DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
@@ -289,8 +288,6 @@
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C86611CC43F100038969 /* linen.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen.jpg; sourceTree = "<group>"; };
-		DD540EE9121310E200C5899E /* DSMapBoxDocumentScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentScrollView.h; sourceTree = "<group>"; };
-		DD540EEA121310E200C5899E /* DSMapBoxDocumentScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentScrollView.m; sourceTree = "<group>"; };
 		DD540F7C12131F3800C5899E /* DSMapBoxLargeSnapshotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLargeSnapshotView.h; sourceTree = "<group>"; };
 		DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLargeSnapshotView.m; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
@@ -787,8 +784,6 @@
 				DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */,
 				DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */,
 				DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */,
-				DD540EE9121310E200C5899E /* DSMapBoxDocumentScrollView.h */,
-				DD540EEA121310E200C5899E /* DSMapBoxDocumentScrollView.m */,
 				DD540F7C12131F3800C5899E /* DSMapBoxLargeSnapshotView.h */,
 				DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */,
 				DDE77D5712120B4600201ACE /* Resources */,
@@ -980,7 +975,6 @@
 				DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */,
 				DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */,
 				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
-				DD540EEB121310E200C5899E /* DSMapBoxDocumentScrollView.m in Sources */,
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

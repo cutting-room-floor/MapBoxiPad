@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-#import "DSMapBoxDocumentScrollView.h"
+#import "DSMapBoxLargeSnapshotView.h"
 
 #define kDSSaveFolderName @"Saved Maps"
 
@@ -22,9 +22,9 @@
 
 #pragma mark -
 
-@interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, DSMapBoxDocumentScrollViewDelegate>
+@interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate, DSMapBoxLargeSnapshotDelegate>
 {
-    IBOutlet DSMapBoxDocumentScrollView *scroller;
+    IBOutlet UIScrollView *scroller;
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *dateLabel;
     id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
