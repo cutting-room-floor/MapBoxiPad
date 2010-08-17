@@ -234,7 +234,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
     // determine if document or global save
     //
-    if ([sender isKindOfClass:[UIBarButtonItem class]])
+    if ([sender isKindOfClass:[UIBarButtonItem class]] || [sender isKindOfClass:[NSString class]])
     {
         NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
         
@@ -243,7 +243,13 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         if ( ! [[NSFileManager defaultManager] fileExistsAtPath:saveFolderPath isDirectory:&isDirectory] || ! isDirectory)
             [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath attributes:nil];
         
-        NSString *stateName = saveController.name;
+        NSString *stateName;
+        
+        if ([sender isKindOfClass:[UIBarButtonItem class]]) // button save
+            stateName = saveController.name;
+        
+        else if ([sender isKindOfClass:[NSString class]]) // load controller save
+            stateName = sender;
         
         if ([stateName length] && [[stateName componentsSeparatedByString:@"/"] count] < 2) // no slashes
         {
@@ -257,7 +263,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             
             [state writeToFile:savePath atomically:YES];
             
-            [self dismissModalViewControllerAnimated:YES];
+            if ([self.modalViewController isEqual:saveController])
+                [self dismissModalViewControllerAnimated:YES];
         }
     }
     else
@@ -518,6 +525,11 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller didLoadDocumentWithName:(NSString *)name
 {
     [self restoreState:name];
+}
+
+- (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller wantsToSaveDocumentWithName:(NSString *)name
+{
+    [self saveState:name];
 }
 
 @end

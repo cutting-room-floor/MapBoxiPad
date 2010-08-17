@@ -82,37 +82,64 @@
 
 - (void)updateMetadata
 {
-    CGFloat minX  = 0.0;
-    CGFloat maxX  = ([scroller.subviews count] - 1) * kDSDocumentWidth;
-    
-    CGFloat offset = scroller.contentOffset.x;
-    
-    if (offset < minX)
-        offset = minX;
-    
-    else if (offset > maxX)
-        offset = maxX;
-    
-    NSUInteger index = offset / kDSDocumentWidth;
-    
-    self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
-    
-    NSString *currentFile = [[self saveFiles] objectAtIndex:index];
-    
-    nameLabel.text = [currentFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-    
-    NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:
-                                [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], currentFile] error:NULL];
-    
-    NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-    
-    [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
-    [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
-    
-    dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];    
+    if ([[self saveFiles] count])
+    {
+        CGFloat minX  = 0.0;
+        CGFloat maxX  = ([scroller.subviews count] - 1) * kDSDocumentWidth;
+        
+        CGFloat offset = scroller.contentOffset.x;
+        
+        if (offset < minX)
+            offset = minX;
+        
+        else if (offset > maxX)
+            offset = maxX;
+        
+        NSUInteger index = offset / kDSDocumentWidth;
+        
+        self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
+        
+        NSString *currentFile = [[self saveFiles] objectAtIndex:index];
+        
+        nameLabel.text = [currentFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
+        
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:
+                                    [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], currentFile] error:NULL];
+        
+        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        
+        [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
+        [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
+        
+        dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];
+        
+        noDocsView.hidden  = YES;
+        scroller.hidden    = NO;
+        trashButton.hidden = NO;
+    }
+    else
+    {
+        self.title     = @"My Maps";
+        nameLabel.text = @"";
+        dateLabel.text = @"";
+
+        noDocsView.hidden  = NO;
+        scroller.hidden    = YES;
+        trashButton.hidden = YES;
+    }
 }
 
 #pragma mark -
+
+- (IBAction)tappedSaveNowButton:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(documentLoadController:wantsToSaveDocumentWithName:)])
+    {
+        [self.delegate documentLoadController:self wantsToSaveDocumentWithName:@"Saved Map"];
+
+        [self reload];
+    }
+}
 
 - (IBAction)tappedTrashButton:(id)sender
 {
@@ -121,8 +148,6 @@
                                                cancelButtonTitle:nil
                                           destructiveButtonTitle:@"Delete Map"
                                                otherButtonTitles:nil] autorelease];
-    
-    UIButton *trashButton = (UIButton *)sender;
     
     [sheet showFromRect:trashButton.bounds inView:trashButton animated:YES];
 }
@@ -147,9 +172,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(updateMetadata) object:nil];
-    
-    [self performSelector:@selector(updateMetadata) withObject:nil afterDelay:0.0];
+    [self updateMetadata];
 }
 
 #pragma mark -

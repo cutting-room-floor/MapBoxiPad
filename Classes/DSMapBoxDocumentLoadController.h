@@ -17,6 +17,7 @@
 @protocol DSMapBoxDocumentLoadControllerDelegate
 
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller didLoadDocumentWithName:(NSString *)name;
+- (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller wantsToSaveDocumentWithName:(NSString *)name;
 
 @end
 
@@ -24,14 +25,17 @@
 
 @interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate, DSMapBoxLargeSnapshotDelegate>
 {
+    IBOutlet UIView *noDocsView;
     IBOutlet UIScrollView *scroller;
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *dateLabel;
+    IBOutlet UIButton *trashButton;
     id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 }
 
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 
+- (IBAction)tappedSaveNowButton:(id)sender;
 - (IBAction)tappedTrashButton:(id)sender;
 
 @end
