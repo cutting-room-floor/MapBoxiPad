@@ -263,7 +263,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             
             [state writeToFile:savePath atomically:YES];
             
-            if ([self.modalViewController isEqual:saveController])
+            if ([self.modalViewController isKindOfClass:[UINavigationController class]]) // save panel
                 [self dismissModalViewControllerAnimated:YES];
         }
     }
