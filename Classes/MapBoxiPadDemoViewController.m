@@ -213,7 +213,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 {
     // get snapshot
     //
-    NSData *mapSnapshot = UIImagePNGRepresentation([self mapSnapshot]);
+    NSData *mapSnapshot = UIImageJPEGRepresentation([self mapSnapshot], 1.0);
     
     // get base map state
     //
@@ -447,12 +447,31 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 
 - (UIImage *)mapSnapshot
 {
-    // get full screen
+    // store current projection rect
+    //
+    RMProjectedRect oldRect = mapView.contents.projectedBounds;
+    
+    // zoom to even zoom level to avoid artifacts
+    //
+    CGFloat oldZoom = mapView.contents.zoom;
+    CGPoint center  = CGPointMake(mapView.frame.size.width / 2, mapView.frame.size.height / 2);
+    
+    if ((CGFloat)ceil(oldZoom) - oldZoom < 0.5)    
+        [mapView.contents zoomInToNextNativeZoomAt:center];
+    
+    else
+        [mapView.contents zoomOutToNextNativeZoomAt:center];
+    
+    // get full screen snapshot
     //
     UIGraphicsBeginImageContext(self.view.bounds.size);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
     UIImage *full = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+
+    // restore previous projection rect
+    //
+    [mapView.contents zoomWithRMMercatorRectBounds:oldRect];
     
     // crop out top toolbar
     //
