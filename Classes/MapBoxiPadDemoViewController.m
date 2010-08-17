@@ -263,7 +263,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             
             [state writeToFile:savePath atomically:YES];
             
-            if ([self.modalViewController isKindOfClass:[UINavigationController class]]) // save panel
+            if (self.modalViewController.modalPresentationStyle == UIModalPresentationFormSheet) // save panel
                 [self dismissModalViewControllerAnimated:YES];
         }
     }
