@@ -96,6 +96,8 @@
 		DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */; };
 		DD86B6F111FE792D00165CDF /* kml.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F011FE792D00165CDF /* kml.png */; };
 		DD86B6F311FE793300165CDF /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F211FE793300165CDF /* rss.png */; };
+		DD92F617121C96CE008CF88F /* 18-envelope.png in Resources */ = {isa = PBXBuildFile; fileRef = DD92F616121C96CE008CF88F /* 18-envelope.png */; };
+		DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92F641121C9B84008CF88F /* MessageUI.framework */; };
 		DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */; };
 		DDA0745D11E79F8D0049865F /* DSMapBoxFeedParserRSS.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */; };
 		DDA0748A11E7A41F0049865F /* DSMapBoxFeedParserAtom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */; };
@@ -303,6 +305,8 @@
 		DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerController.xib; sourceTree = "<group>"; };
 		DD86B6F011FE792D00165CDF /* kml.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kml.png; sourceTree = SOURCE_ROOT; };
 		DD86B6F211FE793300165CDF /* rss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rss.png; sourceTree = SOURCE_ROOT; };
+		DD92F616121C96CE008CF88F /* 18-envelope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "18-envelope.png"; sourceTree = SOURCE_ROOT; };
+		DD92F641121C9B84008CF88F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParser.h; sourceTree = "<group>"; };
 		DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParser.m; sourceTree = "<group>"; };
 		DDA0745B11E79F8D0049865F /* DSMapBoxFeedParserRSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParserRSS.h; sourceTree = "<group>"; };
@@ -348,6 +352,7 @@
 				DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */,
 				DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */,
 				DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */,
+				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +426,7 @@
 				DD48C5D811CC1F7300038969 /* libMapView.a */,
 				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
 				DDF3221211DADD720068287A /* CoreLocation.framework */,
+				DD92F641121C9B84008CF88F /* MessageUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -800,6 +806,7 @@
 		DDE77D5712120B4600201ACE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DD92F616121C96CE008CF88F /* 18-envelope.png */,
 				DDE77E501212138B00201ACE /* trash.png */,
 			);
 			name = Resources;
@@ -894,6 +901,7 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DDFEF1DF1214DBA3002729B3 /* 15-tags.png in Resources */,
 				DDFEF2051214DED8002729B3 /* 60-signpost.png in Resources */,
+				DD92F617121C96CE008CF88F /* 18-envelope.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

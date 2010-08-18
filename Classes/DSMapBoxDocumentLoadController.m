@@ -141,6 +141,47 @@
     }
 }
 
+- (IBAction)tappedSendButton:(id)sender
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        // get the current image
+        //
+        NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
+        
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]];
+        
+        NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
+        
+        // configure & present mailer
+        //
+        MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+        
+        mailer.mailComposeDelegate = self;
+        
+        [mailer setSubject:@"Check out my MapBox map!"];
+        [mailer setMessageBody:@"<p>Check it out! MapBox is <strong>amazing</strong>!</p>" isHTML:YES];
+
+        [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
+                         mimeType:@"image/jpeg" 
+                         fileName:@"MapBoxSnapshot.jpg"];
+                
+        mailer.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        [self presentModalViewController:mailer animated:YES];
+    }
+    else
+    {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                         message:@"Please setup Mail before trying to send map snapshots."
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
+    }
+}
+
 - (IBAction)tappedTrashButton:(id)sender
 {
     UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil
@@ -181,6 +222,40 @@
 {
     if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
         [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
+}
+
+#pragma mark -
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultFailed:
+            
+            [self dismissModalViewControllerAnimated:NO];
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
+                                                             message:@"There was a problem sending the mail. Try again?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"Try Again", nil] autorelease];
+            
+            [alert show];
+            
+            break;
+            
+        default:
+            
+            [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+        [self tappedSendButton:self];
 }
 
 @end

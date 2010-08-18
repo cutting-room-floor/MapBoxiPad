@@ -10,6 +10,8 @@
 
 #import "DSMapBoxLargeSnapshotView.h"
 
+#import <MessageUI/MessageUI.h>
+
 #define kDSSaveFolderName @"Saved Maps"
 
 @class DSMapBoxDocumentLoadController;
@@ -23,7 +25,11 @@
 
 #pragma mark -
 
-@interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, UIScrollViewDelegate, DSMapBoxLargeSnapshotDelegate>
+@interface DSMapBoxDocumentLoadController : UIViewController <UIActionSheetDelegate, 
+                                                              UIScrollViewDelegate, 
+                                                              DSMapBoxLargeSnapshotDelegate, 
+                                                              MFMailComposeViewControllerDelegate,
+                                                              UIAlertViewDelegate>
 {
     IBOutlet UIView *noDocsView;
     IBOutlet UIScrollView *scroller;
@@ -36,6 +42,7 @@
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 
 - (IBAction)tappedSaveNowButton:(id)sender;
+- (IBAction)tappedSendButton:(id)sender;
 - (IBAction)tappedTrashButton:(id)sender;
 
 @end
