@@ -70,7 +70,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     mapView.enableRotate = NO;
     mapView.deceleration = YES;
 
-    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
+    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"starfield.jpg"]];
     
     // data overlay & layer managers
     //

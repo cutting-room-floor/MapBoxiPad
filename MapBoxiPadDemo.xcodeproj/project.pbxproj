@@ -17,6 +17,8 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxiPadDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxiPadDemoViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
+		DD0B12B6121DC07500A1309D /* chalkboard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD0B12B5121DC07500A1309D /* chalkboard.jpg */; };
+		DD0B12F7121DC72700A1309D /* starfield.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD0B12F6121DC72700A1309D /* starfield.jpg */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
 		DD0F614911ED5A9F0050174D /* SimpleKML.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F612111ED5A9F0050174D /* SimpleKML.m */; };
 		DD0F614A11ED5A9F0050174D /* SimpleKMLBalloonStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F612311ED5A9F0050174D /* SimpleKMLBalloonStyle.m */; };
@@ -161,6 +163,8 @@
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
+		DD0B12B5121DC07500A1309D /* chalkboard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = chalkboard.jpg; sourceTree = "<group>"; };
+		DD0B12F6121DC72700A1309D /* starfield.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = starfield.jpg; sourceTree = "<group>"; };
 		DD0F611E11ED5A9F0050174D /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML_UIImage.h; path = "Externals/Simple KML/SimpleKML_UIImage.h"; sourceTree = "<group>"; };
 		DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKML_UIImage.m; path = "Externals/Simple KML/SimpleKML_UIImage.m"; sourceTree = "<group>"; };
 		DD0F612011ED5A9F0050174D /* SimpleKML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML.h; path = "Externals/Simple KML/SimpleKML.h"; sourceTree = "<group>"; };
@@ -648,6 +652,8 @@
 				DDFEF2041214DED8002729B3 /* 60-signpost.png */,
 				DDFEF1DD1214DBA3002729B3 /* 15-tags.png */,
 				DDBA88D41210E69900E5B572 /* 103-map.png */,
+				DD0B12B5121DC07500A1309D /* chalkboard.jpg */,
+				DD0B12F6121DC72700A1309D /* starfield.jpg */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -902,6 +908,8 @@
 				DDFEF1DF1214DBA3002729B3 /* 15-tags.png in Resources */,
 				DDFEF2051214DED8002729B3 /* 60-signpost.png in Resources */,
 				DD92F617121C96CE008CF88F /* 18-envelope.png in Resources */,
+				DD0B12B6121DC07500A1309D /* chalkboard.jpg in Resources */,
+				DD0B12F7121DC72700A1309D /* starfield.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
