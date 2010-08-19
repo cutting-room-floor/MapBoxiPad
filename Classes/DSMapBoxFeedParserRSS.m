@@ -28,11 +28,26 @@
         
         for (CXMLElement *item in items)
         {
-            NSString *title       = [[[item elementsForName:@"title"]       objectAtIndex:0] stringValue];
-            NSString *description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
-            NSString *link        = [[[item elementsForName:@"link"]        objectAtIndex:0] stringValue];
-            NSString *date        = [[[item elementsForName:@"pubDate"]     objectAtIndex:0] stringValue];
-            NSString *point       = [[[item elementsForName:@"point"]       objectAtIndex:0] stringValue];
+            NSString *title       = @"Untitled";
+            NSString *description = @"(no description)";
+            NSString *link        = @"";
+            NSString *date        = @"(no date)";
+            NSString *point       = @"0 0";
+
+            if ([[item elementsForName:@"title"] count])
+                title = [[[item elementsForName:@"title"] objectAtIndex:0] stringValue];
+
+            if ([[item elementsForName:@"description"] count])
+                description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"link"] count])
+                link = [[[item elementsForName:@"link"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"pubDate"] count])
+                date = [[[item elementsForName:@"pubDate"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"point"] count])
+                point = [[[item elementsForName:@"point"] objectAtIndex:0] stringValue];
             
             CGFloat latitude  = [[[point componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
             CGFloat longitude = [[[point componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];

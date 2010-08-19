@@ -32,16 +32,30 @@
         
         for (CXMLElement *item in items)
         {
-            NSString *title       = [[[item elementsForName:@"title"]     objectAtIndex:0] stringValue];
-            NSString *description = [[[item elementsForName:@"content"]   objectAtIndex:0] stringValue];
-            NSString *date        = [[[item elementsForName:@"published"] objectAtIndex:0] stringValue];
-            NSString *point       = [[[item elementsForName:@"point"]     objectAtIndex:0] stringValue];
-
+            NSString *title       = @"Untitled";
+            NSString *description = @"(no description)";
+            NSString *link        = @"";
+            NSString *date        = @"(no date)";
+            NSString *point       = @"0 0";
+            
+            if ([[item elementsForName:@"title"] count])
+                title = [[[item elementsForName:@"title"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"content"] count])
+                description = [[[item elementsForName:@"content"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"published"] count])
+                date = [[[item elementsForName:@"published"] objectAtIndex:0] stringValue];
+            
+            if ([[item elementsForName:@"point"] count])
+                point = [[[item elementsForName:@"point"] objectAtIndex:0] stringValue];
+            
             CXMLElement *linkElement = [[item nodesForXPath:@"atom:link[@rel='alternate']" 
                                           namespaceMappings:namespaces 
                                                       error:NULL] lastObject];
             
-            NSString *link = [[linkElement attributeForName:@"href"] stringValue];
+            if (linkElement)
+                link = [[linkElement attributeForName:@"href"] stringValue];
             
             CGFloat latitude  = [[[point componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
             CGFloat longitude = [[[point componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];
