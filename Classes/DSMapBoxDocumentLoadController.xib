@@ -237,7 +237,7 @@
 						<reference key="IBUINormalTitleShadowColor" ref="923596508"/>
 						<object class="NSCustomResource" key="IBUINormalImage">
 							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">18-envelope.png</string>
+							<string key="NSResourceName">action.png</string>
 						</object>
 					</object>
 				</object>
@@ -899,13 +899,13 @@
 			<bool key="EncodedWithXMLCoder">YES</bool>
 			<object class="NSArray" key="dict.sortedKeys">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>18-envelope.png</string>
+				<string>action.png</string>
 				<string>trash.png</string>
 			</object>
 			<object class="NSMutableArray" key="dict.values">
 				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{24, 16}</string>
-				<string>{16, 21}</string>
+				<string>{22, 22}</string>
+				<string>{22, 22}</string>
 			</object>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>
