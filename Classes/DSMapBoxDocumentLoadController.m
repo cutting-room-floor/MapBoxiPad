@@ -159,8 +159,8 @@
         
         mailer.mailComposeDelegate = self;
         
-        [mailer setSubject:@"Check out my MapBox map!"];
-        [mailer setMessageBody:@"<p>Check it out! MapBox is <strong>amazing</strong>!</p>" isHTML:YES];
+        [mailer setSubject:@""];
+        [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
 
         [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
                          mimeType:@"image/jpeg" 
