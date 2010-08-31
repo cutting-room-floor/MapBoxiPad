@@ -9,15 +9,21 @@
 #import <UIKit/UIKit.h>
 
 #import "DSMapBoxDocumentLoadController.h"
+#import "DSMapBoxLayerManager.h"
 
 #import <CoreLocation/CoreLocation.h>
+#import <MessageUI/MessageUI.h>
 
 @class RMMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 @class DSMapBoxDocumentSaveController;
 
-@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate, DSMapBoxDocumentLoadControllerDelegate>
+@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate, 
+                                                            DSMapBoxDocumentLoadControllerDelegate, 
+                                                            DSDataLayerHandlerDelegate,
+                                                            UIAlertViewDelegate, 
+                                                            MFMailComposeViewControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;
@@ -30,7 +36,12 @@
     CLLocationCoordinate2D postRotationMapCenter;
     DSMapBoxDocumentSaveController *saveController;
     DSMapBoxDocumentLoadController *loadController;
+    
+    @private
+        NSString *badParsePath;
 }
+
+@property (nonatomic, retain) NSString *badParsePath;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;

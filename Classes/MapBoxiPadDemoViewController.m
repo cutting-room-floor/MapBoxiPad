@@ -13,7 +13,6 @@
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapContents.h"
 #import "DSMapBoxLayerController.h"
-#import "DSMapBoxLayerManager.h"
 #import "DSMapBoxDocumentSaveController.h"
 #import "DSMapBoxMarkerManager.h"
 
@@ -29,6 +28,7 @@
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 
+#define KSupportEmail @"ipad@mapbox.com"
 #define kStartingLat  33.919241123962202f
 #define kStartingLon  66.074245801675474f
 #define kStartingZoom  6.0f
@@ -43,6 +43,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 #pragma mark -
 
 @implementation MapBoxiPadDemoViewController
+
+@synthesize badParsePath;
 
 - (void)viewDidLoad
 {
@@ -78,6 +80,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     dataOverlayManager.mapView = mapView;
     mapView.delegate = dataOverlayManager;
     layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
+    layerManager.delegate = self;
     
     // watch for tile changes
     //
@@ -110,6 +113,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     [layersPopover release];
     [layerManager release];
     [dataOverlayManager release];
+    [badParsePath release];
 
     [super dealloc];
 }
@@ -299,15 +303,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     SimpleKML *newKML = [SimpleKML KMLWithContentsofURL:fileURL error:&error];
 
     if (error)
-    {
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable to parse KML file"
-                                                         message:[NSString stringWithFormat:@"Unable to parse the given KML file. The parser reported: %@", error] 
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
-    }
+        [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL relativePath]];
+
     else if (newKML)
     {
         NSString *source      = [fileURL relativePath];
@@ -549,6 +546,98 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller wantsToSaveDocumentWithName:(NSString *)name
 {
     [self saveState:name];
+}
+
+#pragma mark -
+
+- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtPath:(NSString *)path
+{
+    self.badParsePath = path;
+    
+    NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the %@ file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName], ([path hasSuffix:@".kml"] ? @"KML" : @"KMZ")];
+    
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
+                                                     message:message
+                                                    delegate:self
+                                           cancelButtonTitle:@"Cancel"
+                                           otherButtonTitles:@"Send Mail", nil] autorelease];
+    
+    [alert show];
+}
+
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+    {
+        if ([MFMailComposeViewController canSendMail])
+        {
+            MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+            
+            mailer.mailComposeDelegate = self;
+            
+            [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
+            [mailer setMessageBody:@"<em>Please let us know any extra info that you'd like to share about this file.</em>" isHTML:YES];
+            
+            if ([self.badParsePath hasSuffix:@".kml"])
+            {
+                [mailer setSubject:@"Problem KML file"];
+                
+                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                 mimeType:@"application/vnd.google-earth.kml+xml" 
+                                 fileName:[self.badParsePath lastPathComponent]];
+            }
+            else if ([self.badParsePath hasSuffix:@".kmz"])
+            {
+                [mailer setSubject:@"Problem KMZ file"];
+                
+                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                 mimeType:@"application/vnd.google-earth.kmz" 
+                                 fileName:[self.badParsePath lastPathComponent]];
+            }
+            
+            mailer.modalPresentationStyle = UIModalPresentationFormSheet;
+            
+            [self presentModalViewController:mailer animated:YES];
+        }
+        else
+        {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                             message:@"Please setup Mail first."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+        }
+    }
+}
+
+#pragma mark -
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultFailed:
+            
+            [self dismissModalViewControllerAnimated:NO];
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
+                                                             message:@"There was a problem sending the mail."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+            
+            break;
+            
+        default:
+            
+            [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 @end

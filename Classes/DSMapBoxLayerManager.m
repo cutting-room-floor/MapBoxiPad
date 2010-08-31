@@ -40,6 +40,7 @@
 @synthesize baseLayerCount;
 @synthesize tileLayerCount;
 @synthesize dataLayerCount;
+@synthesize delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
 {
@@ -525,15 +526,8 @@
                     
                     if ( ! kml)
                     {
-                        NSString *message = [NSString stringWithFormat:@"%@ was unable to handle that KML/KMZ file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
-                        
-                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
-                                                                         message:message
-                                                                        delegate:nil
-                                                               cancelButtonTitle:nil
-                                                               otherButtonTitles:@"OK", nil] autorelease];
-                        
-                        [alert show];
+                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtPath:)])
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtPath:[layer objectForKey:@"path"]];
                         
                         return;
                     }

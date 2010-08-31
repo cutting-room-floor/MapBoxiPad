@@ -24,6 +24,14 @@
 @class DSMapBoxDataOverlayManager;
 @class RMMapView;
 
+@protocol DSDataLayerHandlerDelegate
+
+- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtPath:(NSString *)path;
+
+@end
+
+#pragma mark -
+
 typedef enum {
     DSMapBoxLayerTypeTile   = 0,
     DSMapBoxLayerTypeKML    = 1,
@@ -44,6 +52,7 @@ typedef enum {
     NSArray *baseLayers;
     NSArray *tileLayers;
     NSArray *dataLayers;
+    id <NSObject, DSDataLayerHandlerDelegate>delegate;
 }
 
 @property (nonatomic, retain) RMMapView *baseMapView;
@@ -53,6 +62,7 @@ typedef enum {
 @property (nonatomic, readonly, assign) NSUInteger baseLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger tileLayerCount;
 @property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
+@property (nonatomic, assign) id <NSObject, DSDataLayerHandlerDelegate>delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
