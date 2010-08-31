@@ -523,6 +523,21 @@
                 {
                     SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[layer objectForKey:@"path"] error:NULL];
                     
+                    if ( ! kml)
+                    {
+                        NSString *message = [NSString stringWithFormat:@"%@ was unable to handle that KML/KMZ file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
+                        
+                        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
+                                                                         message:message
+                                                                        delegate:nil
+                                                               cancelButtonTitle:nil
+                                                               otherButtonTitles:@"OK", nil] autorelease];
+                        
+                        [alert show];
+                        
+                        return;
+                    }
+                    
                     [dataOverlayManager addOverlayForKML:kml];
                     
                     if ( ! [layer objectForKey:@"source"])
