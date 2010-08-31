@@ -1,15 +1,15 @@
 10
 
 dir
-632
+633
 http://route-me.googlecode.com/svn/trunk/MapView/Map
 http://route-me.googlecode.com/svn
 
 
 
-2010-08-11T01:37:17.135874Z
-632
-foobaz
+2010-08-15T01:32:17.451546Z
+633
+vladimir.vyskocil
 
 
 
@@ -128,40 +128,6 @@ foobaz
 
 1766
 
-RMTileImage.h
-file
-
-
-
-
-2010-08-03T22:01:14.000000Z
-2ec27b62be90e04ed70f64333a2db693
-2009-11-15T19:13:13.495626Z
-593
-tracy.harton
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2921
-
 RMFileTileImage.h
 file
 
@@ -195,6 +161,40 @@ halmueller
 
 
 1645
+
+RMTileImage.h
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+2ec27b62be90e04ed70f64333a2db693
+2009-11-15T19:13:13.495626Z
+593
+tracy.harton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2921
 
 RMPath.m
 file
@@ -230,9 +230,6 @@ foobaz
 
 8905
 
-Cache.xcdatamodel
-dir
-
 RMTiledLayerController.h
 file
 
@@ -266,6 +263,9 @@ halmueller
 
 
 2495
+
+Cache.xcdatamodel
+dir
 
 RMMapViewDelegate.h
 file
@@ -335,40 +335,6 @@ foobaz
 
 1828
 
-RMTileImage.m
-file
-
-
-
-
-2010-08-11T16:38:47.000000Z
-560f772d155e3ef539565ab4f4e23de4
-2010-08-11T01:37:17.135874Z
-632
-foobaz
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-6053
-
 RMFileTileImage.m
 file
 
@@ -403,17 +369,17 @@ tracy.harton
 
 1736
 
-RMOpenStreetMapSource.h
+RMTileImage.m
 file
 
 
 
 
-2010-08-03T22:01:14.000000Z
-ea7d53f661d4a9625f2a73047d8cadda
-2009-04-22T21:14:36.762136Z
-497
-halmueller
+2010-08-11T16:38:47.000000Z
+560f772d155e3ef539565ab4f4e23de4
+2010-08-11T01:37:17.135874Z
+632
+foobaz
 
 
 
@@ -435,7 +401,7 @@ halmueller
 
 
 
-1744
+6053
 
 RMTiledLayerController.m
 file
@@ -470,6 +436,40 @@ Quazie
 
 
 4921
+
+RMOpenStreetMapSource.h
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+ea7d53f661d4a9625f2a73047d8cadda
+2009-04-22T21:14:36.762136Z
+497
+halmueller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1744
 
 RMMapView.h
 file
@@ -647,11 +647,11 @@ file
 
 
 
-2010-08-03T22:01:14.000000Z
-e53b84210d0b0aa426b6485000c1fa9b
-2010-07-16T23:22:30.184943Z
-629
-foobaz
+2010-08-31T23:50:16.000000Z
+f3de946512d08422f3dbbc0fa8f3a739
+2010-08-15T01:32:17.451546Z
+633
+vladimir.vyskocil
 
 
 
@@ -673,7 +673,7 @@ foobaz
 
 
 
-19828
+19829
 
 RMTilesUpdateDelegate.h
 file
@@ -1052,40 +1052,6 @@ tracy.harton
 
 1914
 
-RMTileCacheDAO.m
-file
-
-
-
-
-2010-08-03T22:01:14.000000Z
-22cb753bcb20d20dce9c2f523dde4dad
-2009-11-16T02:21:13.214362Z
-595
-tracy.harton
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-4249
-
 RMMapLayer.h
 file
 
@@ -1120,16 +1086,16 @@ vladimir.vyskocil
 
 1817
 
-RMCloudMadeMapSource.h
+RMTileCacheDAO.m
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-c5db94716c56deafe7221f2295383799
-2010-01-08T16:13:43.669472Z
-608
+22cb753bcb20d20dce9c2f523dde4dad
+2009-11-16T02:21:13.214362Z
+595
 tracy.harton
 
 
@@ -1152,7 +1118,7 @@ tracy.harton
 
 
 
-2386
+4249
 
 RMMercatorToScreenProjection.h
 file
@@ -1188,17 +1154,17 @@ halmueller
 
 3698
 
-RMAbstractMercatorWebSource.h
+RMCloudMadeMapSource.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-9c56d877ebc2aaf67bcb84f85956e120
-2010-04-15T20:05:25.772110Z
-624
-vladimir.vyskocil
+c5db94716c56deafe7221f2295383799
+2010-01-08T16:13:43.669472Z
+608
+tracy.harton
 
 
 
@@ -1220,7 +1186,7 @@ vladimir.vyskocil
 
 
 
-2389
+2386
 
 RMMapLayer.m
 file
@@ -1256,17 +1222,17 @@ halmueller
 
 2269
 
-RMCloudMadeMapSource.m
+RMAbstractMercatorWebSource.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-9bccce7d965d8c9bae6edb4cea36aff2
-2010-01-08T16:13:43.669472Z
-608
-tracy.harton
+9c56d877ebc2aaf67bcb84f85956e120
+2010-04-15T20:05:25.772110Z
+624
+vladimir.vyskocil
 
 
 
@@ -1288,7 +1254,7 @@ tracy.harton
 
 
 
-5963
+2389
 
 RMMercatorToScreenProjection.m
 file
@@ -1323,6 +1289,40 @@ dbainbridge
 
 
 11759
+
+RMCloudMadeMapSource.m
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+9bccce7d965d8c9bae6edb4cea36aff2
+2010-01-08T16:13:43.669472Z
+608
+tracy.harton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5963
 
 RMAbstractMercatorWebSource.m
 file
@@ -1426,40 +1426,6 @@ foobaz
 
 3163
 
-RMTile.h
-file
-
-
-
-
-2010-08-03T22:01:14.000000Z
-5b085d934efedb861346d85479da3eb0
-2009-04-20T21:40:08.457415Z
-486
-halmueller
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2732
-
 RMGlobalConstants.h
 file
 
@@ -1494,14 +1460,14 @@ foobaz
 
 193
 
-RMYahooMapSource.h
+RMTile.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-4648fb33aa1c4f029e5bd258f9607f1c
+5b085d934efedb861346d85479da3eb0
 2009-04-20T21:40:08.457415Z
 486
 halmueller
@@ -1526,7 +1492,7 @@ halmueller
 
 
 
-2101
+2732
 
 RMOpenAerialMapSource.h
 file
@@ -1562,6 +1528,40 @@ halmueller
 
 1734
 
+RMYahooMapSource.h
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+4648fb33aa1c4f029e5bd258f9607f1c
+2009-04-20T21:40:08.457415Z
+486
+halmueller
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2101
+
 RMFoundation.c
 file
 
@@ -1596,40 +1596,6 @@ halmueller
 
 2666
 
-RMOpenAerialMapSource.m
-file
-
-
-
-
-2010-08-03T22:01:14.000000Z
-41e20acefb0609db0f2518b50344b54a
-2009-12-08T21:38:40.782279Z
-603
-tracy.harton
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2532
-
 RMYahooMapSource.m
 file
 
@@ -1663,6 +1629,40 @@ tracy.harton
 
 
 2498
+
+RMOpenAerialMapSource.m
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+41e20acefb0609db0f2518b50344b54a
+2009-12-08T21:38:40.782279Z
+603
+tracy.harton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2532
 
 RMMapRenderer.h
 file
@@ -1800,17 +1800,17 @@ halmueller
 
 2193
 
-RMMarkerManager.h
+RMConfiguration.m
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-38dbbc69e6a4e91414632487ba86f406
-2009-11-24T00:06:25.950988Z
-598
-tracy.harton
+37db75c51c43d8263b11101b8e009393
+2009-04-24T21:50:32.557326Z
+504
+halmueller
 
 
 
@@ -1832,7 +1832,7 @@ tracy.harton
 
 
 
-2491
+2798
 
 RMPixel.c
 file
@@ -1868,17 +1868,17 @@ halmueller
 
 2094
 
-RMConfiguration.m
+RMMarkerManager.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-37db75c51c43d8263b11101b8e009393
-2009-04-24T21:50:32.557326Z
-504
-halmueller
+38dbbc69e6a4e91414632487ba86f406
+2009-11-24T00:06:25.950988Z
+598
+tracy.harton
 
 
 
@@ -1900,7 +1900,7 @@ halmueller
 
 
 
-2798
+2491
 
 RMTileSource.h
 file
@@ -1936,17 +1936,17 @@ tracy.harton
 
 2542
 
-RMMarkerManager.m
+RMPixel.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-28c328e0a26e6ba909c72300e504a1d7
-2009-11-24T00:06:25.950988Z
-598
-tracy.harton
+9ff082b67a7c2beb5246e1062c8d0df4
+2010-06-28T19:43:58.283941Z
+628
+foobaz
 
 
 
@@ -1968,41 +1968,7 @@ tracy.harton
 
 
 
-5722
-
-RMMarker.h
-file
-
-
-
-
-2010-08-03T22:01:14.000000Z
-e5a1b1a05ab3700f04a6b314867bad8a
-2010-01-14T09:44:29.593302Z
-609
-vladimir.vyskocil
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-4590
+1814
 
 RMTileCache.h
 file
@@ -2038,17 +2004,17 @@ halmueller
 
 2534
 
-RMPixel.h
+RMMarker.h
 file
 
 
 
 
 2010-08-03T22:01:14.000000Z
-9ff082b67a7c2beb5246e1062c8d0df4
-2010-06-28T19:43:58.283941Z
-628
-foobaz
+e5a1b1a05ab3700f04a6b314867bad8a
+2010-01-14T09:44:29.593302Z
+609
+vladimir.vyskocil
 
 
 
@@ -2070,7 +2036,41 @@ foobaz
 
 
 
-1814
+4590
+
+RMMarkerManager.m
+file
+
+
+
+
+2010-08-03T22:01:14.000000Z
+28c328e0a26e6ba909c72300e504a1d7
+2009-11-24T00:06:25.950988Z
+598
+tracy.harton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5722
 
 marker-X.png
 file
