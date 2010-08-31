@@ -92,6 +92,43 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     // restore app state
     //
     [self restoreState:self];
+    
+    // warn about any zipped mbtiles
+    //
+    BOOL showedZipAlert = NO;
+    
+    NSPredicate *zippedPredicate = [NSPredicate predicateWithFormat:@"self ENDSWITH '.mbtiles.zip'"];
+    
+    NSArray *zippedTiles = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString]
+                                                                                error:NULL] filteredArrayUsingPredicate:zippedPredicate];
+    
+    NSMutableSet *seenZips = [NSMutableSet set];
+    
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"seenZippedTiles"])
+        [seenZips addObjectsFromArray:[[NSUserDefaults standardUserDefaults] arrayForKey:@"seenZippedTiles"]];
+    
+    for (NSString *zippedTile in zippedTiles)
+    {
+        if ( ! [seenZips containsObject:zippedTile] && ! showedZipAlert)
+        {
+            NSString *appName = [[NSProcessInfo processInfo] processName];
+            
+            [seenZips addObject:zippedTile];
+            
+            UIAlertView *zipAlert = [[[UIAlertView alloc] initWithTitle:@"Zipped Tiles Found"
+                                                                message:[NSString stringWithFormat:@"Your %@ documents contain zipped tiles. Please unzip these tiles first in order to use them in %@.", appName, appName] 
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil] autorelease];
+            
+            [zipAlert show];
+            
+            showedZipAlert = YES;
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
