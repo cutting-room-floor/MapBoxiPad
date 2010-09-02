@@ -615,7 +615,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData)
             mailer.mailComposeDelegate = self;
             
             [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
-            [mailer setMessageBody:@"<em>Please let us know any extra info that you'd like to share about this file.</em>" isHTML:YES];
+            [mailer setMessageBody:@"<em>Please provide any additional details about this file or about the error you encountered here.</em>" isHTML:YES];
             
             if ([self.badParsePath hasSuffix:@".kml"])
             {
