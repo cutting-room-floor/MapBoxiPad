@@ -83,6 +83,7 @@
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
+		DD3D93E0123047F20049ABB0 /* FolderAnimationLinenIPadLandscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3D93DF123047F20049ABB0 /* FolderAnimationLinenIPadLandscape.png */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
@@ -290,6 +291,7 @@
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		DD3D93DF123047F20049ABB0 /* FolderAnimationLinenIPadLandscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FolderAnimationLinenIPadLandscape.png; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
@@ -656,6 +658,7 @@
 				DDBA88D41210E69900E5B572 /* 103-map.png */,
 				DD0B12B5121DC07500A1309D /* chalkboard.jpg */,
 				DD0B12F6121DC72700A1309D /* starfield.jpg */,
+				DD3D93DF123047F20049ABB0 /* FolderAnimationLinenIPadLandscape.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -914,6 +917,7 @@
 				DD0B12B6121DC07500A1309D /* chalkboard.jpg in Resources */,
 				DD0B12F7121DC72700A1309D /* starfield.jpg in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
+				DD3D93E0123047F20049ABB0 /* FolderAnimationLinenIPadLandscape.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
