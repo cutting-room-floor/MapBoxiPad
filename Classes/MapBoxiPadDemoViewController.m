@@ -369,11 +369,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
             
             UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
             
-            layerController.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Library" 
-                                                                                                 style:UIBarButtonItemStylePlain 
-                                                                                                target:self
-                                                                                                action:@selector(tappedLibraryButton:)] autorelease];
-            
             layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
             
             layersPopover.passthroughViews = nil;
@@ -381,11 +376,6 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         
         [layersPopover presentPopoverFromBarButtonItem:layersButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     }
-}
-
-- (IBAction)tappedLibraryButton:(id)sender
-{
-    NSLog(@"show library");
 }
 
 - (IBAction)tappedClusteringButton:(id)sender

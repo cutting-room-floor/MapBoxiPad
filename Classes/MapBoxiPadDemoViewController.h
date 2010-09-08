@@ -48,7 +48,6 @@
 - (IBAction)tappedLayersButton:(id)sender;
 - (IBAction)tappedClusteringButton:(id)sender;
 - (IBAction)tappedDocumentsButton:(id)sender;
-- (IBAction)tappedLibraryButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 
 @end
