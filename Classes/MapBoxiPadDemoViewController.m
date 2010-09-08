@@ -70,7 +70,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
                          backgroundImage:nil] autorelease];
     
     mapView.enableRotate = NO;
-    mapView.deceleration = YES;
+    mapView.deceleration = NO;
 
     mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"FolderAnimationLinenIPadLandscape.png"]];
     
