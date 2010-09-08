@@ -84,20 +84,8 @@
 						<int key="IBUIBarStyle">1</int>
 						<object class="NSMutableArray" key="IBUIItems">
 							<bool key="EncodedWithXMLCoder">YES</bool>
-							<object class="IBUIBarButtonItem" id="294852452">
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">60-signpost.png</string>
-								</object>
-								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-								<int key="IBUIStyle">1</int>
-								<reference key="IBUIToolbar" ref="459560094"/>
-							</object>
-							<object class="IBUIBarButtonItem" id="245884156">
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">15-tags.png</string>
-								</object>
+							<object class="IBUIBarButtonItem" id="455809617">
+								<string key="IBUITitle">My Maps</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -107,11 +95,14 @@
 								<reference key="IBUIToolbar" ref="459560094"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
-							<object class="IBUIBarButtonItem" id="455809617">
-								<object class="NSCustomResource" key="IBUIImage">
-									<string key="NSClassName">NSImage</string>
-									<string key="NSResourceName">103-map.png</string>
-								</object>
+							<object class="IBUIBarButtonItem" id="245884156">
+								<string key="IBUITitle">Clustering</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="459560094"/>
+							</object>
+							<object class="IBUIBarButtonItem" id="294852452">
+								<string key="IBUITitle">Layers</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -723,21 +714,8 @@
 		<string key="IBDocument.LastKnownRelativeProjectPath">MapBoxiPadDemo.xcodeproj</string>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<bool key="EncodedWithXMLCoder">YES</bool>
-			<object class="NSArray" key="dict.sortedKeys">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>103-map.png</string>
-				<string>15-tags.png</string>
-				<string>60-signpost.png</string>
-				<string>mapbox.png</string>
-			</object>
-			<object class="NSMutableArray" key="dict.values">
-				<bool key="EncodedWithXMLCoder">YES</bool>
-				<string>{26, 21}</string>
-				<string>{24, 25}</string>
-				<string>{22, 28}</string>
-				<string>{80, 22}</string>
-			</object>
+			<string key="NS.key.0">mapbox.png</string>
+			<string key="NS.object.0">{80, 22}</string>
 		</object>
 		<string key="IBCocoaTouchPluginVersion">117</string>
 	</data>
