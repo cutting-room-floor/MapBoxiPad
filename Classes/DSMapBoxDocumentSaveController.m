@@ -63,4 +63,15 @@
         self.navigationItem.rightBarButtonItem.enabled = NO;
 }
 
+#pragma mark -
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    UIBarButtonItem *item = self.navigationItem.rightBarButtonItem;
+    
+    [item.target performSelector:item.action withObject:item];
+    
+    return YES;
+}
+
 @end
