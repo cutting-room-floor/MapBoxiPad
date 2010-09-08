@@ -29,7 +29,7 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.jpg"]];
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"FolderAnimationLinenIPadLandscape.png"]];
     
     [self reload];
 }
@@ -113,9 +113,10 @@
         
         dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];
         
-        noDocsView.hidden  = YES;
-        scroller.hidden    = NO;
-        trashButton.hidden = NO;
+        noDocsView.hidden   = YES;
+        scroller.hidden     = NO;
+        actionButton.hidden = NO;
+        trashButton.hidden  = NO;
     }
     else
     {
@@ -123,9 +124,10 @@
         nameLabel.text = @"";
         dateLabel.text = @"";
 
-        noDocsView.hidden  = NO;
-        scroller.hidden    = YES;
-        trashButton.hidden = YES;
+        noDocsView.hidden   = NO;
+        scroller.hidden     = YES;
+        actionButton.hidden = YES;
+        trashButton.hidden  = YES;
     }
 }
 

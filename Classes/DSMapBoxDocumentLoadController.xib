@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="5"/>
+			<integer value="42"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -84,9 +84,9 @@
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<string key="IBUIText">No Saved Maps</string>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC4zNDkwMTk2MTY4IDAuMzc2NDcwNjI1NCAwLjQwMzkyMTYwNDIAA</bytes>
+								<object class="NSColor" key="IBUITextColor" id="211134508">
+									<int key="NSColorSpace">3</int>
+									<bytes key="NSWhite">MQA</bytes>
 								</object>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
@@ -109,10 +109,7 @@
 									<double key="NSSize">13</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<object class="NSColor" key="IBUITextColor">
-									<int key="NSColorSpace">2</int>
-									<bytes key="NSRGB">MC4zNDkwMTk2MTY4IDAuMzc2NDcwNjI1NCAwLjQwMzkyMTYwNDIAA</bytes>
-								</object>
+								<reference key="IBUITextColor" ref="211134508"/>
 								<nil key="IBUIHighlightedColor"/>
 								<int key="IBUIBaselineAdjustment">1</int>
 								<float key="IBUIMinimumFontSize">10</float>
@@ -132,10 +129,7 @@
 									<double key="NSSize">15</double>
 									<int key="NSfFlags">16</int>
 								</object>
-								<object class="NSColor" key="IBUIHighlightedTitleColor" id="211134508">
-									<int key="NSColorSpace">3</int>
-									<bytes key="NSWhite">MQA</bytes>
-								</object>
+								<reference key="IBUIHighlightedTitleColor" ref="211134508"/>
 								<object class="NSColor" key="IBUINormalTitleColor">
 									<int key="NSColorSpace">1</int>
 									<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -168,10 +162,7 @@
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">Label</string>
-						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4zNDkwMTk2MTY4IDAuMzc2NDcwNjI1NCAwLjQwMzkyMTYwNDIAA</bytes>
-						</object>
+						<reference key="IBUITextColor" ref="211134508"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -189,10 +180,7 @@
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<string key="IBUIText">Label</string>
 						<reference key="IBUIFont" ref="24999710"/>
-						<object class="NSColor" key="IBUITextColor">
-							<int key="NSColorSpace">2</int>
-							<bytes key="NSRGB">MC4zNDkwMTk2MTY4IDAuMzc2NDcwNjI1NCAwLjQwMzkyMTYwNDIAA</bytes>
-						</object>
+						<reference key="IBUITextColor" ref="211134508"/>
 						<nil key="IBUIHighlightedColor"/>
 						<int key="IBUIBaselineAdjustment">1</int>
 						<float key="IBUIMinimumFontSize">10</float>
@@ -338,6 +326,14 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">49</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">actionButton</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="151476373"/>
+					</object>
+					<int key="connectionID">50</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -492,7 +488,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">49</int>
+			<int key="maxID">50</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -543,6 +539,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionButton</string>
 							<string>dateLabel</string>
 							<string>delegate</string>
 							<string>nameLabel</string>
@@ -552,6 +549,7 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UIButton</string>
 							<string>UILabel</string>
 							<string>id</string>
 							<string>UILabel</string>
@@ -564,6 +562,7 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>actionButton</string>
 							<string>dateLabel</string>
 							<string>delegate</string>
 							<string>nameLabel</string>
@@ -573,6 +572,10 @@
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">actionButton</string>
+								<string key="candidateClassName">UIButton</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">dateLabel</string>
 								<string key="candidateClassName">UILabel</string>

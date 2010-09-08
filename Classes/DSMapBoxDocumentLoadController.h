@@ -35,6 +35,7 @@
     IBOutlet UIScrollView *scroller;
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *dateLabel;
+    IBOutlet UIButton *actionButton;
     IBOutlet UIButton *trashButton;
     id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 }
