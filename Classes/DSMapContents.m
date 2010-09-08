@@ -16,6 +16,7 @@
 #import "RMMapView.h"
 #import "RMMercatorToScreenProjection.h"
 
+#define kLowerZoomBounds       2.5f
 #define kUpperLatitudeBounds  85.0f
 #define kLowerLatitudeBounds -60.0f
 
@@ -100,9 +101,9 @@
     //
     // end borrowed code
 	
-    if (targetZoom < 2.5)
+    if (targetZoom < kLowerZoomBounds)
     {
-        NSLog(@"returning early since target = %f", targetZoom);
+        //NSLog(@"returning early since target = %f", targetZoom);
         
         return;
     }
@@ -111,7 +112,7 @@
     
     [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
     
-    NSLog(@"new zoom: %f", self.zoom);
+    //NSLog(@"new zoom: %f", self.zoom);
     
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
@@ -156,18 +157,18 @@
 
 - (BOOL)canMoveBy:(CGSize)delta
 {
-    NSLog(@"=====");
+    //NSLog(@"=====");
 
-    NSLog(@"dX: %f", delta.width);
-    NSLog(@"dY: %f", delta.height);
+    //NSLog(@"dX: %f", delta.width);
+    //NSLog(@"dY: %f", delta.height);
     
     // top left
     //
     RMProjectedPoint currentTopLeftProj  = [mercatorToScreenProjection projectScreenPointToXY:CGPointMake(0, 0)];
-    RMLatLong        currentTopLeftCoord = [projection pointToLatLong:currentTopLeftProj];
+    //RMLatLong        currentTopLeftCoord = [projection pointToLatLong:currentTopLeftProj];
 
-    NSLog(@"current top:  %f", currentTopLeftCoord.latitude);
-    NSLog(@"current left: %f", currentTopLeftCoord.longitude);
+    //NSLog(@"current top:  %f", currentTopLeftCoord.latitude);
+    //NSLog(@"current left: %f", currentTopLeftCoord.longitude);
     
     RMProjectedPoint proposedTopLeftProj = {
         .easting  = currentTopLeftProj.easting  - (delta.width  * self.metersPerPixel),
@@ -176,8 +177,8 @@
     
     RMLatLong        proposedTopLeftCoord = [projection pointToLatLong:proposedTopLeftProj];
     
-    NSLog(@"proposed top:  %f", proposedTopLeftCoord.latitude);
-    NSLog(@"proposed left: %f", proposedTopLeftCoord.longitude);
+    //NSLog(@"proposed top:  %f", proposedTopLeftCoord.latitude);
+    //NSLog(@"proposed left: %f", proposedTopLeftCoord.longitude);
     
     // bottom right
     //
@@ -185,10 +186,10 @@
                                                            [mercatorToScreenProjection screenBounds].size.height);
     
     RMProjectedPoint currentBottomRightProj  = [mercatorToScreenProjection projectScreenPointToXY:currentBottomRightPoint];
-    RMLatLong        currentBottomRightCoord = [projection pointToLatLong:currentBottomRightProj];
+    //RMLatLong        currentBottomRightCoord = [projection pointToLatLong:currentBottomRightProj];
 
-    NSLog(@"current bottom:  %f", currentBottomRightCoord.latitude);
-    NSLog(@"current right:   %f", currentBottomRightCoord.longitude);
+    //NSLog(@"current bottom:  %f", currentBottomRightCoord.latitude);
+    //NSLog(@"current right:   %f", currentBottomRightCoord.longitude);
     
     RMProjectedPoint proposedBottomRightProj = {
         .easting  = currentBottomRightProj.easting  - (delta.width  * self.metersPerPixel),
@@ -197,8 +198,8 @@
     
     RMLatLong        proposedBottomRightCoord = [projection pointToLatLong:proposedBottomRightProj];
     
-    NSLog(@"proposed bottom:  %f", proposedBottomRightCoord.latitude);
-    NSLog(@"proposed right:   %f", proposedBottomRightCoord.longitude);
+    //NSLog(@"proposed bottom:  %f", proposedBottomRightCoord.latitude);
+    //NSLog(@"proposed right:   %f", proposedBottomRightCoord.longitude);
     
     // check limits
     //
