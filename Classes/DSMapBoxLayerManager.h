@@ -21,6 +21,8 @@
 
 #import <UIKit/UIKit.h>
 
+static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocumentsChangedNotification";
+
 @class DSMapBoxDataOverlayManager;
 @class RMMapView;
 

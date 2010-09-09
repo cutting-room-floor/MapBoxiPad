@@ -61,6 +61,11 @@
                                                  selector:@selector(reloadLayersFromDisk)
                                                      name:DSMapBoxTileSetChangedNotification
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reloadLayersFromDisk)
+                                                     name:DSMapBoxDocumentsChangedNotification
+                                                   object:nil];
     }
 
     return self;
@@ -69,6 +74,7 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDocumentsChangedNotification object:nil];
 
     [dataOverlayManager release];
     [baseMapView release];
