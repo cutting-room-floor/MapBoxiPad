@@ -84,18 +84,18 @@
 {
     if ([[self saveFiles] count])
     {
-        CGFloat minX  = 0.0;
-        CGFloat maxX  = ([scroller.subviews count] - 1) * kDSDocumentWidth;
+        CGFloat needle = scroller.contentOffset.x / kDSDocumentWidth;
         
-        CGFloat offset = scroller.contentOffset.x;
+        int index = -1;
         
-        if (offset < minX)
-            offset = minX;
+        if (needle - floorf(needle) < 0.5) // scrolling left
+            index = (int)floorf(needle);
         
-        else if (offset > maxX)
-            offset = maxX;
+        else if (ceilf(needle) - needle < 0.5) // scrolling right
+            index = (int)ceilf(needle);
         
-        NSUInteger index = offset / kDSDocumentWidth;
+        if (index < 0)
+            return;
         
         self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
         
@@ -117,6 +117,16 @@
         scroller.hidden     = NO;
         actionButton.hidden = NO;
         trashButton.hidden  = NO;
+        
+        DSMapBoxLargeSnapshotView *oldActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[[scroller subviews] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isActive = YES"]] lastObject];
+        
+        if ([[scroller subviews] indexOfObject:oldActiveSnapshot] != index)
+            oldActiveSnapshot.isActive = NO;
+        
+        DSMapBoxLargeSnapshotView *newActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[scroller subviews] objectAtIndex:index];
+        
+        if ( ! newActiveSnapshot.isActive)
+            newActiveSnapshot.isActive = YES;
     }
     else
     {

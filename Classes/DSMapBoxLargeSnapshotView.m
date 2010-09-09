@@ -11,11 +11,13 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define kDSSnapshotInset kDSDocumentWidth / 32.0f
+#define kDimmerAlpha     0.5f
 
 @implementation DSMapBoxLargeSnapshotView
 
 @synthesize snapshotName;
 @synthesize delegate;
+@synthesize isActive;
 
 - (id)initWithSnapshot:(UIImage *)snapshot
 {
@@ -23,6 +25,8 @@
     
     if (self != nil)
     {
+        // setup image view
+        //
         UIImageView *imageView = [[[UIImageView alloc] initWithImage:snapshot] autorelease];
         
         [self addSubview:imageView];
@@ -48,21 +52,57 @@
 
         imageView.contentMode = UIViewContentModeScaleAspectFit;
         imageView.center      = self.center;
-
-        // TODO: add image shadow here (performance concerns)
+        
+        // determine actual fit image size
         //
-        //imageView.layer.shadowOpacity   = 1.0;
-        //imageView.layer.shadowOffset    = CGSizeMake(0.0, 1.0);
-        //imageView.layer.shouldRasterize = YES;
+        if (snapshot.size.width > snapshot.size.height)
+        {
+            width  = imageView.frame.size.width;
+            height = imageView.frame.size.width * (snapshot.size.height / snapshot.size.width);
+        }
+        else
+        {
+            width  = imageView.frame.size.height * (snapshot.size.width / snapshot.size.height);
+            height = imageView.frame.size.height;
+        }
+        
+        // setup dimming overlay
+        //
+        UIView *dimmer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        
+        dimmer.frame = CGRectMake(0,
+                                  0, 
+                                  width,
+                                  height);
+        
+        dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:kDimmerAlpha];
 
-        /*
-         * Here we could do some fancy stuff like rotate the image slightly,
-         * put a visual "stack" of images behind it more like Keynote does,
-         * page curl it a bit, or things like that.
-         */
+        [self insertSubview:dimmer aboveSubview:imageView];
+
+        dimmer.center = imageView.center;
     }
     
     return self;
+}
+
+#pragma mark -
+
+- (void)setIsActive:(BOOL)flag
+{
+    isActive = flag;
+    
+    UIView *dimmer = (UIView *)[[self subviews] lastObject];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.25];
+    
+    if (flag)
+        dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.0];
+    
+    else
+        dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:kDimmerAlpha];
+    
+    [UIView commitAnimations];
 }
 
 #pragma mark -

@@ -25,10 +25,12 @@
 {
     NSString *snapshotName;
     id <NSObject, DSMapBoxLargeSnapshotDelegate>delegate;
+    BOOL isActive;
 }
 
 @property (nonatomic, retain) NSString *snapshotName;
 @property (nonatomic, assign) id <NSObject, DSMapBoxLargeSnapshotDelegate>delegate;
+@property (nonatomic, assign) BOOL isActive;
 
 - (id)initWithSnapshot:(UIImage *)snapshot;
 
