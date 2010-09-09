@@ -9,6 +9,7 @@
 #import "DSMapContents.h"
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxMarkerManager.h"
+#import "DSMapBoxCoreAnimationRenderer.h"
 
 #import "RMProjection.h"
 #import "RMTileLoader.h"
@@ -42,10 +43,26 @@
     
     if (self)
     {
-        [markerManager release];
+        /**
+          * We need to retain the old, default renderer here for the already-setup tiles to avoid a crash.
+          * It's a leak, but a minor, one-time one. It would be good to figure out when it's safe to release
+          * this for good, just to clean up.
+          */
+        [renderer retain];
         
+        // swap out with a new renderer that does the fade animation
+        //
+        [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
+        renderer.layer.delegate = renderer;
+        imagesOnScreen.delegate = renderer;
+        
+        // swap out the marker manager with our custom, clustering one
+        //
+        [markerManager release];
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
 
+        // set tile depth to optimize tile loading
+        //
         self.tileDepth = 3;
     }
     
@@ -108,7 +125,10 @@
         return;
     }
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) selector:@selector(recalculateClusters) object:nil];
+    if ([self.markerManager markers])
+        [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
+                                                 selector:@selector(recalculateClusters) 
+                                                   object:nil];
     
     [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
     
@@ -119,10 +139,17 @@
             [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
     
     if ([self.markerManager markers])
-        [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) withObject:nil afterDelay:0.1];
+        [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
+                                                            withObject:nil 
+                                                            afterDelay:0.1];
 
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(postZoom) object:nil];
-    [self performSelector:@selector(postZoom) withObject:nil afterDelay:0.1];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                             selector:@selector(postZoom) 
+                                               object:nil];
+
+    [self performSelector:@selector(postZoom) 
+               withObject:nil 
+               afterDelay:0.1];
 }
 
 - (void)removeAllCachedImages
