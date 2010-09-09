@@ -94,7 +94,7 @@
         else if (ceilf(needle) - needle < 0.5) // scrolling right
             index = (int)ceilf(needle);
         
-        if (index < 0)
+        if (index < 0 || index >= [[scroller subviews] count])
             return;
         
         self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
