@@ -60,10 +60,6 @@
         //
         [markerManager release];
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
-
-        // set tile depth to optimize tile loading
-        //
-        self.tileDepth = 3;
     }
     
     return self;
