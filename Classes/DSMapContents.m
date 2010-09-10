@@ -159,11 +159,9 @@
 {
 	if (tileSource == newTileSource)
 		return;
-	
+
     tileSource = [newTileSource retain];
-    
-    NSAssert(([tileSource minZoom] - minZoom) <= 1.0, @"Graphics & memory are overly taxed if [contents minZoom] is more than 1.5 smaller than [tileSource minZoom]");
-	
+
 	[projection release];
 	projection = [[tileSource projection] retain];
 	

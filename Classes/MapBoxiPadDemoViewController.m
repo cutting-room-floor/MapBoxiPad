@@ -399,6 +399,8 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
 
     UIImageView *snapshotView = nil;
     
+    // replace map with image to animate away
+    //
     if (animated)
     {
         // get an image of the current map
@@ -413,36 +415,13 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         [mapView removeFromSuperview];
     }
     
-    // adjust map view to new auto-reloaded tile source settings
+    // force switch to new tile source to update tiles
     //
-    DSMapBoxSQLiteTileSource *tileSource = mapView.contents.tileSource;
-    
-    float newZoom = -1;
-    
-    if (mapView.contents.zoom < [tileSource minZoom])
-        newZoom = [tileSource minZoom];
-    
-    else if (mapView.contents.zoom > [tileSource maxZoom])
-        newZoom = [tileSource maxZoom];
-    
-    if (newZoom >= 0)
-        mapView.contents.zoom = newZoom;
+    NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
+    mapView.contents.tileSource = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:newTileSetURL] autorelease];
 
-    mapView.contents.minZoom = [tileSource minZoom];
-    mapView.contents.maxZoom = [tileSource maxZoom];
-
-    // jiggle the map a bit to reload
+    // perform image to map animated swap back
     //
-    float currentZoom = mapView.contents.zoom;
-    
-    if (currentZoom < [tileSource maxZoom])
-        mapView.contents.zoom = currentZoom + 1.0;
-    
-    else if (currentZoom > [tileSource minZoom])
-        mapView.contents.zoom = currentZoom - 1.0;
-    
-    mapView.contents.zoom = currentZoom;
-    
     if (animated)
     {
         // start up page turn sound effect
