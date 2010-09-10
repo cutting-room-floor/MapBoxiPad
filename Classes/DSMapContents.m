@@ -10,6 +10,7 @@
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxCoreAnimationRenderer.h"
+#import "DSTiledLayerMapView.h"
 
 #import "RMProjection.h"
 #import "RMTileLoader.h"
@@ -43,18 +44,10 @@
     
     if (self)
     {
-        /**
-          * We need to retain the old, default renderer here for the already-setup tiles to avoid a crash.
-          * It's a leak, but a minor, one-time one. It would be good to figure out when it's safe to release
-          * this for good, just to clean up.
-          */
-        [renderer retain];
-        
-        // swap out with a new renderer that does the fade animation
+        // for non-overlay map views, swap in the fading renderer
         //
-        [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
-        renderer.layer.delegate = renderer;
-        imagesOnScreen.delegate = renderer;
+        if ( ! [newView isMemberOfClass:[DSTiledLayerMapView class]])
+             [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
         
         // swap out the marker manager with our custom, clustering one
         //
