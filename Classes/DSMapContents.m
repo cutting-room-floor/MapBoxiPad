@@ -114,31 +114,34 @@
         return;
     }
     
-    if ([self.markerManager markers])
-        [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
-                                                 selector:@selector(recalculateClusters) 
+    if ([self canZoomTo:targetZoom])
+    {
+        if ([self.markerManager markers])
+            [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
+                                                     selector:@selector(recalculateClusters) 
+                                                       object:nil];
+        
+        [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
+        
+        //NSLog(@"new zoom: %f", self.zoom);
+        
+        if (self.layerMapViews)
+            for (RMMapView *layerMapView in layerMapViews)
+                [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
+        
+        if ([self.markerManager markers])
+            [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
+                                                                withObject:nil 
+                                                                afterDelay:0.1];
+
+        [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                                 selector:@selector(postZoom) 
                                                    object:nil];
-    
-    [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
-    
-    //NSLog(@"new zoom: %f", self.zoom);
-    
-    if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
-            [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
-    
-    if ([self.markerManager markers])
-        [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
-                                                            withObject:nil 
-                                                            afterDelay:0.1];
 
-    [NSObject cancelPreviousPerformRequestsWithTarget:self 
-                                             selector:@selector(postZoom) 
-                                               object:nil];
-
-    [self performSelector:@selector(postZoom) 
-               withObject:nil 
-               afterDelay:0.1];
+        [self performSelector:@selector(postZoom) 
+                   withObject:nil 
+                   afterDelay:0.1];
+    }
 }
 
 - (void)removeAllCachedImages
@@ -223,6 +226,19 @@
     if (delta.height < 0 && proposedBottomRightCoord.latitude  <=  kLowerLatitudeBounds)
         return NO;
 
+    return YES;
+}
+
+- (BOOL)canZoomTo:(CGFloat)targetZoom
+{
+    if (targetZoom > self.maxZoom || targetZoom < self.minZoom)
+        return NO;
+    
+    if ([self.layerMapViews count])
+        for (RMMapView *layerMapView in layerMapViews)
+            if (targetZoom > layerMapView.contents.maxZoom || targetZoom < layerMapView.contents.minZoom)
+                return NO;
+    
     return YES;
 }
 

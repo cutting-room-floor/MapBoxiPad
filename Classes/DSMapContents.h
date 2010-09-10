@@ -16,6 +16,7 @@
 @property (nonatomic, retain) NSArray *layerMapViews;
 
 - (BOOL)canMoveBy:(CGSize)delta;
+- (BOOL)canZoomTo:(CGFloat)targetZoom;
 - (void)postZoom;
 
 @end
