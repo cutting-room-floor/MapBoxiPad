@@ -121,13 +121,13 @@
                                                      selector:@selector(recalculateClusters) 
                                                        object:nil];
         
-        [super zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
+        [super zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
         
         //NSLog(@"new zoom: %f", self.zoom);
         
         if (self.layerMapViews)
             for (RMMapView *layerMapView in layerMapViews)
-                [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:animated withCallback:callback];
+                [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
         
         if ([self.markerManager markers])
             [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
