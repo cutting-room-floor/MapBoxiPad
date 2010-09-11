@@ -11,6 +11,8 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayerManager.h"
 
+#import "Reachability.h"
+
 @implementation DSMapBoxLayerController
 
 @synthesize layerManager;
@@ -196,6 +198,22 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqual:kDSOpenStreetMapURL])
+    {
+        if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
+        {        
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                             message:[NSString stringWithFormat:@"%@ tiles require an active internet connection.", kDSOpenStreetMapURL]
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+
+            [alert show];
+            
+            return;
+        }
+    }
     
     [layerManager toggleLayerAtIndexPath:indexPath];
         

@@ -114,6 +114,8 @@
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */; };
+		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
+		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
@@ -333,6 +335,9 @@
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
 		DDDF80AF12385CC900550505 /* DSMapBoxCoreAnimationRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxCoreAnimationRenderer.h; sourceTree = "<group>"; };
 		DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxCoreAnimationRenderer.m; sourceTree = "<group>"; };
+		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
+		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -354,6 +359,7 @@
 				DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */,
 				DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */,
 				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
+				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +434,7 @@
 				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
 				DDF3221211DADD720068287A /* CoreLocation.framework */,
 				DD92F641121C9B84008CF88F /* MessageUI.framework */,
+				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -623,6 +630,7 @@
 			isa = PBXGroup;
 			children = (
 				DD72C37D11E53CF60030C637 /* FMDB */,
+				DDE09E18123C0FCF008ECB7A /* Reachability */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
@@ -803,6 +811,15 @@
 			);
 			name = "Document Management";
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDE09E18123C0FCF008ECB7A /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				DDE09EA3123C16FC008ECB7A /* Reachability.h */,
+				DDE09EA2123C16FC008ECB7A /* Reachability.m */,
+			);
+			name = Reachability;
 			sourceTree = "<group>";
 		};
 		DDE77D5712120B4600201ACE /* Resources */ = {
@@ -992,6 +1009,7 @@
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
 				DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */,
 				DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */,
+				DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,6 +19,7 @@
 #import "SimpleKML.h"
 
 #import "RMMapView.h"
+#import "RMOpenStreetMapSource.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -449,7 +450,13 @@
                 //
                 NSURL *tileSetURL = [layer objectForKey:@"path"];
                 
-                DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
+                id <RMTileSource>source;
+                
+                if ([tileSetURL isEqual:kDSOpenStreetMapURL])
+                    source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+                
+                else
+                    source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
                 
                 // zoom the base map as necessary to show this overlay's source
                 //

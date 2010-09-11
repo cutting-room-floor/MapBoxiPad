@@ -18,6 +18,7 @@
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 @class DSMapBoxDocumentSaveController;
+@class Reachability;
 
 @interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate, 
                                                             DSMapBoxDocumentLoadControllerDelegate, 
@@ -39,6 +40,7 @@
     
     @private
         NSString *badParsePath;
+        Reachability *reachability;
 }
 
 @property (nonatomic, retain) NSString *badParsePath;

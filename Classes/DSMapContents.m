@@ -19,6 +19,9 @@
 #import "RMMapView.h"
 #import "RMMercatorToScreenProjection.h"
 
+#import "RMOpenStreetMapSource.h"
+#import "RMCachedTileSource.h"
+
 #import <AudioToolbox/AudioToolbox.h>
 
 #define kLowerZoomBounds       2.5f
@@ -237,6 +240,9 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
 
 - (void)removeAllCachedImages
 {
+    if ([self.tileSource isKindOfClass:[RMOpenStreetMapSource class]])
+        [super removeAllCachedImages];
+    
     // no-op since we don't cache
     //
     return;
@@ -247,7 +253,16 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
     if (tileSource == newTileSource)
         return;
 
-    tileSource = [newTileSource retain];
+    if ([newTileSource isKindOfClass:[RMOpenStreetMapSource class]])
+    {
+        RMCachedTileSource *newCachedTileSource = [RMCachedTileSource cachedTileSourceWithSource:newTileSource];
+        
+        newCachedTileSource = [newCachedTileSource retain];
+        [tileSource release];
+        tileSource = newCachedTileSource;
+    }
+    else
+        tileSource = [newTileSource retain];
 
     CGFloat targetZoom = -0.1;
     

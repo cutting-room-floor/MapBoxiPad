@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#define kDSOpenStreetMapURL @"Open Street Map"
+
 static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
 
 typedef enum {

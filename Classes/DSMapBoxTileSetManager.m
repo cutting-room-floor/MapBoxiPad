@@ -101,12 +101,18 @@ static DSMapBoxTileSetManager *defaultManager;
         
         [db close];
     }
+    
+    if (tileSetType == DSMapBoxTileSetTypeBaselayer /*&& [[NSUserDefaults standardUserDefaults] boolForKey:@"UseOpenStreetMaps"]*/)
+        [paths addObject:@"Open Street Map"];
 
     return [NSArray arrayWithArray:paths];
 }
 
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL
 {
+    if ([tileSetURL isEqual:kDSOpenStreetMapURL])
+        return kDSOpenStreetMapURL;
+    
     NSString *defaultName = [[tileSetURL relativePath] lastPathComponent];
     
     FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
@@ -149,6 +155,9 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL
 {
+    if ([tileSetURL isEqual:kDSOpenStreetMapURL])
+        return @"Online tiles from the OSM project";
+    
     NSString *defaultDescription = @"";
     
     FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];

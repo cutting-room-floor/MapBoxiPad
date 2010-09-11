@@ -22,11 +22,14 @@
 
 #import "RMMapView.h"
 #import "RMTileSource.h"
+#import "RMOpenStreetMapSource.h"
 
 #import "TouchXML.h"
 
 #import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
+
+#import "Reachability.h"
 
 #define KSupportEmail @"ipad@mapbox.com"
 #define kStartingLat  33.919241123962202f
@@ -89,6 +92,16 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
                                                  name:DSMapBoxTileSetChangedNotification
                                                object:nil];
     
+    // watch for net changes
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(reachabilityDidChange:)
+                                                 name:kReachabilityChangedNotification
+                                               object:nil];
+    
+    reachability = [[Reachability reachabilityForInternetConnection] retain];
+    [reachability startNotifer];
+    
     // restore app state
     //
     [self restoreState:self];
@@ -146,6 +159,10 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
+    
+    [reachability stopNotifer];
+    [reachability release];
     
     [layersPopover release];
     [layerManager release];
@@ -196,7 +213,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
         
         NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
         
-        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString])
+        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString] || [restoreTileSetURLString isEqual:kDSOpenStreetMapURL])
         {        
             NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
             
@@ -258,11 +275,19 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     
     // get base map state
     //
+    NSString *tileSetURLString;
+    
+    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
+        tileSetURLString = [NSString stringWithFormat:@"%@", [[DSMapBoxTileSetManager defaultManager] activeTileSetURL]];
+    
+    else
+        tileSetURLString = [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath];
+    
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
-                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
+                                     tileSetURLString,                                                @"tileSetURL",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],  @"centerLatitude",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude], @"centerLongitude",
+                                     [NSNumber numberWithFloat:mapView.contents.zoom],                @"zoomLevel",
                                      nil];
     
     // get tile overlay state(s)
@@ -418,7 +443,12 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     // force switch to new tile source to update tiles
     //
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
-    mapView.contents.tileSource = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:newTileSetURL] autorelease];
+    
+    if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+        mapView.contents.tileSource = [[[RMOpenStreetMapSource alloc] init] autorelease];
+    
+    else
+        mapView.contents.tileSource = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:newTileSetURL] autorelease];
 
     // perform image to map animated swap back
     //
@@ -446,6 +476,22 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
+}
+
+- (void)reachabilityDidChange:(NSNotification *)notification
+{
+    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
+    {
+        [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:YES];
+
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
+                                                         message:[NSString stringWithFormat:@"You are now offline. %@ tiles require an active internet connection, so %@ was activated instead.", kDSOpenStreetMapURL, [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
+    }
 }
 
 - (UIImage *)mapSnapshot
