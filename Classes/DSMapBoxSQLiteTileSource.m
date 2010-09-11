@@ -13,12 +13,6 @@
 #import "FMDatabase.h"
 #import "DSMapBoxTileSetManager.h"
 
-@interface DSMapBoxSQLiteTileSource (DSMapBoxSQLiteTileSourcePrivate)
-
-- (void)reload:(NSNotification *)notification;
-
-@end
-
 #pragma mark -
 
 @implementation DSMapBoxSQLiteTileSource
@@ -43,18 +37,11 @@
     if ( ! [db open])
         return nil;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reload:)
-                                                 name:DSMapBoxTileSetChangedNotification
-                                               object:nil];
-    
 	return self;
 }
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
-    
 	[tileProjection release];
     
     [db close];
@@ -213,18 +200,6 @@
 - (void)removeAllCachedImages
 {
     NSLog(@"*** removeAllCachedImages in %@", [self class]);
-}
-
-#pragma mark -
-
-- (void)reload:(NSNotification *)notification
-{
-    [db close];
-    [db release];
-    
-    db = [[FMDatabase databaseWithPath:[[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath]] retain];
-    
-    [db open];
 }
 
 @end
