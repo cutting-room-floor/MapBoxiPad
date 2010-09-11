@@ -106,6 +106,7 @@
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
+		DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = DDB36DA8123AFE0B00B81D23 /* click.wav */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
@@ -319,6 +320,7 @@
 		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
+		DDB36DA8123AFE0B00B81D23 /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
 		DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentLoadController.m; sourceTree = "<group>"; };
 		DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentLoadController.xib; sourceTree = "<group>"; };
@@ -603,6 +605,7 @@
 			isa = PBXGroup;
 			children = (
 				DD48AC3F11D3D79A000AF79E /* page_flip.wav */,
+				DDB36DA8123AFE0B00B81D23 /* click.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -899,6 +902,7 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD3D93E0123047F20049ABB0 /* linen.png in Resources */,
+				DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

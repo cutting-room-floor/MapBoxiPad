@@ -11,6 +11,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxCoreAnimationRenderer.h"
 #import "DSTiledLayerMapView.h"
+#import "DSMapBoxTileSetManager.h"
 
 #import "RMProjection.h"
 #import "RMTileLoader.h"
@@ -18,9 +19,24 @@
 #import "RMMapView.h"
 #import "RMMercatorToScreenProjection.h"
 
+#import <AudioToolbox/AudioToolbox.h>
+
 #define kLowerZoomBounds       2.5f
 #define kUpperLatitudeBounds  85.0f
 #define kLowerLatitudeBounds -60.0f
+#define kWarningAlpha          0.25f
+
+@interface DSMapContents (DSMapContentsPrivate)
+
+- (BOOL)canMoveBy:(CGSize)delta;
+- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView;
+- (void)postZoom;
+void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
+- (void)enableBoundsWarning:(NSTimer *)timer;
+
+@end
+
+#pragma mark -
 
 @implementation DSMapContents
 
@@ -53,6 +69,10 @@
         //
         [markerManager release];
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
+        
+        mapView = (RMMapView *)newView;
+        
+        boundsWarningEnabled = YES;
     }
     
     return self;
@@ -114,7 +134,9 @@
         return;
     }
     
-    if ([self canZoomTo:targetZoom])
+    DSTiledLayerMapView *limitedMapView = nil;
+    
+    if ([self canZoomTo:targetZoom limitedByLayer:&limitedMapView])
     {
         if ([self.markerManager markers])
             [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
@@ -142,6 +164,57 @@
                    withObject:nil 
                    afterDelay:0.1];
     }
+    else if (boundsWarningEnabled && limitedMapView)
+    {
+        NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"click" ofType:@"wav"]];
+        SystemSoundID sound;
+        AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
+        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, DSMapContents_SoundCompletionProc, self);
+        AudioServicesPlaySystemSound(sound);
+        
+        mapView.alpha = kWarningAlpha;
+        
+        if (self.layerMapViews)
+            for (RMMapView *layerMapView in layerMapViews)
+                layerMapView.alpha = kWarningAlpha;
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.75];
+        
+        mapView.alpha = 1.0;
+        
+        if (self.layerMapViews)
+            for (RMMapView *layerMapView in layerMapViews)
+                layerMapView.alpha = 1.0;
+        
+        [UIView commitAnimations];
+        
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Bounds Reached"
+                                                         message:@"The layer can't zoom any further. Try a layer with a greater bounds in order to zoom beyond the current view."
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
+        
+        boundsWarningEnabled = NO;
+        
+        [NSTimer scheduledTimerWithTimeInterval:1.0
+                                         target:self
+                                       selector:@selector(enableBoundsWarning:)
+                                       userInfo:nil
+                                        repeats:NO];
+    }
+}
+
+void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
+{
+    AudioServicesDisposeSystemSoundID(sound);
+}
+
+- (void)enableBoundsWarning:(NSTimer *)timer
+{
+    boundsWarningEnabled = YES;
 }
 
 - (void)removeAllCachedImages
@@ -153,21 +226,24 @@
 
 - (void)setTileSource:(DSMapBoxSQLiteTileSource *)newTileSource
 {
-	if (tileSource == newTileSource)
-		return;
+    if (tileSource == newTileSource)
+        return;
 
     tileSource = [newTileSource retain];
 
-	[projection release];
-	projection = [[tileSource projection] retain];
+    [self setMinZoom:[newTileSource minZoom]];
+    [self setMaxZoom:[newTileSource maxZoom]];
+     
+    [projection release];
+    projection = [[tileSource projection] retain];
 	
-	[mercatorToTileProjection release];
-	mercatorToTileProjection = [[tileSource mercatorToTileProjection] retain];
+    [mercatorToTileProjection release];
+    mercatorToTileProjection = [[tileSource mercatorToTileProjection] retain];
     
-	[imagesOnScreen setTileSource:tileSource];
+    [imagesOnScreen setTileSource:tileSource];
     
     [tileLoader reset];
-	[tileLoader reload];
+    [tileLoader reload];
 }
 
 #pragma mark -
@@ -229,15 +305,29 @@
     return YES;
 }
 
-- (BOOL)canZoomTo:(CGFloat)targetZoom
+- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView
 {
     if (targetZoom > self.maxZoom || targetZoom < self.minZoom)
+    {
+        if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]])
+            *limitedMapView = nil;
+        
+        else
+            *limitedMapView = (RMMapView *)mapView;
+
         return NO;
+    }
     
     if ([self.layerMapViews count])
         for (RMMapView *layerMapView in layerMapViews)
             if (targetZoom > layerMapView.contents.maxZoom || targetZoom < layerMapView.contents.minZoom)
+            {
+                *limitedMapView = layerMapView;
+
                 return NO;
+            }
+
+    *limitedMapView = nil;
     
     return YES;
 }
