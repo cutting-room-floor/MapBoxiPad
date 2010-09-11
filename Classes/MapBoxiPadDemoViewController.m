@@ -450,10 +450,6 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 
 - (UIImage *)mapSnapshot
 {
-    // store current projection rect
-    //
-    RMProjectedRect oldRect = mapView.contents.projectedBounds;
-    
     // zoom to even zoom level to avoid artifacts
     //
     CGFloat oldZoom = mapView.contents.zoom;
@@ -472,9 +468,10 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     UIImage *full = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    // restore previous projection rect
+    // restore previous zoom
     //
-    [mapView.contents zoomWithRMMercatorRectBounds:oldRect];
+    float factor = exp2f(oldZoom - [mapView.contents zoom]);
+    [mapView.contents zoomByFactor:factor near:center];
     
     // crop out top toolbar
     //

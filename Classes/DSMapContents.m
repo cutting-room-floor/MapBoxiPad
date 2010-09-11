@@ -130,6 +130,11 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
 }
 
+- (void)zoomByFactor:(float)zoomFactor near:(CGPoint)pivot
+{
+    [self zoomByFactor:zoomFactor near:pivot animated:NO withCallback:nil];
+}
+
 - (void)zoomByFactor:(float)zoomFactor near:(CGPoint)pivot animated:(BOOL)animated withCallback:(id <RMMapContentsAnimationCallback>)callback
 {
     // borrowed from super
