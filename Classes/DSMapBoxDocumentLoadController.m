@@ -75,9 +75,23 @@
 
 - (NSArray *)saveFiles
 {
-    NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self saveFolderPath] error:NULL];
+    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self saveFolderPath] error:NULL];
     
-    return saveFiles;
+    NSMutableArray *filesWithDates = [NSMutableArray array];
+    
+    for (NSString *file in files)
+    {
+        NSString *path = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], file];
+        NSDate   *date = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
+        
+        NSDictionary *fileDictionary = [NSDictionary dictionaryWithObjectsAndKeys:file, @"name", date, @"date", nil];
+        
+        [filesWithDates addObject:fileDictionary];
+    }
+
+    [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
+    
+    return [filesWithDates valueForKeyPath:@"name"];
 }
 
 - (void)updateMetadata
