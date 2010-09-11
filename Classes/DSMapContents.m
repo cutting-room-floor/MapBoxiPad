@@ -231,9 +231,25 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
 
     tileSource = [newTileSource retain];
 
+    CGFloat targetZoom = -0.1;
+    
+    if (self.zoom < [newTileSource minZoom])
+        targetZoom = [newTileSource minZoom];
+
+    else if (self.zoom > [newTileSource maxZoom])
+        targetZoom = [newTileSource maxZoom];
+    
+    if (targetZoom >= 0)
+    {
+        CGFloat zoomDelta  = targetZoom - [self zoom];        
+        CGFloat zoomFactor = exp2f(zoomDelta);
+        
+        [self zoomByFactor:zoomFactor near:mapView.center];
+    }
+    
     [self setMinZoom:[newTileSource minZoom]];
     [self setMaxZoom:[newTileSource maxZoom]];
-     
+    
     [projection release];
     projection = [[tileSource projection] retain];
 	

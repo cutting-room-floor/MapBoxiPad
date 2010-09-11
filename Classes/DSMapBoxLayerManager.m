@@ -453,7 +453,7 @@
                 
                 // zoom the base map as necessary to show this overlay's source
                 //
-                CGFloat newZoom = -1;
+                CGFloat newZoom = -1.0;
                 
                 if (baseMapView.contents.zoom < [source minZoom] && [source minZoom] >= [baseMapView.contents.tileSource minZoom])
                     newZoom = [source minZoom];
@@ -462,7 +462,12 @@
                     newZoom = [source maxZoom];
                 
                 if (newZoom >= 0)
-                    baseMapView.contents.zoom = newZoom;
+                {
+                    CGFloat zoomDelta  = newZoom - [baseMapView.contents zoom];        
+                    CGFloat zoomFactor = exp2f(zoomDelta);
+                    
+                    [baseMapView.contents zoomByFactor:zoomFactor near:baseMapView.center];
+                }
                 
                 // create the overlay map view
                 //
