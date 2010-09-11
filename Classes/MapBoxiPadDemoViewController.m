@@ -35,7 +35,7 @@
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
-void SoundCompletionProc (SystemSoundID sound, void *clientData);
+void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (UIImage *)mapSnapshot;
 
 @end
@@ -429,7 +429,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
         NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
         SystemSoundID sound;
         AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, SoundCompletionProc, self);
+        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxiPadDemoViewController_SoundCompletionProc, self);
         AudioServicesPlaySystemSound(sound);
         
         // animate swap from old snapshot to new map
@@ -443,7 +443,7 @@ void SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
 }
 
-void SoundCompletionProc (SystemSoundID sound, void *clientData)
+void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
 }
