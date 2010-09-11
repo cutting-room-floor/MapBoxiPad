@@ -517,8 +517,22 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
         saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
         
         saveController.snapshot = [self mapSnapshot];
-        saveController.name     = [[NSDate date] description];
-
+        
+        NSUInteger i = 1;
+        
+        NSString *docName = nil;
+        
+        while ( ! docName)
+        {
+            if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/%@%@.plist", [DSMapBoxDocumentLoadController saveFolderPath], kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])]])
+                i++;
+            
+            else
+                docName = [NSString stringWithFormat:@"%@%@", kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])];
+        }
+        
+        saveController.name = docName;
+        
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:saveController] autorelease];
         
         wrapper.navigationBar.barStyle = UIBarStyleBlack;
