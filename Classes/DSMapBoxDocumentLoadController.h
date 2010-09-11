@@ -13,6 +13,7 @@
 #import <MessageUI/MessageUI.h>
 
 #define kDSSaveFolderName @"Saved Maps"
+#define kDSSaveFileName   @"Saved Map"
 
 @class DSMapBoxDocumentLoadController;
 
@@ -41,6 +42,8 @@
 }
 
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
+
++ (NSString *)saveFolderPath;
 
 - (IBAction)tappedSaveNowButton:(id)sender;
 - (IBAction)tappedSendButton:(id)sender;

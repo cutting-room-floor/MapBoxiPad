@@ -13,7 +13,6 @@
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
 
 - (void)reload;
-- (NSString *)saveFolderPath;
 - (NSArray *)saveFiles;
 - (void)updateMetadata;
 
@@ -51,7 +50,7 @@
     {
         // get snapshot
         //
-        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [self saveFolderPath], saveFile]];
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], saveFile]];
         UIImage *snapshot  = [UIImage imageWithData:[data objectForKey:@"mapSnapshot"]];
         
         // create & add snapshot view
@@ -68,16 +67,33 @@
     [self scrollViewDidScroll:scroller];
 }
 
-- (NSString *)saveFolderPath
++ (NSString *)saveFolderPath
 {
     return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
 }
 
 - (NSArray *)saveFiles
 {
-    NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self saveFolderPath] error:NULL];
+    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[self class] saveFolderPath] error:NULL];
     
-    return saveFiles;
+    NSMutableArray *filesWithDates = [NSMutableArray array];
+    
+    for (NSString *file in files)
+    {
+        if ( ! [file hasPrefix:@"."] && [file hasSuffix:@".plist"])
+        {
+            NSString *path = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], file];
+            NSDate   *date = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
+            
+            NSDictionary *fileDictionary = [NSDictionary dictionaryWithObjectsAndKeys:file, @"name", date, @"date", nil];
+            
+            [filesWithDates addObject:fileDictionary];
+        }
+    }
+
+    [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
+    
+    return [filesWithDates valueForKeyPath:@"name"];
 }
 
 - (void)updateMetadata
@@ -103,8 +119,7 @@
         
         nameLabel.text = [currentFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
         
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:
-                                    [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], currentFile] error:NULL];
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], currentFile] error:NULL];
         
         NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
         
@@ -147,7 +162,7 @@
 {
     if ([self.delegate respondsToSelector:@selector(documentLoadController:wantsToSaveDocumentWithName:)])
     {
-        [self.delegate documentLoadController:self wantsToSaveDocumentWithName:@"Saved Map"];
+        [self.delegate documentLoadController:self wantsToSaveDocumentWithName:kDSSaveFileName];
 
         [self reload];
     }
@@ -161,7 +176,7 @@
         //
         NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
         
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[self saveFiles] objectAtIndex:index]];
         
         NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
         
@@ -213,7 +228,7 @@
     {
         NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
         
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [self saveFolderPath], [[self saveFiles] objectAtIndex:index]];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[self saveFiles] objectAtIndex:index]];
         
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         

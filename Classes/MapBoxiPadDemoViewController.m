@@ -277,7 +277,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     //
     if ([sender isKindOfClass:[UIBarButtonItem class]] || [sender isKindOfClass:[NSString class]])
     {
-        NSString *saveFolderPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+        NSString *saveFolderPath = [DSMapBoxDocumentLoadController saveFolderPath];
         
         BOOL isDirectory = NO;
         
