@@ -80,14 +80,6 @@
         [self insertSubview:dimmer aboveSubview:imageView];
 
         dimmer.center = imageView.center;
-        
-        // setup shadow
-        //
-        self.layer.shadowOpacity = 1.0;
-        self.layer.shadowOffset  = CGSizeMake(0.0, 3.0);
-        self.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:dimmer.frame] CGPath];
-        
-        self.layer.shouldRasterize = YES;
     }
     
     return self;
