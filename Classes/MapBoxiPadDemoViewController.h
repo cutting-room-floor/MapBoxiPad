@@ -37,6 +37,7 @@
     CLLocationCoordinate2D postRotationMapCenter;
     DSMapBoxDocumentSaveController *saveController;
     DSMapBoxDocumentLoadController *loadController;
+    UIActionSheet *documentsActionSheet;
     
     @private
         NSString *badParsePath;

@@ -169,6 +169,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     [layerManager release];
     [dataOverlayManager release];
     [badParsePath release];
+    [documentsActionSheet release];
 
     [super dealloc];
 }
@@ -354,13 +355,19 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:NO];
 
-    UIActionSheet *documentsSheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:nil
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Load Map", @"Save Map", nil] autorelease];
-    
-    [documentsSheet showFromBarButtonItem:sender animated:YES];
+    if ( ! documentsActionSheet || ! documentsActionSheet.visible)
+    {
+        documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                           delegate:self
+                                                  cancelButtonTitle:nil
+                                             destructiveButtonTitle:nil
+                                                  otherButtonTitles:@"Load Map", @"Save Map", nil];
+        
+        [documentsActionSheet showFromBarButtonItem:sender animated:YES];
+    }
+
+    else
+        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
 - (void)openKMLFile:(NSURL *)fileURL
