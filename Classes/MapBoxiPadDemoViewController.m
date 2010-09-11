@@ -39,6 +39,7 @@
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
 void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
+- (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 
 @end
@@ -217,7 +218,11 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
         {        
             NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
             
-            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
+            if ([restoreTileSetName isEqualToString:kDSOpenStreetMapURL] && [reachability currentReachabilityStatus] == NotReachable)
+                [self offlineAlert];
+            
+            else
+                [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
         }
     }
     
@@ -481,17 +486,20 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
     if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
-    {
-        [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:YES];
+        [self offlineAlert];
+}
 
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                         message:[NSString stringWithFormat:@"You are now offline. %@ tiles require an active internet connection, so %@ was activated instead.", kDSOpenStreetMapURL, [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
-    }
+- (void)offlineAlert
+{
+    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
+    
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
+                                                     message:[NSString stringWithFormat:@"You are now offline. %@ tiles require an active internet connection, so %@ was activated instead.", kDSOpenStreetMapURL, [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                    delegate:nil
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK", nil] autorelease];
+    
+    [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
 }
 
 - (UIImage *)mapSnapshot
