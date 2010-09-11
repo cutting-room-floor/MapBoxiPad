@@ -60,11 +60,6 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     if (self)
     {
-        // for non-overlay map views, swap in the fading renderer
-        //
-        if ( ! [newView isMemberOfClass:[DSTiledLayerMapView class]])
-             [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
-        
         // swap out the marker manager with our custom, clustering one
         //
         [markerManager release];
@@ -73,6 +68,24 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
         mapView = (RMMapView *)newView;
         
         boundsWarningEnabled = YES;
+
+        // for non-overlay map views, swap in the fading renderer, then zoom to refresh it
+        //
+        if ( ! [newView isMemberOfClass:[DSTiledLayerMapView class]])
+        {        
+            [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
+
+            if (initialZoomLevel - 1 > minZoomLevel)
+            {
+                [self zoomByFactor:0.5 near:newView.center];
+                [self zoomByFactor:2.0 near:newView.center];
+            }
+            else if (initialZoomLevel + 1 < maxZoomLevel)
+            {
+                [self zoomByFactor:2.0 near:newView.center];
+                [self zoomByFactor:0.5 near:newView.center];
+            }
+        }
     }
     
     return self;
