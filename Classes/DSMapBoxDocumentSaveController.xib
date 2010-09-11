@@ -45,7 +45,7 @@
 					<object class="IBUIImageView" id="701037516">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{20, 20}, {320, 240}}</string>
+						<string key="NSFrame">{{20, 20}, {460, 275}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<int key="IBUIContentMode">1</int>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -54,7 +54,7 @@
 					<object class="IBUITextField" id="871090302">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{20, 268}, {320, 31}}</string>
+						<string key="NSFrame">{{90, 303}, {320, 31}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -79,7 +79,7 @@
 						</object>
 					</object>
 				</object>
-				<string key="NSFrameSize">{360, 319}</string>
+				<string key="NSFrameSize">{500, 354}</string>
 				<reference key="NSSuperview"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -186,7 +186,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>DSMapBoxDocumentSaveController</string>
 					<string>UIResponder</string>
-					<string>{{360, 709}, {360, 319}}</string>
+					<string>{{359, 674}, {500, 354}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
