@@ -48,4 +48,9 @@
     [viewController saveState:self];
 }
 
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    [viewController saveState:self];
+}
+
 @end
