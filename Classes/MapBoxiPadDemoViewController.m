@@ -32,9 +32,9 @@
 #import "Reachability.h"
 
 #define KSupportEmail @"ipad@mapbox.com"
-#define kStartingLat  33.919241123962202f
-#define kStartingLon  66.074245801675474f
-#define kStartingZoom  6.0f
+#define kStartingLat   14.37292766571045f
+#define kStartingLon  -16.428955078125
+#define kStartingZoom   2.5f
 
 @interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
 
@@ -75,9 +75,11 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     
     mapView.enableRotate = NO;
     mapView.deceleration = NO;
-
-    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
     
+    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+
+    mapView.contents.zoom = kStartingZoom;
+
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
