@@ -313,7 +313,10 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
         BOOL isDirectory = NO;
         
         if ( ! [[NSFileManager defaultManager] fileExistsAtPath:saveFolderPath isDirectory:&isDirectory] || ! isDirectory)
-            [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath attributes:nil];
+            [[NSFileManager defaultManager] createDirectoryAtPath:saveFolderPath 
+                                      withIntermediateDirectories:YES 
+                                                       attributes:nil
+                                                            error:NULL];
         
         NSString *stateName;
         
@@ -374,7 +377,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 {
     NSError *error = nil;
     
-    SimpleKML *newKML = [SimpleKML KMLWithContentsofURL:fileURL error:&error];
+    SimpleKML *newKML = [SimpleKML KMLWithContentsOfURL:fileURL error:&error];
 
     if (error)
         [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL relativePath]];
