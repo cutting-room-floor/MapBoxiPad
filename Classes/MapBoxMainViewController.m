@@ -1,12 +1,12 @@
 //
-//  MapBoxiPadDemoViewController.m
+//  MapBoxMainViewController.m
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 6/17/10.
 //  Copyright Code Sorcery Workshop 2010. All rights reserved.
 //
 
-#import "MapBoxiPadDemoViewController.h"
+#import "MapBoxMainViewController.h"
 
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxTileSetManager.h"
@@ -36,7 +36,7 @@
 #define kStartingLon  -16.428955078125
 #define kStartingZoom   2.5f
 
-@interface MapBoxiPadDemoViewController (MapBoxiPadDemoViewControllerPrivate)
+@interface MapBoxMainViewController (MapBoxiPadDemoViewControllerPrivate)
 
 void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
@@ -46,7 +46,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
 
 #pragma mark -
 
-@implementation MapBoxiPadDemoViewController
+@implementation MapBoxMainViewController
 
 @synthesize badParsePath;
 

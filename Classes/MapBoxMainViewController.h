@@ -1,5 +1,5 @@
 //
-//  MapBoxiPadDemoViewController.h
+//  MapBoxMainViewController.h
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 6/17/10.
@@ -20,7 +20,7 @@
 @class DSMapBoxDocumentSaveController;
 @class Reachability;
 
-@interface MapBoxiPadDemoViewController : UIViewController <UIActionSheetDelegate, 
+@interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
                                                             DSMapBoxDocumentLoadControllerDelegate, 
                                                             DSDataLayerHandlerDelegate,
                                                             UIAlertViewDelegate, 

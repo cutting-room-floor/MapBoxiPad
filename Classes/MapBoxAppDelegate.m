@@ -1,15 +1,15 @@
 //
-//  MapBoxiPadDemoAppDelegate.m
+//  MapBoxAppDelegate.m
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 6/17/10.
 //  Copyright Code Sorcery Workshop 2010. All rights reserved.
 //
 
-#import "MapBoxiPadDemoAppDelegate.h"
-#import "MapBoxiPadDemoViewController.h"
+#import "MapBoxAppDelegate.h"
+#import "MapBoxMainViewController.h"
 
-@implementation MapBoxiPadDemoAppDelegate
+@implementation MapBoxAppDelegate
 
 @synthesize window;
 @synthesize viewController;
