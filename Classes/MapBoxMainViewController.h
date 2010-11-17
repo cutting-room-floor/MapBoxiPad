@@ -21,10 +21,10 @@
 @class Reachability;
 
 @interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
-                                                            DSMapBoxDocumentLoadControllerDelegate, 
-                                                            DSDataLayerHandlerDelegate,
-                                                            UIAlertViewDelegate, 
-                                                            MFMailComposeViewControllerDelegate>
+                                                        DSMapBoxDocumentLoadControllerDelegate, 
+                                                        DSDataLayerHandlerDelegate,
+                                                        UIAlertViewDelegate, 
+                                                        MFMailComposeViewControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
     IBOutlet UIImageView *watermarkView;

@@ -36,9 +36,9 @@
 #define kStartingLon  -16.428955078125
 #define kStartingZoom   2.5f
 
-@interface MapBoxMainViewController (MapBoxiPadDemoViewControllerPrivate)
+@interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
-void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
+void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 
@@ -476,7 +476,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
         NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
         SystemSoundID sound;
         AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxiPadDemoViewController_SoundCompletionProc, self);
+        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxMainViewController_SoundCompletionProc, self);
         AudioServicesPlaySystemSound(sound);
         
         // animate swap from old snapshot to new map
@@ -490,7 +490,7 @@ void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void
     }
 }
 
-void MapBoxiPadDemoViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
+void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
 }
