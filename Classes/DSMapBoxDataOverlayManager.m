@@ -357,7 +357,7 @@
 
 - (void)removeAllOverlays
 {
-    [mapView.contents.markerManager removeMarkers];
+    [((DSMapBoxMarkerManager *)mapView.contents.markerManager) removeMarkersAndClusters];
     mapView.contents.overlay.sublayers = nil;
     
     if (balloon && balloon.popoverVisible)

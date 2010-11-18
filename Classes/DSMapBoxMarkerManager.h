@@ -19,6 +19,7 @@
 @property (nonatomic, assign) BOOL clusteringEnabled;
 
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point recalculatingImmediately:(BOOL)flag;
+- (void)removeMarkersAndClusters;
 - (void)removeMarker:(RMMarker *)marker recalculatingImmediately:(BOOL)flag;
 - (void)recalculateClusters;
 

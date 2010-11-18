@@ -79,11 +79,24 @@
         [self redrawClusters];
 }
 
-- (void)removeMarkers
+- (void)removeMarkersAndClusters
 {
     [clusters removeAllObjects];
+
+    [self removeMarkers];
+}
+
+- (void)removeMarkers
+{
+    // we don't call super because it removes sublayers nastily causing "modifying layer that is being finalized" errors
+    //
+    NSMutableArray *markersHolder = [NSMutableArray arrayWithArray:[[contents overlay] sublayers]];
     
-    [super removeMarkers];
+    while ([markersHolder count] > 0)
+    {
+        [[markersHolder objectAtIndex:0] removeFromSuperlayer];
+        [markersHolder removeObjectAtIndex:0];
+    }
 }
 
 - (void)removeMarker:(RMMarker *)marker
@@ -193,8 +206,8 @@
 
 - (void)redrawClusters
 {
-    [super removeMarkers];
-    
+    [self removeMarkers];
+
     NSUInteger count = 0;
     
     for (DSMapBoxMarkerCluster *cluster in clusters)
