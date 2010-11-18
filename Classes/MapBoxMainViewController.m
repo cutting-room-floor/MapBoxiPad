@@ -143,6 +143,14 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         }
     }
     
+    // set clustering button title
+    //
+    if (((DSMapBoxMarkerManager *)mapView.contents.markerManager).clusteringEnabled)
+        clusteringButton.title = @"Turn Clustering Off";
+
+    else
+        clusteringButton.title = @"Turn Clustering On";
+
     [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -425,6 +433,12 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.contents.markerManager;
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
+    
+    if (markerManager.clusteringEnabled)
+        clusteringButton.title = @"Turn Clustering Off";
+    
+    else
+        clusteringButton.title = @"Turn Clustering On";
 }
 
 #pragma mark -
