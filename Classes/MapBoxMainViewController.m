@@ -462,10 +462,15 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
     if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+    {
         mapView.contents.tileSource = [[[RMOpenStreetMapSource alloc] init] autorelease];
-    
+        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen_light.jpg"]];
+    }
     else
+    {
         mapView.contents.tileSource = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:newTileSetURL] autorelease];
+        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+    }
 
     // perform image to map animated swap back
     //
