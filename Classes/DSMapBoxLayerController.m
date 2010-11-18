@@ -10,6 +10,8 @@
 
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayerManager.h"
+#import "DSMapBoxMarkerManager.h"
+#import "RMMapView.h"
 
 #import "Reachability.h"
 
@@ -172,8 +174,10 @@
             return NO;
             
         case 1:
-        case 2:
             return YES;
+            
+        case 2:
+            return ! ((DSMapBoxMarkerManager *)layerManager.baseMapView.contents.markerManager).clusteringEnabled;
     }
     
     return NO;
