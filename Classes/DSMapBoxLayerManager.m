@@ -285,7 +285,17 @@
         //
         for (NSUInteger i = 0; i < [visibleDataLayers count]; i++)
         {
-            NSString *source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL];
+            NSString *path = [[visibleDataLayers objectAtIndex:i] objectForKey:@"path"];
+
+            NSString *source;
+            
+            if ([[[path lastPathComponent] pathExtension] isEqualToString:@"kmz"])
+                source = [[SimpleKML KMLWithContentsOfFile:path error:NULL] source];
+            
+            else
+                source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] 
+                                                   encoding:NSUTF8StringEncoding 
+                                                      error:NULL];
             
             for (NSDictionary *overlay in dataOverlayManager.overlays)
             {
