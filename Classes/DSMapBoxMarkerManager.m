@@ -86,19 +86,6 @@
     [self removeMarkers];
 }
 
-- (void)removeMarkers
-{
-    // we don't call super because it removes sublayers nastily causing "modifying layer that is being finalized" errors
-    //
-    NSMutableArray *markersHolder = [NSMutableArray arrayWithArray:[[contents overlay] sublayers]];
-    
-    while ([markersHolder count] > 0)
-    {
-        [[markersHolder objectAtIndex:0] removeFromSuperlayer];
-        [markersHolder removeObjectAtIndex:0];
-    }
-}
-
 - (void)removeMarker:(RMMarker *)marker
 {
     [self removeMarker:marker recalculatingImmediately:YES];
