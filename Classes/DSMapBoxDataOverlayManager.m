@@ -360,8 +360,14 @@
     [((DSMapBoxMarkerManager *)mapView.contents.markerManager) removeMarkersAndClusters];
     mapView.contents.overlay.sublayers = nil;
     
-    if (balloon && balloon.popoverVisible)
-        [balloon dismissPopoverAnimated:NO];
+    if (balloon)
+    {
+        if (balloon.popoverVisible)
+            [balloon dismissPopoverAnimated:NO];
+
+        [balloon release];
+        balloon = nil;
+    }
     
     [overlays removeAllObjects];
 }
@@ -385,8 +391,14 @@
         }
     }
     
-    if (balloon && balloon.popoverVisible)
-        [balloon dismissPopoverAnimated:NO];
+    if (balloon)
+    {
+        if (balloon.popoverVisible)
+            [balloon dismissPopoverAnimated:NO];
+
+        [balloon release];
+        balloon = nil;
+    }
 }
 
 #pragma mark -
@@ -458,7 +470,8 @@
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    [popoverController release];
+    [balloon release];
+    balloon = nil;
 }
 
 @end
