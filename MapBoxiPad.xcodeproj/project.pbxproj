@@ -16,6 +16,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
+		D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */ = {isa = PBXBuildFile; fileRef = D75E3E7F12A0ADF50007996C /* mbtiles.png */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
@@ -161,6 +162,7 @@
 		32CA4F630368D1EE00C91783 /* MapBoxiPad_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxiPad_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* MapBoxiPad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPad-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
+		D75E3E7F12A0ADF50007996C /* mbtiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles.png; sourceTree = SOURCE_ROOT; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0B1348121DD3D000A1309D /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action.png; sourceTree = SOURCE_ROOT; };
@@ -437,6 +439,14 @@
 				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D75E3E7A12A0ADD50007996C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D75E3E7F12A0ADF50007996C /* mbtiles.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		DD0F615D11ED5AA70050174D /* Simple KML */ = {
@@ -766,6 +776,7 @@
 				DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
 				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
+				D75E3E7A12A0ADD50007996C /* Resources */,
 			);
 			name = "Base & Overlay Tiles";
 			path = Classes;
@@ -927,6 +938,7 @@
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD3D93E0123047F20049ABB0 /* linen.png in Resources */,
 				DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */,
+				D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

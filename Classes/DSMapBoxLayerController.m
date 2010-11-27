@@ -129,6 +129,7 @@
             cell.accessoryType        = ([[[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
             cell.textLabel.text       = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
@@ -136,6 +137,7 @@
             cell.accessoryType        = ([[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
             cell.textLabel.text       = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
