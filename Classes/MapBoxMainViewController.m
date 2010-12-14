@@ -8,6 +8,8 @@
 
 #import "MapBoxMainViewController.h"
 
+#import "MapBoxConstants.h"
+
 #import "DSMapBoxSQLiteTileSource.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
@@ -30,11 +32,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "Reachability.h"
-
-#define KSupportEmail @"ipad@mapbox.com"
-#define kStartingLat   14.37292766571045f
-#define kStartingLon  -16.428955078125
-#define kStartingZoom   2.5f
 
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
