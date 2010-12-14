@@ -12,22 +12,33 @@
 
 @implementation DSMapBoxHelpController
 
+@synthesize shouldPlayImmediately;
+@synthesize moviePlayButton;
 @synthesize moviePlayer;
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.shouldPlayImmediately)
+        [self tappedVideoButton:self];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self 
+                                                    name:MPMoviePlayerPlaybackDidFinishNotification 
+                                                  object:nil];
+    
+    [moviePlayButton release];
+    [moviePlayer release];
+    
+    [super dealloc];
+}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;
-}
-
-- (void) dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:MPMoviePlayerDidExitFullscreenNotification
-                                                  object:self.moviePlayer];
-    
-    [moviePlayer release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -40,15 +51,14 @@
         
         self.moviePlayer = [[[MPMoviePlayerController alloc] initWithContentURL:movieURL] autorelease];
         
-        self.moviePlayer.fullscreen = YES;
+        self.moviePlayer.view.frame = self.moviePlayButton.frame;
+        [self.view insertSubview:self.moviePlayer.view aboveSubview:self.moviePlayButton];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(moviePlayerDidExit:)
-                                                     name:MPMoviePlayerDidExitFullscreenNotification
+                                                 selector:@selector(movieDidFinish:)
+                                                     name:MPMoviePlayerPlaybackDidFinishNotification
                                                    object:self.moviePlayer];
     }
-
-    [self.parentViewController.view addSubview:moviePlayer.view];
 
     [self.moviePlayer play];
 }
@@ -79,11 +89,12 @@
     }
 }
 
-- (void)moviePlayerDidExit:(NSNotification *)notification
+#pragma mark -
+
+- (void)movieDidFinish:(NSNotification *)notification
 {
-    [self.moviePlayer stop];
-    
-    [self.moviePlayer.view removeFromSuperview];
+    if (self.moviePlayer.fullscreen)
+        [self.moviePlayer setFullscreen:NO animated:YES];
 }
 
 #pragma mark -

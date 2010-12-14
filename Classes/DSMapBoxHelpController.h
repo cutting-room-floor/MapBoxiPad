@@ -13,9 +13,13 @@
 
 @interface DSMapBoxHelpController : UIViewController <MFMailComposeViewControllerDelegate>
 {
+    BOOL shouldPlayImmediately;
+    UIButton *moviePlayButton;
     MPMoviePlayerController *moviePlayer;
 }
 
+@property (nonatomic, assign) BOOL shouldPlayImmediately;
+@property (nonatomic, retain) IBOutlet UIButton *moviePlayButton;
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
 
 - (IBAction)tappedVideoButton:(id)sender;

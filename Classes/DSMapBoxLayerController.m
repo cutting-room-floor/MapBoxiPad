@@ -68,6 +68,14 @@
     
     UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
     
+    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunVideoPlayed"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+
+        helpController.shouldPlayImmediately = YES;
+    }
+    
     helpController.navigationItem.title = @"MapBox Help";
     helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                                          style:UIBarButtonItemStyleDone
