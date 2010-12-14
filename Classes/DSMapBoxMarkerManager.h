@@ -8,8 +8,6 @@
 
 #import "RMMarkerManager.h"
 
-#define kDSPlacemarkAlpha 0.7f
-
 @interface DSMapBoxMarkerManager : RMMarkerManager
 {
     BOOL clusteringEnabled;

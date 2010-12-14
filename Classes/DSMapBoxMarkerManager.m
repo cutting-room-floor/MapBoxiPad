@@ -17,6 +17,7 @@
 #import "RMProjection.h"
 
 #define kDSMapBoxMarkerClusterPixels 50.0f
+#define kDSClusterAlpha               0.7f
 
 @interface DSMapBoxMarkerManager (DSMapBoxMarkerManagerPrivate)
 
@@ -233,7 +234,7 @@
 
                 // TODO: allow for use of other images?
                 //
-                UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:kDSPlacemarkAlpha] imageWithWidth:size height:size];
+                UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:kDSClusterAlpha] imageWithWidth:size height:size];
                 
                 marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
                 

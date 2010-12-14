@@ -35,6 +35,8 @@
 #import "SimpleKMLPolyStyle.h"
 #import "SimpleKML_UIImage.h"
 
+#define kDSPlacemarkAlpha 0.9f
+
 @implementation DSMapBoxDataOverlayManager
 
 @synthesize mapView;
@@ -96,11 +98,15 @@
             // draw placemarks as RMMarkers with popups
             //
             if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
-                ((SimpleKMLPlacemark *)feature).point              &&
-                ((SimpleKMLPlacemark *)feature).style              && 
-                ((SimpleKMLPlacemark *)feature).style.iconStyle)
+                ((SimpleKMLPlacemark *)feature).point)
             {
-                UIImage *icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
+                UIImage *icon;
+                
+                if (((SimpleKMLPlacemark *)feature).style && ((SimpleKMLPlacemark *)feature).style.iconStyle)
+                    icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
+                
+                else
+                    icon = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
                 
                 RMMarker *marker;
                 
@@ -283,7 +289,7 @@
     CGFloat minLon =  180;
     CGFloat maxLon = -180;
     
-    UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
+    UIImage *image = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
 
     NSArray *items = [DSMapBoxFeedParser itemsForFeed:rss];
     
