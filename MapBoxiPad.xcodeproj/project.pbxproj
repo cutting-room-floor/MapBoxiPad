@@ -118,9 +118,9 @@
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
-		DDCE2A1112B6F570008A1257 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE2A1012B6F570008A1257 /* point.png */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
+		DDCE2A1112B6F570008A1257 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE2A1012B6F570008A1257 /* point.png */; };
 		DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
@@ -347,10 +347,10 @@
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
-		DDCE2A1012B6F570008A1257 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
+		DDCE2A1012B6F570008A1257 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
 		DDDF80AF12385CC900550505 /* DSMapBoxCoreAnimationRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxCoreAnimationRenderer.h; sourceTree = "<group>"; };
 		DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxCoreAnimationRenderer.m; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };

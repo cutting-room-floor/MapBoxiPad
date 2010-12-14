@@ -284,7 +284,7 @@
         {
             DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"path"]]] lastObject];
             
-            [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 2)];
+            [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 3)];
             
             [orderedMaps addObject:layerMapView];
         }
@@ -546,7 +546,7 @@
                 
                 // insert below toolbar & watermark
                 //
-                [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 2)];
+                [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 3)];
                 
                 // copy main map view attributes
                 //

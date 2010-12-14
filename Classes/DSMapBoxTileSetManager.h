@@ -32,12 +32,14 @@ typedef enum {
 - (NSArray *)alternateTileSetPathsOfType:(DSMapBoxTileSetType)tileSetType;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL;
+- (NSString *)attributionForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
 - (BOOL)importTileSetFromURL:(NSURL *)importURL;
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
+- (NSString *)activeTileSetAttribution;
 - (NSArray *)activeDownloads;
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated;
 

@@ -27,7 +27,7 @@
                                                         MFMailComposeViewControllerDelegate>
 {
     IBOutlet RMMapView *mapView;
-    IBOutlet UIImageView *watermarkView;
+    IBOutlet UILabel *attributionLabel;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
     IBOutlet UIBarButtonItem *clusteringButton;

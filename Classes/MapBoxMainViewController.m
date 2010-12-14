@@ -510,6 +510,18 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         [self.view insertSubview:mapView atIndex:0];
         [UIView commitAnimations];
     }
+    
+    // update attribution
+    //
+    if ([[DSMapBoxTileSetManager defaultManager] activeTileSetAttribution])
+    {
+        attributionLabel.text   = [[DSMapBoxTileSetManager defaultManager] activeTileSetAttribution];
+        attributionLabel.hidden = NO;
+    }
+    else
+    {        
+        attributionLabel.hidden = YES;
+    }
 }
 
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)

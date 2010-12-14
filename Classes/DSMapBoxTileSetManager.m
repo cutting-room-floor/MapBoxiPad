@@ -181,6 +181,34 @@ static DSMapBoxTileSetManager *defaultManager;
     return description;
 }
 
+- (NSString *)attributionForTileSetAtURL:(NSURL *)tileSetURL
+{
+    if ([tileSetURL isEqual:kDSOpenStreetMapURL])
+        return @"Copyright OpenStreetMap.org Contributors CC-BY-SA";
+    
+    NSString *defaultAttribution = @"";
+    
+    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
+    
+    if ( ! [db open])
+        return defaultAttribution;
+    
+    FMResultSet *attributionResults = [db executeQuery:@"select value from metadata where name = 'attribution'"];
+    
+    if ([db hadError] && [db close])
+        return defaultAttribution;
+    
+    [attributionResults next];
+    
+    NSString *attribution = [attributionResults stringForColumn:@"value"];
+    
+    [attributionResults close];
+    
+    [db close];
+    
+    return attribution;
+}
+
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection
 {
     for (NSMutableDictionary *download in _activeDownloads)
@@ -236,6 +264,11 @@ static DSMapBoxTileSetManager *defaultManager;
 - (NSString *)activeTileSetName
 {
     return [self displayNameForTileSetAtURL:self.activeTileSetURL];
+}
+
+- (NSString *)activeTileSetAttribution
+{
+    return [self attributionForTileSetAtURL:self.activeTileSetURL];
 }
 
 - (NSArray *)activeDownloads
