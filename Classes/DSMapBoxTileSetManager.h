@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define kDSOpenStreetMapURL @"Open Street Map"
+#define kDSOpenStreetMapURL @"OpenStreetMap"
 
 static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
 
