@@ -436,7 +436,7 @@
                                  1, 
                                  1);
         
-        balloon.popoverContentSize = CGSizeMake(320, 160); // smaller rectangle with less room for description
+        balloon.popoverContentSize = CGSizeMake(320, 160);
     }
     
     // GeoRSS points have a title & description from the feed
@@ -453,17 +453,11 @@
                                  1, 
                                  1);
         
-        if ([markerData objectForKey:@"isCluster"])
-            balloon.popoverContentSize = CGSizeMake(320, 160); // smaller rectangle with less room for big description
-
-        else
-            balloon.popoverContentSize = CGSizeMake(320, 320); // square with room for big description
+        balloon.popoverContentSize = CGSizeMake(320, 160);
     }
     
     // replace with balloon view controller
     //
-    balloonController.view.frame = CGRectMake(0, 0, balloon.popoverContentSize.width, balloon.popoverContentSize.height);
-
     [balloon setContentViewController:balloonController];
     
     [balloon presentPopoverFromRect:attachPoint
