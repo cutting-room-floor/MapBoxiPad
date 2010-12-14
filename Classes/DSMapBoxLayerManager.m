@@ -366,7 +366,6 @@
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
 {
     // TODO: change this from a deletion into a library archival
-    // TODO: remove from display if active
     
     NSMutableDictionary *layer;
 
