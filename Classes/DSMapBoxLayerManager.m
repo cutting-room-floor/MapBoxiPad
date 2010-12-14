@@ -372,6 +372,9 @@
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
+            if ([[layer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:indexPath];
+
             [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
             
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
@@ -387,6 +390,9 @@
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
 
+            if ([[layer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:indexPath];
+            
             [[NSFileManager defaultManager] removeItemAtPath:[layer objectForKey:@"path"] error:NULL];
             
             NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
