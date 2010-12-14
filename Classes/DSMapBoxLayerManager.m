@@ -144,12 +144,31 @@
     //
     NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeOverlay];
     
-    NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+    NSMutableArray *mutableTileLayers  = [NSMutableArray arrayWithArray:self.tileLayers];
+    NSMutableArray *tileLayersToRemove = [NSMutableArray array];
     
+    // look for layers missing on disk, turning them off
+    //
     for (NSDictionary *tileLayer in mutableTileLayers)
+    {
         if ( ! [tileSetPaths containsObject:[tileLayer objectForKey:@"path"]])
-            [mutableTileLayers removeObject:tileLayer];
+        {
+            if ([[tileLayer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableTileLayers indexOfObject:tileLayer] inSection:DSMapBoxLayerSectionTile]];
+            
+            [tileLayersToRemove addObject:tileLayer];
+        }
+    }
+
+    // remove any missing layers from UI
+    while ([tileLayersToRemove count] > 0)
+    {
+        [mutableTileLayers removeObject:[tileLayersToRemove objectAtIndex:0]];
+        [tileLayersToRemove removeObjectAtIndex:0];
+    }
     
+    // pick up any new tiles on disk
+    //
     for (NSURL *tileSetPath in tileSetPaths)
     {
         if ( ! [[mutableTileLayers valueForKeyPath:@"path"] containsObject:tileSetPath])
@@ -172,12 +191,32 @@
     //
     NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
     
-    NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
+    NSMutableArray *mutableDataLayers  = [NSMutableArray arrayWithArray:self.dataLayers];
+    NSMutableArray *dataLayersToRemove = [NSMutableArray array];
     
+    // look for layers missing on disk, turning them off
+    //
     for (NSDictionary *dataLayer in mutableDataLayers)
+    {
         if ( ! [docs containsObject:[[dataLayer objectForKey:@"path"] lastPathComponent]])
-            [mutableDataLayers removeObject:dataLayer];
+        {
+            if ([[dataLayer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableDataLayers indexOfObject:dataLayer] inSection:DSMapBoxLayerSectionData]];
+            
+            [dataLayersToRemove addObject:dataLayer];
+        }
+    }
+
+    // remove any missing layers from UI
+    //
+    while ([dataLayersToRemove count] > 0)
+    {
+        [mutableDataLayers removeObject:[dataLayersToRemove objectAtIndex:0]];
+        [dataLayersToRemove removeObjectAtIndex:0];
+    }
     
+    // pick up any new layers on disk
+    //
     for (NSString *path in docs)
     {
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
