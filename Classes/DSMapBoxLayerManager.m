@@ -146,6 +146,10 @@
     
     NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
     
+    for (NSDictionary *tileLayer in mutableTileLayers)
+        if ( ! [tileSetPaths containsObject:[tileLayer objectForKey:@"path"]])
+            [mutableTileLayers removeObject:tileLayer];
+    
     for (NSURL *tileSetPath in tileSetPaths)
     {
         if ( ! [[mutableTileLayers valueForKeyPath:@"path"] containsObject:tileSetPath])
@@ -166,9 +170,13 @@
 
     // data layers
     //
+    NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
+    
     NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
     
-    NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
+    for (NSDictionary *dataLayer in mutableDataLayers)
+        if ( ! [docs containsObject:[[dataLayer objectForKey:@"path"] lastPathComponent]])
+            [mutableDataLayers removeObject:dataLayer];
     
     for (NSString *path in docs)
     {
