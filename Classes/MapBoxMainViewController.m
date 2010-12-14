@@ -338,6 +338,12 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         if ([stateName length] && [[stateName componentsSeparatedByString:@"/"] count] < 2) // no slashes
         {
+            if ( ! tileOverlayState)
+                tileOverlayState = [NSArray array];
+            
+            if ( ! dataOverlayState)
+                dataOverlayState = [NSArray array];
+            
             NSDictionary *state = [NSDictionary dictionaryWithObjectsAndKeys:mapSnapshot,      @"mapSnapshot", 
                                                                              baseMapState,     @"baseMapState", 
                                                                              tileOverlayState, @"tileOverlayState", 
