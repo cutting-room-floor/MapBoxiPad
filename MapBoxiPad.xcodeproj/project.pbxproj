@@ -92,6 +92,10 @@
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C86711CC43F100038969 /* linen_light.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen_light.jpg */; };
 		DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */; };
+		DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */; };
+		DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */; };
+		DD5678C912AEF2E100B73C8A /* intro.mov in Resources */ = {isa = PBXBuildFile; fileRef = DD5678C812AEF2E100B73C8A /* intro.mov */; };
+		DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5678F212AEF62200B73C8A /* MediaPlayer.framework */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
@@ -114,6 +118,8 @@
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
+		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
+		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
@@ -301,6 +307,11 @@
 		DD48C86611CC43F100038969 /* linen_light.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen_light.jpg; sourceTree = "<group>"; };
 		DD540F7C12131F3800C5899E /* DSMapBoxLargeSnapshotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLargeSnapshotView.h; sourceTree = "<group>"; };
 		DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLargeSnapshotView.m; sourceTree = "<group>"; };
+		DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxHelpController.h; sourceTree = "<group>"; };
+		DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxHelpController.m; sourceTree = "<group>"; };
+		DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxHelpController.xib; sourceTree = "<group>"; };
+		DD5678C812AEF2E100B73C8A /* intro.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = intro.mov; sourceTree = "<group>"; };
+		DD5678F212AEF62200B73C8A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
@@ -335,6 +346,9 @@
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
 		DDCDD60211D96CF600568320 /* RMCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RMCircle.m; path = ../RMCircle.m; sourceTree = "<group>"; };
+		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
+		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
+		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
 		DDDF80AF12385CC900550505 /* DSMapBoxCoreAnimationRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxCoreAnimationRenderer.h; sourceTree = "<group>"; };
 		DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxCoreAnimationRenderer.m; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -362,6 +376,7 @@
 				DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */,
 				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
 				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
+				DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +386,7 @@
 		080E96DDFE201D6D7F000001 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				DDCE294412B6E598008A1257 /* MapBoxConstants.h */,
 				1D3623240D0F684500981E51 /* MapBoxAppDelegate.h */,
 				1D3623250D0F684500981E51 /* MapBoxAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MapBoxMainViewController.h */,
@@ -420,6 +436,7 @@
 				DD70D91D11D188DA0002E222 /* Images */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
+				DD5678C712AEF2C900B73C8A /* Videos */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -437,6 +454,7 @@
 				DDF3221211DADD720068287A /* CoreLocation.framework */,
 				DD92F641121C9B84008CF88F /* MessageUI.framework */,
 				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
+				DD5678F212AEF62200B73C8A /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -648,6 +666,26 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
+		DD56786612AEEB4B00B73C8A /* Help */ = {
+			isa = PBXGroup;
+			children = (
+				DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */,
+				DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */,
+				DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */,
+				DDCE299412B6E707008A1257 /* Resources */,
+			);
+			name = Help;
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DD5678C712AEF2C900B73C8A /* Videos */ = {
+			isa = PBXGroup;
+			children = (
+				DD5678C812AEF2E100B73C8A /* intro.mov */,
+			);
+			name = Videos;
+			sourceTree = "<group>";
+		};
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
@@ -799,6 +837,7 @@
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays */,
+				DD56786612AEEB4B00B73C8A /* Help */,
 				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
@@ -822,6 +861,15 @@
 			);
 			name = "Document Management";
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDCE299412B6E707008A1257 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DDCE29B812B6E9F9008A1257 /* video_capture.png */,
+				DDCE29B612B6E9F5008A1257 /* play.png */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		DDE09E18123C0FCF008ECB7A /* Reachability */ = {
@@ -939,6 +987,10 @@
 				DD3D93E0123047F20049ABB0 /* linen.png in Resources */,
 				DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */,
 				D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */,
+				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
+				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
+				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
+				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1029,6 +1081,7 @@
 				DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */,
 				DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */,
 				DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */,
+				DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
