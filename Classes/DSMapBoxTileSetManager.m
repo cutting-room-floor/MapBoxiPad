@@ -206,7 +206,20 @@ static DSMapBoxTileSetManager *defaultManager;
     
     [db close];
     
-    return attribution;
+    // strip HTML
+    //
+    NSScanner *scanner = [NSScanner scannerWithString:attribution];
+    NSString  *text    = nil;
+    
+    while ( ! [scanner isAtEnd])
+    {
+        [scanner scanUpToString:@"<" intoString:NULL];
+        [scanner scanUpToString:@">" intoString:&text];
+        
+        attribution = [attribution stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@>", text] withString:@""];
+    }
+    
+    return [attribution stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 - (NSMutableDictionary *)downloadForConnection:(NSURLConnection *)connection
