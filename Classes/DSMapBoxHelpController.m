@@ -25,8 +25,8 @@
     self.helpTableView.backgroundView  = nil;
     self.helpTableView.tableFooterView = versionInfoLabel;
     self.versionInfoLabel.text = [NSString stringWithFormat:@"MapBox %@.%@", 
-                                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"], 
-                                     [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
+                                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
+                                     [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
 }
 
 - (void)viewDidAppear:(BOOL)animated
