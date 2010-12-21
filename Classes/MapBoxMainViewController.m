@@ -17,6 +17,7 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxDocumentSaveController.h"
 #import "DSMapBoxMarkerManager.h"
+#import "DSMapBoxHelpController.h"
 
 #import "UIApplication_Additions.h"
 
@@ -442,6 +443,31 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     else
         clusteringButton.title = @"Turn Clustering On";
+}
+
+- (IBAction)tappedHelpButton:(id)sender
+{
+    DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
+    
+    UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
+    
+    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunVideoPlayed"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        helpController.shouldPlayImmediately = YES;
+    }
+    
+    helpController.navigationItem.title = @"MapBox Help";
+    helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                         style:UIBarButtonItemStyleDone
+                                                                                        target:helpController
+                                                                                        action:@selector(tappedHelpDoneButton:)] autorelease];
+    
+    wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self presentModalViewController:wrapper animated:YES];
 }
 
 #pragma mark -

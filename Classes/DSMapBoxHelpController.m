@@ -106,6 +106,11 @@
     }
 }
 
+- (void)tappedHelpDoneButton:(id)sender
+{
+    [self.parentViewController dismissModalViewControllerAnimated:YES];
+}
+
 #pragma mark -
 
 - (void)movieDidFinish:(NSNotification *)notification

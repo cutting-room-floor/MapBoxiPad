@@ -12,7 +12,7 @@
 		</object>
 		<object class="NSMutableArray" key="IBDocument.EditedObjectIDs">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<integer value="2"/>
+			<integer value="18"/>
 		</object>
 		<object class="NSArray" key="IBDocument.PluginDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
@@ -119,6 +119,12 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<object class="IBUIBarButtonItem" id="455809617">
 								<string key="IBUITitle">My Maps</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="459560094"/>
+							</object>
+							<object class="IBUIBarButtonItem" id="619403507">
+								<string key="IBUITitle"> ? </string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 								<int key="IBUIStyle">1</int>
 								<reference key="IBUIToolbar" ref="459560094"/>
@@ -230,6 +236,14 @@
 					</object>
 					<int key="connectionID">73</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">tappedHelpButton:</string>
+						<reference key="source" ref="619403507"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">76</int>
+				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -280,6 +294,7 @@
 							<reference ref="294852452"/>
 							<reference ref="455809617"/>
 							<reference ref="245884156"/>
+							<reference ref="619403507"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -313,6 +328,11 @@
 						<reference key="object" ref="685814082"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">74</int>
+						<reference key="object" ref="619403507"/>
+						<reference key="parent" ref="459560094"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -333,6 +353,7 @@
 					<string>68.IBPluginDependency</string>
 					<string>72.IBPluginDependency</string>
 					<string>72.IBViewBoundsToFrameTransform</string>
+					<string>74.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -352,6 +373,7 @@
 					<object class="NSAffineTransform">
 						<bytes key="NSTransformStruct">AURKAABEKUAAA</bytes>
 					</object>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -370,7 +392,7 @@
 				</object>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">73</int>
+			<int key="maxID">76</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -386,10 +408,12 @@
 							<string>saveState:</string>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -405,6 +429,7 @@
 							<string>saveState:</string>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -423,6 +448,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">tappedDocumentsButton:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">tappedHelpButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">

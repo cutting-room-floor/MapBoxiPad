@@ -9,7 +9,6 @@
 #import "DSMapBoxLayerController.h"
 
 #import "MapBoxAppDelegate.h"
-#import "DSMapBoxHelpController.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
@@ -27,11 +26,6 @@
     
     self.navigationItem.title = @"Layers";
     
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Help"
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(tappedHelpButton:)] autorelease];
-
     [self tappedDoneButton:self];
 }
 
@@ -59,40 +53,6 @@
 }
 
 #pragma mark -
-
-- (IBAction)tappedHelpButton:(id)sender
-{
-    UIViewController *mainAppViewController = ((UIViewController *)((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate]).viewController);
-    
-    DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
-    
-    UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
-    
-    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunVideoPlayed"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-
-        helpController.shouldPlayImmediately = YES;
-    }
-    
-    helpController.navigationItem.title = @"MapBox Help";
-    helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                         style:UIBarButtonItemStyleDone
-                                                                                        target:self
-                                                                                        action:@selector(tappedDismissHelpButton:)] autorelease];
-    
-    wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
-    
-    [mainAppViewController presentModalViewController:wrapper animated:YES];
-}
-
-- (IBAction)tappedDismissHelpButton:(id)sender
-{
-    UIViewController *mainAppViewController = ((UIViewController *)((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate]).viewController);
-
-    [mainAppViewController dismissModalViewControllerAnimated:YES];
-}
 
 - (IBAction)tappedEditButton:(id)sender
 {
