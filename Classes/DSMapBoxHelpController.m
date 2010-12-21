@@ -15,6 +15,19 @@
 @synthesize shouldPlayImmediately;
 @synthesize moviePlayButton;
 @synthesize moviePlayer;
+@synthesize helpTableView;
+@synthesize versionInfoLabel;
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    self.helpTableView.backgroundView  = nil;
+    self.helpTableView.tableFooterView = versionInfoLabel;
+    self.versionInfoLabel.text = [NSString stringWithFormat:@"MapBox %@.%@", 
+                                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"], 
+                                     [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
+}
 
 - (void)viewDidAppear:(BOOL)animated
 {
@@ -32,6 +45,8 @@
     
     [moviePlayButton release];
     [moviePlayer release];
+    [helpTableView release];
+    [versionInfoLabel release];
     
     [super dealloc];
 }
@@ -63,7 +78,7 @@
     [self.moviePlayer play];
 }
 
-- (IBAction)tappedEmailSupportButton:(id)sender
+- (void)tappedEmailSupportButton:(id)sender
 {
     if ([MFMailComposeViewController canSendMail])
     {
@@ -73,7 +88,7 @@
         
         [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
         
-        mailer.modalPresentationStyle = UIModalPresentationFormSheet;
+        mailer.modalPresentationStyle = UIModalPresentationPageSheet;
         
         [self presentModalViewController:mailer animated:YES];
     }
@@ -120,6 +135,80 @@
         default:
             
             [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark -
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *HelpCellIdentifier = @"HelpCellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HelpCellIdentifier];
+    
+    if ( ! cell)
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HelpCellIdentifier] autorelease];
+    
+    switch (indexPath.row)
+    {
+        case 0:
+            cell.textLabel.text = @"Email Support";
+            break;
+        
+        case 1:
+            cell.textLabel.text = @"About MapBox";
+            break;
+
+        case 2:
+            cell.textLabel.text = @"Release Notes";
+            break;
+    }
+    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 3;
+}
+
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    UIAlertView *alert;
+    
+    switch (indexPath.row)
+    {
+        case 0:
+            [self tappedEmailSupportButton:[tableView cellForRowAtIndexPath:indexPath]];
+            break;
+            
+        case 1:
+            alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
+                                                message:[NSString stringWithFormat:@"%@\n\nCopyright 2010-2011 Development Seed", self.versionInfoLabel.text]
+                                               delegate:nil
+                                      cancelButtonTitle:nil
+                                      otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+
+            break;
+
+        case 2:
+            alert = [[[UIAlertView alloc] initWithTitle:@"Release Notes"
+                                                message:@"Initial release."
+                                               delegate:nil
+                                      cancelButtonTitle:nil
+                                      otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+            
+            break;
     }
 }
 

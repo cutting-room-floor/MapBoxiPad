@@ -77,6 +77,7 @@
 		DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA131208DBEA00B052E9 /* unzip.c */; };
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
+		DD25422D12C03E79009261C1 /* help_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* help_background.png */; };
 		DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
@@ -289,6 +290,7 @@
 		DD1ADA161208DBEA00B052E9 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
+		DD25422C12C03E79009261C1 /* help_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help_background.png; sourceTree = SOURCE_ROOT; };
 		DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "../stuff to not backup/World_Light_1.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
@@ -871,6 +873,7 @@
 			children = (
 				DDCE29B812B6E9F9008A1257 /* video_capture.png */,
 				DDCE29B612B6E9F5008A1257 /* play.png */,
+				DD25422C12C03E79009261C1 /* help_background.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -995,6 +998,7 @@
 				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
 				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
+				DD25422D12C03E79009261C1 /* help_background.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
