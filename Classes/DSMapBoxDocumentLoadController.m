@@ -193,7 +193,7 @@
                          mimeType:@"image/jpeg" 
                          fileName:@"MapBoxSnapshot.jpg"];
                 
-        mailer.modalPresentationStyle = UIModalPresentationFormSheet;
+        mailer.modalPresentationStyle = UIModalPresentationPageSheet;
         
         [self presentModalViewController:mailer animated:YES];
     }
