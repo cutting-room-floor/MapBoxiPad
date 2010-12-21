@@ -43,6 +43,8 @@
                                                     name:MPMoviePlayerPlaybackDidFinishNotification 
                                                   object:nil];
     
+    [moviePlayer stop];
+    
     [moviePlayButton release];
     [moviePlayer release];
     [helpTableView release];
