@@ -102,7 +102,7 @@ static DSMapBoxTileSetManager *defaultManager;
         [db close];
     }
     
-    if (tileSetType == DSMapBoxTileSetTypeBaselayer /*&& [[NSUserDefaults standardUserDefaults] boolForKey:@"UseOpenStreetMaps"]*/)
+    if (tileSetType == DSMapBoxTileSetTypeBaselayer)
         [paths addObject:@"OpenStreetMap"];
 
     return [NSArray arrayWithArray:paths];
