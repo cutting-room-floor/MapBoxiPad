@@ -909,6 +909,7 @@
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				DDBE160A12C18F8700C4AAB7 /* Update Build Version */,
 			);
 			buildRules = (
 			);
@@ -1007,6 +1008,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DDBE160A12C18F8700C4AAB7 /* Update Build Version */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Update Build Version";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAG=\nCOMMIT=\nGITPATH=/usr/bin:/usr/local/bin:/usr/local/git/bin\nPATH=$PATH:$GITPATH; export PATH\n\nif [ -z $( which git ) ]; then\n  echo \"Unable to find git binary in \\$GITPATH\"\n  exit 1\nfi\n\nwhile [ -z $TAG ]; do\n  # start with HEAD, adding carats\n  REVISION=\"HEAD\"$COMMIT\n\n  # see if we've found a tag yet\n  TAG=$( git tag --contains $REVISION )\n\n  # add another carat to go back a revision\n  COMMIT=$COMMIT\"^\"\ndone\n\n# check if we've got untagged commits, adding a 'd' if so\nif [ ! -z $COMMIT ]; then\n  TAG=$( echo $TAG )d\nfi\n\n# output for Xcode logging\necho \"Updating CFBundleVersion to $TAG\"\n\n# write it to the Info.plist\ndefaults write \"$( echo $PWD )/MapBoxiPad-Info\" CFBundleVersion $TAG";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
