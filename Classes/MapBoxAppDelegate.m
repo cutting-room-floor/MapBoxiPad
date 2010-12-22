@@ -8,6 +8,7 @@
 
 #import "MapBoxAppDelegate.h"
 #import "MapBoxMainViewController.h"
+#import "UIApplication_Additions.h"
 
 @implementation MapBoxAppDelegate
 
@@ -29,6 +30,8 @@
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 
+    // display help UI on first run
+    //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
     {
         // tap help button on next run loop pass to allow for device rotation
@@ -37,18 +40,38 @@
                              withObject:self 
                              afterDelay:0.0];
     }
-    else
+
+    // preload data on first run
+    //
+    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunDataPreloaded"])
     {
-        if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+        NSMutableArray *preloadItems = [NSMutableArray array];
+        
+        for (NSString *extension in [NSArray arrayWithObjects:@"kml", @"kmz", @"rss", nil])
         {
-            NSURL *incomingURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+            NSArray *items = [NSBundle pathsForResourcesOfType:extension inDirectory:[[NSBundle mainBundle] resourcePath]];
             
-            if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"] || [[[incomingURL path] lastPathComponent] hasSuffix:@"kmz"])
-                [viewController openKMLFile:incomingURL];
-            
-            else
-                return NO;
+            [preloadItems addObjectsFromArray:items];
         }
+        
+        for (NSString *item in preloadItems)
+            [[NSFileManager defaultManager] copyItemAtPath:item 
+                                                    toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], [item lastPathComponent]] 
+                                                     error:NULL];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunDataPreloaded"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    
+    if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
+    {
+        NSURL *incomingURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+        
+        if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"] || [[[incomingURL path] lastPathComponent] hasSuffix:@"kmz"])
+            [viewController openKMLFile:incomingURL];
+        
+        else
+            return NO;
     }
         
 	return YES;

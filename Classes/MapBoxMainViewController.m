@@ -706,7 +706,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
                                                      message:message
                                                     delegate:self
-                                           cancelButtonTitle:@"Cancel"
+                                           cancelButtonTitle:@"Don't Send"
                                            otherButtonTitles:@"Send Mail", nil] autorelease];
     
     [alert show];

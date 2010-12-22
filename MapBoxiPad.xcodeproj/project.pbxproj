@@ -92,6 +92,10 @@
 		DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */; };
 		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C86711CC43F100038969 /* linen_light.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen_light.jpg */; };
+		DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */ = {isa = PBXBuildFile; fileRef = DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */; };
+		DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD52697012C1E051002E890C /* Haiti Aid Projects.kml */; };
+		DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */ = {isa = PBXBuildFile; fileRef = DD52697112C1E051002E890C /* USGS Earthquakes.rss */; };
+		DD52697612C1E051002E890C /* Wildless Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DD52697212C1E051002E890C /* Wildless Disease Outbreaks.rss */; };
 		DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */; };
 		DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */; };
 		DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */; };
@@ -119,7 +123,6 @@
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
-		DDCDD60311D96CF600568320 /* RMCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCDD60211D96CF600568320 /* RMCircle.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCE2A1112B6F570008A1257 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE2A1012B6F570008A1257 /* point.png */; };
@@ -309,6 +312,10 @@
 		DD48C3ED11CC026B00038969 /* DSMapBoxSQLiteTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxSQLiteTileSource.m; sourceTree = "<group>"; };
 		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C86611CC43F100038969 /* linen_light.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen_light.jpg; sourceTree = "<group>"; };
+		DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Afghanistan Election Fraud by Province.kmz"; sourceTree = "<group>"; };
+		DD52697012C1E051002E890C /* Haiti Aid Projects.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Haiti Aid Projects.kml"; sourceTree = "<group>"; };
+		DD52697112C1E051002E890C /* USGS Earthquakes.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "USGS Earthquakes.rss"; sourceTree = "<group>"; };
+		DD52697212C1E051002E890C /* Wildless Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildless Disease Outbreaks.rss"; sourceTree = "<group>"; };
 		DD540F7C12131F3800C5899E /* DSMapBoxLargeSnapshotView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLargeSnapshotView.h; sourceTree = "<group>"; };
 		DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLargeSnapshotView.m; sourceTree = "<group>"; };
 		DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxHelpController.h; sourceTree = "<group>"; };
@@ -443,6 +450,7 @@
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
 				DD5678C712AEF2C900B73C8A /* Videos */,
+				DD52696E12C1E051002E890C /* Preloaded Data */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -670,6 +678,18 @@
 				DD72C34F11E53C500030C637 /* TouchXML */,
 			);
 			name = Externals;
+			sourceTree = "<group>";
+		};
+		DD52696E12C1E051002E890C /* Preloaded Data */ = {
+			isa = PBXGroup;
+			children = (
+				DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */,
+				DD52697012C1E051002E890C /* Haiti Aid Projects.kml */,
+				DD52697112C1E051002E890C /* USGS Earthquakes.rss */,
+				DD52697212C1E051002E890C /* Wildless Disease Outbreaks.rss */,
+			);
+			name = "Preloaded Data";
+			path = preload;
 			sourceTree = "<group>";
 		};
 		DD56786612AEEB4B00B73C8A /* Help */ = {
@@ -1004,6 +1024,10 @@
 				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
 				DD25422D12C03E79009261C1 /* help_background.png in Resources */,
 				DDBE15C012C1747800C4AAB7 /* about.txt in Resources */,
+				DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */,
+				DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */,
+				DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */,
+				DD52697612C1E051002E890C /* Wildless Disease Outbreaks.rss in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1036,7 +1060,6 @@
 				28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */,
 				DD48C3EE11CC026B00038969 /* DSMapBoxSQLiteTileSource.m in Sources */,
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
-				DDCDD60311D96CF600568320 /* RMCircle.m in Sources */,
 				DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */,
 				DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */,
 				DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */,
