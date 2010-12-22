@@ -202,7 +202,12 @@
             break;
 
         case 2:
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kReleaseNotes]];
+            // open delayed to avoid button press glitches
+            //
+            [[UIApplication sharedApplication] performSelector:@selector(openURL:)
+                                                    withObject:[NSURL URLWithString:kReleaseNotes]
+                                                    afterDelay:0.25];
+            
             break;
     }
 }
