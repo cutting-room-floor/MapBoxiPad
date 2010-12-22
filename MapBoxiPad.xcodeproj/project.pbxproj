@@ -1188,7 +1188,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Development Seed";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
@@ -1212,7 +1212,7 @@
 					"-lMapView",
 				);
 				PRODUCT_NAME = MapBox;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED0871E8-07FA-40BD-8C84-FBC772DCBF4F";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
