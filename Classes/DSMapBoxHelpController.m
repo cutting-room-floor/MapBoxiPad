@@ -197,7 +197,11 @@
             
         case 1:
             alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
-                                                message:[NSString stringWithFormat:@"%@\n\n%@", self.versionInfoLabel.text, [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]]]
+                                                message:[NSString stringWithFormat:@"%@\n\n%@", 
+                                                            self.versionInfoLabel.text, 
+                                                            [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]
+                                                                                      encoding:NSUTF8StringEncoding
+                                                                                         error:NULL]]
                                                delegate:nil
                                       cancelButtonTitle:nil
                                       otherButtonTitles:@"OK", nil] autorelease];
