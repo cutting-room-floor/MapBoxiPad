@@ -12,7 +12,6 @@
 
 @implementation DSMapBoxHelpController
 
-@synthesize shouldPlayImmediately;
 @synthesize moviePlayButton;
 @synthesize moviePlayer;
 @synthesize helpTableView;
@@ -27,14 +26,6 @@
     self.versionInfoLabel.text = [NSString stringWithFormat:@"MapBox %@.%@", 
                                      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                                      [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    if (self.shouldPlayImmediately)
-        [self tappedVideoButton:self];
 }
 
 - (void)dealloc

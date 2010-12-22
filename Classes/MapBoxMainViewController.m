@@ -455,8 +455,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunVideoPlayed"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
-        helpController.shouldPlayImmediately = YES;
     }
     
     helpController.navigationItem.title = @"MapBox Help";
