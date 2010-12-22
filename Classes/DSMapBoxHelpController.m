@@ -197,7 +197,7 @@
             
         case 1:
             alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
-                                                message:[NSString stringWithFormat:@"%@\n\nCopyright 2010-2011 Development Seed", self.versionInfoLabel.text]
+                                                message:[NSString stringWithFormat:@"%@\n\n%@", self.versionInfoLabel.text, [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]]]
                                                delegate:nil
                                       cancelButtonTitle:nil
                                       otherButtonTitles:@"OK", nil] autorelease];
@@ -207,14 +207,7 @@
             break;
 
         case 2:
-            alert = [[[UIAlertView alloc] initWithTitle:@"Release Notes"
-                                                message:@"Initial release."
-                                               delegate:nil
-                                      cancelButtonTitle:nil
-                                      otherButtonTitles:@"OK", nil] autorelease];
-            
-            [alert show];
-            
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:kReleaseNotes]];
             break;
     }
 }

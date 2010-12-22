@@ -1,0 +1,13 @@
+MapBox (c) 2010-2011 Development Seed, Inc.
+
+Libraries used under license: 
+
+FMDB, (c) 2008 Flying Meat Inc. https://github.com/ccgus/fmdb
+Reachability, (c) 2009 Apple Inc. http://developer.apple.com/library/ios/#samplecode/Reachability/Introduction/Intro.html
+Route-Me map library, (c) 2008-2010 Route-Me Contributors https://github.com/route-me/route-me
+Simple KML, (c) 2010, Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML/
+TouchXML, (c) 2008 Jonathan Wight https://github.com/schwa/TouchXML
+
+Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
+
+Development by Code Sorcery Workshop, LLC http://codesorcery.net
