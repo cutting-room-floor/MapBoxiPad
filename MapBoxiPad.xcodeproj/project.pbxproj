@@ -346,7 +346,7 @@
 		DDBA89861210EF4600E5B572 /* DSMapBoxDocumentSaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentSaveController.h; sourceTree = "<group>"; };
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
-		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = about.txt; sourceTree = SOURCE_ROOT; };
+		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCDD60111D96CF600568320 /* RMCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RMCircle.h; path = ../RMCircle.h; sourceTree = "<group>"; };
@@ -675,7 +675,6 @@
 		DD56786612AEEB4B00B73C8A /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				DDBE15BF12C1747800C4AAB7 /* about.txt */,
 				DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */,
 				DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */,
 				DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */,
@@ -877,6 +876,7 @@
 				DDCE29B812B6E9F9008A1257 /* video_capture.png */,
 				DDCE29B612B6E9F5008A1257 /* play.png */,
 				DD25422C12C03E79009261C1 /* help_background.png */,
+				DDBE15BF12C1747800C4AAB7 /* about.txt */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
