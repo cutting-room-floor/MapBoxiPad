@@ -61,7 +61,13 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     // base map view
     //
-    DSMapBoxSQLiteTileSource *source = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
+    NSObject <RMTileSource>*source;
+    
+    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
+        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+    
+    else
+        source = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
     
 	[[[DSMapContents alloc] initWithView:mapView 
                               tilesource:source
