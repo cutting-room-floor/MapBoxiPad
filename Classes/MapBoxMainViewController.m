@@ -416,6 +416,9 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (IBAction)tappedLayersButton:(id)sender
 {
+    if (documentsActionSheet)
+        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:YES];
     
@@ -453,6 +456,12 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (IBAction)tappedHelpButton:(id)sender
 {
+    if (layersPopover && layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:NO];
+    
+    if (documentsActionSheet)
+        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];    
+    
     DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
     
     UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
