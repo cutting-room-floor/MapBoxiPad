@@ -29,8 +29,6 @@
     if (rss)
         return [DSMapBoxFeedParserRSS class];
     
-    
-    
     CXMLNode *atom = [[doc nodesForXPath:@"/atom:feed" 
                        namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.w3.org/2005/Atom" forKey:@"atom"]
                                    error:&error] lastObject];

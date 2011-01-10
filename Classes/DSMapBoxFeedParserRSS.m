@@ -26,6 +26,8 @@
                           namespaceMappings:[NSDictionary dictionaryWithObject:@"http://www.georss.org/georss" forKey:@"georss"] 
                                       error:NULL];
         
+        NSCharacterSet *trimSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+
         for (CXMLElement *item in items)
         {
             NSString *title       = @"Untitled";
@@ -35,19 +37,19 @@
             NSString *point       = @"0 0";
 
             if ([[item elementsForName:@"title"] count])
-                title = [[[item elementsForName:@"title"] objectAtIndex:0] stringValue];
+                title = [[[[item elementsForName:@"title"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
 
             if ([[item elementsForName:@"description"] count])
-                description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
+                description = [[[[item elementsForName:@"description"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
             
             if ([[item elementsForName:@"link"] count])
-                link = [[[item elementsForName:@"link"] objectAtIndex:0] stringValue];
+                link = [[[[item elementsForName:@"link"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
             
             if ([[item elementsForName:@"pubDate"] count])
-                date = [[[item elementsForName:@"pubDate"] objectAtIndex:0] stringValue];
+                date = [[[[item elementsForName:@"pubDate"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
             
             if ([[item elementsForName:@"point"] count])
-                point = [[[item elementsForName:@"point"] objectAtIndex:0] stringValue];
+                point = [[[[item elementsForName:@"point"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
             
             CGFloat latitude  = [[[point componentsSeparatedByString:@" "] objectAtIndex:0] floatValue];
             CGFloat longitude = [[[point componentsSeparatedByString:@" "] objectAtIndex:1] floatValue];
