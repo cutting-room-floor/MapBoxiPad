@@ -674,8 +674,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:saveController] autorelease];
         
-        wrapper.navigationBar.barStyle = UIBarStyleBlack;
-        
         saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                              style:UIBarButtonItemStylePlain
                                                                                             target:self
