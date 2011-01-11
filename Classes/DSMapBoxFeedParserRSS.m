@@ -37,16 +37,16 @@
             NSString *point       = @"0 0";
 
             if ([[item elementsForName:@"title"] count])
-                title = [[[[item elementsForName:@"title"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
+                title = [[[item elementsForName:@"title"] objectAtIndex:0] stringValue];
 
             if ([[item elementsForName:@"description"] count])
-                description = [[[[item elementsForName:@"description"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
+                description = [[[item elementsForName:@"description"] objectAtIndex:0] stringValue];
             
             if ([[item elementsForName:@"link"] count])
-                link = [[[[item elementsForName:@"link"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
+                link = [[[item elementsForName:@"link"] objectAtIndex:0] stringValue];
             
             if ([[item elementsForName:@"pubDate"] count])
-                date = [[[[item elementsForName:@"pubDate"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
+                date = [[[item elementsForName:@"pubDate"] objectAtIndex:0] stringValue];
             
             if ([[item elementsForName:@"point"] count])
                 point = [[[[item elementsForName:@"point"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
