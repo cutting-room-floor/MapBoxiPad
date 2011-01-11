@@ -30,6 +30,8 @@
                           namespaceMappings:namespaces 
                                       error:NULL];
         
+        NSCharacterSet *trimSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+        
         for (CXMLElement *item in items)
         {
             NSString *title       = @"Untitled";
@@ -43,12 +45,18 @@
             
             if ([[item elementsForName:@"content"] count])
                 description = [[[item elementsForName:@"content"] objectAtIndex:0] stringValue];
-            
+
+            else if ([[item elementsForName:@"summary"] count])
+                description = [[[item elementsForName:@"summary"] objectAtIndex:0] stringValue];
+
             if ([[item elementsForName:@"published"] count])
                 date = [[[item elementsForName:@"published"] objectAtIndex:0] stringValue];
             
+            else if ([[item elementsForName:@"updated"] count])
+                date = [[[item elementsForName:@"updated"] objectAtIndex:0] stringValue];
+            
             if ([[item elementsForName:@"point"] count])
-                point = [[[item elementsForName:@"point"] objectAtIndex:0] stringValue];
+                point = [[[[item elementsForName:@"point"] objectAtIndex:0] stringValue] stringByTrimmingCharactersInSet:trimSet];
             
             CXMLElement *linkElement = [[item nodesForXPath:@"atom:link[@rel='alternate']" 
                                           namespaceMappings:namespaces 
