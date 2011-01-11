@@ -295,10 +295,12 @@
     
     for (NSDictionary *item in items)
     {
-        NSString *balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><em>%@</em><br/><br/><a href=\"%@\">more</a>", 
+        NSString *balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><em>%@</em>", 
                                      [item objectForKey:@"description"], 
-                                     [item objectForKey:@"date"], 
-                                     [item objectForKey:@"link"]];
+                                     [item objectForKey:@"date"]];
+        
+        if ([[item objectForKey:@"link"] length])
+            balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><a href=\"%@\">more</a>", balloonBlurb, [item objectForKey:@"link"]];
         
         RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
         
