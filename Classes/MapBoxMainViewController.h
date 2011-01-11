@@ -53,5 +53,6 @@
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedHelpButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
+- (void)openRSSFile:(NSURL *)fileURL;
 
 @end

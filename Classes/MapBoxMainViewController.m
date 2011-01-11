@@ -18,6 +18,7 @@
 #import "DSMapBoxDocumentSaveController.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
+#import "DSMapBoxFeedParser.h"
 
 #import "UIApplication_Additions.h"
 
@@ -410,8 +411,41 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
-        [self tappedLayersButton:self];
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Copied"
+                                                         message:[NSString stringWithFormat:@"The new layer %@ was copied successfully. You may now find it in the layers menu.", [fileURL lastPathComponent]]
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
     }
+}
+
+- (void)openRSSFile:(NSURL *)fileURL
+{
+    NSArray *feedItems = [DSMapBoxFeedParser itemsForFeed:[NSString stringWithContentsOfURL:fileURL
+                                                                                   encoding:NSUTF8StringEncoding
+                                                                                      error:NULL]];
+    
+    if ([feedItems count])
+    {
+        NSString *source      = [fileURL relativePath];
+        NSString *filename    = [[fileURL relativePath] lastPathComponent];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        
+        [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
+        
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Copied"
+                                                         message:[NSString stringWithFormat:@"The new layer %@ was copied successfully. You may now find it in the layers menu.", [fileURL lastPathComponent]]
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
+    }
+    
+    else
+        [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL absoluteString]];
 }
 
 - (IBAction)tappedLayersButton:(id)sender
@@ -708,7 +742,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 {
     self.badParsePath = path;
     
-    NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the %@ file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName], ([path hasSuffix:@".kml"] ? @"KML" : @"KMZ")];
+    NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the layer file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
     
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
                                                      message:message
@@ -750,8 +784,16 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                  mimeType:@"application/vnd.google-earth.kmz" 
                                  fileName:[self.badParsePath lastPathComponent]];
             }
+            else if ([self.badParsePath hasSuffix:@".rss"] || [self.badParsePath hasSuffix:@".xml"])
+            {
+                [mailer setSubject:@"Problem RSS file"];
+                
+                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                 mimeType:@"application/rss+xml" 
+                                 fileName:[self.badParsePath lastPathComponent]];
+            }
             
-            mailer.modalPresentationStyle = UIModalPresentationFormSheet;
+            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
             
             [self presentModalViewController:mailer animated:YES];
         }

@@ -10,10 +10,19 @@
 #import "MapBoxMainViewController.h"
 #import "UIApplication_Additions.h"
 
+@interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
+
+- (BOOL)openFileURL:(NSURL *)fileURL;
+
+@end
+
+#pragma mark -
+
 @implementation MapBoxAppDelegate
 
 @synthesize window;
 @synthesize viewController;
+@synthesize openingExternalFile;
 
 - (void)dealloc
 {
@@ -65,13 +74,12 @@
     
     if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
     {
-        NSURL *incomingURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
-        
-        if ([[[incomingURL path] lastPathComponent] hasSuffix:@"kml"] || [[[incomingURL path] lastPathComponent] hasSuffix:@"kmz"])
-            [viewController openKMLFile:incomingURL];
-        
-        else
-            return NO;
+        // Note that we are opening a file so that application:openURL:sourceApplication:annotation:
+        // doesn't also get called on 4.2+ for this file.
+        //
+        self.openingExternalFile = YES;
+
+        return [self openFileURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
         
 	return YES;
@@ -85,6 +93,44 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [viewController saveState:self];
+    
+    // For 4.2+, mark that we are no longer processing an external file.
+    //
+    self.openingExternalFile = NO;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    if ( ! self.openingExternalFile)
+    {
+        // For 4.2+, mark that we've already got this file. This shouldn't be necessary, but why chance it.
+        //
+        self.openingExternalFile = YES;
+
+        return [self openFileURL:url];
+    }
+    
+    return YES;
+}
+
+#pragma mark -
+
+- (BOOL)openFileURL:(NSURL *)fileURL
+{
+    if ([[[fileURL path] lastPathComponent] hasSuffix:@"kml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"kmz"])
+    {
+        [viewController openKMLFile:fileURL];
+
+        return YES;
+    }
+    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"xml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"rss"])
+    {
+        [viewController openRSSFile:fileURL];
+        
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end
