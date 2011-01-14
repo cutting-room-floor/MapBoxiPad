@@ -78,7 +78,6 @@
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
-		DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -103,6 +102,8 @@
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
+		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
+		DD75BB0512E0E1D20058258E /* World_Light_2.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */; };
 		DD86B6F111FE792D00165CDF /* kml.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F011FE792D00165CDF /* kml.png */; };
@@ -295,7 +296,6 @@
 		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
-		DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_1.0.mbtiles; path = "../stuff to not backup/World_Light_1.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -327,6 +327,8 @@
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDataOverlayManager.m; sourceTree = "<group>"; };
 		DD72C76211E6847C0030C637 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle.png; path = ../circle.png; sourceTree = "<group>"; };
+		DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bundled_tileset_md5sum.txt; sourceTree = "<group>"; };
+		DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_2.0.mbtiles; path = "../stuff to not backup/World_Light_2.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerController.xib; sourceTree = "<group>"; };
@@ -715,7 +717,8 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DD30D3B4120399D000847497 /* World_Light_1.0.mbtiles */,
+				DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */,
+				DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */,
 			);
 			name = "Tile Sets";
 			sourceTree = "<group>";
@@ -927,6 +930,7 @@
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "MapBoxiPad" */;
 			buildPhases = (
 				1D60588D0D05DD3D006BFB54 /* Resources */,
+				DD75BB1212E0E2ED0058258E /* Checksum Bundled Tileset */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
 				DDBE160A12C18F8700C4AAB7 /* Update Build Version */,
@@ -1009,7 +1013,6 @@
 				DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */,
 				DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */,
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
-				DD30D3B5120399D000847497 /* World_Light_1.0.mbtiles in Resources */,
 				DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */,
 				DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */,
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
@@ -1028,12 +1031,28 @@
 				DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */,
 				DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */,
 				DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */,
+				DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */,
+				DD75BB0512E0E1D20058258E /* World_Light_2.0.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		DD75BB1212E0E2ED0058258E /* Checksum Bundled Tileset */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Checksum Bundled Tileset";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "PATH=\"/bin:/usr/bin:/sbin\"\n\nVALID_FILE=$( echo \"$PWD\" )/bundled_tileset_md5sum.txt\nVALID_SUM=$( cat \"$VALID_FILE\" )\nCHECK_FILE=$( ls \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME\" | grep \\.mbtiles$ | sed -n '1p' )\nCHECK_SUM=$( md5 -q \"$TARGET_BUILD_DIR/$FULL_PRODUCT_NAME/$CHECK_FILE\" )\n\necho \"Reference checksum: $VALID_SUM\"\necho \"Actual checksum: $CHECK_SUM\"\n\nif [ \"$VALID_SUM\" == \"$CHECK_SUM\" ]; then\n  echo \"Checksum match\"\n  exit 0\nfi\n\necho \"Checksum mismatch\"\nexit 1";
+		};
 		DDBE160A12C18F8700C4AAB7 /* Update Build Version */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
