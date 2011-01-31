@@ -221,14 +221,22 @@
     {
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
         
-        if (([[path pathExtension] isEqualToString:@"kml"] || [[path pathExtension] isEqualToString:@"kmz"]) && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
+        if (([[[path pathExtension] lowercaseString] isEqualToString:@"kml"] || [[[path pathExtension] lowercaseString] isEqualToString:@"kmz"]) && 
+             ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
-            NSString *description = [[path pathExtension] isEqualToString:@"kml"] ? @"KML File" : @"KMZ Archive";
+            NSString *description = [[[path pathExtension] lowercaseString] isEqualToString:@"kml"] ? @"KML File" : @"KMZ Archive";
             
             NSString *name = [path lastPathComponent];
             
-            name = [name stringByReplacingOccurrencesOfString:@".kml" withString:@""];
-            name = [name stringByReplacingOccurrencesOfString:@".kmz" withString:@""];
+            name = [name stringByReplacingOccurrencesOfString:@".kml" 
+                                                   withString:@"" 
+                                                      options:NSCaseInsensitiveSearch 
+                                                        range:NSMakeRange(0, [name length])];
+
+            name = [name stringByReplacingOccurrencesOfString:@".kmz" 
+                                                   withString:@""
+                                                      options:NSCaseInsensitiveSearch 
+                                                        range:NSMakeRange(0, [name length])];
 
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
                                                                                            name,                                          @"name",
@@ -239,13 +247,17 @@
             
             [mutableDataLayers addObject:layer];
         }
-        else if ([[path pathExtension] isEqualToString:@"rss"] && ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
+        else if ([[[path pathExtension] lowercaseString] isEqualToString:@"rss"] && 
+                  ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
         {
             NSString *description = @"GeoRSS Feed";
 
             NSString *name = [path lastPathComponent];
         
-            name = [name stringByReplacingOccurrencesOfString:@".rss" withString:@""];
+            name = [name stringByReplacingOccurrencesOfString:@".rss" 
+                                                   withString:@""
+                                                      options:NSCaseInsensitiveSearch
+                                                        range:NSMakeRange(0, [name length])];
                         
             NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
                                                                                            name,                                             @"name",
