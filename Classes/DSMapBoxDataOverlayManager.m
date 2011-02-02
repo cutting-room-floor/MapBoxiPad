@@ -93,7 +93,7 @@
         CGFloat minLon =  kMaxLong;
         CGFloat maxLon = -kMaxLong;
         
-        for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).features)
+        for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).flattenedPlacemarks)
         {
             // draw placemarks as RMMarkers with popups
             //
