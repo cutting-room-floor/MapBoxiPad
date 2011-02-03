@@ -3,7 +3,7 @@
 	url = http://github.com/ccgus/fmdb.git
 [submodule "Externals/TouchXML"]
 	path = Externals/TouchXML
-	url = http://github.com/schwa/TouchXML.git
+	url = https://github.com/TouchCode/TouchXML.git
 [submodule "Externals/Simple KML"]
 	path = Externals/Simple KML
 	url = git@github.com:incanus/Simple-KML.git
