@@ -10,7 +10,7 @@
 
 #import "DSMapBoxDataOverlayManager.h";
 #import "DSMapBoxTileSetManager.h"
-#import "DSMapBoxSQLiteTileSource.h"
+#import "RMMBTilesTileSource.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapContents.h"
 
@@ -530,7 +530,7 @@
                     source = [[[RMOpenStreetMapSource alloc] init] autorelease];
                 
                 else
-                    source = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:tileSetURL] autorelease];
+                    source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL] autorelease];
                 
                 // zoom the base map as necessary to show this overlay's source
                 //

@@ -10,7 +10,7 @@
 
 #import "MapBoxConstants.h"
 
-#import "DSMapBoxSQLiteTileSource.h"
+#import "RMMBTilesTileSource.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapContents.h"
@@ -68,7 +68,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         source = [[[RMOpenStreetMapSource alloc] init] autorelease];
     
     else
-        source = [[[DSMapBoxSQLiteTileSource alloc] init] autorelease];
+        source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]] autorelease];
     
 	[[[DSMapContents alloc] initWithView:mapView 
                               tilesource:source
@@ -558,7 +558,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     }
     else
     {
-        mapView.contents.tileSource = [[[DSMapBoxSQLiteTileSource alloc] initWithTileSetAtURL:newTileSetURL] autorelease];
+        mapView.contents.tileSource = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
     }
 

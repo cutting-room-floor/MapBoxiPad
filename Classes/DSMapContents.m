@@ -7,7 +7,7 @@
 //
 
 #import "DSMapContents.h"
-#import "DSMapBoxSQLiteTileSource.h"
+#import "RMMBTilesTileSource.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxCoreAnimationRenderer.h"
 #import "DSTiledLayerMapView.h"
@@ -248,7 +248,7 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
     return;
 }
 
-- (void)setTileSource:(DSMapBoxSQLiteTileSource *)newTileSource
+- (void)setTileSource:(RMMBTilesTileSource *)newTileSource
 {
     if (tileSource == newTileSource)
         return;
