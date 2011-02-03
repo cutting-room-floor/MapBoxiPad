@@ -108,7 +108,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                object:nil];
     
     reachability = [[Reachability reachabilityForInternetConnection] retain];
-    [reachability startNotifer];
+    [reachability startNotifier];
     
     // restore app state
     //
@@ -177,7 +177,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     
-    [reachability stopNotifer];
+    [reachability stopNotifier];
     [reachability release];
     
     [layersPopover release];
