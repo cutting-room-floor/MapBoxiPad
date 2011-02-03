@@ -146,7 +146,7 @@ static DSMapBoxTileSetManager *defaultManager;
 
     [db close];
     
-    if ([version isEqualToString:@"1.0"])
+    if ([version isEqualToString:@"1.0"] || [tileSetURL isEqual:[self defaultTileSetURL]])
         return displayName;
     
     else
