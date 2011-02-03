@@ -1,6 +1,6 @@
 [submodule "Externals/FMDB"]
 	path = Externals/FMDB
-	url = http://github.com/ccgus/fmdb.git
+	url = https://github.com/ccgus/fmdb.git
 [submodule "Externals/TouchXML"]
 	path = Externals/TouchXML
 	url = https://github.com/TouchCode/TouchXML.git
