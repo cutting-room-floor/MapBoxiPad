@@ -91,7 +91,9 @@ static DSMapBoxTileSetManager *defaultManager;
         
         [results next];
         
-        if (tileSetType == DSMapBoxTileSetTypeBaselayer && [[results stringForColumn:@"value"] isEqualToString:@"baselayer"])
+        if (tileSetType == DSMapBoxTileSetTypeBaselayer && 
+            [[results stringForColumn:@"value"] isEqualToString:@"baselayer"] &&
+             ! [[self displayNameForTileSetAtURL:[NSURL fileURLWithPath:path]] isEqualToString:[self defaultTileSetName]])
             [paths addObject:[NSURL fileURLWithPath:path]];
         
         else if (tileSetType == DSMapBoxTileSetTypeOverlay && [[results stringForColumn:@"value"] isEqualToString:@"overlay"])
