@@ -142,15 +142,33 @@
 
 - (float)minZoom
 {
-    FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
+    double minZoom;
+    
+    FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'minzoom'"];
     
     if ([db hadError])
         return kMBTilesDefaultMinTileZoom;
     
     [results next];
     
-    double minZoom = [results doubleForColumnIndex:0];
-    
+    if ([results hasAnotherRow])
+    {
+        minZoom = [results doubleForColumnIndex:0];
+    }
+    else
+    {
+        [results close];
+
+        results = [db executeQuery:@"select min(zoom_level) from tiles"];
+        
+        if ([db hadError])
+            return kMBTilesDefaultMinTileZoom;
+        
+        [results next];
+        
+        minZoom = [results doubleForColumnIndex:0];
+    }
+
     [results close];
     
     return (float)minZoom;
@@ -158,14 +176,32 @@
 
 - (float)maxZoom
 {
-    FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
+    double maxZoom;
+    
+    FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'maxzoom'"];
     
     if ([db hadError])
         return kMBTilesDefaultMaxTileZoom;
-
+    
     [results next];
     
-    double maxZoom = [results doubleForColumnIndex:0];
+    if ([results hasAnotherRow])
+    {
+        maxZoom = [results doubleForColumnIndex:0];
+    }
+    else
+    {
+        [results close];
+        
+        results = [db executeQuery:@"select max(zoom_level) from tiles"];
+        
+        if ([db hadError])
+            return kMBTilesDefaultMaxTileZoom;
+        
+        [results next];
+        
+        maxZoom = [results doubleForColumnIndex:0];
+    }
     
     [results close];
     
