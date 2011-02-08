@@ -369,6 +369,14 @@
     }
 }
 
+- (void)zoomToNewBoundsOfSource:(RMMBTilesTileSource *)source
+{
+    [baseMapView zoomWithLatLngBoundsNorthEast:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].northeast.latitude, 
+                                                                          [source latitudeLongitudeBoundingBox].northeast.longitude) 
+                                     SouthWest:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].southwest.latitude,
+                                                                          [source latitudeLongitudeBoundingBox].southwest.longitude)];
+}
+
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -465,6 +473,11 @@
 }
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self toggleLayerAtIndexPath:indexPath zoomingIfNecessary:NO];
+}
+
+- (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow
 {
     NSMutableDictionary *layer;
     
@@ -598,6 +611,11 @@
                 //
                 layerMapView.delegate = dataOverlayManager;
                 dataOverlayManager.mapView = layerMapView;
+                
+                // zoom to new layer bounds (if any)
+                //
+                if (zoomNow && [source isKindOfClass:[RMMBTilesTileSource class]] && ! [(RMMBTilesTileSource *)source hasDefaultBoundingBox])
+                    [self zoomToNewBoundsOfSource:source];
             }
 
             break;

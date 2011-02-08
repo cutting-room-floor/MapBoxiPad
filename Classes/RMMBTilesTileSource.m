@@ -184,7 +184,53 @@
 
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox
 {
+    FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'bounds'"];
+    
+    if ([db hadError])
+        return kMBTilesDefaultLatLonBoundingBox;
+    
+    [results next];
+    
+    NSString *boundsString = [results stringForColumnIndex:0];
+    
+    [results close];
+    
+    if (boundsString)
+    {
+        NSArray *parts = [boundsString componentsSeparatedByString:@","];
+        
+        if ([parts count] == 4)
+        {
+            RMSphericalTrapezium bounds = {
+                .southwest = {
+                    .longitude = [[parts objectAtIndex:0] doubleValue],
+                    .latitude  = [[parts objectAtIndex:1] doubleValue],
+                },
+                .northeast = {
+                    .longitude = [[parts objectAtIndex:2] doubleValue],
+                    .latitude  = [[parts objectAtIndex:3] doubleValue],
+                }
+            };
+            
+            return bounds;
+        }
+    }
+    
     return kMBTilesDefaultLatLonBoundingBox;
+}
+
+- (BOOL)hasDefaultBoundingBox
+{
+    RMSphericalTrapezium ownBounds     = [self latitudeLongitudeBoundingBox];
+    RMSphericalTrapezium defaultBounds = kMBTilesDefaultLatLonBoundingBox;
+    
+    if (ownBounds.southwest.latitude  == defaultBounds.southwest.latitude  &&
+        ownBounds.southwest.longitude == defaultBounds.southwest.longitude && 
+        ownBounds.northeast.latitude  == defaultBounds.northeast.latitude  && 
+        ownBounds.northeast.longitude == defaultBounds.northeast.longitude)
+        return YES;
+    
+    return NO;
 }
 
 - (void)didReceiveMemoryWarning

@@ -66,6 +66,7 @@
 - (void)setMinZoom:(NSUInteger)aMinZoom;
 - (void)setMaxZoom:(NSUInteger)aMaxZoom;
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox;
+- (BOOL)hasDefaultBoundingBox;
 - (void)didReceiveMemoryWarning;
 - (NSString *)uniqueTilecacheKey;
 - (NSString *)shortName;

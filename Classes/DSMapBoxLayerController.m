@@ -222,7 +222,7 @@
         }
     }
     
-    [layerManager toggleLayerAtIndexPath:indexPath];
+    [layerManager toggleLayerAtIndexPath:indexPath zoomingIfNecessary:YES];
         
     [self.tableView reloadData];
 }

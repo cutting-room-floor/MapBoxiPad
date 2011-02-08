@@ -24,11 +24,6 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-#define kLowerZoomBounds       2.5f
-#define kUpperLatitudeBounds  85.0f
-#define kLowerLatitudeBounds -60.0f
-#define kWarningAlpha          0.25f
-
 @interface DSMapContents (DSMapContentsPrivate)
 
 - (BOOL)canMoveBy:(CGSize)delta;
@@ -226,6 +221,15 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
                                        userInfo:nil
                                         repeats:NO];
     }
+}
+
+- (void)zoomWithLatLngBoundsNorthEast:(CLLocationCoordinate2D)ne SouthWest:(CLLocationCoordinate2D)se
+{
+    [super zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
+    
+    if (self.layerMapViews)
+        for (RMMapView *layerMapView in layerMapViews)
+            [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
 }
 
 void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)

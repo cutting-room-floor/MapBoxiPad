@@ -560,6 +560,18 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         mapView.contents.tileSource = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+        
+        // switch to new base layer bounds if less than whole world
+        //
+        RMMBTilesTileSource *source = mapView.contents.tileSource;
+        
+        if ( ! [source hasDefaultBoundingBox] && 
+            [source latitudeLongitudeBoundingBox].southwest.latitude >= kLowerLatitudeBounds &&
+            [source latitudeLongitudeBoundingBox].northeast.latitude <= kUpperLatitudeBounds)
+            [mapView zoomWithLatLngBoundsNorthEast:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].northeast.latitude, 
+                                                                              [source latitudeLongitudeBoundingBox].northeast.longitude) 
+                                         SouthWest:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].southwest.latitude,
+                                                                              [source latitudeLongitudeBoundingBox].southwest.longitude)];
     }
 
     // perform image to map animated swap back

@@ -8,6 +8,11 @@
 
 #import "RMMapContents.h"
 
+#define kLowerZoomBounds       2.5f
+#define kUpperLatitudeBounds  85.0f
+#define kLowerLatitudeBounds -60.0f
+#define kWarningAlpha          0.25f
+
 @class RMMapView;
 
 @interface DSMapContents : RMMapContents
