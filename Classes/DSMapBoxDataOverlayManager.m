@@ -468,6 +468,11 @@
                            animated:YES];
 }
 
+- (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map
+{
+    [self tapOnMarker:marker onMap:map];
+}
+
 #pragma mark -
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
