@@ -7,3 +7,6 @@
 [submodule "Externals/TouchXML"]
 	path = Externals/TouchXML
 	url = https://github.com/TouchCode/TouchXML.git
+[submodule "Externals/route-me"]
+	path = Externals/route-me
+	url = git@github.com:developmentseed/route-me.git
