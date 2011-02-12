@@ -125,7 +125,8 @@
             NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:baseSetPath];
             NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:baseSetPath];
             
-            BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name];
+            BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name] && 
+                              [[mutableBaseLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count] == 0;
             
             [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetPath,                          @"path",
                                                                                            name,                                 @"name",
