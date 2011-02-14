@@ -394,6 +394,8 @@
             for (id component in components)
                 if ([component isKindOfClass:[RMMarker class]])
                     [((DSMapBoxMarkerManager *)mapView.contents.markerManager) removeMarker:component recalculatingImmediately:NO];
+                else if ([component isKindOfClass:[RMMapLayer class]])
+                    [component removeFromSuperlayer];
                 
             [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
         }
