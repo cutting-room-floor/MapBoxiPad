@@ -67,6 +67,14 @@
 
 #pragma mark -
 
+- (void)removeMarkers
+{
+    NSArray *markersNotPaths = [[self markers] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [RMMarker class]]];
+    
+    for (RMMarker *marker in markersNotPaths)
+        [marker removeFromSuperlayer];
+}
+
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point
 {
     [self addMarker:marker AtLatLong:point recalculatingImmediately:YES];
