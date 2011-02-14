@@ -129,6 +129,14 @@
         
         return YES;
     }
+    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"mbtiles"])
+    {
+        [[NSFileManager defaultManager] copyItemAtPath:[fileURL path] 
+                                                toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], [[fileURL path] lastPathComponent]] 
+                                                 error:NULL];
+        
+        return YES;
+    }
     
     return NO;
 }
