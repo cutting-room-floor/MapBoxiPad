@@ -345,26 +345,20 @@
         //
         for (NSUInteger i = 0; i < [visibleDataLayers count]; i++)
         {
-            NSString *path = [[visibleDataLayers objectAtIndex:i] objectForKey:@"path"];
+            NSString *source = [[visibleDataLayers objectAtIndex:i] objectForKey:@"source"];
 
-            NSString *source;
-            
-            if ([[[path lastPathComponent] pathExtension] isEqualToString:@"kmz"])
-                source = [[SimpleKML KMLWithContentsOfFile:path error:NULL] source];
-            
-            else
-                source = [NSString stringWithContentsOfFile:[[visibleDataLayers objectAtIndex:i] objectForKey:@"path"] 
-                                                   encoding:NSUTF8StringEncoding 
-                                                      error:NULL];
-            
             for (NSDictionary *overlay in dataOverlayManager.overlays)
             {
                 id overlaySource = [overlay objectForKey:@"source"];
                 
                 if (([overlaySource isKindOfClass:[SimpleKML class]] && [[overlaySource source] isEqualToString:source]) ||
                     ([overlaySource isKindOfClass:[NSString class]]  && [overlaySource isEqualToString:source]))
+                {
                     for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
                         [superlayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
+                    
+                    break;
+                }
             }
         }
     }
