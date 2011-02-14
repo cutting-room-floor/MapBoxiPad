@@ -101,11 +101,11 @@
 		DD601BAC12FA3C9A00CE7C14 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B9B12FA3C9A00CE7C14 /* CXHTMLDocument.m */; };
 		DD601BAD12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B9F12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m */; };
 		DD601BAE12FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */; };
+		DD6996691309A74000E1A103 /* World_Light.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD6996681309A74000E1A103 /* World_Light.mbtiles */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
 		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
-		DD75BB0512E0E1D20058258E /* World_Light_2.0.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */; };
 		DD86B6F111FE792D00165CDF /* kml.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F011FE792D00165CDF /* kml.png */; };
@@ -328,13 +328,13 @@
 		DD601B9F12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DD601BA012FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
 		DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
+		DD6996681309A74000E1A103 /* World_Light.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light.mbtiles; path = "../stuff to not backup/World_Light.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
 		DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDataOverlayManager.m; sourceTree = "<group>"; };
 		DD72C76211E6847C0030C637 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle.png; path = ../circle.png; sourceTree = "<group>"; };
 		DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bundled_tileset_md5sum.txt; sourceTree = "<group>"; };
-		DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = World_Light_2.0.mbtiles; path = "../stuff to not backup/World_Light_2.0.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerController.xib; sourceTree = "<group>"; };
@@ -721,7 +721,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DD75BB0412E0E1D20058258E /* World_Light_2.0.mbtiles */,
+				DD6996681309A74000E1A103 /* World_Light.mbtiles */,
 				DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */,
 			);
 			name = "Tile Sets";
@@ -1038,7 +1038,7 @@
 				DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */,
 				DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */,
 				DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */,
-				DD75BB0512E0E1D20058258E /* World_Light_2.0.mbtiles in Resources */,
+				DD6996691309A74000E1A103 /* World_Light.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
