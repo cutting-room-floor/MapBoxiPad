@@ -69,10 +69,9 @@
 
 - (void)removeMarkers
 {
-    NSArray *markersNotPaths = [[self markers] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [RMMarker class]]];
-    
-    for (RMMarker *marker in markersNotPaths)
-        [marker removeFromSuperlayer];
+    NSArray *nonMarkers = [[self markers] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF isKindOfClass:%@", [RMMarker class]]];
+
+    [[contents overlay] setSublayers:nonMarkers];
 }
 
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point
