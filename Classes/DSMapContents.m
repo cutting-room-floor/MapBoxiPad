@@ -31,6 +31,8 @@
 - (void)postZoom;
 void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)enableBoundsWarning:(NSTimer *)timer;
+- (void)recalculateClustersIfNeeded;
+- (void)stopRecalculatingClusters;
 
 @end
 
@@ -100,31 +102,43 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)moveToLatLong: (CLLocationCoordinate2D)latlong
 {
+    [self stopRecalculatingClusters];
+    
     [super moveToLatLong:latlong];
     
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents moveToLatLong:latlong];
+
+    [self recalculateClustersIfNeeded];
 }
 
 - (void)moveToProjectedPoint: (RMProjectedPoint)aPoint
 {
+    [self stopRecalculatingClusters];
+    
     [super moveToProjectedPoint:aPoint];
     
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents moveToProjectedPoint:aPoint];
+
+    [self recalculateClustersIfNeeded];
 }
 
 - (void)moveBy:(CGSize)delta
 {
     if ([self canMoveBy:delta])
     {
+        [self stopRecalculatingClusters];
+        
         [super moveBy:delta];
         
         if (self.layerMapViews)
             for (RMMapView *layerMapView in layerMapViews)
                 [layerMapView.contents moveBy:delta];
+        
+        [self recalculateClustersIfNeeded];
     }
 }
 
@@ -154,10 +168,7 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
     
     if ([self canZoomTo:targetZoom limitedByLayer:&limitedMapView])
     {
-        if ([self.markerManager markers])
-            [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
-                                                     selector:@selector(recalculateClusters) 
-                                                       object:nil];
+        [self stopRecalculatingClusters];
         
         [super zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
         
@@ -167,11 +178,8 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
             for (RMMapView *layerMapView in layerMapViews)
                 [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
         
-        if ([self.markerManager markers])
-            [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
-                                                                withObject:nil 
-                                                                afterDelay:0.1];
-
+        [self recalculateClustersIfNeeded];
+        
         [NSObject cancelPreviousPerformRequestsWithTarget:self 
                                                  selector:@selector(postZoom) 
                                                    object:nil];
@@ -225,11 +233,15 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
 
 - (void)zoomWithLatLngBoundsNorthEast:(CLLocationCoordinate2D)ne SouthWest:(CLLocationCoordinate2D)se
 {
+    [self stopRecalculatingClusters];
+    
     [super zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
     
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
+    
+    [self recalculateClustersIfNeeded];
 }
 
 void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
@@ -240,6 +252,22 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
 - (void)enableBoundsWarning:(NSTimer *)timer
 {
     boundsWarningEnabled = YES;
+}
+
+- (void)recalculateClustersIfNeeded
+{
+    if ([self.markerManager markers])
+        [((DSMapBoxMarkerManager *)self.markerManager) performSelector:@selector(recalculateClusters) 
+                                                            withObject:nil 
+                                                            afterDelay:0.75];
+}
+
+- (void)stopRecalculatingClusters
+{
+    if ([self.markerManager markers])
+        [NSObject cancelPreviousPerformRequestsWithTarget:((DSMapBoxMarkerManager *)self.markerManager) 
+                                                 selector:@selector(recalculateClusters) 
+                                                   object:nil];
 }
 
 - (void)removeAllCachedImages
