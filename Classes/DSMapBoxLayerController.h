@@ -10,12 +10,16 @@
 
 @class DSMapBoxLayerManager;
 
-@interface DSMapBoxLayerController : UITableViewController
+@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate>
 {
     DSMapBoxLayerManager *layerManager;
+    
+    @private
+        NSUInteger baseLayerRowToDelete;
 }
 
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
+@property (nonatomic, assign) NSUInteger baseLayerRowToDelete;
 
 - (IBAction)tappedEditButton:(id)sender;
 - (IBAction)tappedDoneButton:(id)sender;

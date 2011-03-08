@@ -427,8 +427,22 @@
     {
         case DSMapBoxLayerSectionBase: // can't archive base layers (for now)
             
-            return;
+            layer = [self.baseLayers objectAtIndex:indexPath.row];
             
+            if ([[layer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:indexPath];
+            
+            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
+            
+            NSMutableArray *mutableBaseLayers = [NSMutableArray arrayWithArray:self.baseLayers];
+            
+            [mutableBaseLayers removeObject:layer];
+            
+            [baseLayers release];
+            baseLayers = [[NSArray arrayWithArray:mutableBaseLayers] retain];
+            
+            break;
+
         case DSMapBoxLayerSectionTile: // tile layers
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];

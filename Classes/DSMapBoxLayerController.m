@@ -27,6 +27,7 @@
 @implementation DSMapBoxLayerController
 
 @synthesize layerManager;
+@synthesize baseLayerRowToDelete;
 
 - (void)viewDidLoad
 {
@@ -97,7 +98,7 @@
      * properly.
      */
 
-    [layerManager toggleLayerAtIndexPath:indexPath zoomingIfNecessary:YES];
+    [self.layerManager toggleLayerAtIndexPath:indexPath zoomingIfNecessary:YES];
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
@@ -109,16 +110,16 @@
     
     switch (indexPath.section)
     {
-        case 0:
-            layers = layerManager.baseLayers;
+        case DSMapBoxLayerSectionBase:
+            layers = self.layerManager.baseLayers;
             break;
             
-        case 1:
-            layers = layerManager.tileLayers;
+        case DSMapBoxLayerSectionTile:
+            layers = self.layerManager.tileLayers;
             break;
             
-        case 2:
-            layers = layerManager.dataLayers;
+        case DSMapBoxLayerSectionData:
+            layers = self.layerManager.dataLayers;
             break;
     }
             
@@ -136,13 +137,13 @@
 {
     switch (section)
     {
-        case 0:
+        case DSMapBoxLayerSectionBase:
             return @"Base Layers";
 
-        case 1:
+        case DSMapBoxLayerSectionTile:
             return [self tableView:tableView numberOfRowsInSection:section] ? @"Overlay Layers" : nil;
             
-        case 2:
+        case DSMapBoxLayerSectionData:
             return [self tableView:tableView numberOfRowsInSection:section] ? @"Data Layers" : nil;
     }
     
@@ -153,14 +154,14 @@
 {
     switch (section)
     {
-        case 0:
-            return layerManager.baseLayerCount;
+        case DSMapBoxLayerSectionBase:
+            return self.layerManager.baseLayerCount;
             
-        case 1:
-            return layerManager.tileLayerCount;
+        case DSMapBoxLayerSectionTile:
+            return self.layerManager.tileLayerCount;
 
-        case 2:
-            return layerManager.dataLayerCount;
+        case DSMapBoxLayerSectionData:
+            return self.layerManager.dataLayerCount;
     }
 
     return 0;
@@ -177,27 +178,27 @@
     
     switch (indexPath.section)
     {
-        case 0:
-            cell.accessoryType        = ([[[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-            cell.textLabel.text       = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+        case DSMapBoxLayerSectionBase:
+            cell.accessoryType        = ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
-        case 1:
-            cell.accessoryType        = ([[[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-            cell.textLabel.text       = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+        case DSMapBoxLayerSectionTile:
+            cell.accessoryType        = ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
-        case 2:
-            cell.accessoryType        = ([[[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
-            cell.textLabel.text       = [[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:([[[layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
+        case DSMapBoxLayerSectionData:
+            cell.accessoryType        = ([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
+            cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
             
             break;
     }
@@ -207,13 +208,24 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    id baseTileSetPath;
+    
     switch (indexPath.section)
     {
-        case 0:
-            return NO;
+        case DSMapBoxLayerSectionBase:
+            baseTileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+       
+            // don't allow deletion of OSM or bundled tile set
+            //
+            if (([baseTileSetPath isKindOfClass:[NSString class]] && [baseTileSetPath isEqualToString:kDSOpenStreetMapURL]) ||
+                ( ! baseTileSetPath && [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:
+                                           [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]))
+                return NO;
+                
+            return YES;
             
-        case 1:
-        case 2:
+        case DSMapBoxLayerSectionTile:
+        case DSMapBoxLayerSectionData:
             return YES;
     }
     
@@ -224,14 +236,14 @@
 {
     switch (indexPath.section)
     {
-        case 0:
+        case DSMapBoxLayerSectionBase:
             return NO;
             
-        case 1:
+        case DSMapBoxLayerSectionTile:
             return YES;
             
-        case 2:
-            return ! ((DSMapBoxMarkerManager *)layerManager.baseMapView.contents.markerManager).clusteringEnabled;
+        case DSMapBoxLayerSectionData:
+            return ! ((DSMapBoxMarkerManager *)self.layerManager.baseMapView.contents.markerManager).clusteringEnabled;
     }
     
     return NO;
@@ -239,12 +251,38 @@
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    [layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
+    [self.layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [layerManager archiveLayerAtIndexPath:indexPath];
+    // "archival" is currently deletion -- this might change! 
+    //
+    if (indexPath.section == DSMapBoxLayerSectionBase)
+    {
+        // we want to warn the user if they are deleting a base layer, which is possibly quite large
+        //
+        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetPath relativePath] error:NULL];
+        
+        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
+        {
+            self.baseLayerRowToDelete = indexPath.row;
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Base Layer?"
+                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Don't Delete"
+                                                   otherButtonTitles:@"Delete", nil] autorelease];
+            
+            [alert show];
+            
+            return;
+        }
+    }
+    
+    [self.layerManager archiveLayerAtIndexPath:indexPath];
     
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     
@@ -302,6 +340,22 @@
                                   inSection:sourceIndexPath.section];
     
     return proposedDestinationIndexPath;
+}
+
+#pragma mark -
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
+        
+        [self.layerManager archiveLayerAtIndexPath:indexPath];
+        
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    }
+
+    [self tappedDoneButton:self];
 }
 
 @end
