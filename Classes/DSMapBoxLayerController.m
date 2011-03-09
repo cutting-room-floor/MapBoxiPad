@@ -280,6 +280,14 @@
             
             return;
         }
+
+        // Switch to the next available tileset when deleting the active one.
+        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]]) {
+            NSUInteger nextIndex = indexPath.row > 0 ? indexPath.row - 1 : indexPath.row + 1;
+            NSUInteger indexes[] = {0,nextIndex};
+            [self toggleLayerAtIndexPath:[NSIndexPath indexPathWithIndexes:indexes length:2]];
+        }
+
     }
     
     [self.layerManager archiveLayerAtIndexPath:indexPath];
@@ -349,6 +357,13 @@
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
+        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        // Switch to the next available tileset when deleting the active one.
+        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]]) {
+            NSUInteger nextIndex = indexPath.row > 0 ? indexPath.row - 1 : indexPath.row + 1;
+            NSUInteger indexes[] = {0,nextIndex};
+            [self toggleLayerAtIndexPath:[NSIndexPath indexPathWithIndexes:indexes length:2]];
+        }
         
         [self.layerManager archiveLayerAtIndexPath:indexPath];
         
