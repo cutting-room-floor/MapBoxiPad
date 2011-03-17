@@ -14,7 +14,7 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MessageUI/MessageUI.h>
 
-@class RMMapView;
+@class DSMapView;
 @class DSMapBoxDataOverlayManager;
 @class DSMapBoxLayerManager;
 @class DSMapBoxDocumentSaveController;
@@ -26,7 +26,7 @@
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate>
 {
-    IBOutlet RMMapView *mapView;
+    IBOutlet DSMapView *mapView;
     IBOutlet UILabel *attributionLabel;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
