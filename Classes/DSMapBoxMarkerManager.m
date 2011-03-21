@@ -155,16 +155,20 @@
         
         for (DSMapBoxMarkerCluster *cluster in *inClusters)
         {
-            CLLocation *clusterLocation = [[[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude] autorelease];
+            CLLocation *clusterLocation = [[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude];
             
             if ([clusterLocation distanceFromLocation:markerLocation] <= threshold)
             {
+                [clusterLocation release];
+                
                 [cluster addMarker:marker];
                 
                 clustered = YES;
                 
                 break;
             }
+
+            [clusterLocation release];
         }
         
         if ( ! clustered)
@@ -175,6 +179,8 @@
             
             [*inClusters addObject:cluster];
         }
+        
+        [markerLocation release];
     }
     else
     {
