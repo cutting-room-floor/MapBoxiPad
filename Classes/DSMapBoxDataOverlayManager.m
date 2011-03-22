@@ -20,6 +20,7 @@
 #import "RMPath.h"
 #import "RMLatLong.h"
 #import "RMGlobalConstants.h"
+#import "RMMBTilesTileSource.h"
 
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
@@ -412,6 +413,77 @@
 }
 
 #pragma mark -
+
+- (void)singleTapOnMap:(RMMapView*)map At:(CGPoint)point
+{
+    id <RMTileSource>tileSource = mapView.contents.tileSource;
+    
+    if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
+    {
+        // determine renderer scroll layer sub-layer touched
+        //
+        CALayer *rendererLayer = [mapView.contents.renderer valueForKey:@"layer"];
+        CALayer *tileLayer     = [rendererLayer hitTest:point];
+        
+        // convert touch to sub-layer
+        //
+        CGPoint layerPoint = [tileLayer convertPoint:point fromLayer:rendererLayer];
+        
+        // normalize tile touch to 256px
+        //
+        float normalizedX = (layerPoint.x / tileLayer.bounds.size.width)  * 256;
+        float normalizedY = (layerPoint.y / tileLayer.bounds.size.height) * 256;
+        
+        // determine lat & lon of touch
+        //
+        CLLocationCoordinate2D touchLocation = [mapView.contents pixelToLatLong:point];
+        
+        // use lat & lon to determine TMS tile (per http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames)
+        //
+        int tileZoom = (int)(roundf(mapView.contents.zoom));
+        
+        int tileX = (int)(floor((touchLocation.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
+        int tileY = (int)(floor((1.0 - log(tan(touchLocation.latitude * M_PI / 180.0) + 1.0 / \
+                                           cos(touchLocation.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
+        
+        tileY = pow(2.0, tileZoom) - tileY - 1.0;
+        
+        RMTile tile = {
+            .zoom = tileZoom,
+            .x    = tileX,
+            .y    = tileY,
+        };
+        
+        // fetch interactivity data for tile & point in it
+        //
+        CGPoint tilePoint = CGPointMake(normalizedX, normalizedY);
+        
+        NSDictionary *interactivityData = [((RMMBTilesTileSource *)tileSource) interactivityDataForPoint:tilePoint inTile:tile];
+        
+        // TODO: run interactivity data through the tile source formatter function
+        //
+        if ([interactivityData objectForKey:@"data"] && [[interactivityData objectForKey:@"data"] length])
+        {
+            DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+
+            balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+            
+            balloon.delegate = self;
+            
+            balloonController.name        = [interactivityData objectForKey:@"data"];
+            balloonController.description = @"Interactivity data will go here when we have a complete tile set.";
+            
+            balloon.popoverContentSize = CGSizeMake(320, 160);
+            
+            [balloon setContentViewController:balloonController];
+            
+            [balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
+                                     inView:mapView 
+                   permittedArrowDirections:UIPopoverArrowDirectionAny
+                                   animated:YES];
+        }
+    }
+}
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {

@@ -10,9 +10,7 @@
 
 @interface DSMapView : RMMapView
 {
-    id currentInteractivityValue;
+    BOOL touchesMoved;
 }
-
-@property (nonatomic, retain) id currentInteractivityValue;
 
 @end
