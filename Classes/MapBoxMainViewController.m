@@ -110,10 +110,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     reachability = [[Reachability reachabilityForInternetConnection] retain];
     [reachability startNotifier];
     
-    // watch for interactivity events
-    //
-    [mapView addObserver:self forKeyPath:@"currentInteractivityValue" options:NSKeyValueObservingOptionNew context:nil];
-    
     // restore app state
     //
     [self restoreState:self];
@@ -178,8 +174,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)dealloc
 {
-    [mapView removeObserver:self forKeyPath:@"currentInteractivityValue"];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     
@@ -193,15 +187,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     [documentsActionSheet release];
 
     [super dealloc];
-}
-
-#pragma mark -
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    // currently, just log interactivity taps
-    //
-    NSLog(@"%@", [object valueForKeyPath:keyPath]);
 }
 
 #pragma mark -
