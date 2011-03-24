@@ -8,8 +8,10 @@ Libraries used under license:
 
  * Route-Me map library, (c) 2008-2010 Route-Me Contributors https://github.com/route-me/route-me
 
- * Simple KML, (c) 2010, Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML/
+ * Simple KML, (c) 2010, Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
 
- * TouchXML, (c) 2008 Jonathan Wight https://github.com/schwa/TouchXML
+ * TouchJSON, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchJSON
+
+ * TouchXML, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchXML
 
 Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
