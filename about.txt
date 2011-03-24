@@ -13,5 +13,3 @@ Libraries used under license:
  * TouchXML, (c) 2008 Jonathan Wight https://github.com/schwa/TouchXML
 
 Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
-
-Development by Code Sorcery Workshop, LLC http://codesorcery.net
