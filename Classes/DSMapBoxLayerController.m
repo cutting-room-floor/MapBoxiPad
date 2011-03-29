@@ -243,7 +243,7 @@
             return YES;
             
         case DSMapBoxLayerSectionData:
-            return ! ((DSMapBoxMarkerManager *)self.layerManager.baseMapView.contents.markerManager).clusteringEnabled;
+            return ! ((DSMapBoxMarkerManager *)((RMMapView *)self.layerManager.baseMapView).contents.markerManager).clusteringEnabled;
     }
     
     return NO;
