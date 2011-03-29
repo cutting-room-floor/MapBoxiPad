@@ -8,6 +8,8 @@
 
 #import "RMMapContents.h"
 
+extern NSString *const DSMapContentsZoomBoundsReached;
+
 #define kLowerZoomBounds       2.5f
 #define kUpperLatitudeBounds  85.0f
 #define kLowerLatitudeBounds -60.0f

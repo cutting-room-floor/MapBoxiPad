@@ -6,9 +6,9 @@
 //  Copyright 2010 Code Sorcery Workshop. All rights reserved.
 //
 
-#import "RMMapView.h"
+#import "DSMapView.h"
 
-@interface DSTiledLayerMapView : RMMapView
+@interface DSTiledLayerMapView : DSMapView
 {
     /* Setting this to another map view will cause us to respond to overlay 
      * (i.e., marker) touches, but not regular pan/zoom touches. Those instead will
@@ -21,10 +21,10 @@
      * master who will move us implicitly.
      */
 
-    RMMapView *masterView;
+    DSMapView *masterView;
 }
 
-@property (nonatomic, retain) RMMapView *masterView;
+@property (nonatomic, retain) DSMapView *masterView;
 @property (nonatomic, retain) NSURL *tileSetURL;
 
 @end

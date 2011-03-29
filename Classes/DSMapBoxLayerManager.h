@@ -24,7 +24,7 @@
 static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocumentsChangedNotification";
 
 @class DSMapBoxDataOverlayManager;
-@class RMMapView;
+@class DSMapView;
 
 @protocol DSDataLayerHandlerDelegate
 
@@ -50,14 +50,14 @@ typedef enum {
 @interface DSMapBoxLayerManager : NSObject
 {
     DSMapBoxDataOverlayManager *dataOverlayManager;
-    RMMapView *baseMapView;
+    DSMapView *baseMapView;
     NSArray *baseLayers;
     NSArray *tileLayers;
     NSArray *dataLayers;
     id <NSObject, DSDataLayerHandlerDelegate>delegate;
 }
 
-@property (nonatomic, retain) RMMapView *baseMapView;
+@property (nonatomic, retain) DSMapView *baseMapView;
 @property (nonatomic, readonly, retain) NSArray *baseLayers;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;
 @property (nonatomic, readonly, retain) NSArray *dataLayers;
@@ -66,7 +66,7 @@ typedef enum {
 @property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
 @property (nonatomic, assign) id <NSObject, DSDataLayerHandlerDelegate>delegate;
 
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;

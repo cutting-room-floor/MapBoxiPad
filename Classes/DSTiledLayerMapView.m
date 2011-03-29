@@ -10,8 +10,6 @@
 
 #import "RMMarker.h"
 
-#import "DSMapView.h"
-
 @interface RMMapView (DSTiledLayerMapView)
 
 - (void)performInitialSetup;
@@ -43,9 +41,9 @@
 
 #pragma mark -
 
-- (void)setMasterView:(RMMapView *)mapView
+- (void)setMasterView:(DSMapView *)mapView
 {
-    NSAssert(([mapView isMemberOfClass:[RMMapView class]] || [mapView isMemberOfClass:[DSMapView class]] || ! mapView), @"Master view must be an instance of RMMapView or nil");
+    NSAssert(([mapView isMemberOfClass:[DSMapView class]] || ! mapView), @"Master view must be an instance of DSMapView or nil");
     
     [masterView release];
     masterView = [mapView retain];

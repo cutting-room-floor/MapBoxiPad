@@ -100,6 +100,13 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                  name:DSMapBoxTileSetChangedNotification
                                                object:nil];
     
+    // watch for zoom bounds limits
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(zoomBoundsReached:)
+                                                 name:DSMapContentsZoomBoundsReached
+                                               object:nil];
+    
     // watch for net changes
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -175,6 +182,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     
     [reachability stopNotifier];
@@ -612,6 +620,59 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
 {
     AudioServicesDisposeSystemSoundID(sound);
+}
+
+- (void)zoomBoundsReached:(NSNotification *)notification
+{
+    // get details
+    //
+    DSMapView *limitedMapView = (DSMapView *)[[notification userInfo] objectForKey:@"limitedMapView"];
+    NSString *limitedTileSourceName = [limitedMapView.contents.tileSource shortName];
+    
+    // create notify message view
+    //
+    UIView *notifyView = [[[UIView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
+    
+    notifyView.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.8];
+    notifyView.userInteractionEnabled = NO;
+    notifyView.layer.shadowOffset     = CGSizeMake(0, 1);
+    notifyView.layer.shadowOpacity    = 0.5;
+    
+    // create text label
+    //
+    UILabel *notifyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
+    
+    notifyLabel.textColor       = [UIColor whiteColor];
+    notifyLabel.backgroundColor = [UIColor clearColor];
+    notifyLabel.font            = [UIFont systemFontOfSize:13.0];
+    notifyLabel.text            = [NSString stringWithFormat:@"Tile set \"%@\" is not available beyond this zoom level", limitedTileSourceName];
+
+    [notifyView addSubview:notifyLabel];
+
+    // size according to text length
+    //
+    CGSize labelSize   = notifyLabel.frame.size;
+    CGSize textSize    = [notifyLabel.text sizeWithFont:notifyLabel.font];
+    
+    CGFloat adjustment = labelSize.width - textSize.width;
+
+    notifyLabel.frame = CGRectMake(notifyLabel.frame.origin.x, notifyLabel.frame.origin.y, 
+                                   textSize.width, textSize.height);
+    notifyView.frame  = CGRectMake(notifyView.frame.origin.x,  notifyView.frame.origin.y,  
+                                   notifyView.frame.size.width - adjustment, notifyView.frame.size.height);
+    
+    // show it & fade out
+    //
+    [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:2.5];
+    
+    notifyView.alpha = 0.0;
+    
+    [UIView commitAnimations];
+    
+    [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:2.5];
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification

@@ -24,6 +24,8 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
+NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";
+
 @interface DSMapContents (DSMapContentsPrivate)
 
 - (BOOL)canMoveBy:(CGSize)delta;
@@ -190,40 +192,13 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
     else if (boundsWarningEnabled && limitedMapView)
     {
-        NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"click" ofType:@"wav"]];
-        SystemSoundID sound;
-        AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, DSMapContents_SoundCompletionProc, self);
-        AudioServicesPlaySystemSound(sound);
-        
-        mapView.alpha = kWarningAlpha;
-        
-        if (self.layerMapViews)
-            for (RMMapView *layerMapView in layerMapViews)
-                layerMapView.alpha = kWarningAlpha;
-        
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.75];
-        
-        mapView.alpha = 1.0;
-        
-        if (self.layerMapViews)
-            for (RMMapView *layerMapView in layerMapViews)
-                layerMapView.alpha = 1.0;
-        
-        [UIView commitAnimations];
-        
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Bounds Reached"
-                                                         message:@"The layer can't zoom any further. Try a layer with a greater bounds in order to zoom beyond the current view."
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached
+                                                            object:self
+                                                          userInfo:[NSDictionary dictionaryWithObject:limitedMapView forKey:@"limitedMapView"]];
         
         boundsWarningEnabled = NO;
         
-        [NSTimer scheduledTimerWithTimeInterval:1.0
+        [NSTimer scheduledTimerWithTimeInterval:2.5
                                          target:self
                                        selector:@selector(enableBoundsWarning:)
                                        userInfo:nil
@@ -242,11 +217,6 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
             [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
     
     [self recalculateClustersIfNeeded];
-}
-
-void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData)
-{
-    AudioServicesDisposeSystemSoundID(sound);
 }
 
 - (void)enableBoundsWarning:(NSTimer *)timer

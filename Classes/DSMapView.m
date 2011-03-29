@@ -35,4 +35,31 @@
         [super touchesEnded:touches withEvent:event];
 }
 
+#pragma mark -
+
+- (DSMapView *)topMostMapView
+{
+    /**
+     * This iterates our own peer views, bottom-up, returning the top-most
+     * map one, which might just be us.
+     */
+
+    DSMapView *topMostMapView = self;
+    
+    for (UIView *peerView in [[self superview] subviews])
+    {
+        if ( ! [peerView isKindOfClass:[RMMapView class]])
+            break;
+        
+        topMostMapView = (DSMapView *)peerView;
+    }
+    
+    return topMostMapView;
+}
+
+- (void)insertLayerMapView:(DSTiledLayerMapView *)layerMapView
+{
+    [[self superview] insertSubview:(UIView *)layerMapView aboveSubview:[self topMostMapView]];
+}
+
 @end

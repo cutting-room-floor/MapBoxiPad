@@ -8,9 +8,14 @@
 
 #import "RMMapView.h"
 
+@class DSTiledLayerMapView;
+
 @interface DSMapView : RMMapView
 {
     BOOL touchesMoved;
 }
+
+- (DSMapView *)topMostMapView;
+- (void)insertLayerMapView:(DSTiledLayerMapView *)layerMapView;
 
 @end

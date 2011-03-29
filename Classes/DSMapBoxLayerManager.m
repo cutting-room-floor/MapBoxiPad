@@ -13,12 +13,12 @@
 #import "RMMBTilesTileSource.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapContents.h"
+#import "DSMapView.h"
 
 #import "UIApplication_Additions.h"
 
 #import "SimpleKML.h"
 
-#import "RMMapView.h"
 #import "RMOpenStreetMapSource.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -43,7 +43,7 @@
 @synthesize dataLayerCount;
 @synthesize delegate;
 
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(RMMapView *)mapView;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 {
     self = [super init];
 
@@ -291,13 +291,13 @@
         //
         [((DSMapContents *)baseMapView.contents).layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
-        // iterate visible layers, finding map for each & inserting it on top (but below toolbar & watermark)
+        // iterate visible layers, finding map for each & inserting it above top-most existing map layer
         //
         for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
         {
             DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"path"]]] lastObject];
             
-            [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 3)];
+            [baseMapView insertLayerMapView:layerMapView];
             
             [orderedMaps addObject:layerMapView];
         }
@@ -578,9 +578,9 @@
                 
                 layerMapView.tileSetURL = tileSetURL;
                 
-                // insert below toolbar & watermark
+                // insert above top-most existing map view
                 //
-                [[baseMapView superview] insertSubview:layerMapView atIndex:([baseMapView.superview.subviews count] - 3)];
+                [baseMapView insertLayerMapView:layerMapView];
                 
                 // copy main map view attributes
                 //
