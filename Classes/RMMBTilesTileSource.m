@@ -415,36 +415,39 @@
         NSArray *rows = [grid objectForKey:@"grid"];
         NSArray *keys = [grid objectForKey:@"keys"];
         
-        // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
-        //
-        int factor = 256 / [rows count];
-        int row    = point.y / factor;
-        int col    = point.x / factor;
-        
-        if (row < [rows count])
+        if (rows && [rows count] > 0)
         {
-            NSString *line = [rows objectAtIndex:row];
+            // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
+            //
+            int factor = 256 / [rows count];
+            int row    = point.y / factor;
+            int col    = point.x / factor;
             
-            if (col < [line length])
+            if (row < [rows count])
             {
-                unichar theChar = [line characterAtIndex:col];
-                unsigned short decoded = theChar;
+                NSString *line = [rows objectAtIndex:row];
                 
-                if (decoded >= 93)
-                    decoded--;
-                
-                if (decoded >=35)
-                    decoded--;
-                
-                decoded = decoded - 32;
-                
-                NSString *key = [keys objectAtIndex:decoded];
-                
-                if (key)
+                if (col < [line length])
                 {
-                    // TODO: look up & return data from `grid_data`
-                    //
-                    data = [NSDictionary dictionaryWithObject:key forKey:@"data"];
+                    unichar theChar = [line characterAtIndex:col];
+                    unsigned short decoded = theChar;
+                    
+                    if (decoded >= 93)
+                        decoded--;
+                    
+                    if (decoded >=35)
+                        decoded--;
+                    
+                    decoded = decoded - 32;
+                    
+                    NSString *key = [keys objectAtIndex:decoded];
+                    
+                    if (key)
+                    {
+                        // TODO: look up & return data from `grid_data`
+                        //
+                        data = [NSDictionary dictionaryWithObject:key forKey:@"data"];
+                    }
                 }
             }
         }
