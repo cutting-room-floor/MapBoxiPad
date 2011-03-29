@@ -120,7 +120,6 @@
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
 		DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA58F6E1326CAA6000E0761 /* DSMapView.m */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
-		DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */ = {isa = PBXBuildFile; fileRef = DDB36DA8123AFE0B00B81D23 /* click.wav */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
@@ -367,7 +366,6 @@
 		DDA58F6D1326CAA6000E0761 /* DSMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapView.h; sourceTree = "<group>"; };
 		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
-		DDB36DA8123AFE0B00B81D23 /* click.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = click.wav; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
 		DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentLoadController.m; sourceTree = "<group>"; };
 		DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentLoadController.xib; sourceTree = "<group>"; };
@@ -672,7 +670,6 @@
 			isa = PBXGroup;
 			children = (
 				DD48AC3F11D3D79A000AF79E /* page_flip.wav */,
-				DDB36DA8123AFE0B00B81D23 /* click.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -1116,7 +1113,6 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD3D93E0123047F20049ABB0 /* linen.png in Resources */,
-				DDB36DA9123AFE0B00B81D23 /* click.wav in Resources */,
 				D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */,
 				DDCE2A1112B6F570008A1257 /* point.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
