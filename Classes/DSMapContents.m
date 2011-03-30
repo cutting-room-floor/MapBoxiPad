@@ -144,6 +144,27 @@ void DSMapContents_SoundCompletionProc (SystemSoundID sound, void *clientData);
     }
 }
 
+- (void)setZoom:(float)zoom
+{
+    [self stopRecalculatingClusters];
+    
+    [super setZoom:zoom];
+    
+    if (self.layerMapViews)
+        for (RMMapView *layerMapView in layerMapViews)
+            [layerMapView.contents setZoom:zoom];
+    
+    [self recalculateClustersIfNeeded];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                             selector:@selector(postZoom) 
+                                               object:nil];
+    
+    [self performSelector:@selector(postZoom) 
+               withObject:nil 
+               afterDelay:0.1];
+}
+
 - (void)zoomByFactor:(float)zoomFactor near:(CGPoint)pivot
 {
     [self zoomByFactor:zoomFactor near:pivot animated:NO withCallback:nil];

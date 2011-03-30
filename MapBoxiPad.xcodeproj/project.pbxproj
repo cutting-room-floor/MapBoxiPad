@@ -128,7 +128,6 @@
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
-		DDCE2A1112B6F570008A1257 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE2A1012B6F570008A1257 /* point.png */; };
 		DDD28224132939D700B30C1B /* CJSONDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2820E132939D700B30C1B /* CJSONDeserializer.m */; };
 		DDD28225132939D700B30C1B /* CJSONScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28210132939D700B30C1B /* CJSONScanner.m */; };
 		DDD28226132939D700B30C1B /* CJSONSerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28212132939D700B30C1B /* CJSONSerializer.m */; };
@@ -142,6 +141,9 @@
 		DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
+		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
+		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
+		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
@@ -378,7 +380,6 @@
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
-		DDCE2A1012B6F570008A1257 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = "<group>"; };
 		DDD2820D132939D700B30C1B /* CJSONDeserializer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONDeserializer.h; sourceTree = "<group>"; };
 		DDD2820E132939D700B30C1B /* CJSONDeserializer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONDeserializer.m; sourceTree = "<group>"; };
 		DDD2820F132939D700B30C1B /* CJSONScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CJSONScanner.h; sourceTree = "<group>"; };
@@ -405,6 +406,9 @@
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
 		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
+		DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs_highlight.png; sourceTree = SOURCE_ROOT; };
+		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
+		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -661,6 +665,7 @@
 				DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */,
 				DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */,
 				DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */,
+				DDE1C4731342711E0049C325 /* Resources */,
 			);
 			name = "Layer Management";
 			path = Classes;
@@ -895,7 +900,7 @@
 			children = (
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD72C76211E6847C0030C637 /* circle.png */,
-				DDCE2A1012B6F570008A1257 /* point.png */,
+				DDE1C6B91342E12F0049C325 /* point.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1008,6 +1013,15 @@
 			name = Reachability;
 			sourceTree = "<group>";
 		};
+		DDE1C4731342711E0049C325 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DDE1C6B41342E1180049C325 /* crosshairs.png */,
+				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		DDE77D5712120B4600201ACE /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,7 +1128,6 @@
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD3D93E0123047F20049ABB0 /* linen.png in Resources */,
 				D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */,
-				DDCE2A1112B6F570008A1257 /* point.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
 				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
@@ -1127,6 +1140,9 @@
 				DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */,
 				DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */,
 				DD6996691309A74000E1A103 /* World_Light.mbtiles in Resources */,
+				DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */,
+				DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */,
+				DDE1C6BA1342E12F0049C325 /* point.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

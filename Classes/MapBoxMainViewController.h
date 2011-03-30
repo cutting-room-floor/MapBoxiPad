@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 #import "DSMapBoxDocumentLoadController.h"
+#import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -24,7 +25,8 @@
                                                         DSMapBoxDocumentLoadControllerDelegate, 
                                                         DSDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
-                                                        MFMailComposeViewControllerDelegate>
+                                                        MFMailComposeViewControllerDelegate,
+                                                        DSMapBoxLayerControllerDelegate>
 {
     IBOutlet DSMapView *mapView;
     IBOutlet UILabel *attributionLabel;

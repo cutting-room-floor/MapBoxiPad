@@ -14,7 +14,6 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapContents.h"
-#import "DSMapBoxLayerController.h"
 #import "DSMapBoxDocumentSaveController.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
@@ -471,6 +470,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
             
             layerController.layerManager = layerManager;
+            layerController.delegate     = self;
             
             UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
             
@@ -906,6 +906,34 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         default:
             
             [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark -
+
+- (void)zoomToLayer:(NSDictionary *)layer
+{
+    if ([layerManager maximumPossibleZoomLevel] >= [layerManager minimumPossibleZoomLevel])
+    {
+        RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+
+        if ([layerManager minimumPossibleZoomLevel] < [source minZoom])
+            mapView.contents.zoom = [source minZoom];
+        
+        else 
+            mapView.contents.zoom = [layerManager minimumPossibleZoomLevel];
+        
+        if ( ! [source hasDefaultBoundingBox])
+        {
+            RMSphericalTrapezium bbox = [source latitudeLongitudeBoundingBox];
+            
+            CLLocationDegrees lon, lat;
+            
+            lon = (bbox.northeast.longitude + bbox.southwest.longitude) / 2;
+            lat = (bbox.northeast.latitude  + bbox.southwest.latitude)  / 2;
+            
+            [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
+        }
     }
 }
 

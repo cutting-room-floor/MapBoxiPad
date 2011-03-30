@@ -25,6 +25,7 @@ static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocument
 
 @class DSMapBoxDataOverlayManager;
 @class DSMapView;
+@class RMMBTilesTileSource;
 
 @protocol DSDataLayerHandlerDelegate
 
@@ -67,6 +68,8 @@ typedef enum {
 @property (nonatomic, assign) id <NSObject, DSDataLayerHandlerDelegate>delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
+- (float)minimumPossibleZoomLevel;
+- (float)maximumPossibleZoomLevel;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
 - (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;

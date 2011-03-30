@@ -8,11 +8,12 @@
 
 #import "DSMapBoxLayerController.h"
 
-#import "MapBoxAppDelegate.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
+
 #import "RMMapView.h"
+#import "RMMBTilesTileSource.h"
 
 #import "Reachability.h"
 
@@ -27,6 +28,7 @@
 @implementation DSMapBoxLayerController
 
 @synthesize layerManager;
+@synthesize delegate;
 @synthesize baseLayerRowToDelete;
 
 - (void)viewDidLoad
@@ -83,6 +85,17 @@
     self.tableView.editing = NO;
 }
 
+- (IBAction)tappedLayerButton:(id)sender event:(id)event
+{
+    UITouch *touch = [[event allTouches] anyObject];
+    CGPoint  point = [touch locationInView:self.tableView];
+    
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: point];
+
+    if (indexPath)
+        [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+}
+
 #pragma mark -
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
@@ -102,8 +115,6 @@
 
     [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    [self.tableView cellForRowAtIndexPath:indexPath].accessoryView = nil;
-    
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     
     NSArray *layers;
@@ -123,7 +134,33 @@
             break;
     }
             
-    cell.accessoryType = ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+    if ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
+    {
+        if (indexPath.section == DSMapBoxLayerSectionTile)
+        {
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            button.frame = CGRectMake(0, 0, 44.0, 44.0);
+            
+            [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
+            
+            [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
+            
+            cell.accessoryView = button;
+        }
+        else
+        {
+            cell.accessoryView = nil;
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        }
+    }
+    
+    else
+    {
+        cell.accessoryView = nil;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
 }
 
 #pragma mark -
@@ -179,7 +216,9 @@
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionBase:
-            cell.accessoryType        = ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+            
+            cell.accessoryView        = nil;
+            cell.accessoryType        = [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
@@ -187,7 +226,26 @@
             break;
             
         case DSMapBoxLayerSectionTile:
-            cell.accessoryType        = ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+
+            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
+            {
+                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                
+                button.frame = CGRectMake(0, 0, 44.0, 44.0);
+                
+                [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
+                [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
+                
+                [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
+                
+                cell.accessoryView = button;                
+            }
+            else
+            {
+                cell.accessoryView = nil;
+                cell.accessoryType = UITableViewCellAccessoryNone;                
+            }
+
             cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
@@ -195,7 +253,9 @@
             break;
             
         case DSMapBoxLayerSectionData:
-            cell.accessoryType        = ([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone);
+
+            cell.accessoryView        = nil;
+            cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
@@ -345,6 +405,34 @@
                                   inSection:sourceIndexPath.section];
     
     return proposedDestinationIndexPath;
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    /**
+     * Note that we are currently faking this via accessory view button actions.
+     */
+    
+    NSDictionary *layer;
+    
+    switch (indexPath.section)
+    {
+        case DSMapBoxLayerSectionBase:
+            layer = [self.layerManager.baseLayers objectAtIndex:indexPath.row];
+            break;
+            
+        case DSMapBoxLayerSectionTile:
+            layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+            break;
+            
+        case DSMapBoxLayerSectionData:
+            layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
+            break;
+    }
+
+    if (indexPath.section == DSMapBoxLayerSectionTile)
+        if (self.delegate && [self.delegate respondsToSelector:@selector(zoomToLayer:)])
+            [self.delegate zoomToLayer:layer];
 }
 
 #pragma mark -

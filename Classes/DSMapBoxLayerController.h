@@ -8,17 +8,29 @@
 
 #import <UIKit/UIKit.h>
 
+#import "RMLatLong.h"
+
 @class DSMapBoxLayerManager;
+
+@protocol DSMapBoxLayerControllerDelegate
+
+- (void)zoomToLayer:(NSDictionary *)layer;
+
+@end
+
+#pragma mark -
 
 @interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate>
 {
     DSMapBoxLayerManager *layerManager;
+    id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
     
     @private
         NSUInteger baseLayerRowToDelete;
 }
 
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
+@property (nonatomic, assign) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
 @property (nonatomic, assign) NSUInteger baseLayerRowToDelete;
 
 - (IBAction)tappedEditButton:(id)sender;

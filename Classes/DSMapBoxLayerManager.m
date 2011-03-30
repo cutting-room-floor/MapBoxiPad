@@ -105,6 +105,44 @@
 
 #pragma mark -
 
+- (float)minimumPossibleZoomLevel
+{
+    float min = kLowerZoomBounds <= [baseMapView.contents.tileSource minZoom] ? [baseMapView.contents.tileSource minZoom] : kLowerZoomBounds;
+    
+    for (NSDictionary *layer in self.tileLayers)
+    {
+        if ([[layer objectForKey:@"selected"] boolValue])
+        {
+            RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+            
+            if ([source minZoom] > min)
+                min = [source minZoom];
+        }
+    }
+    
+    return min;
+}
+
+- (float)maximumPossibleZoomLevel
+{
+    float max = [baseMapView.contents.tileSource maxZoom];
+    
+    for (NSDictionary *layer in self.tileLayers)
+    {
+        if ([[layer objectForKey:@"selected"] boolValue])
+        {
+            RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+            
+            if ([source maxZoom] < max)
+                max = [source maxZoom];
+        }
+    }
+    
+    return max;
+}
+
+#pragma mark -
+
 - (void)reloadLayersFromDisk
 {
     // base layers
@@ -364,14 +402,6 @@
     }
 }
 
-- (void)zoomToNewBoundsOfSource:(RMMBTilesTileSource *)source
-{
-    [baseMapView zoomWithLatLngBoundsNorthEast:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].northeast.latitude, 
-                                                                          [source latitudeLongitudeBoundingBox].northeast.longitude) 
-                                     SouthWest:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].southwest.latitude,
-                                                                          [source latitudeLongitudeBoundingBox].southwest.longitude)];
-}
-
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -620,11 +650,6 @@
                 //
                 layerMapView.delegate = dataOverlayManager;
                 dataOverlayManager.mapView = layerMapView;
-                
-                // zoom to new layer bounds (if any)
-                //
-                if (zoomNow && [source isKindOfClass:[RMMBTilesTileSource class]] && ! [(RMMBTilesTileSource *)source hasDefaultBoundingBox])
-                    [self zoomToNewBoundsOfSource:source];
             }
 
             break;
