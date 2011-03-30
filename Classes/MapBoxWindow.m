@@ -10,14 +10,20 @@
 
 @implementation MapBoxWindow
 
-@synthesize presentationView;
-
 - (id)initWithCoder:(NSCoder *)decoder
 {
     self = [super initWithCoder:decoder];
 
     if (self != nil)
     {
+        overlay = [[UIWindow alloc] initWithFrame:self.frame];
+        
+        overlay.userInteractionEnabled = NO;
+        overlay.windowLevel = UIWindowLevelStatusBar;
+        overlay.backgroundColor = [UIColor clearColor];
+        
+        [overlay makeKeyAndVisible];
+        
         touches = [[NSMutableDictionary dictionary] retain];
         active  = [[UIScreen screens] count] > 1 ? YES : NO;
 
@@ -40,7 +46,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenDidConnectNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIScreenDidDisconnectNotification object:nil];
     
-    [presentationView release];
+    [overlay release];
     [touches release];
     
     [super dealloc];
@@ -94,7 +100,7 @@
                 }
                 else if ([touch phase] == UITouchPhaseMoved)
                 {
-                    touchView.center = [touch locationInView:presentationView];
+                    touchView.center = [touch locationInView:overlay];
                 }
             }
             else if ([touch phase] == UITouchPhaseBegan)
@@ -103,9 +109,9 @@
                 
                 touchView.alpha = 0.5;
                 
-                [presentationView addSubview:touchView];
+                [overlay addSubview:touchView];
                 
-                touchView.center = [touch locationInView:presentationView];
+                touchView.center = [touch locationInView:overlay];
                 
                 [touches setObject:touchView forKey:hash];
             }

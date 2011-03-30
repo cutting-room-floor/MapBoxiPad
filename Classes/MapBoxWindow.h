@@ -10,11 +10,9 @@
 
 @interface MapBoxWindow : UIWindow
 {
-    UIView *presentationView;
+    UIWindow *overlay;
     NSMutableDictionary *touches;
     BOOL active;
 }
-
-@property (nonatomic, retain) UIView *presentationView;
 
 @end

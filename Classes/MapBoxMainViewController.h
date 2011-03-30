@@ -33,7 +33,6 @@
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
     IBOutlet UIBarButtonItem *clusteringButton;
-    IBOutlet UIView *presentationView;
     UIPopoverController *layersPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
@@ -48,7 +47,6 @@
 }
 
 @property (nonatomic, retain) NSString *badParsePath;
-@property (nonatomic, retain) IBOutlet UIView *presentationView;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;

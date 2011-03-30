@@ -47,7 +47,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 @implementation MapBoxMainViewController
 
 @synthesize badParsePath;
-@synthesize presentationView;
 
 - (void)viewDidLoad
 {
@@ -193,7 +192,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     [dataOverlayManager release];
     [badParsePath release];
     [documentsActionSheet release];
-    [presentationView release];
 
     [super dealloc];
 }

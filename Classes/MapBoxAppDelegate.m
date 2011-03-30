@@ -41,8 +41,6 @@
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 
-    ((MapBoxWindow *)window).presentationView = viewController.presentationView;
-    
     // display help UI on first run
     //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])

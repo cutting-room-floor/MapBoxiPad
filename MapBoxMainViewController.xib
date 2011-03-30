@@ -148,18 +148,6 @@
 							</object>
 						</object>
 					</object>
-					<object class="IBUIView" id="1043109344">
-						<reference key="NSNextResponder" ref="766721923"/>
-						<int key="NSvFlags">306</int>
-						<string key="NSFrameSize">{1024, 748}</string>
-						<reference key="NSSuperview" ref="766721923"/>
-						<object class="NSColor" key="IBUIBackgroundColor">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MSAwAA</bytes>
-						</object>
-						<bool key="IBUIUserInteractionEnabled">NO</bool>
-						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
-					</object>
 				</object>
 				<string key="NSFrameSize">{1024, 748}</string>
 				<reference key="NSSuperview"/>
@@ -256,14 +244,6 @@
 					</object>
 					<int key="connectionID">76</int>
 				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">presentationView</string>
-						<reference key="source" ref="841351856"/>
-						<reference key="destination" ref="1043109344"/>
-					</object>
-					<int key="connectionID">83</int>
-				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<object class="NSArray" key="orderedObjects">
@@ -294,7 +274,6 @@
 							<reference ref="459560094"/>
 							<reference ref="954110628"/>
 							<reference ref="685814082"/>
-							<reference ref="1043109344"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -356,12 +335,6 @@
 						<reference key="object" ref="619403507"/>
 						<reference key="parent" ref="459560094"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">81</int>
-						<reference key="object" ref="1043109344"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Presentation View</string>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -383,8 +356,6 @@
 					<string>72.IBPluginDependency</string>
 					<string>72.IBViewBoundsToFrameTransform</string>
 					<string>74.IBPluginDependency</string>
-					<string>81.IBPluginDependency</string>
-					<string>81.IBViewBoundsToFrameTransform</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -405,10 +376,6 @@
 						<bytes key="NSTransformStruct">AURKAABEKUAAA</bytes>
 					</object>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-					<object class="NSAffineTransform">
-						<bytes key="NSTransformStruct">AQAAAADCMgAAA</bytes>
-					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -511,7 +478,6 @@
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
-							<string>presentationView</string>
 							<string>toolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -520,7 +486,6 @@
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>DSMapView</string>
-							<string>UIView</string>
 							<string>UIToolbar</string>
 						</object>
 					</object>
@@ -532,7 +497,6 @@
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
-							<string>presentationView</string>
 							<string>toolbar</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -552,10 +516,6 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">mapView</string>
 								<string key="candidateClassName">DSMapView</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">presentationView</string>
-								<string key="candidateClassName">UIView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolbar</string>
