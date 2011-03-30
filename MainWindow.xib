@@ -2,7 +2,7 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="7.10">
 	<data>
 		<int key="IBDocument.SystemTarget">1056</int>
-		<string key="IBDocument.SystemVersion">10H574</string>
+		<string key="IBDocument.SystemVersion">10J869</string>
 		<string key="IBDocument.InterfaceBuilderVersion">823</string>
 		<string key="IBDocument.AppKitVersion">1038.35</string>
 		<string key="IBDocument.HIToolboxVersion">461.00</string>
@@ -145,6 +145,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>-1.CustomClassName</string>
 					<string>-2.CustomClassName</string>
+					<string>2.CustomClassName</string>
 					<string>2.IBEditorWindowLastContentRect</string>
 					<string>2.IBPluginDependency</string>
 					<string>6.CustomClassName</string>
@@ -157,6 +158,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIApplication</string>
 					<string>UIResponder</string>
+					<string>MapBoxWindow</string>
 					<string>{{206, 95}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>MapBoxAppDelegate</string>
@@ -187,6 +189,14 @@
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
+				<object class="IBPartialClassDescription">
+					<string key="className">DSMapView</string>
+					<string key="superclassName">RMMapView</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/DSMapView.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">MapBoxAppDelegate</string>
 					<string key="superclassName">NSObject</string>
@@ -246,10 +256,12 @@
 							<string>saveState:</string>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -265,6 +277,7 @@
 							<string>saveState:</string>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
@@ -286,6 +299,10 @@
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
+								<string key="name">tappedHelpButton:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
 								<string key="name">tappedLayersButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
@@ -295,33 +312,37 @@
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>attributionLabel</string>
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
-							<string>watermarkView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>UILabel</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
-							<string>RMMapView</string>
+							<string>DSMapView</string>
 							<string>UIToolbar</string>
-							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
 						<bool key="EncodedWithXMLCoder">YES</bool>
 						<object class="NSArray" key="dict.sortedKeys">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>attributionLabel</string>
 							<string>clusteringButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
-							<string>watermarkView</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<object class="IBToOneOutletInfo">
+								<string key="name">attributionLabel</string>
+								<string key="candidateClassName">UILabel</string>
+							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">clusteringButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
@@ -332,15 +353,11 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">mapView</string>
-								<string key="candidateClassName">RMMapView</string>
+								<string key="candidateClassName">DSMapView</string>
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolbar</string>
 								<string key="candidateClassName">UIToolbar</string>
-							</object>
-							<object class="IBToOneOutletInfo">
-								<string key="name">watermarkView</string>
-								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>
@@ -355,6 +372,14 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">MapBoxWindow</string>
+					<string key="superclassName">UIWindow</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Classes/MapBoxWindow.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">

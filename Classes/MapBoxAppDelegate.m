@@ -8,6 +8,8 @@
 
 #import "MapBoxAppDelegate.h"
 #import "MapBoxMainViewController.h"
+#import "MapBoxWindow.h"
+
 #import "UIApplication_Additions.h"
 
 @interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
@@ -39,6 +41,8 @@
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 
+    ((MapBoxWindow *)window).presentationView = viewController.presentationView;
+    
     // display help UI on first run
     //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
