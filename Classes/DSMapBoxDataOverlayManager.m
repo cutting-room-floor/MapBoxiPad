@@ -471,7 +471,7 @@
 
             balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
             
-            balloon.passthroughViews = [NSArray arrayWithObjects:mapView];
+            balloon.passthroughViews = [NSArray arrayWithObject:mapView];
             balloon.delegate = self;
             
             balloonController.name        = [interactivityData objectForKey:@"data"];
