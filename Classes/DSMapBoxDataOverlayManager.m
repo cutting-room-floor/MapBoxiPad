@@ -464,10 +464,14 @@
         //
         if ([interactivityData objectForKey:@"data"] && [[interactivityData objectForKey:@"data"] length])
         {
+            if (balloon)
+                [balloon dismissPopoverAnimated:NO];
+            
             DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
 
             balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
             
+            balloon.passthroughViews = [NSArray arrayWithObjects:mapView];
             balloon.delegate = self;
             
             balloonController.name        = [interactivityData objectForKey:@"data"];
@@ -482,11 +486,16 @@
                    permittedArrowDirections:UIPopoverArrowDirectionAny
                                    animated:YES];
         }
+        else if (balloon)
+            [balloon dismissPopoverAnimated:YES];
     }
 }
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {
+    if (balloon)
+        [balloon dismissPopoverAnimated:NO];
+    
     NSDictionary *markerData = ((NSDictionary *)marker.data);
     
     DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
@@ -496,6 +505,7 @@
     //
     balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
     
+    balloon.passthroughViews = [NSArray arrayWithObject:mapView];
     balloon.delegate = self;
     
     // KML placemarks have their own title & description
@@ -545,6 +555,12 @@
 - (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {
     [self tapOnMarker:marker onMap:map];
+}
+
+- (void)beforeMapMove:(RMMapView*)map
+{
+    if (balloon)
+        [balloon dismissPopoverAnimated:NO];
 }
 
 #pragma mark -
