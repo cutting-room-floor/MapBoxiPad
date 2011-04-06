@@ -30,6 +30,7 @@
     NSMutableArray *overlays;
     NSMutableDictionary *lastMarkerInfo;
     UIPopoverController *balloon;
+    UIWebView *interactivityFormatter;
 }
 
 @property (nonatomic, retain) RMMapView *mapView;

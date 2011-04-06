@@ -34,7 +34,16 @@
                                                   encoding:NSUTF8StringEncoding
                                                      error:NULL];
     
-    balloon = [balloon stringByReplacingOccurrencesOfString:@"##name##"        withString:self.name];
+    if (self.name && [self.name length])
+    {
+        balloon = [balloon stringByReplacingOccurrencesOfString:@"##name##" withString:self.name];
+    }
+    else
+    {
+        balloon = [balloon stringByReplacingOccurrencesOfString:@"<strong>##name##</strong>" withString:@""];
+        balloon = [balloon stringByReplacingOccurrencesOfString:@"<br/>"                     withString:@""];
+    }
+    
     balloon = [balloon stringByReplacingOccurrencesOfString:@"##description##" withString:self.description];
     
     [webView loadHTMLString:balloon baseURL:nil];

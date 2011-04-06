@@ -50,6 +50,10 @@
     {
         mapView = [inMapView retain];
         overlays = [[NSMutableArray array] retain];
+        
+        interactivityFormatter = [[UIWebView alloc] initWithFrame:CGRectZero];
+        [mapView.superview addSubview:interactivityFormatter];
+        [interactivityFormatter loadHTMLString:nil baseURL:nil];
     }
     
     return self;
@@ -59,6 +63,9 @@
 {
     [mapView release];
     [overlays release];
+    
+    [interactivityFormatter removeFromSuperview];
+    [interactivityFormatter release];
     
     [super dealloc];
 }
@@ -454,37 +461,47 @@
             .y    = tileY,
         };
         
-        // fetch interactivity data for tile & point in it
+        // fetch interactivity data for tile/point & JavaScript formatter source for set
         //
         CGPoint tilePoint = CGPointMake(normalizedX, normalizedY);
         
-        NSDictionary *interactivityData = [((RMMBTilesTileSource *)tileSource) interactivityDataForPoint:tilePoint inTile:tile];
+        NSDictionary *interactivityDictionary = [((RMMBTilesTileSource *)tileSource) interactivityDictionaryForPoint:tilePoint inTile:tile];
+        NSString     *formatterJavascript     = [((RMMBTilesTileSource *)tileSource) interactivityFormatterJavascript];
         
-        // TODO: run interactivity data through the tile source formatter function
-        //
-        if ([interactivityData objectForKey:@"data"] && [[interactivityData objectForKey:@"data"] length])
+        if (interactivityDictionary && formatterJavascript)
         {
-            if (balloon)
-                [balloon dismissPopoverAnimated:NO];
+            NSString *keyJSON = [interactivityDictionary objectForKey:@"keyJSON"];
             
-            DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+            [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var data   = %@;", keyJSON]];
+            [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var format = %@;", formatterJavascript]];
 
-            balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+            NSString *formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format('', data);"];
             
-            balloon.passthroughViews = [NSArray arrayWithObject:mapView];
-            balloon.delegate = self;
+            if (formattedOutput)
+            {
+                if (balloon)
+                    [balloon dismissPopoverAnimated:NO];
+                
+                DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+                
+                balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+                
+                balloon.passthroughViews = [NSArray arrayWithObject:mapView];
+                balloon.delegate = self;
+                
+                balloonController.name        = @"";
+                balloonController.description = formattedOutput;
+                
+                balloon.popoverContentSize = CGSizeMake(320, 160);
+                
+                [balloon setContentViewController:balloonController];
+                
+                [balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
+                                         inView:mapView 
+                       permittedArrowDirections:UIPopoverArrowDirectionAny
+                                       animated:YES];
+            }
             
-            balloonController.name        = [interactivityData objectForKey:@"data"];
-            balloonController.description = @"Interactivity data will go here when we have a complete tile set.";
-            
-            balloon.popoverContentSize = CGSizeMake(320, 160);
-            
-            [balloon setContentViewController:balloonController];
-            
-            [balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
-                                     inView:mapView 
-                   permittedArrowDirections:UIPopoverArrowDirectionAny
-                                   animated:YES];
         }
         else if (balloon)
             [balloon dismissPopoverAnimated:YES];

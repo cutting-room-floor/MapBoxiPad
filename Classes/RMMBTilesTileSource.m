@@ -466,21 +466,19 @@
     return (count ? YES : NO);
 }
 
-- (NSDictionary *)interactivityDataForPoint:(CGPoint)point inTile:(RMTile)tile
+- (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile
 {
-    NSData       *gridData = nil;
-    NSDictionary *grid     = nil;
-    NSDictionary *data     = nil;
-    
     FMResultSet *results = [db executeQuery:@"select grid from grids where zoom_level = ? and tile_column = ? and tile_row = ?", 
                                [NSNumber numberWithShort:tile.zoom], 
                                [NSNumber numberWithUnsignedInt:tile.x], 
                                [NSNumber numberWithUnsignedInt:tile.y]];
     
     if ([db hadError])
-        return grid;
+        return nil;
     
     [results next];
+    
+    NSData *gridData = nil;
     
     if ([results hasAnotherRow])
         gridData = [results dataForColumnIndex:0];
@@ -492,50 +490,100 @@
         NSData *inflatedData = [gridData gzipInflate];
         NSString *gridString = [[[NSString alloc] initWithData:inflatedData encoding:NSUTF8StringEncoding] autorelease];
         
-        grid = [NSDictionary dictionaryWithJSONString:gridString error:NULL];
-
-        NSArray *rows = [grid objectForKey:@"grid"];
-        NSArray *keys = [grid objectForKey:@"keys"];
+        NSError *error = nil;
         
-        if (rows && [rows count] > 0)
+        NSDictionary *grid = [NSDictionary dictionaryWithJSONString:gridString error:&error];
+
+        if (grid && ! error)
         {
-            // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
-            //
-            int factor = 256 / [rows count];
-            int row    = point.y / factor;
-            int col    = point.x / factor;
+            NSArray *rows = [grid objectForKey:@"grid"];
+            NSArray *keys = [grid objectForKey:@"keys"];
             
-            if (row < [rows count])
+            if (rows && [rows count] > 0)
             {
-                NSString *line = [rows objectAtIndex:row];
+                // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
+                //
+                int factor = 256 / [rows count];
+                int row    = point.y / factor;
+                int col    = point.x / factor;
                 
-                if (col < [line length])
+                if (row < [rows count])
                 {
-                    unichar theChar = [line characterAtIndex:col];
-                    unsigned short decoded = theChar;
+                    NSString *line = [rows objectAtIndex:row];
                     
-                    if (decoded >= 93)
-                        decoded--;
-                    
-                    if (decoded >=35)
-                        decoded--;
-                    
-                    decoded = decoded - 32;
-                    
-                    NSString *key = [keys objectAtIndex:decoded];
-                    
-                    if (key)
+                    if (col < [line length])
                     {
-                        // TODO: look up & return data from `grid_data`
-                        //
-                        data = [NSDictionary dictionaryWithObject:key forKey:@"data"];
+                        unichar theChar = [line characterAtIndex:col];
+                        unsigned short decoded = theChar;
+                        
+                        if (decoded >= 93)
+                            decoded--;
+                        
+                        if (decoded >=35)
+                            decoded--;
+                        
+                        decoded = decoded - 32;
+                        
+                        NSString *keyName = nil;
+                        
+                        if (decoded < [keys count])
+                            keyName = [keys objectAtIndex:decoded];
+                        
+                        if (keyName)
+                        {
+                            // get JSON for this grid point
+                            //
+                            results = [db executeQuery:@"select key_json from grid_data where zoom_level = ? and tile_column = ? and tile_row = ? and key_name = ?", 
+                                          [NSNumber numberWithShort:tile.zoom],
+                                          [NSNumber numberWithShort:tile.x],
+                                          [NSNumber numberWithShort:tile.y],
+                                          keyName];
+                            
+                            if ([db hadError])
+                                return nil;
+                            
+                            [results next];
+                            
+                            NSString *jsonString = nil;
+                            
+                            if ([results hasAnotherRow])
+                                jsonString = [results stringForColumn:@"key_json"];
+                            
+                            [results close];
+                            
+                            if (jsonString)
+                            {
+                                return [NSDictionary dictionaryWithObjectsAndKeys:keyName,    @"keyName",
+                                                                                  jsonString, @"keyJSON", 
+                                                                                  nil];
+                            }
+                        }
                     }
                 }
             }
         }
     }
     
-    return data;    
+    return nil;    
+}
+
+- (NSString *)interactivityFormatterJavascript
+{
+    FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'formatter'"];
+    
+    if ([db hadError])
+        return nil;
+    
+    [results next];
+    
+    NSString *js = nil;
+    
+    if ([results hasAnotherRow])
+        js = [results stringForColumn:@"value"];
+    
+    [results close];
+    
+    return js;
 }
 
 @end

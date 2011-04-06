@@ -75,6 +75,7 @@
 - (NSString *)longAttribution;
 - (void)removeAllCachedImages;
 - (BOOL)supportsInteractivity;
-- (NSDictionary *)interactivityDataForPoint:(CGPoint)point inTile:(RMTile)tile;
+- (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile;
+- (NSString *)interactivityFormatterJavascript;
 
 @end
