@@ -2,6 +2,8 @@ MapBox (c) 2010-2011 Development Seed, Inc.
 
 Libraries used under license: 
 
+ * Fingertips, (c) 2011 Development Seed, Inc. https://github.com/developmentseed/fingertips
+
  * FMDB, (c) 2008 Flying Meat Inc. https://github.com/ccgus/fmdb
 
  * Reachability, (c) 2009 Apple Inc. http://developer.apple.com/library/ios/#samplecode/Reachability/Introduction/Intro.html
