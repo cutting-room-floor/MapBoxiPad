@@ -13,6 +13,13 @@
     UIWindow *overlay;
     NSMutableDictionary *touches;
     BOOL active;
+    UIImage *touchImage;
+    CGFloat touchAlpha;
+    NSTimeInterval fadeDuration;
 }
+
+@property (nonatomic, retain) UIImage *touchImage;
+@property (nonatomic, assign) CGFloat touchAlpha;
+@property (nonatomic, assign) NSTimeInterval fadeDuration;
 
 @end

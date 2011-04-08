@@ -8,37 +8,68 @@
 
 #import "MapBoxWindow.h"
 
+@interface MapBoxWindow (MapBoxWindowPrivate)
+
+- (void)setup;
+
+@end
+
+#pragma mark -
+
 @implementation MapBoxWindow
+
+@synthesize touchImage;
+@synthesize touchAlpha;
+@synthesize fadeDuration;
 
 - (id)initWithCoder:(NSCoder *)decoder
 {
+    // this covers NIB-loaded windows
+    //
     self = [super initWithCoder:decoder];
 
     if (self != nil)
-    {
-        overlay = [[UIWindow alloc] initWithFrame:self.frame];
-        
-        overlay.userInteractionEnabled = NO;
-        overlay.windowLevel = UIWindowLevelStatusBar;
-        overlay.backgroundColor = [UIColor clearColor];
-        
-        [overlay makeKeyAndVisible];
-        
-        touches = [[NSMutableDictionary dictionary] retain];
-        active  = [[UIScreen screens] count] > 1 ? YES : NO;
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(screenConnect:)
-                                                     name:UIScreenDidConnectNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(screenDisconnect:)
-                                                     name:UIScreenDidDisconnectNotification
-                                                   object:nil];
-    }
-        
+        [self setup];
+    
     return self;
+}
+
+- (id)initWithFrame:(CGRect)rect
+{
+    // this covers programmatically-created windows
+    //
+    self = [super initWithFrame:rect];
+    
+    if (self != nil)
+        [self setup];
+    
+    return self;
+}
+
+- (void)setup
+{
+    overlay = [[UIWindow alloc] initWithFrame:self.frame];
+    
+    overlay.userInteractionEnabled = NO;
+    overlay.windowLevel = UIWindowLevelStatusBar;
+    overlay.backgroundColor = [UIColor clearColor];
+    
+    [overlay makeKeyAndVisible];
+    
+    touches      = [[NSMutableDictionary dictionary] retain];
+    active       = [[UIScreen screens] count] > 1 ? YES : NO;
+    touchAlpha   = 0.5;
+    fadeDuration = 0.3;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(screenConnect:)
+                                                 name:UIScreenDidConnectNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(screenDisconnect:)
+                                                 name:UIScreenDidDisconnectNotification
+                                               object:nil];
 }
 
 - (void)dealloc
@@ -48,8 +79,43 @@
     
     [overlay release];
     [touches release];
-    
+    [touchImage release];
+
     [super dealloc];
+}
+
+#pragma mark -
+
+- (UIImage *)touchImage
+{
+    if ( ! touchImage)
+    {
+        UIBezierPath *clipPath = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 50.0, 50.0)];
+        
+        UIGraphicsBeginImageContext(clipPath.bounds.size);
+
+        UIBezierPath *drawPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(25.0, 25.0) 
+                                                                radius:22.0
+                                                            startAngle:0
+                                                              endAngle:2 * M_PI
+                                                             clockwise:YES];
+
+        drawPath.lineWidth = 2.0;
+        
+        [[UIColor blackColor] setStroke];
+        [[UIColor whiteColor] setFill];
+        
+        [drawPath stroke];
+        [drawPath fill];
+        
+        [clipPath addClip];
+        
+        touchImage = [UIGraphicsGetImageFromCurrentImageContext() retain];
+        
+        UIGraphicsEndImageContext();
+    }
+        
+    return touchImage;
 }
 
 #pragma mark -
@@ -83,7 +149,7 @@
                 if ([touch phase] == UITouchPhaseEnded || [touch phase] == UITouchPhaseCancelled)
                 {
                     [UIView beginAnimations:nil context:nil];
-                    [UIView setAnimationDuration:0.3];
+                    [UIView setAnimationDuration:self.fadeDuration];
                     
                     touchView.frame = CGRectMake(touchView.center.x - touchView.frame.size.width, 
                                                  touchView.center.y - touchView.frame.size.height, 
@@ -94,7 +160,7 @@
                     
                     [UIView commitAnimations];
                 
-                    [touchView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:0.3];
+                    [touchView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:self.fadeDuration];
                     
                     [touches removeObjectForKey:hash];
                 }
@@ -105,9 +171,9 @@
             }
             else if ([touch phase] == UITouchPhaseBegan)
             {
-                UIImageView *touchView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"touch.png"]] autorelease];
+                UIImageView *touchView = [[[UIImageView alloc] initWithImage:self.touchImage] autorelease];
                 
-                touchView.alpha = 0.5;
+                touchView.alpha = self.touchAlpha;
                 
                 [overlay addSubview:touchView];
                 

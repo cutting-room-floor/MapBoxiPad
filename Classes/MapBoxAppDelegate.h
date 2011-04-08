@@ -8,16 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
+@class MapBoxWindow;
 @class MapBoxMainViewController;
 
 @interface MapBoxAppDelegate : NSObject <UIApplicationDelegate>
 {
-    UIWindow *window;
+    MapBoxWindow *window;
     MapBoxMainViewController *viewController;
     BOOL openingExternalFile;
 }
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
+@property (nonatomic, retain) IBOutlet MapBoxWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
 @property (nonatomic, assign) BOOL openingExternalFile;
 
