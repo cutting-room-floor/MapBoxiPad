@@ -125,9 +125,8 @@
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
+		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
-		DDC979C91342EF1800C9D2A8 /* MapBoxWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC979C81342EF1800C9D2A8 /* MapBoxWindow.m */; };
-		DDC97A691342F9F200C9D2A8 /* touch.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC97A681342F9F200C9D2A8 /* touch.png */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDD28224132939D700B30C1B /* CJSONDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2820E132939D700B30C1B /* CJSONDeserializer.m */; };
@@ -378,11 +377,10 @@
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
 		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
+		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
+		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
-		DDC979C71342EF1800C9D2A8 /* MapBoxWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxWindow.h; sourceTree = "<group>"; };
-		DDC979C81342EF1800C9D2A8 /* MapBoxWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxWindow.m; sourceTree = "<group>"; };
-		DDC97A681342F9F200C9D2A8 /* touch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = touch.png; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
@@ -453,8 +451,6 @@
 				28D7ACF60DDB3853001CB0EB /* MapBoxMainViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */,
 				2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */,
-				DDC979C71342EF1800C9D2A8 /* MapBoxWindow.h */,
-				DDC979C81342EF1800C9D2A8 /* MapBoxWindow.m */,
 			);
 			name = Main;
 			path = Classes;
@@ -700,6 +696,7 @@
 		DD48C45F11CC090400038969 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
+				DDC7AE19134F84B100C46EC0 /* Fingertips */,
 				DD72C37D11E53CF60030C637 /* FMDB */,
 				DDE09E18123C0FCF008ECB7A /* Reachability */,
 				DD48C2CB11CBF30600038969 /* route-me */,
@@ -784,7 +781,6 @@
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 				DD3D93DF123047F20049ABB0 /* linen.png */,
 				DD25422C12C03E79009261C1 /* dialog_background.png */,
-				DDC97A681342F9F200C9D2A8 /* touch.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -947,6 +943,15 @@
 			);
 			name = "Document Management";
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDC7AE19134F84B100C46EC0 /* Fingertips */ = {
+			isa = PBXGroup;
+			children = (
+				DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */,
+				DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */,
+			);
+			name = Fingertips;
 			sourceTree = "<group>";
 		};
 		DDCE299412B6E707008A1257 /* Resources */ = {
@@ -1153,7 +1158,6 @@
 				DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */,
 				DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */,
 				DDE1C6BA1342E12F0049C325 /* point.png in Resources */,
-				DDC97A691342F9F200C9D2A8 /* touch.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1288,7 +1292,7 @@
 				DDD2822B132939D700B30C1B /* CJSONSerialization.m in Sources */,
 				DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */,
 				DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */,
-				DDC979C91342EF1800C9D2A8 /* MapBoxWindow.m in Sources */,
+				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

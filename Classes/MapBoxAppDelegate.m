@@ -8,7 +8,8 @@
 
 #import "MapBoxAppDelegate.h"
 #import "MapBoxMainViewController.h"
-#import "MapBoxWindow.h"
+
+#import "DSFingerTipWindow.h"
 
 #import "UIApplication_Additions.h"
 

@@ -8,17 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-@class MapBoxWindow;
+@class DSFingerTipWindow;
 @class MapBoxMainViewController;
 
 @interface MapBoxAppDelegate : NSObject <UIApplicationDelegate>
 {
-    MapBoxWindow *window;
+    DSFingerTipWindow *window;
     MapBoxMainViewController *viewController;
     BOOL openingExternalFile;
 }
 
-@property (nonatomic, retain) IBOutlet MapBoxWindow *window;
+@property (nonatomic, retain) IBOutlet DSFingerTipWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
 @property (nonatomic, assign) BOOL openingExternalFile;
 

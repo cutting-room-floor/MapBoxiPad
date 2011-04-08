@@ -158,7 +158,7 @@
 					<bool key="EncodedWithXMLCoder">YES</bool>
 					<string>UIApplication</string>
 					<string>UIResponder</string>
-					<string>MapBoxWindow</string>
+					<string>DSFingerTipWindow</string>
 					<string>{{206, 95}, {768, 1024}}</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>MapBoxAppDelegate</string>
@@ -190,6 +190,14 @@
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<bool key="EncodedWithXMLCoder">YES</bool>
 				<object class="IBPartialClassDescription">
+					<string key="className">DSFingerTipWindow</string>
+					<string key="superclassName">UIWindow</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">Externals/fingertips/DSFingerTipWindow.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
 					<string key="className">DSMapView</string>
 					<string key="superclassName">RMMapView</string>
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
@@ -210,7 +218,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>MapBoxMainViewController</string>
-							<string>UIWindow</string>
+							<string>DSFingerTipWindow</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -228,7 +236,7 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">window</string>
-								<string key="candidateClassName">UIWindow</string>
+								<string key="candidateClassName">DSFingerTipWindow</string>
 							</object>
 						</object>
 					</object>
@@ -372,14 +380,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBUserSource</string>
 						<string key="minorKey"/>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">MapBoxWindow</string>
-					<string key="superclassName">UIWindow</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">Classes/MapBoxWindow.h</string>
 					</object>
 				</object>
 				<object class="IBPartialClassDescription">
