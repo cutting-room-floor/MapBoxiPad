@@ -8,6 +8,8 @@
 
 #import "DSMapView.h"
 
+#import "DSMapContents.h"
+
 @implementation DSMapView
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -29,7 +31,17 @@
     // two-finger tap to zoom out
     //
     if (lastGesture.numTouches == 2 && ! touchesMoved)
-        [self zoomOutToNextNativeZoomAt:lastGesture.center animated:YES];
+    {
+        if (self.contents.zoom - 1.0 < kLowerZoomBounds)
+        {
+            float factor = exp2f(kLowerZoomBounds - self.contents.zoom);
+            
+            [self zoomByFactor:factor near:lastGesture.center animated:YES];
+        }
+
+        else
+            [self zoomOutToNextNativeZoomAt:lastGesture.center animated:YES];
+    }
         
     else
         [super touchesEnded:touches withEvent:event];
