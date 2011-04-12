@@ -26,7 +26,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 @interface DSMapContents (DSMapContentsPrivate)
 
-- (BOOL)canMoveBy:(CGSize)delta;
 - (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView;
 - (void)postZoom;
 - (void)enableBoundsWarning:(NSTimer *)timer;
@@ -127,18 +126,56 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 - (void)moveBy:(CGSize)delta
 {
-    if ([self canMoveBy:delta])
+    // Adjust delta as necessary to constrain latitude, but not longitude.
+    //
+    // This is largely borrowed from -[RMMapView setConstraintsSW:NE:] and -[RMMapView moveBy:]
+    //
+    RMProjectedRect sourceBounds = [self.mercatorToScreenProjection projectedBounds];
+    RMProjectedSize XYDelta      = [self.mercatorToScreenProjection projectScreenSizeToXY:delta];
+
+    CGSize sizeRatio = CGSizeMake(((delta.width == 0)  ? 0 : XYDelta.width  / delta.width),
+                                  ((delta.height == 0) ? 0 : XYDelta.height / delta.height));
+
+    RMProjectedRect destinationBounds = sourceBounds;
+    
+    destinationBounds.origin.northing -= XYDelta.height;
+    destinationBounds.origin.easting  -= XYDelta.width; 
+    
+    BOOL constrained = NO;
+    
+    RMProjectedPoint SWconstraint = [self.projection latLongToPoint:CLLocationCoordinate2DMake(kLowerLatitudeBounds, 0)];
+    RMProjectedPoint NEconstraint = [self.projection latLongToPoint:CLLocationCoordinate2DMake(kUpperLatitudeBounds, 0)];
+    
+    if (destinationBounds.origin.northing < SWconstraint.northing)
     {
-        [self stopRecalculatingClusters];
-        
-        [super moveBy:delta];
-        
-        if (self.layerMapViews)
-            for (RMMapView *layerMapView in layerMapViews)
-                [layerMapView.contents moveBy:delta];
-        
-        [self recalculateClustersIfNeeded];
+        destinationBounds.origin.northing = SWconstraint.northing;
+        constrained = YES;
     }
+    
+    if (destinationBounds.origin.northing + sourceBounds.size.height > NEconstraint.northing)
+    {
+        destinationBounds.origin.northing = NEconstraint.northing - destinationBounds.size.height;
+        constrained = YES;
+    }
+
+    if (constrained) 
+    {
+        XYDelta.height = sourceBounds.origin.northing - destinationBounds.origin.northing;
+        XYDelta.width  = sourceBounds.origin.easting  - destinationBounds.origin.easting;
+        
+        delta = CGSizeMake(((sizeRatio.width == 0)  ? 0 : XYDelta.width  / sizeRatio.width), 
+                           ((sizeRatio.height == 0) ? 0 : XYDelta.height / sizeRatio.height));
+    }
+
+    [self stopRecalculatingClusters];
+        
+    [super moveBy:delta];
+        
+    if (self.layerMapViews)
+        for (RMMapView *layerMapView in layerMapViews)
+            [layerMapView.contents moveBy:delta];
+        
+    [self recalculateClustersIfNeeded];
 }
 
 - (void)setZoom:(float)zoom
@@ -310,44 +347,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 }
 
 #pragma mark -
-
-- (BOOL)canMoveBy:(CGSize)delta
-{
-    // top left
-    //
-    RMProjectedPoint currentTopLeftProj = [mercatorToScreenProjection projectScreenPointToXY:CGPointMake(0, 0)];
-
-    RMProjectedPoint proposedTopLeftProj = {
-        .easting  = currentTopLeftProj.easting  - (delta.width  * self.metersPerPixel),
-        .northing = currentTopLeftProj.northing + (delta.height * self.metersPerPixel),
-    };
-    
-    RMLatLong proposedTopLeftCoord = [projection pointToLatLong:proposedTopLeftProj];
-    
-    // bottom right
-    //
-    CGPoint currentBottomRightPoint = CGPointMake([mercatorToScreenProjection screenBounds].size.width, 
-                                                  [mercatorToScreenProjection screenBounds].size.height);
-    
-    RMProjectedPoint currentBottomRightProj = [mercatorToScreenProjection projectScreenPointToXY:currentBottomRightPoint];
-    
-    RMProjectedPoint proposedBottomRightProj = {
-        .easting  = currentBottomRightProj.easting  - (delta.width  * self.metersPerPixel),
-        .northing = currentBottomRightProj.northing + (delta.height * self.metersPerPixel),
-    };
-    
-    RMLatLong proposedBottomRightCoord = [projection pointToLatLong:proposedBottomRightProj];
-    
-    // check limits
-    //
-    if (delta.height > 0 && proposedTopLeftCoord.latitude >= kUpperLatitudeBounds)
-        return NO;
-
-    if (delta.height < 0 && proposedBottomRightCoord.latitude <= kLowerLatitudeBounds)
-        return NO;
-
-    return YES;
-}
 
 - (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView
 {
