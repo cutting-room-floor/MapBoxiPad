@@ -13,3 +13,6 @@
 [submodule "Externals/route-me"]
 	path = Externals/route-me
 	url = git@github.com:mapbox/route-me.git
+[submodule "Externals/Simple KML"]
+	path = Externals/Simple KML
+	url = git@github.com:mapbox/Simple-KML.git
