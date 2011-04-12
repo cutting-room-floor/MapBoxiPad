@@ -13,3 +13,6 @@
 [submodule "Externals/Fingertips"]
 	path = Externals/Fingertips
 	url = git@github.com:developmentseed/fingertips.git
+[submodule "Externals/route-me"]
+	path = Externals/route-me
+	url = git@github.com:mapbox/route-me.git
