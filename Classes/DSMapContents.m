@@ -9,7 +9,6 @@
 #import "DSMapContents.h"
 #import "RMMBTilesTileSource.h"
 #import "DSMapBoxMarkerManager.h"
-#import "DSMapBoxCoreAnimationRenderer.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxTileSetManager.h"
 
@@ -66,24 +65,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         mapView = (RMMapView *)newView;
         
         boundsWarningEnabled = YES;
-
-        // for non-overlay map views, swap in the fading renderer, then zoom to refresh it
-        //
-        if ( ! [newView isMemberOfClass:[DSTiledLayerMapView class]])
-        {        
-            [self setRenderer:[[[DSMapBoxCoreAnimationRenderer alloc] initWithContent:self] autorelease]];
-
-            if (initialZoomLevel - 1 > minZoomLevel)
-            {
-                [self zoomByFactor:0.5 near:newView.center];
-                [self zoomByFactor:2.0 near:newView.center];
-            }
-            else if (initialZoomLevel + 1 < maxZoomLevel)
-            {
-                [self zoomByFactor:2.0 near:newView.center];
-                [self zoomByFactor:0.5 near:newView.center];
-            }
-        }
     }
     
     return self;

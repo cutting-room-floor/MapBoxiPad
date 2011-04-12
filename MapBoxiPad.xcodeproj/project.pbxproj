@@ -139,7 +139,6 @@
 		DDD2822B132939D700B30C1B /* CJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2821F132939D700B30C1B /* CJSONSerialization.m */; };
 		DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28221132939D700B30C1B /* CJSONSerializedData.m */; };
 		DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28222132939D700B30C1B /* CDataScanner.m */; };
-		DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
@@ -405,8 +404,6 @@
 		DDD28221132939D700B30C1B /* CJSONSerializedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializedData.m; sourceTree = "<group>"; };
 		DDD28222132939D700B30C1B /* CDataScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDataScanner.m; path = Externals/TouchJSON/Source/CDataScanner.m; sourceTree = "<group>"; };
 		DDD28223132939D700B30C1B /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDataScanner.h; path = Externals/TouchJSON/Source/CDataScanner.h; sourceTree = "<group>"; };
-		DDDF80AF12385CC900550505 /* DSMapBoxCoreAnimationRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxCoreAnimationRenderer.h; sourceTree = "<group>"; };
-		DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxCoreAnimationRenderer.m; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
 		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
@@ -887,8 +884,6 @@
 				DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */,
 				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
 				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
-				DDDF80AF12385CC900550505 /* DSMapBoxCoreAnimationRenderer.h */,
-				DDDF80B012385CC900550505 /* DSMapBoxCoreAnimationRenderer.m */,
 				DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */,
 				DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
@@ -1265,7 +1260,6 @@
 				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
 				DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */,
-				DDDF80B112385CC900550505 /* DSMapBoxCoreAnimationRenderer.m in Sources */,
 				DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */,
 				DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */,
 				DD601BA212FA3C9A00CE7C14 /* CTidy.m in Sources */,
