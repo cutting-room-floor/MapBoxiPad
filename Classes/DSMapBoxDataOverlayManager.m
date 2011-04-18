@@ -506,6 +506,9 @@
         else if (balloon)
             [balloon dismissPopoverAnimated:YES];
     }
+
+    else if (balloon)
+        [balloon dismissPopoverAnimated:YES];
 }
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
