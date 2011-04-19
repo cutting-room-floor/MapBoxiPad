@@ -32,6 +32,7 @@
     NSMutableDictionary *lastMarkerInfo;
     DSMapBoxPopoverController *balloon;
     UIWebView *interactivityFormatter;
+    float lastKnownZoom;
 }
 
 @property (nonatomic, retain) RMMapView *mapView;
