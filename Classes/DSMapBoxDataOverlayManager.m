@@ -478,7 +478,7 @@
 
             NSString *formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format('', data);"];
             
-            if (formattedOutput)
+            if (formattedOutput && [formattedOutput length])
             {
                 if (balloon)
                     [balloon dismissPopoverAnimated:NO];
@@ -502,12 +502,12 @@
                        permittedArrowDirections:UIPopoverArrowDirectionAny
                                        animated:YES];
             }
-            
+            else if (balloon)
+                [balloon dismissPopoverAnimated:YES];
         }
         else if (balloon)
             [balloon dismissPopoverAnimated:YES];
     }
-
     else if (balloon)
         [balloon dismissPopoverAnimated:YES];
 }
