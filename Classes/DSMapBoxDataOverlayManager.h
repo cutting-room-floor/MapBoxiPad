@@ -23,13 +23,14 @@
 
 @class RMMapView;
 @class SimpleKML;
+@class DSMapBoxPopoverController;
 
 @interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
 {
     RMMapView *mapView;
     NSMutableArray *overlays;
     NSMutableDictionary *lastMarkerInfo;
-    UIPopoverController *balloon;
+    DSMapBoxPopoverController *balloon;
     UIWebView *interactivityFormatter;
 }
 

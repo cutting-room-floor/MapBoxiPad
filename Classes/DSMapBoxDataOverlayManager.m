@@ -11,6 +11,7 @@
 #import "DSMapBoxBalloonController.h"
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxMarkerManager.h"
+#import "DSMapBoxPopoverController.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -484,7 +485,7 @@
                 
                 DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
                 
-                balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+                balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
                 
                 balloon.passthroughViews = [NSArray arrayWithObject:mapView];
                 balloon.delegate = self;
@@ -523,7 +524,7 @@
     
     // init with generic view controller
     //
-    balloon = [[UIPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+    balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
     
     balloon.passthroughViews = [NSArray arrayWithObject:mapView];
     balloon.delegate = self;
@@ -539,7 +540,7 @@
         
         attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
                                  [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
-                                 1, 
+                                 1,
                                  1);
         
         balloon.popoverContentSize = CGSizeMake(320, 160);
@@ -577,10 +578,53 @@
     [self tapOnMarker:marker onMap:map];
 }
 
-- (void)beforeMapMove:(RMMapView*)map
+- (void)mapViewRegionDidChange:(RMMapView *)map
 {
     if (balloon)
-        [balloon dismissPopoverAnimated:NO];
+    {
+        RMProjectedPoint oldProjectedPoint = balloon.projectedPoint;
+        RMLatLong oldAttachLatLong         = [map.contents.projection pointToLatLong:oldProjectedPoint];
+        CGPoint newAttachPoint             = [map.contents latLongToPixel:oldAttachLatLong];
+        
+        // check that popover won't try to move off-screen; dismiss if so
+        //
+        CGFloat pX      = newAttachPoint.x;
+        CGFloat pY      = newAttachPoint.y;
+        CGFloat pWidth  = balloon.popoverContentSize.width;
+        CGFloat pHeight = balloon.popoverContentSize.height;
+        CGFloat mWidth  = map.bounds.size.width;
+        CGFloat mHeight = map.bounds.size.height;
+        
+        UIPopoverArrowDirection d = balloon.popoverArrowDirection;
+        
+        CGFloat threshold = 20;
+        CGFloat arrowSize = 30;
+        
+        if (d == UIPopoverArrowDirectionRight && pX > mWidth - threshold                        || // popup on left hitting right edge of map
+            d == UIPopoverArrowDirectionRight && pX - arrowSize - pWidth - threshold < 0        || // popup on left hitting left edge of map
+            d == UIPopoverArrowDirectionLeft  && pX > mWidth - pWidth - arrowSize - threshold   || // popup on right hitting right edge of map
+            d == UIPopoverArrowDirectionLeft  && pX < threshold                                 || // popup on right hitting left edge of map
+            d == UIPopoverArrowDirectionDown  && pY > mHeight - threshold                       || // popup on top hitting bottom edge of map
+            d == UIPopoverArrowDirectionDown  && pY - pHeight - arrowSize < threshold           || // popup on top hitting top edge of map
+            d == UIPopoverArrowDirectionUp    && pY + arrowSize + pHeight > mHeight - threshold || // popup on bottom hitting bottom edge of map
+            d == UIPopoverArrowDirectionUp    && pY < threshold                                 || // popup on bottom hitting top edge of map
+            d == UIPopoverArrowDirectionRight && pY - (pHeight / 2) < threshold                 || // popup on left hitting top edge of map
+            d == UIPopoverArrowDirectionRight && pY + (pHeight / 2) > mHeight - threshold       || // popup on left hitting bottom edge of map
+            d == UIPopoverArrowDirectionLeft  && pY - (pHeight / 2) < threshold                 || // popup on right hitting top edge of map
+            d == UIPopoverArrowDirectionLeft  && pY + (pHeight / 2) > mHeight - threshold       || // popup on right hitting bottom edge of map
+            d == UIPopoverArrowDirectionDown  && pX + (pWidth  / 2) > mWidth  - threshold       || // popup on top hitting right edge of map
+            d == UIPopoverArrowDirectionDown  && pX - (pWidth  / 2) < threshold                 || // popup on top hitting left edge of map
+            d == UIPopoverArrowDirectionUp    && pX - (pWidth  / 2) < threshold                 || // popup on bottom hitting left edge of map
+            d == UIPopoverArrowDirectionUp    && pX + (pWidth  / 2) > mWidth  - threshold)         // popup on bottom hitting rigth edge of map
+            
+            [balloon dismissPopoverAnimated:NO];
+        
+        else
+            [balloon presentPopoverFromRect:CGRectMake(newAttachPoint.x, newAttachPoint.y, 1, 1) 
+                                     inView:map
+                   permittedArrowDirections:balloon.popoverArrowDirection 
+                                   animated:NO];
+    }
 }
 
 #pragma mark -

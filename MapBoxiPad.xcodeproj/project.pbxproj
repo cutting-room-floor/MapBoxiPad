@@ -67,6 +67,7 @@
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
+		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -171,6 +172,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = B8C974130E8A19B2007D16AD;
 			remoteInfo = MapView;
+		};
+		DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 17157D87133BBC8300E28941 /* MapViewTests.octest */;
+			remoteInfo = MapViewTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -288,6 +296,8 @@
 		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
+		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
+		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -579,6 +589,7 @@
 			isa = PBXGroup;
 			children = (
 				DD0F619B11ED5AE80050174D /* libMapView.a */,
+				DD261B2E135CF7EB001609A3 /* MapViewTests.octest */,
 				DD0F619D11ED5AE80050174D /* RM Unit Tests.app */,
 			);
 			name = Products;
@@ -844,11 +855,13 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DDA291D711F8AD79000FFFF4 /* Data Overlays */ = {
+		DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */ = {
 			isa = PBXGroup;
 			children = (
 				DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */,
 				DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */,
+				DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */,
+				DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */,
 				DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */,
 				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
 				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
@@ -858,7 +871,7 @@
 				DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
-			name = "Data Overlays";
+			name = "Data Overlays & Interactivity";
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -913,7 +926,7 @@
 				DDBA88E21210E71000E5B572 /* Document Management */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
-				DDA291D711F8AD79000FFFF4 /* Data Overlays */,
+				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
@@ -1109,6 +1122,13 @@
 			remoteRef = DD0F619C11ED5AE80050174D /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		DD261B2E135CF7EB001609A3 /* MapViewTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MapViewTests.octest;
+			remoteRef = DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -1287,6 +1307,7 @@
 				DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */,
 				DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */,
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
+				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
