@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 45;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,7 +11,6 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 288765A40DF7441C002DB57D /* CoreGraphics.framework */; };
 		2899E5220DE3E06400AC0155 /* MapBoxMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
@@ -66,6 +65,9 @@
 		DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA131208DBEA00B052E9 /* unzip.c */; };
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; };
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
+		DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */; };
+		DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */; };
+		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
@@ -76,10 +78,8 @@
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
-		DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* RMMBTilesTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */; };
-		DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C5D811CC1F7300038969 /* libMapView.a */; };
 		DD48C86711CC43F100038969 /* linen_light.jpg in Resources */ = {isa = PBXBuildFile; fileRef = DD48C86611CC43F100038969 /* linen_light.jpg */; };
 		DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */ = {isa = PBXBuildFile; fileRef = DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */; };
 		DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD52697012C1E051002E890C /* Haiti Aid Projects.kml */; };
@@ -177,7 +177,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 17157D87133BBC8300E28941 /* MapViewTests.octest */;
+			remoteGlobalIDString = 17157D87133BBC8300E28941;
 			remoteInfo = MapViewTests;
 		};
 /* End PBXContainerItemProxy section */
@@ -188,7 +188,6 @@
 		1D3623250D0F684500981E51 /* MapBoxAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* MapBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		288765A40DF7441C002DB57D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapBoxMainViewController.xib; path = ../MapBoxMainViewController.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		28D7ACF60DDB3853001CB0EB /* MapBoxMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxMainViewController.h; sourceTree = "<group>"; };
@@ -295,6 +294,8 @@
 		DD1ADA161208DBEA00B052E9 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
+		DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
 		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
@@ -307,12 +308,10 @@
 		DD3D93DF123047F20049ABB0 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = /System/Library/Frameworks/QuartzCore.framework; sourceTree = "<absolute>"; };
-		DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = /usr/lib/libsqlite3.dylib; sourceTree = "<absolute>"; };
+		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
 		DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesTileSource.h; sourceTree = "<group>"; };
 		DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMBTilesTileSource.m; sourceTree = "<group>"; };
-		DD48C5D811CC1F7300038969 /* libMapView.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMapView.a; path = "route-me/MapView/build/Debug-iphoneos/libMapView.a"; sourceTree = "<group>"; };
 		DD48C86611CC43F100038969 /* linen_light.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = linen_light.jpg; sourceTree = "<group>"; };
 		DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Afghanistan Election Fraud by Province.kmz"; sourceTree = "<group>"; };
 		DD52697012C1E051002E890C /* Haiti Aid Projects.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Haiti Aid Projects.kml"; sourceTree = "<group>"; };
@@ -432,17 +431,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
-				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
-				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
-				DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */,
-				DD48C2EC11CBF3BF00038969 /* libsqlite3.dylib in Frameworks */,
-				DD48C5D911CC1F7300038969 /* libMapView.a in Frameworks */,
 				DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */,
+				DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */,
 				DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */,
-				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
-				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */,
+				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
+				DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */,
+				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */,
+				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -512,17 +511,16 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
-				1D30AB110D05D00D00671497 /* Foundation.framework */,
-				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
-				DD48C2E711CBF3AB00038969 /* QuartzCore.framework */,
-				DD48C2EB11CBF3BF00038969 /* libsqlite3.dylib */,
-				DD48C5D811CC1F7300038969 /* libMapView.a */,
 				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
+				DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */,
 				DDF3221211DADD720068287A /* CoreLocation.framework */,
-				DD92F641121C9B84008CF88F /* MessageUI.framework */,
-				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				DD5678F212AEF62200B73C8A /* MediaPlayer.framework */,
+				DD92F641121C9B84008CF88F /* MessageUI.framework */,
+				DD48C2E711CBF3AB00038969 /* QuartzCore.framework */,
+				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1083,7 +1081,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MapBoxiPad" */;
-			compatibilityVersion = "Xcode 3.1";
+			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -1347,10 +1345,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-lMapView",
-				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -1381,10 +1376,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-lMapView",
-				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "ED0871E8-07FA-40BD-8C84-FBC772DCBF4F";
 				SDKROOT = iphoneos;
@@ -1400,8 +1392,9 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -1414,9 +1407,10 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
@@ -1429,9 +1423,10 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 3.2;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
-				SDKROOT = iphoneos3.2;
+				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = "Ad Hoc";
@@ -1460,10 +1455,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = (
-					"-lxml2",
-					"-lMapView",
-				);
+				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
