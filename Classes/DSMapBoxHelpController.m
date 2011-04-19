@@ -98,7 +98,7 @@
     switch (indexPath.row)
     {
         case 0:
-            cell.textLabel.text = @"Open Support Issue";
+            cell.textLabel.text = @"Contact Support";
             break;
         
         case 1:
