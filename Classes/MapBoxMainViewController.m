@@ -176,6 +176,11 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
     mapView.contents.mapCenter = postRotationMapCenter;
+    
+    if ([mapView.contents isKindOfClass:[DSMapContents class]])
+        [mapView.contents performSelector:@selector(postZoom) 
+                               withObject:nil 
+                               afterDelay:0.1];
 }
 
 - (void)dealloc
