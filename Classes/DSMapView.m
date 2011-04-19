@@ -49,6 +49,14 @@
 
 #pragma mark -
 
+- (void)delayedResumeExpensiveOperations
+{
+	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resumeExpensiveOperations) object:nil];
+	[self performSelector:@selector(resumeExpensiveOperations) withObject:nil afterDelay:0.1];
+}
+
+#pragma mark -
+
 - (DSMapView *)topMostMapView
 {
     /**
