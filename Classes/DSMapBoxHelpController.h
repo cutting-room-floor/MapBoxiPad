@@ -11,7 +11,7 @@
 #import <MessageUI/MessageUI.h>
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface DSMapBoxHelpController : UIViewController <MFMailComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface DSMapBoxHelpController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 {
     UIButton *moviePlayButton;
     MPMoviePlayerController *moviePlayer;
@@ -25,6 +25,5 @@
 @property (nonatomic, retain) IBOutlet UILabel *versionInfoLabel;
 
 - (IBAction)tappedVideoButton:(id)sender;
-- (void)tappedEmailSupportButton:(id)sender;
 
 @end

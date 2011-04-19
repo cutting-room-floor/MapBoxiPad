@@ -71,32 +71,6 @@
     [self.moviePlayer play];
 }
 
-- (void)tappedEmailSupportButton:(id)sender
-{
-    if ([MFMailComposeViewController canSendMail])
-    {
-        MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
-        
-        mailer.mailComposeDelegate = self;
-        
-        [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
-        
-        mailer.modalPresentationStyle = UIModalPresentationPageSheet;
-        
-        [self presentModalViewController:mailer animated:YES];
-    }
-    else
-    {
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                         message:@"Please setup Mail first."
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
-    }
-}
-
 - (void)tappedHelpDoneButton:(id)sender
 {
     [self.parentViewController dismissModalViewControllerAnimated:YES];
@@ -108,32 +82,6 @@
 {
     if (self.moviePlayer.fullscreen)
         [self.moviePlayer setFullscreen:NO animated:YES];
-}
-
-#pragma mark -
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-{
-    switch (result)
-    {
-        case MFMailComposeResultFailed:
-            
-            [self dismissModalViewControllerAnimated:NO];
-            
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
-                                                             message:@"There was a problem sending the mail."
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"OK", nil] autorelease];
-            
-            [alert show];
-            
-            break;
-            
-        default:
-            
-            [self dismissModalViewControllerAnimated:YES];
-    }
 }
 
 #pragma mark -
@@ -150,15 +98,15 @@
     switch (indexPath.row)
     {
         case 0:
-            cell.textLabel.text = @"Email Support";
+            cell.textLabel.text = @"Open Support Issue";
             break;
         
         case 1:
-            cell.textLabel.text = @"About MapBox";
+            cell.textLabel.text = @"View Release Notes";
             break;
 
         case 2:
-            cell.textLabel.text = @"Release Notes";
+            cell.textLabel.text = @"About MapBox";
             break;
     }
     
@@ -183,30 +131,35 @@
     switch (indexPath.row)
     {
         case 0:
-            [self tappedEmailSupportButton:[tableView cellForRowAtIndexPath:indexPath]];
+            // open delayed to avoid button press glitches
+            //
+            [[UIApplication sharedApplication] performSelector:@selector(openURL:)
+                                                    withObject:[NSURL URLWithString:kSupportLink]
+                                                    afterDelay:0.25];
+
             break;
             
         case 1:
-            alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
-                                                message:[NSString stringWithFormat:@"%@\n\n%@", 
-                                                            self.versionInfoLabel.text, 
-                                                            [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]
-                                                                                      encoding:NSUTF8StringEncoding
-                                                                                         error:NULL]]
-                                               delegate:nil
-                                      cancelButtonTitle:nil
-                                      otherButtonTitles:@"OK", nil] autorelease];
-            
-            [alert show];
-
-            break;
-
-        case 2:
             // open delayed to avoid button press glitches
             //
             [[UIApplication sharedApplication] performSelector:@selector(openURL:)
                                                     withObject:[NSURL URLWithString:kReleaseNotes]
                                                     afterDelay:0.25];
+            
+            break;
+            
+        case 2:
+            alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
+                                                message:[NSString stringWithFormat:@"%@\n\n%@", 
+                                                         self.versionInfoLabel.text, 
+                                                         [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]
+                                                                                   encoding:NSUTF8StringEncoding
+                                                                                      error:NULL]]
+                                               delegate:nil
+                                      cancelButtonTitle:nil
+                                      otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
             
             break;
     }
