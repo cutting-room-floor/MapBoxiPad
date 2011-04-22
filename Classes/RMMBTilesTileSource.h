@@ -43,8 +43,8 @@
 #define kMBTilesDefaultTileSize 256
 #define kMBTilesDefaultMinTileZoom 0
 #define kMBTilesDefaultMaxTileZoom 18
-#define kMBTilesDefaultLatLonBoundingBox ((RMSphericalTrapezium){ .northeast = { .latitude =  90, .longitude =  180 }, \
-                                                                  .southwest = { .latitude = -90, .longitude = -180 } })
+#define kMBTilesDefaultLatLonBoundingBox ((RMSphericalTrapezium){ .northeast = { .latitude =  85, .longitude =  180 }, \
+                                                                  .southwest = { .latitude = -85, .longitude = -180 } })
 
 @interface RMMBTilesTileSource : NSObject <RMTileSource>
 {
@@ -66,7 +66,7 @@
 - (void)setMinZoom:(NSUInteger)aMinZoom;
 - (void)setMaxZoom:(NSUInteger)aMaxZoom;
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox;
-- (BOOL)hasDefaultBoundingBox;
+- (BOOL)coversFullWorld;
 - (void)didReceiveMemoryWarning;
 - (NSString *)uniqueTilecacheKey;
 - (NSString *)shortName;

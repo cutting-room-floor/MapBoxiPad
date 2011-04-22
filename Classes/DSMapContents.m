@@ -163,8 +163,11 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 {
     [self stopRecalculatingClusters];
     
-    [super setZoom:zoom];
+    if (zoom != [self zoom])
+        NSLog(@"DSMapContents changing zoom %f => %f", [self zoom], zoom);
     
+    [super setZoom:zoom];
+
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents setZoom:zoom];
@@ -280,7 +283,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     return;
 }
 
-- (void)setTileSource:(RMMBTilesTileSource *)newTileSource
+- (void)setTileSource:(id <RMTileSource>)newTileSource
 {
     if (tileSource == newTileSource)
         return;
@@ -294,24 +297,11 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         tileSource = newCachedTileSource;
     }
     else
-        tileSource = [newTileSource retain];
-
-    CGFloat targetZoom = -0.1;
-    
-    if (self.zoom < [newTileSource minZoom])
-        targetZoom = [newTileSource minZoom];
-
-    else if (self.zoom > [newTileSource maxZoom])
-        targetZoom = [newTileSource maxZoom];
-    
-    if (targetZoom >= 0)
     {
-        CGFloat zoomDelta  = targetZoom - [self zoom];        
-        CGFloat zoomFactor = exp2f(zoomDelta);
-        
-        [self zoomByFactor:zoomFactor near:mapView.center];
+        [tileSource release];
+        tileSource = [newTileSource retain];
     }
-    
+
     [self setMinZoom:[newTileSource minZoom]];
     [self setMaxZoom:[newTileSource maxZoom]];
     

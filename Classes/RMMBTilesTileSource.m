@@ -134,6 +134,16 @@
 	[super dealloc];
 }
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"MBTiles: %@, zooms %i-%i, %@, %@", 
+               [self shortName], 
+               (int)[self minZoom], 
+               (int)[self maxZoom], 
+               ([self coversFullWorld] ? @"full world" : @"partial world"),
+               ([self supportsInteractivity] ? @"supports interactivity" : @"no interactivity")];
+}
+
 - (int)tileSideLength
 {
 	return tileProjection.tileSideLength;
@@ -279,101 +289,17 @@
             return bounds;
         }
     }
-    else
-    {
-        /**
-         * Attempt to figure out bounds via tiles present in database.
-         * Algorithm based on http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames
-         */
-
-        // base everything on min zoom for tile set
-        //
-        float zoom = [self minZoom];
-        
-        // get min & max tile columns & rows
-        //
-        FMResultSet *minTileXResults = [db executeQuery:@"select min(tile_column) from tiles where zoom_level = ?", [NSNumber numberWithFloat:zoom]];
-        
-        if ([db hadError])
-            return kMBTilesDefaultLatLonBoundingBox;
-        
-        [minTileXResults next];
-        
-        int minTileX = [minTileXResults intForColumnIndex:0];
-        
-        FMResultSet *maxTileXResults = [db executeQuery:@"select max(tile_column) from tiles where zoom_level = ?", [NSNumber numberWithFloat:zoom]];
-        
-        if ([db hadError])
-            return kMBTilesDefaultLatLonBoundingBox;
-        
-        [maxTileXResults next];
-        
-        int maxTileX = [maxTileXResults intForColumnIndex:0];
-        
-        FMResultSet *minTileYResults = [db executeQuery:@"select min(tile_row) from tiles where zoom_level = ?", [NSNumber numberWithFloat:zoom]];
-        
-        if ([db hadError])
-            return kMBTilesDefaultLatLonBoundingBox;
-        
-        [minTileYResults next];
-        
-        int minTileY = [minTileYResults intForColumnIndex:0];
-        
-        FMResultSet *maxTileYResults = [db executeQuery:@"select max(tile_row) from tiles where zoom_level = ?", [NSNumber numberWithFloat:zoom]];
-        
-        if ([db hadError])
-            return kMBTilesDefaultLatLonBoundingBox;
-        
-        [maxTileYResults next];
-        
-        int maxTileY = [maxTileYResults intForColumnIndex:0];
-        
-        // calculate extents based on tiles above
-        //
-        float n = powf(2.0, zoom);
-        
-        float swLon    = minTileX / n * 360.0 - 180.0;
-        float swLatRad = atanf(sinhf(M_PI * (1 - 2 * minTileY / n)));
-        float swLat    = swLatRad * 180.0 / M_PI;
-        
-        float neLon    = maxTileX / n * 360.0 - 180.0;
-        float neLatRad = atanf(sinhf(M_PI * (1 - 2 * maxTileY / n)));
-        float neLat    = neLatRad * 180.0 / M_PI;
-        
-        RMSphericalTrapezium bounds = {
-            .southwest = {
-                .longitude = swLon,
-                .latitude  = neLat,
-            },
-            .northeast = {
-                .longitude = neLon,
-                .latitude  = swLat,
-            },
-        };
-        
-        RMSphericalTrapezium defaultBounds = kMBTilesDefaultLatLonBoundingBox;
-
-        if (bounds.southwest.longitude <= defaultBounds.southwest.longitude ||
-            bounds.southwest.latitude  <= defaultBounds.southwest.latitude  ||
-            bounds.northeast.longitude >= defaultBounds.northeast.longitude ||
-            bounds.northeast.latitude  >= defaultBounds.northeast.latitude)
-            return kMBTilesDefaultLatLonBoundingBox;
-        
-        return bounds;
-    }
     
     return kMBTilesDefaultLatLonBoundingBox;
 }
 
-- (BOOL)hasDefaultBoundingBox
+- (BOOL)coversFullWorld
 {
     RMSphericalTrapezium ownBounds     = [self latitudeLongitudeBoundingBox];
     RMSphericalTrapezium defaultBounds = kMBTilesDefaultLatLonBoundingBox;
     
-    if (ownBounds.southwest.latitude  == defaultBounds.southwest.latitude  &&
-        ownBounds.southwest.longitude == defaultBounds.southwest.longitude && 
-        ownBounds.northeast.latitude  == defaultBounds.northeast.latitude  && 
-        ownBounds.northeast.longitude == defaultBounds.northeast.longitude)
+    if (ownBounds.southwest.longitude <= defaultBounds.southwest.longitude + 10 && 
+        ownBounds.northeast.longitude >= defaultBounds.northeast.longitude - 10)
         return YES;
     
     return NO;
@@ -449,21 +375,7 @@
 
 - (BOOL)supportsInteractivity
 {
-    int count = 0;
-    
-    FMResultSet *results = [db executeQuery:@"select count(name) from sqlite_master where name = 'grids'"];
-    
-    if ([db hadError])
-        return NO;
-    
-    [results next];
-    
-    if ([results hasAnotherRow])
-        count = [results intForColumnIndex:0];
-
-    [results close];
-    
-    return (count ? YES : NO);
+    return ([self interactivityFormatterJavascript] != nil);
 }
 
 - (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile

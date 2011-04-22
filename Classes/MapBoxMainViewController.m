@@ -18,6 +18,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxInfiniteTileSource.h"
 
 #import "UIApplication_Additions.h"
 
@@ -562,29 +563,50 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     // force switch to new tile source to update tiles
     //
+    mapView.contents.tileSource = [[[DSMapBoxInfiniteTileSource alloc] init] autorelease];
+    
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
     if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
     {
-        mapView.contents.tileSource = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        id <RMTileSource>source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        
+        if (mapView.contents.zoom < [source minZoom])
+            mapView.contents.zoom = [source minZoom];
+        
+        else if (mapView.contents.zoom > [source maxZoom])
+            mapView.contents.zoom = [source maxZoom];
+        
+        mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen_light.jpg"]];
     }
     else
     {
-        mapView.contents.tileSource = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+        RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+        
+        if (mapView.contents.zoom < [source minZoom])
+            mapView.contents.zoom = [source minZoom];
+        
+        else if (mapView.contents.zoom > [source maxZoom])
+            mapView.contents.zoom = [source maxZoom];
+
+        mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
         
         // switch to new base layer bounds if less than whole world
         //
-        RMMBTilesTileSource *source = mapView.contents.tileSource;
-        
-        if ( ! [source hasDefaultBoundingBox] && 
+        if ( ! [source coversFullWorld] && 
             [source latitudeLongitudeBoundingBox].southwest.latitude >= kLowerLatitudeBounds &&
             [source latitudeLongitudeBoundingBox].northeast.latitude <= kUpperLatitudeBounds)
-            [mapView zoomWithLatLngBoundsNorthEast:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].northeast.latitude, 
-                                                                              [source latitudeLongitudeBoundingBox].northeast.longitude) 
-                                         SouthWest:CLLocationCoordinate2DMake([source latitudeLongitudeBoundingBox].southwest.latitude,
-                                                                              [source latitudeLongitudeBoundingBox].southwest.longitude)];
+        {
+            RMLatLong sw = [source latitudeLongitudeBoundingBox].southwest;
+            RMLatLong ne = [source latitudeLongitudeBoundingBox].northeast;
+            
+            RMLatLong center = CLLocationCoordinate2DMake((ne.latitude + sw.latitude) / 2, (ne.longitude + sw.longitude) / 2);
+            
+            mapView.contents.mapCenter = center;
+            mapView.contents.zoom      = [source minZoom];
+        }
     }
 
     // perform image to map animated swap back
@@ -928,7 +950,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         else 
             mapView.contents.zoom = [layerManager minimumPossibleZoomLevel];
         
-        if ( ! [source hasDefaultBoundingBox])
+        if ( ! [source coversFullWorld])
         {
             RMSphericalTrapezium bbox = [source latitudeLongitudeBoundingBox];
             
