@@ -166,8 +166,14 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     if (zoom != [self zoom])
         NSLog(@"DSMapContents changing zoom %f => %f", [self zoom], zoom);
     
-    [super setZoom:zoom];
-
+    // borrowed from super
+    //
+    float scale = [mercatorToTileProjection calculateScaleFromZoom:zoom];
+    
+    [self setMetersPerPixel:scale];
+    //
+    // end borrowed code
+    
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents setZoom:zoom];
