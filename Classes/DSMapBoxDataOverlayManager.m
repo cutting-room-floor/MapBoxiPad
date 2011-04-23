@@ -424,15 +424,15 @@
 
 #pragma mark -
 
-- (void)singleTapOnMap:(RMMapView*)map At:(CGPoint)point
+- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point
 {
-    id <RMTileSource>tileSource = mapView.contents.tileSource;
+    id <RMTileSource>tileSource = aMapView.contents.tileSource;
     
     if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
     {
         // determine renderer scroll layer sub-layer touched
         //
-        CALayer *rendererLayer = [mapView.contents.renderer valueForKey:@"layer"];
+        CALayer *rendererLayer = [aMapView.contents.renderer valueForKey:@"layer"];
         CALayer *tileLayer     = [rendererLayer hitTest:point];
         
         // convert touch to sub-layer
@@ -446,11 +446,11 @@
         
         // determine lat & lon of touch
         //
-        CLLocationCoordinate2D touchLocation = [mapView.contents pixelToLatLong:point];
+        CLLocationCoordinate2D touchLocation = [aMapView.contents pixelToLatLong:point];
         
         // use lat & lon to determine TMS tile (per http://wiki.openstreetmap.org/wiki/Slippy_map_tilenames)
         //
-        int tileZoom = (int)(roundf(mapView.contents.zoom));
+        int tileZoom = (int)(roundf(aMapView.contents.zoom));
         
         int tileX = (int)(floor((touchLocation.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
         int tileY = (int)(floor((1.0 - log(tan(touchLocation.latitude * M_PI / 180.0) + 1.0 / \
@@ -477,7 +477,7 @@
             
             [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var data   = %@;", keyJSON]];
             [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var format = %@;", formatterJavascript]];
-
+            
             NSString *formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format('', data);"];
             
             if (formattedOutput && [formattedOutput length])
@@ -489,7 +489,7 @@
                 
                 balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
                 
-                balloon.passthroughViews = [NSArray arrayWithObject:mapView];
+                balloon.passthroughViews = [NSArray arrayWithObject:aMapView];
                 balloon.delegate = self;
                 
                 balloonController.name        = @"";
@@ -500,19 +500,28 @@
                 [balloon setContentViewController:balloonController];
                 
                 [balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
-                                         inView:mapView 
+                                         inView:aMapView 
                        permittedArrowDirections:UIPopoverArrowDirectionAny
                                        animated:YES];
             }
             else if (balloon)
                 [balloon dismissPopoverAnimated:YES];
         }
+        
         else if (balloon)
             [balloon dismissPopoverAnimated:YES];
     }
     else if (balloon)
         [balloon dismissPopoverAnimated:YES];
 }
+
+- (void)hideInteractivityAnimated:(BOOL)animated
+{
+    if (balloon)
+        [balloon dismissPopoverAnimated:animated];
+}
+
+#pragma mark -
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {

@@ -90,6 +90,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
     dataOverlayManager.mapView = mapView;
     mapView.delegate = dataOverlayManager;
+    mapView.interactivityDelegate = dataOverlayManager;
     layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     layerManager.delegate = self;
     

@@ -10,10 +10,26 @@
 
 @class DSTiledLayerMapView;
 
+@protocol DSMapBoxInteractivityDelegate
+
+@required
+
+- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point;
+- (void)hideInteractivityAnimated:(BOOL)animated;
+
+@end
+
+#pragma mark -
+
 @interface DSMapView : RMMapView
 {
     BOOL touchesMoved;
+    id <DSMapBoxInteractivityDelegate>interactivityDelegate;
+    NSInvocationOperation *interactivityOperation;
+    CGPoint lastInteractivityPoint;
 }
+
+@property (nonatomic, assign) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
 
 - (DSMapView *)topMostMapView;
 - (void)insertLayerMapView:(DSTiledLayerMapView *)layerMapView;

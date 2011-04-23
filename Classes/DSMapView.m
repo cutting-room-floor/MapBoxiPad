@@ -12,6 +12,8 @@
 
 @implementation DSMapView
 
+@synthesize interactivityDelegate;
+
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
     touchesMoved = NO;
@@ -28,6 +30,37 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    UITouch *touch = [[touches allObjects] objectAtIndex:0];
+
+    // one-finger single-tap for interactivity - but wait for possible double-tap
+    //
+    if (lastGesture.numTouches == 1 && touch.tapCount == 1 && self.interactivityDelegate)
+    {
+        lastInteractivityPoint = lastGesture.center;
+        
+        [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                                 selector:@selector(triggerInteractivity:) 
+                                                   object:nil];
+        
+        [self performSelector:@selector(triggerInteractivity:) 
+                   withObject:nil 
+                   afterDelay:0.25];
+    }
+    
+    // one-finger double-tap to zoom - but cancel any single-tap interactivity
+    //
+    else if (lastGesture.numTouches == 1 && touch.tapCount == 2)
+    {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                                 selector:@selector(triggerInteractivity:) 
+                                                   object:nil];
+        
+        if (self.interactivityDelegate)
+            [self.interactivityDelegate hideInteractivityAnimated:NO];
+        
+        [self zoomInToNextNativeZoomAt:lastGesture.center animated:YES];
+    }
+
     // two-finger tap to zoom out
     //
     if (lastGesture.numTouches == 2 && ! touchesMoved)
@@ -41,6 +74,13 @@
 
         else
             [self zoomOutToNextNativeZoomAt:lastGesture.center animated:YES];
+
+        [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                                 selector:@selector(triggerInteractivity:) 
+                                                   object:nil];
+        
+        if (self.interactivityDelegate)
+            [self.interactivityDelegate hideInteractivityAnimated:NO];
     }
         
     else
@@ -53,6 +93,11 @@
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(resumeExpensiveOperations) object:nil];
 	[self performSelector:@selector(resumeExpensiveOperations) withObject:nil afterDelay:0.1];
+}
+
+- (void)triggerInteractivity:(NSValue *)pointValue
+{
+    [self.interactivityDelegate presentInteractivityOnMapView:self atPoint:lastInteractivityPoint];
 }
 
 #pragma mark -

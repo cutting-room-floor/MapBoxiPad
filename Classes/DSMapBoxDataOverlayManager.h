@@ -18,14 +18,13 @@
 
 #import <UIKit/UIKit.h>
 
-#import "RMMapView.h"
+#import "DSMapView.h"
 #import "RMLatLong.h"
 
-@class RMMapView;
 @class SimpleKML;
 @class DSMapBoxPopoverController;
 
-@interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
+@interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxInteractivityDelegate>
 {
     RMMapView *mapView;
     NSMutableArray *overlays;
@@ -43,5 +42,6 @@
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
+- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point;
 
 @end
