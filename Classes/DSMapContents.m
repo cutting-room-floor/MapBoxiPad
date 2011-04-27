@@ -363,6 +363,10 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     RMProjectedPoint currentBottomRightProj  = [mercatorToScreenProjection projectScreenPointToXY:currentBottomRightPoint];
     RMLatLong        currentBottomRightCoord = [projection pointToLatLong:currentBottomRightProj];
     
+    RMProjectedPoint newCenterProj;
+    
+    BOOL needsRefresh = NO;
+    
     if (currentTopLeftCoord.latitude > kUpperLatitudeBounds)
     {
         RMLatLong newTopLeftCoord = {
@@ -375,12 +379,10 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
             .northing = [projection latLongToPoint:newTopLeftCoord].northing,
         };
         
-        RMProjectedPoint newCenterProj = {
-            .easting  = newTopLeftProj.easting  + (([mercatorToScreenProjection screenBounds].size.width  * self.metersPerPixel) / 2),
-            .northing = newTopLeftProj.northing - (([mercatorToScreenProjection screenBounds].size.height * self.metersPerPixel) / 2),
-        };
-        
-        [self moveToProjectedPoint:newCenterProj];
+        newCenterProj.easting  = newTopLeftProj.easting  + (([mercatorToScreenProjection screenBounds].size.width  * self.metersPerPixel) / 2);
+        newCenterProj.northing = newTopLeftProj.northing - (([mercatorToScreenProjection screenBounds].size.height * self.metersPerPixel) / 2);
+
+        needsRefresh = YES;
     }
     else if (currentBottomRightCoord.latitude < kLowerLatitudeBounds)
     {
@@ -394,13 +396,21 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
             .northing = [projection latLongToPoint:newBottomRightCoord].northing,
         };
         
-        RMProjectedPoint newCenterProj = {
-            .easting  = newBottomRightProj.easting  - (([mercatorToScreenProjection screenBounds].size.width  * self.metersPerPixel) / 2),
-            .northing = newBottomRightProj.northing + (([mercatorToScreenProjection screenBounds].size.height * self.metersPerPixel) / 2),
-        };
+        newCenterProj.easting  = newBottomRightProj.easting  - (([mercatorToScreenProjection screenBounds].size.width  * self.metersPerPixel) / 2);
+        newCenterProj.northing = newBottomRightProj.northing + (([mercatorToScreenProjection screenBounds].size.height * self.metersPerPixel) / 2);
         
-        [self moveToProjectedPoint:newCenterProj];
+        needsRefresh = YES;
     }
+    
+    if (needsRefresh)
+    {
+        [self moveToProjectedPoint:newCenterProj];
+
+        // temp fix for #23 to avoid tile artifacting
+        //
+        [tileLoader reload];
+    }
+    
 }
 
 @end
