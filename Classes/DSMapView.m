@@ -9,6 +9,7 @@
 #import "DSMapView.h"
 
 #import "DSMapContents.h"
+#import "RMMarker.h"
 
 @implementation DSMapView
 
@@ -32,9 +33,15 @@
 {
     UITouch *touch = [[touches allObjects] objectAtIndex:0];
 
+    // hit test for markers to skirt interactivity
+    //
+    NSObject *touched = [self.contents.overlay hitTest:[touch locationInView:self]];
+    
+    BOOL markerTap = ([touched isKindOfClass:[RMMarker class]] || ([touched isKindOfClass:[CALayer class]] && [[(CALayer *)touched superlayer] isKindOfClass:[RMMarker class]]));
+    
     // one-finger single-tap for interactivity - but wait for possible double-tap
     //
-    if (lastGesture.numTouches == 1 && touch.tapCount == 1 && self.interactivityDelegate)
+    if (lastGesture.numTouches == 1 && touch.tapCount == 1 && self.interactivityDelegate && ! markerTap)
     {
         lastInteractivityPoint = lastGesture.center;
         
