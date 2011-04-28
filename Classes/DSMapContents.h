@@ -11,8 +11,8 @@
 extern NSString *const DSMapContentsZoomBoundsReached;
 
 #define kLowerZoomBounds       2.5f
-#define kUpperLatitudeBounds  85.0f
-#define kLowerLatitudeBounds -75.0f
+#define kUpperLatitudeBounds  85.0511f
+#define kLowerLatitudeBounds -85.0511f
 #define kWarningAlpha          0.25f
 
 @class RMMapView;
