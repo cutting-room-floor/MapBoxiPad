@@ -136,7 +136,10 @@
             
     if ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
     {
-        if (indexPath.section == DSMapBoxLayerSectionTile)
+        NSURL *path = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
+        
+        if (indexPath.section == DSMapBoxLayerSectionTile && 
+            ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld]))
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -229,16 +232,26 @@
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
             {
-                UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                NSURL *path = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
                 
-                button.frame = CGRectMake(0, 0, 44.0, 44.0);
-                
-                [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
-                [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
-                
-                [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
-                
-                cell.accessoryView = button;                
+                if ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld])
+                {
+                    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                    
+                    button.frame = CGRectMake(0, 0, 44.0, 44.0);
+                    
+                    [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
+                    [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
+                    
+                    [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
+                    
+                    cell.accessoryView = button;                
+                }
+                else
+                {
+                    cell.accessoryView = nil;
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
             }
             else
             {
