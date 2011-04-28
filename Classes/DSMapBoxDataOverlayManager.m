@@ -77,10 +77,21 @@
 
 - (void)setMapView:(RMMapView *)inMapView
 {
-    RMLayerCollection *newOverlay = [[[RMLayerCollection alloc] initForContents:inMapView.contents] autorelease];
-    newOverlay.sublayers = mapView.contents.overlay.sublayers;
+    if ([inMapView isEqual:mapView])
+        return;
     
-    inMapView.contents.overlay = newOverlay;
+    // When tile layers come or go, the top-most one, or else the base layer if none,
+    // gets passed here in order to juggle the data overlay layer to it. 
+    //    
+    RMLayerCollection *newOverlay = inMapView.contents.overlay;
+    
+    NSArray *layers = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];
+    
+    for (CALayer *someLayer in layers)
+    {  
+        [someLayer removeFromSuperlayer];
+        [newOverlay addSublayer:someLayer];
+    }
     
     [mapView release];
     mapView = [inMapView retain];
