@@ -51,6 +51,8 @@
 
 - (void)dealloc
 {
+    [webView stopLoading];
+    
     [name release];
     [description release];
     
