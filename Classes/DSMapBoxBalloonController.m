@@ -52,6 +52,8 @@
 - (void)dealloc
 {
     [webView stopLoading];
+
+    webView.delegate = nil;
     
     [name release];
     [description release];
