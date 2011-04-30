@@ -14,7 +14,7 @@
 
 @required
 
-- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point;
+- (void)presentInteractivityAtPoint:(CGPoint)point;
 - (void)hideInteractivityAnimated:(BOOL)animated;
 
 @end

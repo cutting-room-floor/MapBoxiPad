@@ -12,6 +12,7 @@
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxPopoverController.h"
+#import "DSMapContents.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -43,7 +44,7 @@
 
 @synthesize mapView;
 
-- (id)initWithMapView:(RMMapView *)inMapView
+- (id)initWithMapView:(DSMapView *)inMapView
 {
     self = [super init];
 
@@ -75,7 +76,7 @@
 
 #pragma mark -
 
-- (void)setMapView:(RMMapView *)inMapView
+- (void)setMapView:(DSMapView *)inMapView
 {
     if ([inMapView isEqual:mapView])
         return;
@@ -435,9 +436,36 @@
 
 #pragma mark -
 
-- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point
+- (void)presentInteractivityAtPoint:(CGPoint)point
 {
-    id <RMTileSource>tileSource = aMapView.contents.tileSource;
+    DSMapView *aMapView         = nil;
+    id <RMTileSource>tileSource = nil;
+    
+    NSArray *layerMapViews = ((DSMapContents *)mapView.contents).layerMapViews;
+    
+    if ([layerMapViews count])
+    {
+        // get the first one with interactivity, which was the last-enabled
+        // TODO: perhaps maintain actual stacking order? 
+        //
+        for (DSMapView *aMapView in layerMapViews)
+        {
+            tileSource = aMapView.contents.tileSource;
+
+            if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
+                break;
+        }
+    }
+    
+    if ( ! tileSource)
+    {
+        // refer to base map view
+        //
+        aMapView   = mapView;
+        tileSource = aMapView.contents.tileSource;
+    }
+
+    NSLog(@"querying for interactivity: %@", tileSource);    
     
     if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
     {
@@ -488,8 +516,21 @@
             
             [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var data   = %@;", keyJSON]];
             [interactivityFormatter stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"var format = %@;", formatterJavascript]];
+
+            // try full version first
+            //
+            [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"var options = { format: 'full' }"];
+
+            NSString *formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format(options, data);"];
             
-            NSString *formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format('', data);"];
+            // failing that, try teaser
+            //
+            if ( ! [formattedOutput length])
+            {
+                [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"var options = { format: 'teaser' }"];
+
+                formattedOutput = [interactivityFormatter stringByEvaluatingJavaScriptFromString:@"format(options, data);"];
+            }
             
             if (formattedOutput && [formattedOutput length])
             {

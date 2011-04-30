@@ -104,7 +104,7 @@
 
 - (void)triggerInteractivity:(NSValue *)pointValue
 {
-    [self.interactivityDelegate presentInteractivityOnMapView:self atPoint:lastInteractivityPoint];
+    [self.interactivityDelegate presentInteractivityAtPoint:lastInteractivityPoint];
 }
 
 #pragma mark -

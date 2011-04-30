@@ -26,7 +26,7 @@
 
 @interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxInteractivityDelegate>
 {
-    RMMapView *mapView;
+    DSMapView *mapView;
     NSMutableArray *overlays;
     NSMutableDictionary *lastMarkerInfo;
     DSMapBoxPopoverController *balloon;
@@ -34,14 +34,13 @@
     float lastKnownZoom;
 }
 
-@property (nonatomic, retain) RMMapView *mapView;
+@property (nonatomic, retain) DSMapView *mapView;
 @property (nonatomic, readonly, retain) NSArray *overlays;
 
-- (id)initWithMapView:(RMMapView *)inMapView;
+- (id)initWithMapView:(DSMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
-- (void)presentInteractivityOnMapView:(RMMapView *)aMapView atPoint:(CGPoint)point;
 
 @end
