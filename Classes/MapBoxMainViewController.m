@@ -81,7 +81,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     mapView.enableRotate = NO;
     mapView.deceleration = NO;
     
-    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
 
     mapView.contents.zoom = kStartingZoom;
 
@@ -579,7 +579,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             mapView.contents.zoom = [source maxZoom];
         
         mapView.contents.tileSource = source;
-        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen_light.jpg"]];
+        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     }
     else
     {
@@ -592,7 +592,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             mapView.contents.zoom = [source maxZoom];
 
         mapView.contents.tileSource = source;
-        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
         
         // switch to new base layer bounds if less than whole world
         //
