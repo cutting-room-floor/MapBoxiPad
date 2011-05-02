@@ -40,6 +40,8 @@
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
+- (void)enableBoundsWarning:(NSTimer *)timer;
+- (void)fixBaseMapForOutOfZoomBounds;
 
 @end
 
@@ -166,6 +168,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
     [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    boundsWarningEnabled = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -254,6 +258,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             else
                 [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
         }
+        
+        [self fixBaseMapForOutOfZoomBounds];
     }
     
     // load tile overlay state(s)
@@ -608,6 +614,9 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             mapView.contents.mapCenter = center;
             mapView.contents.zoom      = [source minZoom];
         }
+        
+        else
+            [self fixBaseMapForOutOfZoomBounds];
     }
 
     // perform image to map animated swap back
@@ -652,57 +661,100 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)zoomBoundsReached:(NSNotification *)notification
 {
-    // get details
-    //
-    DSMapView *limitedMapView = (DSMapView *)[[notification userInfo] objectForKey:@"limitedMapView"];
-    NSString *limitedTileSourceName = [limitedMapView.contents.tileSource shortName];
-    
-    // create notify message view
-    //
-    UIView *notifyView = [[[UIView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
-    
-    notifyView.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.8];
-    notifyView.userInteractionEnabled = NO;
-    notifyView.layer.shadowOffset     = CGSizeMake(0, 1);
-    notifyView.layer.shadowOpacity    = 0.5;
-    
-    // create text label
-    //
-    UILabel *notifyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
-    
-    notifyLabel.textColor       = [UIColor whiteColor];
-    notifyLabel.backgroundColor = [UIColor clearColor];
-    notifyLabel.font            = [UIFont systemFontOfSize:13.0];
-    notifyLabel.text            = [NSString stringWithFormat:@"Tile set \"%@\" is not available beyond this zoom level", limitedTileSourceName];
+    if (boundsWarningEnabled)
+    {
+        // get details
+        //
+        NSArray *limitedMapViews = [[notification userInfo] objectForKey:@"limitedMapViews"];
+        
+        // create notify message view
+        //
+        UIView *notifyView = [[[UIView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
+        
+        notifyView.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.8];
+        notifyView.userInteractionEnabled = NO;
+        notifyView.layer.shadowOffset     = CGSizeMake(0, 1);
+        notifyView.layer.shadowOpacity    = 0.5;
+        
+        // create text label
+        //
+        UILabel *notifyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
+        
+        notifyLabel.textColor       = [UIColor whiteColor];
+        notifyLabel.backgroundColor = [UIColor clearColor];
+        notifyLabel.font            = [UIFont systemFontOfSize:13.0];
+        
+        // update text with layer name(s)
+        //
+        if ([limitedMapViews count] == 1)
+        {
+            NSString *layerName = [((RMMapView *)[limitedMapViews lastObject]).contents.tileSource shortName];
+            
+            notifyLabel.text = [NSString stringWithFormat:@"Layer %@ doesn't support this level of detail", layerName];
+        }
+        else if ([limitedMapViews count] == 2)
+        {
+            notifyLabel.text = [NSString stringWithFormat:@"Layers %@ and %@ don't support this level of detail", 
+                                [[limitedMapViews objectAtIndex:0] valueForKeyPath:@"contents.tileSource.shortName"],
+                                [[limitedMapViews objectAtIndex:1] valueForKeyPath:@"contents.tileSource.shortName"]];
+        }
+        else
+        {
+            NSArray *allButLast = [limitedMapViews subarrayWithRange:NSMakeRange(0, [limitedMapViews count] - 1)];
+            
+            NSMutableString *layerNames = [NSString stringWithFormat:@"%@, and %@", 
+                                           [[allButLast valueForKeyPath:@"contents.tileSource.shortName"] componentsJoinedByString:@", "],
+                                           [[limitedMapViews lastObject] valueForKeyPath:@"contents.tileSource.shortName"]];
+            
+            notifyLabel.text = [NSString stringWithFormat:@"Layers %@ don't support this level of detail", layerNames];
+        }
+        
+        [notifyView addSubview:notifyLabel];
+        
+        // size according to text length
+        //
+        CGSize labelSize   = notifyLabel.frame.size;
+        CGSize textSize    = [notifyLabel.text sizeWithFont:notifyLabel.font];
+        
+        CGFloat adjustment = labelSize.width - textSize.width;
+        
+        notifyLabel.frame = CGRectMake(notifyLabel.frame.origin.x, notifyLabel.frame.origin.y, 
+                                       textSize.width, textSize.height);
+        notifyView.frame  = CGRectMake(notifyView.frame.origin.x,  notifyView.frame.origin.y,  
+                                       notifyView.frame.size.width - adjustment, notifyView.frame.size.height);
+        
+        // show it & fade out
+        //
+        [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:2.5];
+        
+        notifyView.alpha = 0.0;
+        
+        [UIView commitAnimations];
+        
+        // don't allow it to reappear until a short wait
+        //
+        boundsWarningEnabled = NO;
 
-    [notifyView addSubview:notifyLabel];
-
-    // size according to text length
-    //
-    CGSize labelSize   = notifyLabel.frame.size;
-    CGSize textSize    = [notifyLabel.text sizeWithFont:notifyLabel.font];
-    
-    CGFloat adjustment = labelSize.width - textSize.width;
-
-    notifyLabel.frame = CGRectMake(notifyLabel.frame.origin.x, notifyLabel.frame.origin.y, 
-                                   textSize.width, textSize.height);
-    notifyView.frame  = CGRectMake(notifyView.frame.origin.x,  notifyView.frame.origin.y,  
-                                   notifyView.frame.size.width - adjustment, notifyView.frame.size.height);
-    
-    // show it & fade out
-    //
-    [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:2.5];
-    
-    notifyView.alpha = 0.0;
-    
-    [UIView commitAnimations];
-    
-    [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:2.5];
+        NSTimeInterval boundsWarningWait = 2.5;
+        
+        [NSTimer scheduledTimerWithTimeInterval:boundsWarningWait
+                                         target:self
+                                       selector:@selector(enableBoundsWarning:)
+                                       userInfo:nil
+                                        repeats:NO];
+        
+        [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:boundsWarningWait];
+    }   
 }
-
+    
+- (void)enableBoundsWarning:(NSTimer *)timer
+{
+    boundsWarningEnabled = YES;
+}
+    
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
     if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
@@ -760,6 +812,37 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     CGImageRelease(cropped);
 
     return snapshot;
+}
+
+- (void)fixBaseMapForOutOfZoomBounds
+{
+    id <RMTileSource>baseSource = mapView.contents.tileSource;
+    
+    if ([baseSource isKindOfClass:[RMMBTilesTileSource class]])
+    {
+        RMMBTilesTileSource *infiniteSource = (RMMBTilesTileSource *)baseSource;
+        
+        float difference = 0;
+        
+        if (mapView.contents.zoom < [infiniteSource minZoomNative])
+            difference = [infiniteSource minZoomNative] - mapView.contents.zoom;
+        
+        else
+            difference = [infiniteSource maxZoomNative] - mapView.contents.zoom;
+        
+        if (difference)
+        {
+            RMLatLong currentMapCenter = mapView.contents.mapCenter;
+            
+            mapView.contents.zoom = mapView.contents.zoom + difference;
+            
+            [mapView moveToLatLong:currentMapCenter];
+            
+            float zoomFactor = 1/exp2f(difference);
+            
+            [mapView.contents zoomByFactor:zoomFactor near:[mapView.contents latLongToPixel:mapView.contents.mapCenter]];
+        }
+    }
 }
 
 #pragma mark -

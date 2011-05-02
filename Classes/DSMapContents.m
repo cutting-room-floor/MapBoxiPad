@@ -25,9 +25,8 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 @interface DSMapContents (DSMapContentsPrivate)
 
-- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView;
+- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayers:(NSArray **)limitedMapViews;
 - (void)postZoom;
-- (void)enableBoundsWarning:(NSTimer *)timer;
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
 
@@ -63,8 +62,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
         
         mapView = (RMMapView *)newView;
-        
-        boundsWarningEnabled = YES;
     }
     
     return self;
@@ -207,42 +204,39 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     if (targetZoom < kLowerZoomBounds)
         return;
     
-    DSTiledLayerMapView *limitedMapView = nil;
+    // check for hard/soft zoom limits
+    //
+    NSArray *limitedMapViews = nil;
     
-    if ([self canZoomTo:targetZoom limitedByLayer:&limitedMapView])
-    {
-        [self stopRecalculatingClusters];
-        
-        [super zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
-        
-        if (self.layerMapViews)
-            for (RMMapView *layerMapView in layerMapViews)
-                [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
-        
-        [self recalculateClustersIfNeeded];
-        
-        [NSObject cancelPreviousPerformRequestsWithTarget:self 
-                                                 selector:@selector(postZoom) 
-                                                   object:nil];
-
-        [self performSelector:@selector(postZoom) 
-                   withObject:nil 
-                   afterDelay:0.1];
-    }
-    else if (boundsWarningEnabled && limitedMapView)
+    BOOL canZoom = [self canZoomTo:targetZoom limitedByLayers:&limitedMapViews];
+    
+    if (limitedMapViews)
     {
         [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached
                                                             object:self
-                                                          userInfo:[NSDictionary dictionaryWithObject:limitedMapView forKey:@"limitedMapView"]];
-        
-        boundsWarningEnabled = NO;
-        
-        [NSTimer scheduledTimerWithTimeInterval:2.5
-                                         target:self
-                                       selector:@selector(enableBoundsWarning:)
-                                       userInfo:nil
-                                        repeats:NO];
+                                                          userInfo:[NSDictionary dictionaryWithObject:limitedMapViews forKey:@"limitedMapViews"]];
+
+        if ( ! canZoom)
+            return;
     }
+    
+    [self stopRecalculatingClusters];
+    
+    [super zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
+    
+    if (self.layerMapViews)
+        for (RMMapView *layerMapView in layerMapViews)
+            [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
+    
+    [self recalculateClustersIfNeeded];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self 
+                                             selector:@selector(postZoom) 
+                                               object:nil];
+
+    [self performSelector:@selector(postZoom) 
+               withObject:nil 
+               afterDelay:0.1];
 }
 
 - (void)zoomWithLatLngBoundsNorthEast:(CLLocationCoordinate2D)ne SouthWest:(CLLocationCoordinate2D)se
@@ -256,11 +250,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
             [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
     
     [self recalculateClustersIfNeeded];
-}
-
-- (void)enableBoundsWarning:(NSTimer *)timer
-{
-    boundsWarningEnabled = YES;
 }
 
 - (void)recalculateClustersIfNeeded
@@ -325,30 +314,40 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 #pragma mark -
 
-- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayer:(RMMapView **)limitedMapView
+- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayers:(NSArray **)limitedMapViews
 {
-    if (targetZoom > self.maxZoom || targetZoom < self.minZoom)
+    NSMutableArray *tileLayers = [NSMutableArray arrayWithObject:mapView];
+    
+    [tileLayers addObjectsFromArray:self.layerMapViews];
+    
+    NSMutableArray *outLimitedMapViews = [NSMutableArray array];
+    
+    BOOL canZoom = YES;
+    
+    for (RMMapView *tileLayer in tileLayers)
     {
-        if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]])
-            *limitedMapView = nil;
+        id <RMTileSource>source = tileLayer.contents.tileSource;
         
-        else
-            *limitedMapView = (RMMapView *)mapView;
+        if ( ! [source isKindOfClass:[RMMBTilesTileSource class]] && (targetZoom > [source maxZoom] || targetZoom < [source minZoom]))
+        {
+            [outLimitedMapViews addObject:tileLayer];
 
-        return NO;
+            canZoom = NO;
+        }
+
+        else if ([source isKindOfClass:[RMMBTilesTileSource class]] && (targetZoom > [((RMMBTilesTileSource *)source) maxZoomNative] || targetZoom < [((RMMBTilesTileSource *)source) minZoomNative]))
+            [outLimitedMapViews addObject:tileLayer];
     }
     
-    if ([self.layerMapViews count])
-        for (RMMapView *layerMapView in layerMapViews)
-            if (targetZoom > layerMapView.contents.maxZoom || targetZoom < layerMapView.contents.minZoom)
-            {
-                *limitedMapView = layerMapView;
+    if ([outLimitedMapViews count])
+    {
+        *limitedMapViews = [NSArray arrayWithArray:outLimitedMapViews];
+        
+        return canZoom;
+    }
 
-                return NO;
-            }
+    *limitedMapViews = nil;
 
-    *limitedMapView = nil;
-    
     return YES;
 }
 

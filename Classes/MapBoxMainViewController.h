@@ -40,6 +40,7 @@
     DSMapBoxDocumentSaveController *saveController;
     DSMapBoxDocumentLoadController *loadController;
     UIActionSheet *documentsActionSheet;
+    BOOL boundsWarningEnabled;
     
     @private
         NSString *badParsePath;

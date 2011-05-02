@@ -138,8 +138,8 @@
 {
     return [NSString stringWithFormat:@"MBTiles: %@, zooms %i-%i, %@, %@", 
                [self shortName], 
-               (int)[self minZoom], 
-               (int)[self maxZoom], 
+               (int)[self minZoomNative], 
+               (int)[self maxZoomNative], 
                ([self coversFullWorld] ? @"full world" : @"partial world"),
                ([self supportsInteractivity] ? @"supports interactivity" : @"no interactivity")];
 }
@@ -212,6 +212,11 @@
 
 - (float)minZoom
 {
+    return kMBTilesDefaultMinTileZoom;
+}
+
+- (float)minZoomNative
+{
     FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
     
     if ([db hadError])
@@ -227,6 +232,11 @@
 }
 
 - (float)maxZoom
+{
+    return kMBTilesDefaultMaxTileZoom;
+}
+
+- (float)maxZoomNative
 {
     FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
     

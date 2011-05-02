@@ -21,7 +21,6 @@ extern NSString *const DSMapContentsZoomBoundsReached;
 {
     NSArray *layerMapViews;
     RMMapView *mapView;
-    BOOL boundsWarningEnabled;
 }
 
 @property (nonatomic, retain) NSArray *layerMapViews;
