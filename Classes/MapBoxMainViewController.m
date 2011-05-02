@@ -725,10 +725,12 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         // show it & fade out
         //
+        NSTimeInterval duration = 2.5;
+
         [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
         
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:2.5];
+        [UIView setAnimationDuration:duration];
         
         notifyView.alpha = 0.0;
         
@@ -738,15 +740,14 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         //
         boundsWarningEnabled = NO;
 
-        NSTimeInterval boundsWarningWait = 2.5;
         
-        [NSTimer scheduledTimerWithTimeInterval:boundsWarningWait
+        [NSTimer scheduledTimerWithTimeInterval:duration
                                          target:self
                                        selector:@selector(enableBoundsWarning:)
                                        userInfo:nil
                                         repeats:NO];
         
-        [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:boundsWarningWait];
+        [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:duration];
     }   
 }
     
