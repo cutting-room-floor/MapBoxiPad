@@ -613,7 +613,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             RMLatLong center = CLLocationCoordinate2DMake((ne.latitude + sw.latitude) / 2, (ne.longitude + sw.longitude) / 2);
             
             mapView.contents.mapCenter = center;
-            mapView.contents.zoom      = [source minZoom];
+            mapView.contents.zoom      = fmaxf([source minZoomNative], kLowerZoomBounds);
         }
         
         else
