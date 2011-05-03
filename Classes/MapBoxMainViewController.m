@@ -19,7 +19,6 @@
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxInfiniteTileSource.h"
-#import "DSMapBoxNotificationView.h"
 
 #import "UIApplication_Additions.h"
 
@@ -41,7 +40,6 @@
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
-- (void)enableBoundsWarning:(NSTimer *)timer;
 - (void)fixBaseMapForOutOfZoomBounds;
 
 @end
@@ -104,13 +102,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                  name:DSMapBoxTileSetChangedNotification
                                                object:nil];
     
-    // watch for zoom bounds limits
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(zoomBoundsReached:)
-                                                 name:DSMapContentsZoomBoundsReached
-                                               object:nil];
-    
     // watch for net changes
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -169,8 +160,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
     [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    boundsWarningEnabled = YES;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -193,7 +182,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     
     [reachability stopNotifier];
@@ -660,77 +648,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     AudioServicesDisposeSystemSoundID(sound);
 }
 
-- (void)zoomBoundsReached:(NSNotification *)notification
-{
-    if (boundsWarningEnabled)
-    {
-        // get warning details
-        //
-        NSArray *limitedMapViews = [[notification userInfo] objectForKey:@"limitedMapViews"];
-        
-        // create notification message
-        //
-        NSString *message;
-        
-        if ([limitedMapViews count] == 1)
-        {
-            NSString *layerName = [((RMMapView *)[limitedMapViews lastObject]).contents.tileSource shortName];
-            
-            message = [NSString stringWithFormat:@"Layer %@ doesn't support this level of detail", layerName];
-        }
-        else if ([limitedMapViews count] == 2)
-        {
-            message = [NSString stringWithFormat:@"Layers %@ and %@ don't support this level of detail", 
-                          [[limitedMapViews objectAtIndex:0] valueForKeyPath:@"contents.tileSource.shortName"],
-                          [[limitedMapViews objectAtIndex:1] valueForKeyPath:@"contents.tileSource.shortName"]];
-        }
-        else
-        {
-            NSArray *allButLast = [limitedMapViews subarrayWithRange:NSMakeRange(0, [limitedMapViews count] - 1)];
-            
-            NSMutableString *layerNames = [NSString stringWithFormat:@"%@, and %@", 
-                                              [[allButLast valueForKeyPath:@"contents.tileSource.shortName"] componentsJoinedByString:@", "],
-                                              [[limitedMapViews lastObject] valueForKeyPath:@"contents.tileSource.shortName"]];
-            
-            message = [NSString stringWithFormat:@"Layers %@ don't support this level of detail", layerNames];
-        }
-        
-        // create notify message view
-        //
-        DSMapBoxNotificationView *notifyView = [DSMapBoxNotificationView notificationWithMessage:message];
-        
-        // show it & fade out
-        //
-        NSTimeInterval duration = 3.0;
-
-        [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
-        
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:duration];
-        
-        notifyView.alpha = 0.0;
-        
-        [UIView commitAnimations];
-        
-        // don't allow it to reappear until a short wait
-        //
-        boundsWarningEnabled = NO;
-        
-        [NSTimer scheduledTimerWithTimeInterval:duration
-                                         target:self
-                                       selector:@selector(enableBoundsWarning:)
-                                       userInfo:nil
-                                        repeats:NO];
-        
-        [notifyView performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:duration];
-    }   
-}
-    
-- (void)enableBoundsWarning:(NSTimer *)timer
-{
-    boundsWarningEnabled = YES;
-}
-    
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
     if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
