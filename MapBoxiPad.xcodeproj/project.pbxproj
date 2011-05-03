@@ -147,6 +147,7 @@
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEACF1136F53CC0058BA90 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACF0136F53CC0058BA90 /* linen.png */; };
+		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
 		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
@@ -423,6 +424,8 @@
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEACF0136F53CC0058BA90 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
+		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
+		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationView.m; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
@@ -737,7 +740,6 @@
 				DDCE299412B6E707008A1257 /* Resources */,
 			);
 			name = Help;
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		DD5678C712AEF2C900B73C8A /* Videos */ = {
@@ -888,7 +890,6 @@
 				DD86B6D611FE743B00165CDF /* Resources */,
 			);
 			name = "Feed Parsing";
-			path = Classes;
 			sourceTree = "<group>";
 		};
 		DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */ = {
@@ -926,12 +927,11 @@
 			isa = PBXGroup;
 			children = (
 				080E96DDFE201D6D7F000001 /* Main */,
-				DDBA88E21210E71000E5B572 /* Document Management */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
-				DD56786612AEEB4B00B73C8A /* Help */,
-				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
+				DDBA88E21210E71000E5B572 /* Document Management */,
+				DDEEAD81136F7BBD0058BA90 /* Minor Functionality */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
 			name = Classes;
@@ -1055,6 +1055,26 @@
 				DD0B1348121DD3D000A1309D /* action.png */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		DDEEAD81136F7BBD0058BA90 /* Minor Functionality */ = {
+			isa = PBXGroup;
+			children = (
+				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
+				DD56786612AEEB4B00B73C8A /* Help */,
+				DDEEAD84136F7BEC0058BA90 /* User Notification */,
+			);
+			name = "Minor Functionality";
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DDEEAD84136F7BEC0058BA90 /* User Notification */ = {
+			isa = PBXGroup;
+			children = (
+				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */,
+				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
+			);
+			name = "User Notification";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1312,6 +1332,7 @@
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DD75509B1361F44F00FABC33 /* DSMapBoxInfiniteTileSource.m in Sources */,
+				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

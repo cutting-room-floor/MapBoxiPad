@@ -19,6 +19,7 @@
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxInfiniteTileSource.h"
+#import "DSMapBoxNotificationView.h"
 
 #import "UIApplication_Additions.h"
 
@@ -663,65 +664,40 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 {
     if (boundsWarningEnabled)
     {
-        // get details
+        // get warning details
         //
         NSArray *limitedMapViews = [[notification userInfo] objectForKey:@"limitedMapViews"];
         
-        // create notify message view
+        // create notification message
         //
-        UIView *notifyView = [[[UIView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
+        NSString *message;
         
-        notifyView.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.8];
-        notifyView.userInteractionEnabled = NO;
-        notifyView.layer.shadowOffset     = CGSizeMake(0, 1);
-        notifyView.layer.shadowOpacity    = 0.5;
-        
-        // create text label
-        //
-        UILabel *notifyLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
-        
-        notifyLabel.textColor       = [UIColor whiteColor];
-        notifyLabel.backgroundColor = [UIColor clearColor];
-        notifyLabel.font            = [UIFont systemFontOfSize:13.0];
-        
-        // update text with layer name(s)
-        //
         if ([limitedMapViews count] == 1)
         {
             NSString *layerName = [((RMMapView *)[limitedMapViews lastObject]).contents.tileSource shortName];
             
-            notifyLabel.text = [NSString stringWithFormat:@"Layer %@ doesn't support this level of detail", layerName];
+            message = [NSString stringWithFormat:@"Layer %@ doesn't support this level of detail", layerName];
         }
         else if ([limitedMapViews count] == 2)
         {
-            notifyLabel.text = [NSString stringWithFormat:@"Layers %@ and %@ don't support this level of detail", 
-                                [[limitedMapViews objectAtIndex:0] valueForKeyPath:@"contents.tileSource.shortName"],
-                                [[limitedMapViews objectAtIndex:1] valueForKeyPath:@"contents.tileSource.shortName"]];
+            message = [NSString stringWithFormat:@"Layers %@ and %@ don't support this level of detail", 
+                          [[limitedMapViews objectAtIndex:0] valueForKeyPath:@"contents.tileSource.shortName"],
+                          [[limitedMapViews objectAtIndex:1] valueForKeyPath:@"contents.tileSource.shortName"]];
         }
         else
         {
             NSArray *allButLast = [limitedMapViews subarrayWithRange:NSMakeRange(0, [limitedMapViews count] - 1)];
             
             NSMutableString *layerNames = [NSString stringWithFormat:@"%@, and %@", 
-                                           [[allButLast valueForKeyPath:@"contents.tileSource.shortName"] componentsJoinedByString:@", "],
-                                           [[limitedMapViews lastObject] valueForKeyPath:@"contents.tileSource.shortName"]];
+                                              [[allButLast valueForKeyPath:@"contents.tileSource.shortName"] componentsJoinedByString:@", "],
+                                              [[limitedMapViews lastObject] valueForKeyPath:@"contents.tileSource.shortName"]];
             
-            notifyLabel.text = [NSString stringWithFormat:@"Layers %@ don't support this level of detail", layerNames];
+            message = [NSString stringWithFormat:@"Layers %@ don't support this level of detail", layerNames];
         }
         
-        [notifyView addSubview:notifyLabel];
-        
-        // size according to text length
+        // create notify message view
         //
-        CGSize labelSize   = notifyLabel.frame.size;
-        CGSize textSize    = [notifyLabel.text sizeWithFont:notifyLabel.font];
-        
-        CGFloat adjustment = labelSize.width - textSize.width;
-        
-        notifyLabel.frame = CGRectMake(notifyLabel.frame.origin.x, notifyLabel.frame.origin.y, 
-                                       textSize.width, textSize.height);
-        notifyView.frame  = CGRectMake(notifyView.frame.origin.x,  notifyView.frame.origin.y,  
-                                       notifyView.frame.size.width - adjustment, notifyView.frame.size.height);
+        DSMapBoxNotificationView *notifyView = [DSMapBoxNotificationView notificationWithMessage:message];
         
         // show it & fade out
         //
@@ -739,7 +715,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         // don't allow it to reappear until a short wait
         //
         boundsWarningEnabled = NO;
-
         
         [NSTimer scheduledTimerWithTimeInterval:duration
                                          target:self
