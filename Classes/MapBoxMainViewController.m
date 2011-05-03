@@ -1004,8 +1004,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
 
-        if ([layerManager minimumPossibleZoomLevel] < [source minZoom])
-            mapView.contents.zoom = [source minZoom];
+        if ([layerManager minimumPossibleZoomLevel] < [source minZoomNative])
+            mapView.contents.zoom = [source minZoomNative];
         
         else 
             mapView.contents.zoom = [layerManager minimumPossibleZoomLevel];
