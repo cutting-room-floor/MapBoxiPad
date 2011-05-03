@@ -39,9 +39,10 @@
         
         label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
         
-        label.textColor       = [UIColor whiteColor];
-        label.backgroundColor = [UIColor clearColor];
-        label.font            = [UIFont systemFontOfSize:13.0];
+        label.textColor        = [UIColor whiteColor];
+        label.backgroundColor  = [UIColor clearColor];
+        label.font             = [UIFont systemFontOfSize:13.0];
+        label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
         [self addSubview:label];        
     }
@@ -62,15 +63,14 @@
     //
     label.text = message;
     
-    // resize label & self as needed
+    // resize as needed
     //
     CGSize labelSize   = label.frame.size;
     CGSize textSize    = [label.text sizeWithFont:label.font];
     
     CGFloat adjustment = labelSize.width - textSize.width;
     
-    label.frame = CGRectMake(label.frame.origin.x, label.frame.origin.y, textSize.width, textSize.height);
-    self.frame  = CGRectMake(self.frame.origin.x,  self.frame.origin.y, self.frame.size.width - adjustment, self.frame.size.height);
+    self.frame = CGRectMake(self.frame.origin.x,  self.frame.origin.y, self.frame.size.width - adjustment, self.frame.size.height);
 }
 
 #pragma mark -
