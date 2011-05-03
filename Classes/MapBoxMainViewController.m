@@ -701,7 +701,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         // show it & fade out
         //
-        NSTimeInterval duration = 2.5;
+        NSTimeInterval duration = 3.0;
 
         [self.view insertSubview:notifyView aboveSubview:((RMMapView *)[mapView topMostMapView])];
         
