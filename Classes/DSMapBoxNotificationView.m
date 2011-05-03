@@ -37,7 +37,7 @@
         self.layer.shadowOffset     = CGSizeMake(0, 1);
         self.layer.shadowOpacity    = 0.5;
         
-        label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 5, 480, 20)] autorelease];
+        label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 4, 480, 20)] autorelease];
         
         label.textColor        = [UIColor whiteColor];
         label.backgroundColor  = [UIColor clearColor];
