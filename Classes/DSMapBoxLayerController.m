@@ -11,6 +11,7 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
+#import "DSMapContents.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
@@ -386,6 +387,36 @@
             [alert show];
             
             return;
+        }
+    }
+    else if (indexPath.section == DSMapBoxLayerSectionBase || indexPath.section == DSMapBoxLayerSectionTile)
+    {
+        NSArray *layers;
+        
+        if (indexPath.section == DSMapBoxLayerSectionBase)
+            layers = self.layerManager.baseLayers;
+
+        else
+            layers = self.layerManager.tileLayers;
+        
+        NSDictionary *layer = [layers objectAtIndex:indexPath.row];
+        
+        if ([[layer valueForKey:@"path"] isKindOfClass:[NSURL class]] && [[[layer valueForKey:@"path"] absoluteString] hasSuffix:@".mbtiles"])
+        {
+            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"path"]] autorelease] maxZoomNative] < kLowerZoomBounds)
+            {
+                [tableView deselectRowAtIndexPath:indexPath animated:NO];
+                
+                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable to zoom"
+                                                                 message:[NSString stringWithFormat:@"The %@ layer can't zoom in far enough to show on this map. Please contact the creator of the layer and ask for support for zoom levels 3 and higher.", [layer valueForKey:@"name"]]
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:@"OK", nil] autorelease];
+                
+                [alert show];
+                
+                return;
+            }
         }
     }
     
