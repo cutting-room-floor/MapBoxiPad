@@ -13,6 +13,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxPopoverController.h"
 #import "DSMapContents.h"
+#import "DSTiledLayerMapView.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -441,12 +442,13 @@
     DSMapView *aMapView         = nil;
     id <RMTileSource>tileSource = nil;
     
-    NSArray *layerMapViews = ((DSMapContents *)mapView.contents).layerMapViews;
+    NSArray *layerMapViews = ((DSMapContents *)self.mapView.contents).layerMapViews;
     
-    if ([layerMapViews count])
+    if (layerMapViews && [layerMapViews count])
     {
-        // get the first one with interactivity, which was the last-enabled
-        // TODO: perhaps maintain actual stacking order? 
+        // We're touching a baselayer. Get the first overlay with interactivity, which was the last-enabled.
+        //
+        // TODO: Perhaps maintain actual stacking order? 
         //
         for (DSMapView *aMapView in layerMapViews)
         {
@@ -459,10 +461,42 @@
     
     if ( ! tileSource)
     {
-        // refer to base map view
-        //
-        aMapView   = mapView;
-        tileSource = aMapView.contents.tileSource;
+        if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]] && [((RMMBTilesTileSource *)self.mapView.contents.tileSource) supportsInteractivity])
+        {
+            // We are touching an interactive overlay. Pass to it. 
+            //
+            aMapView   = self.mapView;
+            tileSource = aMapView.contents.tileSource;
+        }
+        
+        if ( ! tileSource)
+        {
+            // Still no luck. If we're an overlay, pass to the base layer.
+            //
+            if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]])
+            {
+                for (UIView *peerView in self.mapView.superview.subviews)
+                {
+                    if ([peerView isKindOfClass:[DSTiledLayerMapView class]])
+                        continue;
+                    
+                    if ([peerView isKindOfClass:[DSMapView class]])
+                    {                        
+                        aMapView   = (DSMapView *)peerView;
+                        tileSource = aMapView.contents.tileSource;
+                        
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // Last chance. Pass to the base layer.
+                //
+                aMapView   = self.mapView;
+                tileSource = aMapView.contents.tileSource;
+            }
+        }
     }
 
     NSLog(@"querying for interactivity: %@", tileSource);    
