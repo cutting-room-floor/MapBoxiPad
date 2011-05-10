@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-extern NSString *const UIAlertViewAdditionsContext;
-
 @interface UIAlertView (UIAlertView_Additions)
 
 - (void)setContext:(id)context;
