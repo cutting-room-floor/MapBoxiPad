@@ -104,6 +104,7 @@
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
 		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
+		DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8637AB1379BDF6006650EA /* UIAlertView_Additions.m */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD86B69A11FE6CE700165CDF /* DSMapBoxLayerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */; };
 		DD86B6F111FE792D00165CDF /* kml.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F011FE792D00165CDF /* kml.png */; };
@@ -356,6 +357,8 @@
 		DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDataOverlayManager.m; sourceTree = "<group>"; };
 		DD72C76211E6847C0030C637 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle.png; path = ../circle.png; sourceTree = "<group>"; };
 		DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bundled_tileset_md5sum.txt; sourceTree = "<group>"; };
+		DD8637AA1379BDF6006650EA /* UIAlertView_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertView_Additions.h; sourceTree = "<group>"; };
+		DD8637AB1379BDF6006650EA /* UIAlertView_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertView_Additions.m; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD86B69811FE6CE700165CDF /* DSMapBoxLayerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerController.xib; sourceTree = "<group>"; };
@@ -853,6 +856,8 @@
 			children = (
 				DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */,
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
+				DD8637AA1379BDF6006650EA /* UIAlertView_Additions.h */,
+				DD8637AB1379BDF6006650EA /* UIAlertView_Additions.m */,
 			);
 			name = "Categories & Additions";
 			path = Classes;
@@ -1331,6 +1336,7 @@
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
+				DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

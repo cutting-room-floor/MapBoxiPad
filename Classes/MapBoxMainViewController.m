@@ -20,6 +20,7 @@
 #import "DSMapBoxFeedParser.h"
 
 #import "UIApplication_Additions.h"
+#import "UIAlertView_Additions.h"
 
 #import "SimpleKML.h"
 
@@ -110,6 +111,13 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     reachability = [[Reachability reachabilityForInternetConnection] retain];
     [reachability startNotifier];
     
+    // watch for zoom bounds limits
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(zoomBoundsReached:)
+                                                 name:DSMapContentsZoomBoundsReached
+                                               object:nil];
+    
     // restore app state
     //
     [self restoreState:self];
@@ -181,6 +189,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -698,6 +707,24 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     return snapshot;
 }
 
+- (void)zoomBoundsReached:(NSNotification *)notification
+{
+    if ( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"skipWarningAboutZoom"])
+    {
+        NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but it hides layers that are out of range. %@ is now out of range. When you zoom back in range, it will show up again.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
+        
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
+                                                         message:message 
+                                                        delegate:self
+                                               cancelButtonTitle:@"Don't Warn"
+                                               otherButtonTitles:@"OK", nil] autorelease];
+
+        alert.context = @"zoom warning";
+        
+        [alert show];
+    }
+}
+
 #pragma mark -
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -787,6 +814,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                            cancelButtonTitle:@"Don't Send"
                                            otherButtonTitles:@"Send Mail", nil] autorelease];
     
+    alert.context = @"layer problem";
+    
     [alert show];
 }
 
@@ -794,55 +823,66 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == alertView.firstOtherButtonIndex)
+    if (alertView.context && [alertView.context isEqualToString:@"layer problem"])
     {
-        if ([MFMailComposeViewController canSendMail])
+        if (buttonIndex == alertView.firstOtherButtonIndex)
         {
-            MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
-            
-            mailer.mailComposeDelegate = self;
-            
-            [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
-            [mailer setMessageBody:@"<em>Please provide any additional details about this file or about the error you encountered here.</em>" isHTML:YES];
-            
-            if ([self.badParsePath hasSuffix:@".kml"])
+            if ([MFMailComposeViewController canSendMail])
             {
-                [mailer setSubject:@"Problem KML file"];
+                MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
                 
-                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
-                                 mimeType:@"application/vnd.google-earth.kml+xml" 
-                                 fileName:[self.badParsePath lastPathComponent]];
+                mailer.mailComposeDelegate = self;
+                
+                [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
+                [mailer setMessageBody:@"<em>Please provide any additional details about this file or about the error you encountered here.</em>" isHTML:YES];
+                
+                if ([self.badParsePath hasSuffix:@".kml"])
+                {
+                    [mailer setSubject:@"Problem KML file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                     mimeType:@"application/vnd.google-earth.kml+xml" 
+                                     fileName:[self.badParsePath lastPathComponent]];
+                }
+                else if ([self.badParsePath hasSuffix:@".kmz"])
+                {
+                    [mailer setSubject:@"Problem KMZ file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                     mimeType:@"application/vnd.google-earth.kmz" 
+                                     fileName:[self.badParsePath lastPathComponent]];
+                }
+                else if ([self.badParsePath hasSuffix:@".rss"] || [self.badParsePath hasSuffix:@".xml"])
+                {
+                    [mailer setSubject:@"Problem RSS file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                                     mimeType:@"application/rss+xml" 
+                                     fileName:[self.badParsePath lastPathComponent]];
+                }
+                
+                mailer.modalPresentationStyle = UIModalPresentationPageSheet;
+                
+                [self presentModalViewController:mailer animated:YES];
             }
-            else if ([self.badParsePath hasSuffix:@".kmz"])
+            else
             {
-                [mailer setSubject:@"Problem KMZ file"];
+                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                                 message:@"Please setup Mail first."
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:@"OK", nil] autorelease];
                 
-                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
-                                 mimeType:@"application/vnd.google-earth.kmz" 
-                                 fileName:[self.badParsePath lastPathComponent]];
+                [alert show];
             }
-            else if ([self.badParsePath hasSuffix:@".rss"] || [self.badParsePath hasSuffix:@".xml"])
-            {
-                [mailer setSubject:@"Problem RSS file"];
-                
-                [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
-                                 mimeType:@"application/rss+xml" 
-                                 fileName:[self.badParsePath lastPathComponent]];
-            }
-            
-            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
-            
-            [self presentModalViewController:mailer animated:YES];
         }
-        else
+    }
+    else if (alertView.context && [alertView.context isEqualToString:@"zoom warning"])
+    {
+        if (buttonIndex == alertView.cancelButtonIndex)
         {
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                             message:@"Please setup Mail first."
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"OK", nil] autorelease];
-            
-            [alert show];
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipWarningAboutZoom"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }

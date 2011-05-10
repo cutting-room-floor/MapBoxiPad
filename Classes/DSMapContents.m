@@ -386,26 +386,29 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     {
         RMMBTilesTileSource *source = (RMMBTilesTileSource *)self.tileSource;
         
-        if ([source layerType] == RMMBTilesLayerTypeOverlay)
+        CGFloat newAlpha;
+        
+        if (self.zoom > [source maxZoomNative] || self.zoom < [source minZoomNative])
         {
-            CGFloat newAlpha;
+            newAlpha = 0.0;
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached object:self];
+        }
+        
+        else
+            newAlpha = 1.0;
+        
+        if (newAlpha != mapView.alpha && [source layerType] == RMMBTilesLayerTypeOverlay)
+        {
+            // only actually change overlays
+            //
+            if (animated)
+                [UIView beginAnimations:nil context:nil];
             
-            if (self.zoom > [source maxZoomNative] || self.zoom < [source minZoomNative])
-                newAlpha = 0.0;
+            mapView.alpha = newAlpha;
             
-            else
-                newAlpha = 1.0;
-            
-            if (newAlpha != mapView.alpha)
-            {
-                if (animated)
-                    [UIView beginAnimations:nil context:nil];
-                
-                mapView.alpha = newAlpha;
-                
-                if (animated)
-                    [UIView commitAnimations];
-            }
+            if (animated)
+                [UIView commitAnimations];
         }
     }
 }
