@@ -25,10 +25,10 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 @interface DSMapContents (DSMapContentsPrivate)
 
-- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayers:(NSArray **)limitedMapViews;
 - (void)postZoom;
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
+- (void)checkOutOfZoomBounds;
 
 @end
 
@@ -62,6 +62,8 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
         
         mapView = (RMMapView *)newView;
+        
+        [self checkOutOfZoomBounds];
     }
     
     return self;
@@ -160,9 +162,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 {
     [self stopRecalculatingClusters];
     
-    if (zoom != [self zoom])
-        NSLog(@"DSMapContents changing zoom %f => %f", [self zoom], zoom);
-    
     // borrowed from super
     //
     float scale = [mercatorToTileProjection calculateScaleFromZoom:zoom];
@@ -171,6 +170,12 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     //
     // end borrowed code
     
+    // check for going out of zoom bounds
+    //
+    [self checkOutOfZoomBounds];
+    
+    // trigger overlays, if any
+    //
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents setZoom:zoom];
@@ -204,26 +209,18 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     if (targetZoom < kLowerZoomBounds)
         return;
     
-    // check for hard/soft zoom limits
-    //
-    NSArray *limitedMapViews = nil;
-    
-    BOOL canZoom = [self canZoomTo:targetZoom limitedByLayers:&limitedMapViews];
-    
-    if (limitedMapViews)
-    {
-        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached
-                                                            object:self
-                                                          userInfo:[NSDictionary dictionaryWithObject:limitedMapViews forKey:@"limitedMapViews"]];
-
-        if ( ! canZoom)
-            return;
-    }
-    
     [self stopRecalculatingClusters];
     
+    // call super
+    //
     [super zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
+
+    // check for going out of zoom bounds
+    //
+    [self checkOutOfZoomBounds];
     
+    // trigger overlays, if any
+    //
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
@@ -243,8 +240,16 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 {
     [self stopRecalculatingClusters];
     
+    // call super
+    //
     [super zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
+
+    // check for going out of zoom bounds
+    //
+    [self checkOutOfZoomBounds];
     
+    // trigger overlays, if any
+    //
     if (self.layerMapViews)
         for (RMMapView *layerMapView in layerMapViews)
             [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
@@ -314,43 +319,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 #pragma mark -
 
-- (BOOL)canZoomTo:(CGFloat)targetZoom limitedByLayers:(NSArray **)limitedMapViews
-{
-    NSMutableArray *tileLayers = [NSMutableArray arrayWithObject:mapView];
-    
-    [tileLayers addObjectsFromArray:self.layerMapViews];
-    
-    NSMutableArray *outLimitedMapViews = [NSMutableArray array];
-    
-    BOOL canZoom = YES;
-    
-    for (RMMapView *tileLayer in tileLayers)
-    {
-        id <RMTileSource>source = tileLayer.contents.tileSource;
-        
-        if ( ! [source isKindOfClass:[RMMBTilesTileSource class]] && (targetZoom > [source maxZoom] || targetZoom < [source minZoom]))
-        {
-            [outLimitedMapViews addObject:tileLayer];
-
-            canZoom = NO;
-        }
-
-        else if ([source isKindOfClass:[RMMBTilesTileSource class]] && (targetZoom > [((RMMBTilesTileSource *)source) maxZoomNative] || targetZoom < [((RMMBTilesTileSource *)source) minZoomNative]))
-            [outLimitedMapViews addObject:tileLayer];
-    }
-    
-    if ([outLimitedMapViews count])
-    {
-        *limitedMapViews = [NSArray arrayWithArray:outLimitedMapViews];
-        
-        return canZoom;
-    }
-
-    *limitedMapViews = nil;
-
-    return YES;
-}
-
 - (void)postZoom
 {
     RMProjectedPoint currentTopLeftProj      = [mercatorToScreenProjection projectScreenPointToXY:CGPointMake(0, 0)];
@@ -410,6 +378,34 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         [tileLoader reload];
     }
     
+}
+
+- (void)checkOutOfZoomBounds
+{
+    if ([self.tileSource isKindOfClass:[RMMBTilesTileSource class]])
+    {
+        RMMBTilesTileSource *source = (RMMBTilesTileSource *)self.tileSource;
+        
+        if ([source layerType] == RMMBTilesLayerTypeOverlay)
+        {
+            CGFloat newAlpha;
+            
+            if (self.zoom > [source maxZoomNative] || self.zoom < [source minZoomNative])
+                newAlpha = 0.0;
+            
+            else
+                newAlpha = 1.0;
+            
+            if (newAlpha != mapView.alpha)
+            {
+                [UIView beginAnimations:nil context:nil];
+                
+                mapView.alpha = newAlpha;
+                
+                [UIView commitAnimations];
+            }
+        }
+    }
 }
 
 @end

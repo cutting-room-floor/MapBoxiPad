@@ -18,7 +18,6 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
-#import "DSMapBoxInfiniteTileSource.h"
 
 #import "UIApplication_Additions.h"
 
@@ -40,7 +39,6 @@
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
-- (void)fixBaseMapForOutOfZoomBounds;
 
 @end
 
@@ -247,8 +245,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             else
                 [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
         }
-        
-        [self fixBaseMapForOutOfZoomBounds];
     }
     
     // load tile overlay state(s)
@@ -559,8 +555,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     // force switch to new tile source to update tiles
     //
-    mapView.contents.tileSource = [[[DSMapBoxInfiniteTileSource alloc] init] autorelease];
-    
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
     if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
@@ -603,9 +597,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             mapView.contents.mapCenter = center;
             mapView.contents.zoom      = fmaxf([source minZoomNative], kLowerZoomBounds);
         }
-        
-        else
-            [self fixBaseMapForOutOfZoomBounds];
     }
 
     // perform image to map animated swap back
@@ -705,37 +696,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     CGImageRelease(cropped);
 
     return snapshot;
-}
-
-- (void)fixBaseMapForOutOfZoomBounds
-{
-    id <RMTileSource>baseSource = mapView.contents.tileSource;
-    
-    if ([baseSource isKindOfClass:[RMMBTilesTileSource class]])
-    {
-        RMMBTilesTileSource *infiniteSource = (RMMBTilesTileSource *)baseSource;
-        
-        float difference = 0;
-        
-        if (mapView.contents.zoom < [infiniteSource minZoomNative])
-            difference = [infiniteSource minZoomNative] - mapView.contents.zoom;
-        
-        else
-            difference = [infiniteSource maxZoomNative] - mapView.contents.zoom;
-        
-        if (difference)
-        {
-            RMLatLong currentMapCenter = mapView.contents.mapCenter;
-            
-            mapView.contents.zoom = mapView.contents.zoom + difference;
-            
-            [mapView moveToLatLong:currentMapCenter];
-            
-            float zoomFactor = 1/exp2f(difference);
-            
-            [mapView.contents zoomByFactor:zoomFactor near:[mapView.contents latLongToPixel:mapView.contents.mapCenter]];
-        }
-    }
 }
 
 #pragma mark -
@@ -917,27 +877,20 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)zoomToLayer:(NSDictionary *)layer
 {
-    if ([layerManager maximumPossibleZoomLevel] >= [layerManager minimumPossibleZoomLevel])
-    {
-        RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+    RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
 
-        if ([layerManager minimumPossibleZoomLevel] < [source minZoomNative])
-            mapView.contents.zoom = [source minZoomNative];
+    mapView.contents.zoom = [source minZoomNative];
+    
+    if ( ! [source coversFullWorld])
+    {
+        RMSphericalTrapezium bbox = [source latitudeLongitudeBoundingBox];
         
-        else 
-            mapView.contents.zoom = [layerManager minimumPossibleZoomLevel];
+        CLLocationDegrees lon, lat;
         
-        if ( ! [source coversFullWorld])
-        {
-            RMSphericalTrapezium bbox = [source latitudeLongitudeBoundingBox];
-            
-            CLLocationDegrees lon, lat;
-            
-            lon = (bbox.northeast.longitude + bbox.southwest.longitude) / 2;
-            lat = (bbox.northeast.latitude  + bbox.southwest.latitude)  / 2;
-            
-            [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
-        }
+        lon = (bbox.northeast.longitude + bbox.southwest.longitude) / 2;
+        lat = (bbox.northeast.latitude  + bbox.southwest.latitude)  / 2;
+        
+        [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
     }
 }
 

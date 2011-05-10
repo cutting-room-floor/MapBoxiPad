@@ -105,44 +105,6 @@
 
 #pragma mark -
 
-- (float)minimumPossibleZoomLevel
-{
-    float min = kLowerZoomBounds <= [baseMapView.contents.tileSource minZoom] ? [baseMapView.contents.tileSource minZoom] : kLowerZoomBounds;
-    
-    for (NSDictionary *layer in self.tileLayers)
-    {
-        if ([[layer objectForKey:@"selected"] boolValue])
-        {
-            RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
-            
-            if ([source minZoom] > min)
-                min = [source minZoom];
-        }
-    }
-    
-    return min;
-}
-
-- (float)maximumPossibleZoomLevel
-{
-    float max = [baseMapView.contents.tileSource maxZoom];
-    
-    for (NSDictionary *layer in self.tileLayers)
-    {
-        if ([[layer objectForKey:@"selected"] boolValue])
-        {
-            RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
-            
-            if ([source maxZoom] < max)
-                max = [source maxZoom];
-        }
-    }
-    
-    return max;
-}
-
-#pragma mark -
-
 - (void)reloadLayersFromDisk
 {
     // base layers
@@ -600,86 +562,13 @@
                 layerMapView.enableRotate     = baseMapView.enableRotate;
                 layerMapView.deceleration     = baseMapView.deceleration;
 
-                // setup the new map contents, quickly zooming it in/out as necessary
-                // to trigger infinite zooming out-of-range caching
-                //
-                if ([source isKindOfClass:[RMMBTilesTileSource class]])
-                {
-                    RMMBTilesTileSource *infiniteSource = (RMMBTilesTileSource *)source;
-                    
-                    if (baseMapView.contents.zoom < [infiniteSource minZoomNative] || 
-                        baseMapView.contents.zoom > [infiniteSource maxZoomNative])
-                    {
-                        // store old map center
-                        //
-                        RMLatLong currentMapCenter = baseMapView.contents.mapCenter;
-                        
-                        // determine zoom level we have to get to to load this layer visibly
-                        //
-                        float difference;
-                        
-                        if (baseMapView.contents.zoom < [infiniteSource minZoomNative])
-                            difference = [infiniteSource minZoomNative] - baseMapView.contents.zoom;
-                        
-                        else
-                            difference = [infiniteSource maxZoomNative] - baseMapView.contents.zoom;
-                        
-                        // zoom the base map there
-                        //
-                        baseMapView.contents.zoom = baseMapView.contents.zoom + difference;
-                        
-                        // setup the new map view contents, zoomed same as new base to trigger initial load
-                        //
-                        [[[DSMapContents alloc] initWithView:layerMapView 
-                                                  tilesource:source
-                                                centerLatLon:baseMapView.contents.mapCenter
-                                                   zoomLevel:baseMapView.contents.zoom
-                                                maxZoomLevel:[source maxZoom]
-                                                minZoomLevel:[source minZoom]
-                                             backgroundImage:nil] autorelease];
-                        
-                        // zoom back to the same as the base map
-                        //
-                        layerMapView.contents.zoom = baseMapView.contents.zoom;
-                        
-                        // move map center back to start (overlays follow)
-                        //
-                        [baseMapView moveToLatLong:currentMapCenter];
-                        
-                        // calculate factor to reverse these zooms
-                        //
-                        float zoomFactor = 1/exp2f(difference);
-                        
-                        // use factor to zoom back to where we started
-                        //
-                        [baseMapView.contents  zoomByFactor:zoomFactor near:[baseMapView.contents  latLongToPixel:baseMapView.contents.mapCenter]];
-                        [layerMapView.contents zoomByFactor:zoomFactor near:[layerMapView.contents latLongToPixel:layerMapView.contents.mapCenter]];
-                    }
-                    else
-                    {
-                        // just do a regular contents since we are in the native zoom range already
-                        //
-                        [[[DSMapContents alloc] initWithView:layerMapView 
-                                                  tilesource:source
-                                                centerLatLon:baseMapView.contents.mapCenter
-                                                   zoomLevel:baseMapView.contents.zoom
-                                                maxZoomLevel:[source maxZoom]
-                                                minZoomLevel:[source minZoom]
-                                             backgroundImage:nil] autorelease];
-                    }
-                }
-                else
-                {
-                    // just do a regular contents for non-infinite scrolling MBTiles (if any)
-                    //
-                    [[[DSMapContents alloc] initWithView:layerMapView 
-                                              tilesource:source
-                                            centerLatLon:baseMapView.contents.mapCenter
-                                               zoomLevel:baseMapView.contents.zoom
-                                            maxZoomLevel:[source maxZoom]
-                                            minZoomLevel:[source minZoom]
-                                         backgroundImage:nil] autorelease];
-                }
+                [[[DSMapContents alloc] initWithView:layerMapView 
+                                          tilesource:source
+                                        centerLatLon:baseMapView.contents.mapCenter
+                                           zoomLevel:baseMapView.contents.zoom
+                                        maxZoomLevel:[source maxZoom]
+                                        minZoomLevel:[source minZoom]
+                                     backgroundImage:nil] autorelease];
                 
                 // get peer layer map views
                 //

@@ -175,7 +175,11 @@
     RMTileImage *image;
     
     if ( ! data)
-        image = [RMTileImage dummyTile:tile];
+        if ([self layerType] == RMMBTilesLayerTypeBaselayer)
+            image = [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+
+        else
+            image = [RMTileImage dummyTile:tile];
     
     else
         image = [RMTileImage imageForTile:tile withData:data];
@@ -309,6 +313,25 @@
         return YES;
     
     return NO;
+}
+
+- (RMMBTilesLayerType)layerType
+{
+    FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'type'"];
+    
+    if ([db hadError])
+        return RMMBTilesLayerTypeBaselayer;
+    
+    [results next];
+    
+    NSString *type = nil;
+    
+    if ([results hasAnotherRow])
+        type = [results stringForColumn:@"value"];
+    
+    [results close];
+    
+    return ([type isEqualToString:@"overlay"] ? RMMBTilesLayerTypeOverlay : RMMBTilesLayerTypeBaselayer);
 }
 
 - (void)didReceiveMemoryWarning
