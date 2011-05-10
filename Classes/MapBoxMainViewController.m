@@ -238,9 +238,11 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
         };
         
-        mapView.contents.mapCenter = mapCenter;
+        if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
+            mapView.contents.mapCenter = mapCenter;
         
-        mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+        if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kMBTilesDefaultMaxTileZoom)
+            mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
         
         NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
         
