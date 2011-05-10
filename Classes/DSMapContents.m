@@ -28,7 +28,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 - (void)postZoom;
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
-- (void)checkOutOfZoomBounds;
+- (void)checkOutOfZoomBoundsAnimated:(BOOL)animated;
 
 @end
 
@@ -63,7 +63,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         
         mapView = (RMMapView *)newView;
         
-        [self checkOutOfZoomBounds];
+        [self checkOutOfZoomBoundsAnimated:NO];
     }
     
     return self;
@@ -172,7 +172,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBounds];
+    [self checkOutOfZoomBoundsAnimated:YES];
     
     // trigger overlays, if any
     //
@@ -217,7 +217,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBounds];
+    [self checkOutOfZoomBoundsAnimated:YES];
     
     // trigger overlays, if any
     //
@@ -246,7 +246,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBounds];
+    [self checkOutOfZoomBoundsAnimated:YES];
     
     // trigger overlays, if any
     //
@@ -380,7 +380,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     
 }
 
-- (void)checkOutOfZoomBounds
+- (void)checkOutOfZoomBoundsAnimated:(BOOL)animated
 {
     if ([self.tileSource isKindOfClass:[RMMBTilesTileSource class]])
     {
@@ -398,11 +398,13 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
             
             if (newAlpha != mapView.alpha)
             {
-                [UIView beginAnimations:nil context:nil];
+                if (animated)
+                    [UIView beginAnimations:nil context:nil];
                 
                 mapView.alpha = newAlpha;
                 
-                [UIView commitAnimations];
+                if (animated)
+                    [UIView commitAnimations];
             }
         }
     }
