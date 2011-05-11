@@ -48,6 +48,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 @implementation MapBoxMainViewController
 
 @synthesize badParsePath;
+@synthesize lastLayerAlertDate;
 
 - (void)viewDidLoad
 {
@@ -117,6 +118,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                              selector:@selector(zoomBoundsReached:)
                                                  name:DSMapContentsZoomBoundsReached
                                                object:nil];
+    
+    self.lastLayerAlertDate = [NSDate dateWithTimeIntervalSinceNow:-50];
     
     // restore app state
     //
@@ -199,6 +202,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     [dataOverlayManager release];
     [badParsePath release];
     [documentsActionSheet release];
+    [lastLayerAlertDate release];
 
     [super dealloc];
 }
@@ -713,17 +717,20 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 {
     if ( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"skipWarningAboutZoom"])
     {
-        NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but it hides layers that are out of range. %@ is now out of range. When you zoom back in range, it will show up again.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
-        
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
-                                                         message:message 
-                                                        delegate:self
-                                               cancelButtonTitle:@"Don't Warn"
-                                               otherButtonTitles:@"OK", nil] autorelease];
-
-        alert.context = @"zoom warning";
-        
-        [alert show];
+        if ([[NSDate date] timeIntervalSinceDate:self.lastLayerAlertDate] > 60.0)
+        {
+            NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but it hides layers that are out of range. %@ is now out of range. When you zoom back in range, it will show up again.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
+                                                             message:message 
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Don't Warn"
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            alert.context = @"zoom warning";
+            
+            [alert show];
+        }
     }
 }
 
@@ -881,6 +888,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     }
     else if (alertView.context && [alertView.context isEqualToString:@"zoom warning"])
     {
+        self.lastLayerAlertDate = [NSDate date];
+        
         if (buttonIndex == alertView.cancelButtonIndex)
         {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipWarningAboutZoom"];
