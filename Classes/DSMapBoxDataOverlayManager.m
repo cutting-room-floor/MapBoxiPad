@@ -85,6 +85,12 @@
     // When tile layers come or go, the top-most one, or else the base layer if none,
     // gets passed here in order to juggle the data overlay layer to it. 
     //    
+    // First we take the clusters & their markers (which we'll redraw anyway).
+    //
+    [((DSMapBoxMarkerManager *)inMapView.markerManager) takeClustersFromMarkerManager:((DSMapBoxMarkerManager *)mapView.markerManager)];
+
+    // Then we take the path-based layers (i.e., what's left).
+    //
     RMLayerCollection *newOverlay = inMapView.contents.overlay;
     
     NSArray *layers = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];

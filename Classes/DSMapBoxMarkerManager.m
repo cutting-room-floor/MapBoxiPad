@@ -31,6 +31,7 @@
 @implementation DSMapBoxMarkerManager
 
 @synthesize clusteringEnabled;
+@synthesize clusters;
 
 - (id)initWithContents:(RMMapContents *)mapContents
 {
@@ -65,12 +66,20 @@
     [self recalculateClusters];
 }
 
+- (NSArray *)clusters
+{
+    return [NSArray arrayWithArray:clusters];
+}
+
 #pragma mark -
 
 - (void)removeMarkers
 {
     NSArray *nonMarkers = [[self markers] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF isKindOfClass:%@", [RMMarker class]]];
-
+    NSArray *allMarkers = [NSArray arrayWithArray:[self markers]];
+    
+    [allMarkers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+    
     [[contents overlay] setSublayers:nonMarkers];
 }
 
@@ -298,6 +307,16 @@
             }
         }
     }
+}
+
+- (void)takeClustersFromMarkerManager:(DSMapBoxMarkerManager *)markerManager
+{
+    NSArray *clustersToTake = [markerManager clusters];
+    [markerManager removeMarkersAndClusters];
+    [clusters setArray:clustersToTake];
+    self.clusteringEnabled = markerManager.clusteringEnabled;
+    
+    [self recalculateClusters];
 }
 
 @end

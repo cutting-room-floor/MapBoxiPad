@@ -161,7 +161,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     // set clustering button title
     //
-    if (((DSMapBoxMarkerManager *)mapView.contents.markerManager).clusteringEnabled)
+    if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
         clusteringButton.title = @"Turn Clustering Off";
 
     else
@@ -498,7 +498,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (IBAction)tappedClusteringButton:(id)sender
 {
-    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.contents.markerManager;
+    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager;
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
     
