@@ -93,12 +93,13 @@
     //
     RMLayerCollection *newOverlay = inMapView.contents.overlay;
     
-    NSArray *layers = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];
+    NSArray *paths = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];
     
-    for (CALayer *someLayer in layers)
+    for (RMPath *path in paths)
     {  
-        [someLayer removeFromSuperlayer];
-        [newOverlay addSublayer:someLayer];
+        [path removeFromSuperlayer];
+        [newOverlay addSublayer:path];
+        path.mapContents = inMapView.contents;
     }
     
     [mapView release];
