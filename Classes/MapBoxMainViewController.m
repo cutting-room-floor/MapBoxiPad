@@ -719,7 +719,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         if ([[NSDate date] timeIntervalSinceDate:self.lastLayerAlertDate] > 5.0)
         {
-            NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but it hides layers that are out of range. %@ is now out of range. When you zoom back in range, it will show up again.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
+            NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but layers that don't support the current zoom level won't always show up reliably. %@ is now out of range.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
             
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
                                                              message:message 
