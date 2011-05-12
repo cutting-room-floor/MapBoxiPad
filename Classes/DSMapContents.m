@@ -28,7 +28,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 - (void)postZoom;
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
-- (void)checkOutOfZoomBoundsAnimated:(BOOL)animated;
+- (void)checkOutOfZoomBounds;
 
 @end
 
@@ -67,7 +67,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         //
         mapView.tag = 1;
 
-        [self checkOutOfZoomBoundsAnimated:NO];
+        [self checkOutOfZoomBounds];
     }
     
     return self;
@@ -176,7 +176,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBoundsAnimated:YES];
+    [self checkOutOfZoomBounds];
     
     // trigger overlays, if any
     //
@@ -221,7 +221,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBoundsAnimated:YES];
+    [self checkOutOfZoomBounds];
     
     // trigger overlays, if any
     //
@@ -250,7 +250,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
     // check for going out of zoom bounds
     //
-    [self checkOutOfZoomBoundsAnimated:YES];
+    [self checkOutOfZoomBounds];
     
     // trigger overlays, if any
     //
@@ -384,7 +384,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     
 }
 
-- (void)checkOutOfZoomBoundsAnimated:(BOOL)animated
+- (void)checkOutOfZoomBounds
 {
     if ([self.tileSource isKindOfClass:[RMMBTilesTileSource class]])
     {
