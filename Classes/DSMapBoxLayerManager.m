@@ -325,43 +325,6 @@
             orderedMap.delegate   = nil;
         }
     }
-    
-    // check data layers
-    //
-    NSArray *visibleDataLayers = [self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
-    
-    if ([visibleDataLayers count] > 1)
-    {
-        // find the superlayer of all live paths
-        //
-        RMLayerCollection *destinationLayer = [baseMapView topMostMapView].contents.overlay;        
-        
-        // remove all live paths from the superlayer
-        //
-        for (NSDictionary *overlay in dataOverlayManager.overlays)
-            [[overlay objectForKey:@"overlay"] makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-        
-        // find which overlay matches each data layer in turn & re-add them
-        //
-        for (NSUInteger i = 0; i < [visibleDataLayers count]; i++)
-        {
-            NSString *source = [[visibleDataLayers objectAtIndex:i] objectForKey:@"source"];
-
-            for (NSDictionary *overlay in dataOverlayManager.overlays)
-            {
-                id overlaySource = [overlay objectForKey:@"source"];
-                
-                if (([overlaySource isKindOfClass:[SimpleKML class]] && [[overlaySource source] isEqualToString:source]) ||
-                    ([overlaySource isKindOfClass:[NSString class]]  && [overlaySource isEqualToString:source]))
-                {
-                    for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
-                        [destinationLayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
-                    
-                    break;
-                }
-            }
-        }
-    }
 }
 
 #pragma mark -
