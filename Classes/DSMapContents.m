@@ -63,6 +63,10 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         
         mapView = (RMMapView *)newView;
         
+        // bounds warning bookmark
+        //
+        mapView.tag = 1;
+
         [self checkOutOfZoomBoundsAnimated:NO];
     }
     
@@ -392,24 +396,33 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         {
             newAlpha = 0.0;
 
-            [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached object:self];
+            // Only warn once per bounds limit crossing. Do this for
+            // base layers as well, so use tag since we don't actually
+            // change their alpha value. 
+            //
+            if (mapView.tag != (NSInteger)newAlpha)
+                [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached object:self];
         }
         
         else
             newAlpha = 1.0;
         
-        if (newAlpha != mapView.alpha && [source layerType] == RMMBTilesLayerTypeOverlay)
-        {
-            // only actually change overlays
-            //
-            if (animated)
-                [UIView beginAnimations:nil context:nil];
-            
-            mapView.alpha = newAlpha;
-            
-            if (animated)
-                [UIView commitAnimations];
-        }
+        // update for next time
+        //
+        mapView.tag = (NSInteger)newAlpha;
+        
+//        if (newAlpha != mapView.alpha && [source layerType] == RMMBTilesLayerTypeOverlay)
+//        {
+//            // only actually change overlays
+//            //
+//            if (animated)
+//                [UIView beginAnimations:nil context:nil];
+//            
+//            mapView.alpha = newAlpha;
+//            
+//            if (animated)
+//                [UIView commitAnimations];
+//        }
     }
 }
 
