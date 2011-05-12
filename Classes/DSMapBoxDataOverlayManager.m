@@ -413,6 +413,8 @@
 
 - (void)removeOverlayWithSource:(NSString *)source
 {
+    NSDictionary *overlayToRemove;
+    
     for (NSDictionary *overlayDict in overlays)
     {
         if (([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
@@ -429,8 +431,12 @@
                     [component removeFromSuperlayer];
                 
             [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
+            
+            overlayToRemove = overlayDict;
         }
     }
+    
+    [overlays removeObject:overlayToRemove];
     
     if (balloon)
     {
