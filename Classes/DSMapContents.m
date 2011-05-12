@@ -411,18 +411,18 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         //
         mapView.tag = (NSInteger)newAlpha;
         
-//        if (newAlpha != mapView.alpha && [source layerType] == RMMBTilesLayerTypeOverlay)
-//        {
-//            // only actually change overlays
-//            //
-//            if (animated)
-//                [UIView beginAnimations:nil context:nil];
-//            
-//            mapView.alpha = newAlpha;
-//            
-//            if (animated)
-//                [UIView commitAnimations];
-//        }
+        if (newAlpha != mapView.alpha && [source layerType] == RMMBTilesLayerTypeOverlay)
+        {
+            // only actually change overlays
+            //
+            if (animated)
+                [UIView beginAnimations:nil context:nil];
+            
+            mapView.alpha = newAlpha;
+            
+            if (animated)
+                [UIView commitAnimations];
+        }
     }
 }
 
