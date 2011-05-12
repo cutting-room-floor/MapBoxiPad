@@ -44,11 +44,9 @@
     @private
         NSString *badParsePath;
         Reachability *reachability;
-        NSDate *lastLayerAlertDate;
 }
 
 @property (nonatomic, retain) NSString *badParsePath;
-@property (nonatomic, retain) NSDate *lastLayerAlertDate;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;
