@@ -334,7 +334,7 @@
     {
         // find the superlayer of all live paths
         //
-        CALayer *superlayer = [[[[dataOverlayManager.overlays lastObject] objectForKey:@"overlay"] lastObject] superlayer];
+        RMLayerCollection *destinationLayer = [baseMapView topMostMapView].contents.overlay;        
         
         // remove all live paths from the superlayer
         //
@@ -355,7 +355,7 @@
                     ([overlaySource isKindOfClass:[NSString class]]  && [overlaySource isEqualToString:source]))
                 {
                     for (NSUInteger j = 0; j < [[overlay objectForKey:@"overlay"] count]; j++)
-                        [superlayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
+                        [destinationLayer addSublayer:[[overlay objectForKey:@"overlay"] objectAtIndex:j]];
                     
                     break;
                 }
