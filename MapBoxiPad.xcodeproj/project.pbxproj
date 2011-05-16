@@ -119,6 +119,7 @@
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
 		DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA58F6E1326CAA6000E0761 /* DSMapView.m */; };
+		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDADED5B137059AC0092226A /* world-light.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light.mbtiles */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
@@ -380,6 +381,7 @@
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
 		DDA58F6D1326CAA6000E0761 /* DSMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapView.h; sourceTree = "<group>"; };
 		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
+		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.mbtiles"; path = "../stuff to not backup/world-light.mbtiles"; sourceTree = SOURCE_ROOT; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
@@ -795,6 +797,7 @@
 				DD25422C12C03E79009261C1 /* dialog_background.png */,
 				DDEEACAE136F516A0058BA90 /* loading.png */,
 				DDEEACF0136F53CC0058BA90 /* linen.png */,
+				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1200,6 +1203,7 @@
 				DDEEACF1136F53CC0058BA90 /* linen.png in Resources */,
 				DDADED5B137059AC0092226A /* world-light.mbtiles in Resources */,
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
+				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
