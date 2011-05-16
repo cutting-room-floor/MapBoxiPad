@@ -132,6 +132,12 @@
         
         return YES;
     }
+    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"mbtiles"])
+    {
+        [viewController openMBTilesFile:fileURL];
+        
+        return YES;
+    }
     
     return NO;
 }
