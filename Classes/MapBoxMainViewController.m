@@ -40,6 +40,7 @@
 void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
+- (void)layerImportAlertWithName:(NSString *)name;
 
 @end
 
@@ -433,13 +434,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Copied"
-                                                         message:[NSString stringWithFormat:@"The new layer %@ was copied successfully. You may now find it in the layers menu.", [fileURL lastPathComponent]]
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
+        [self layerImportAlertWithName:[fileURL lastPathComponent]];
     }
 }
 
@@ -457,17 +452,22 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Copied"
-                                                         message:[NSString stringWithFormat:@"The new layer %@ was copied successfully. You may now find it in the layers menu.", [fileURL lastPathComponent]]
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
+        [self layerImportAlertWithName:[fileURL lastPathComponent]];
     }
     
     else
         [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL absoluteString]];
+}
+
+- (void)openMBTilesFile:(NSURL *)fileURL
+{
+    NSString *source      = [fileURL relativePath];
+    NSString *filename    = [[fileURL relativePath] lastPathComponent];
+    NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+    
+    [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
+    
+    [self layerImportAlertWithName:[fileURL lastPathComponent]];
 }
 
 - (IBAction)tappedLayersButton:(id)sender
@@ -734,6 +734,17 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             [alert performSelector:@selector(show) withObject:nil afterDelay:0.5];
         }
     }
+}
+
+- (void)layerImportAlertWithName:(NSString *)name
+{
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Imported"
+                                                     message:[NSString stringWithFormat:@"The new layer %@ was imported successfully. You may now find it in the layers menu.", name]
+                                                    delegate:nil
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK", nil] autorelease];
+    
+    [alert show];
 }
 
 #pragma mark -
