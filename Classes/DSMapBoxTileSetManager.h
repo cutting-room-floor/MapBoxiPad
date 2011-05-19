@@ -21,7 +21,6 @@ typedef enum {
 {
     NSURL *activeTileSetURL;
     NSURL *defaultTileSetURL;
-    NSMutableArray *_activeDownloads;
 }
 
 @property (nonatomic, retain) NSURL *activeTileSetURL;
@@ -35,12 +34,10 @@ typedef enum {
 - (NSString *)attributionForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
-- (BOOL)importTileSetFromURL:(NSURL *)importURL;
 - (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
 - (NSString *)activeTileSetAttribution;
-- (NSArray *)activeDownloads;
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated;
 
 @end
