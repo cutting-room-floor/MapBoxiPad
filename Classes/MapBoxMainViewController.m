@@ -186,6 +186,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         [mapView.contents performSelector:@selector(postZoom) 
                                withObject:nil 
                                afterDelay:0.1];
+    
+    [mapView.delegate mapViewRegionDidChange:mapView]; // trigger popover move
 }
 
 - (void)dealloc
