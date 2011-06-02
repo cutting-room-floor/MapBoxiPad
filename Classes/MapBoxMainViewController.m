@@ -174,6 +174,15 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         }
     }
     
+    // make sure online tiles folder exists
+    //
+    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]];
+
+    [[NSFileManager defaultManager] createDirectoryAtPath:onlineLayersFolder
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:NULL];
+    
     // set clustering button title
     //
     if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
@@ -1059,8 +1068,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                  [NSNumber numberWithInt:80], @"tilePort",
                                  @"mapbox", @"tilePath",
                                  nil];
-        
-        [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]] attributes:nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
         

@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DSMapBoxLayerAddTypeController : UIViewController
+@interface DSMapBoxLayerAddTypeController : UIViewController <UITextFieldDelegate>
 {
     IBOutlet UITextField *textField;
     IBOutlet UIActivityIndicatorView *spinner;

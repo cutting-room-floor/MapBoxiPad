@@ -15,9 +15,6 @@
     IBOutlet DSMapView *mapView;
     
     NSDictionary *info;
-    
-    
-    
 }
 
 @property (nonatomic, retain) NSDictionary *info;

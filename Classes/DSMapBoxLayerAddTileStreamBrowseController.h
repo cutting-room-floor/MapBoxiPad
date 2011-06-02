@@ -13,7 +13,7 @@
 @interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <iCarouselDataSource, iCarouselDelegate>
 {
     IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet iCarousel *carousel;
+    IBOutlet iCarousel *tileCarousel;
     IBOutlet UILabel *nameLabel;
     IBOutlet UILabel *detailsLabel;
     IBOutlet UILabel *helpLabel;
