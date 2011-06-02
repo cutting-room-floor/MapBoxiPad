@@ -15,6 +15,7 @@
 @protocol DSMapBoxLayerControllerDelegate
 
 - (void)zoomToLayer:(NSDictionary *)layer;
+- (void)presentAddLayerHelper;
 
 @end
 

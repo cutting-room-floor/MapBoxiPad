@@ -373,7 +373,7 @@
     
     [results close];
     
-    return [NSString stringWithFormat:@"%@ - %@", [self shortName], description];
+    return description;
 }
 
 - (NSString *)shortAttribution

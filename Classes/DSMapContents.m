@@ -7,7 +7,6 @@
 //
 
 #import "DSMapContents.h"
-#import "RMMBTilesTileSource.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxTileSetManager.h"
@@ -17,8 +16,8 @@
 #import "RMMercatorToTileProjection.h"
 #import "RMMapView.h"
 #import "RMMercatorToScreenProjection.h"
-
-#import "RMOpenStreetMapSource.h"
+#import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 #import "RMCachedTileSource.h"
 
 NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";
@@ -279,12 +278,12 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 - (void)removeAllCachedImages
 {
-    if ([self.tileSource isKindOfClass:[RMOpenStreetMapSource class]])
-        [super removeAllCachedImages];
-    
-    // no-op since we don't cache
+    // no-op since we don't cache MBTiles
     //
-    return;
+    if ([self.tileSource isKindOfClass:[RMMBTilesTileSource class]])
+        return;
+    
+    [super removeAllCachedImages];
 }
 
 - (void)setTileSource:(id <RMTileSource>)newTileSource
@@ -292,18 +291,18 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     if (tileSource == newTileSource)
         return;
 
-    if ([newTileSource isKindOfClass:[RMOpenStreetMapSource class]])
+    if ([newTileSource isKindOfClass:[RMMBTilesTileSource class]])
+    {
+        [tileSource release];
+        tileSource = [newTileSource retain];
+    }
+    else
     {
         RMCachedTileSource *newCachedTileSource = [RMCachedTileSource cachedTileSourceWithSource:newTileSource];
         
         newCachedTileSource = [newCachedTileSource retain];
         [tileSource release];
         tileSource = newCachedTileSource;
-    }
-    else
-    {
-        [tileSource release];
-        tileSource = [newTileSource retain];
     }
 
     [self setMinZoom:[newTileSource minZoom]];

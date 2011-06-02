@@ -18,6 +18,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxLayerAddNavigationController.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -27,6 +28,7 @@
 #import "RMTileSource.h"
 #import "RMOpenStreetMapSource.h"
 #import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 #import "TouchXML.h"
 
@@ -66,9 +68,14 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     //
     NSObject <RMTileSource>*source;
     
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
-        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
+    if ([activeTileSetURL isEqual:kDSOpenStreetMapURL])
+        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+
+    else if ([activeTileSetURL isTileStreamURL])
+        source = [[[RMTileStreamSource alloc] initWithInfo:[NSDictionary dictionaryWithContentsOfURL:activeTileSetURL]] autorelease];
+
     else
         source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]] autorelease];
     
@@ -121,6 +128,13 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                object:nil];
     
     self.lastLayerAlertDate = [NSDate date];
+    
+    // watch for new layer additions
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(layersAdded:)
+                                                 name:@"DSMapBoxLayersAdded"
+                                               object:nil];
     
     // restore app state
     //
@@ -196,6 +210,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DSMapBoxLayersAdded"             object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -223,23 +238,25 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     if ([sender isKindOfClass:[NSString class]])
     {
         NSString *saveFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName, sender];
-        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:saveFile];
+        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:saveFile];
         
-        baseMapState = [data objectForKey:@"baseMapState"];
-        tileOverlayState  = [data objectForKey:@"tileOverlayState"];
-        dataOverlayState  = [data objectForKey:@"dataOverlayState"];
+        baseMapState      = [dict objectForKey:@"baseMapState"];
+        tileOverlayState  = [dict objectForKey:@"tileOverlayState"];
+        dataOverlayState  = [dict objectForKey:@"dataOverlayState"];
     }
     else
     {
-        baseMapState = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"baseMapState"];
+        baseMapState      = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"baseMapState"];
         tileOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"];
         dataOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"];
     }
-    
+
     // load it up
     //
     if (baseMapState)
     {
+        // get map center & zoom level
+        //
         CLLocationCoordinate2D mapCenter = {
             .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
             .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
@@ -248,16 +265,22 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
             mapView.contents.mapCenter = mapCenter;
         
-        if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kMBTilesDefaultMaxTileZoom)
+        if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && 
+            [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kMBTilesDefaultMaxTileZoom)
             mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
         
-        NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
+        // get base tile set
+        //
+        NSURL *restoreTileSetURL = [NSURL fileURLWithPath:[baseMapState objectForKey:@"tileSetURL"]];
         
-        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString] || [restoreTileSetURLString isEqual:kDSOpenStreetMapURL])
+        // apply base, if able
+        //
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[restoreTileSetURL relativePath]] || [restoreTileSetURL isEqual:kDSOpenStreetMapURL])
         {        
-            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
+            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:restoreTileSetURL];
             
-            if ([restoreTileSetName isEqualToString:kDSOpenStreetMapURL] && [reachability currentReachabilityStatus] == NotReachable)
+            if (([restoreTileSetName isEqualToString:kDSOpenStreetMapName] || [restoreTileSetURL isTileStreamURL]) && 
+                [reachability currentReachabilityStatus] == NotReachable)
                 [self offlineAlert];
             
             else
@@ -278,12 +301,16 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         // toggle new ones
         //
-        for (NSString *tileOverlayPath in tileOverlayState)
+        for (NSString *tileOverlayURLString in tileOverlayState)
+        {
+            NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
+            
             for (NSDictionary *tileLayer in layerManager.tileLayers)
-                if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
-                    [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
+                if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
                                                                             inSection:DSMapBoxLayerSectionTile]];
+        }
     }
     
     // load data overlay state(s)
@@ -299,14 +326,20 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
         // toggle new ones
         //
-        for (NSString *dataOverlayPath in dataOverlayState)
+        for (NSString *dataOverlayURLString in dataOverlayState)
+        {
+            NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
+            
             for (NSDictionary *dataLayer in layerManager.dataLayers)
-                if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
-                    [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
+                if ([[dataLayer objectForKey:@"URL"] isEqual:dataOverlayURL] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:[dataOverlayURL relativePath]])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
                                                                             inSection:DSMapBoxLayerSectionData]];
+        }
     }
 
+    // dismiss document loader
+    //
     if ([sender isKindOfClass:[NSString class]])
         [self dismissModalViewControllerAnimated:YES];
 }
@@ -319,28 +352,20 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     // get base map state
     //
-    NSString *tileSetURLString;
-    
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
-        tileSetURLString = [NSString stringWithFormat:@"%@", [[DSMapBoxTileSetManager defaultManager] activeTileSetURL]];
-    
-    else
-        tileSetURLString = [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath];
-    
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     tileSetURLString,                                                @"tileSetURL",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],  @"centerLatitude",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude], @"centerLongitude",
-                                     [NSNumber numberWithFloat:mapView.contents.zoom],                @"zoomLevel",
+                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
+                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
                                      nil];
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.relativePath"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.relativePath"];
 
     // determine if document or global save
     //
@@ -587,16 +612,17 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     }
+    else if ([newTileSetURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
+        
+        mapView.contents.tileSource = source;
+        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
+    }    
     else
     {
         RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
         
-        if (mapView.contents.zoom < [source minZoom])
-            mapView.contents.zoom = [source minZoom];
-        
-        else if (mapView.contents.zoom > [source maxZoom])
-            mapView.contents.zoom = [source maxZoom];
-
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
         
@@ -658,19 +684,22 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
+    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
+    
+    if (([activeTileSetURL isEqual:kDSOpenStreetMapURL] || [activeTileSetURL isTileStreamURL]) && 
+        [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
         [self offlineAlert];
 }
 
 - (void)offlineAlert
 {
-    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
-    
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:[NSString stringWithFormat:@"You are now offline. %@ tiles require an active internet connection, so %@ was activated instead.", kDSOpenStreetMapURL, [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", [[DSMapBoxTileSetManager defaultManager] activeTileSetURL], [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
                                                     delegate:nil
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK", nil] autorelease];
+
+    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     
     [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
 }
@@ -941,8 +970,19 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)zoomToLayer:(NSDictionary *)layer
 {
-    RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+    NSURL *layerURL = [layer objectForKey:@"URL"];
+    
+    id source;
+    
+    if ([layerURL isMBTilesURL])
+        source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL] autorelease];
 
+    else if ([layerURL isTileStreamURL])
+        source = [[[RMTileStreamSource alloc] initWithReferenceURL:layerURL] autorelease];
+    
+    if ( ! source)
+        return;
+    
     mapView.contents.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
     
     if ( ! [source coversFullWorld])
@@ -956,6 +996,84 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
     }
+}
+
+- (void)presentAddLayerHelper
+{
+    if ([reachability currentReachabilityStatus] == NotReachable)
+    {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                         message:@"Adding a layer requires an active internet connection."
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
+        
+        return;
+    }
+    
+    // dismiss layer UI
+    //
+    [self tappedLayersButton:self];
+    
+    DSMapBoxLayerAddNavigationController *layerAddController = [[[DSMapBoxLayerAddNavigationController alloc] initWithNibName:nil bundle:nil] autorelease];
+    
+    layerAddController.modalPresentationStyle = UIModalPresentationFormSheet;
+    layerAddController.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
+    
+    [self presentModalViewController:layerAddController animated:YES];
+}
+
+- (void)layersAdded:(NSNotification *)notification
+{
+    NSArray *info = [[notification userInfo] objectForKey:@"selectedLayers"];
+    
+    NSMutableString *message = [NSMutableString string];
+    
+    for (NSDictionary *layer in info)
+    {
+        [message appendString:[[[layer objectForKey:@"layers"] lastObject] objectForKey:@"name"]];
+        [message appendString:@"\n"];
+        
+        NSDictionary *layerDetails = [[layer objectForKey:@"layers"] lastObject];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 @"tiles.mapbox.com", @"apiHostname",
+                                 [NSNumber numberWithInt:80], @"apiPort",
+                                 @"mapbox", @"apiPath",
+                                 [layerDetails objectForKey:@"id"], @"id",
+                                 ([layerDetails objectForKey:@"bounds"] ? [[layerDetails objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
+                                 ([layerDetails objectForKey:@"center"] ? [[layerDetails objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
+                                 ([layerDetails objectForKey:@"name"] ? [layerDetails objectForKey:@"name"] : @""), @"name",
+                                 ([layerDetails objectForKey:@"attribution"] ? [layerDetails objectForKey:@"attribution"] : @""), @"attribution",
+                                 ([layerDetails objectForKey:@"type"] ? [layerDetails objectForKey:@"type"] : @""), @"type",
+                                 ([layerDetails objectForKey:@"version"] ? [layerDetails objectForKey:@"version"] : @""), @"version",
+                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"size"] intValue]], @"size",
+                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"maxzoom"] intValue]], @"maxzoom",
+                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"minzoom"] intValue]], @"minzoom",
+                                 ([layerDetails objectForKey:@"description"] ? [layerDetails objectForKey:@"description"] : @""), @"description",
+                                 [NSDate dateWithTimeIntervalSince1970:[[layerDetails objectForKey:@"mtime"] intValue]], @"mtime",
+                                 ([layerDetails objectForKey:@"basename"] ? [layerDetails objectForKey:@"basename"] : @""), @"basename",
+                                 @"a.tiles.mapbox.com", @"tileHostname",
+                                 [NSNumber numberWithInt:80], @"tilePort",
+                                 @"mapbox", @"tilePath",
+                                 nil];
+        
+        [[NSFileManager defaultManager] createDirectoryAtPath:[NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]] attributes:nil];
+        
+        NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
+        
+        [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layerDetails objectForKey:@"id"]] atomically:YES];
+    }
+
+    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layers Added"
+                                                     message:[NSString stringWithFormat:@"The following layers were added:\n\n%@\n", message] 
+                                                    delegate:nil
+                                           cancelButtonTitle:nil
+                                           otherButtonTitles:@"OK", nil] autorelease];
+    
+    [alert show];
 }
 
 @end

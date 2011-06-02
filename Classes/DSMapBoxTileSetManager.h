@@ -8,7 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define kDSOpenStreetMapURL @"OpenStreetMap"
+#define kDSOpenStreetMapURL  @"file://localhost/tmp/OpenStreetMap"
+#define kDSOpenStreetMapName @"OpenStreetMap"
 
 static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
 
@@ -21,6 +22,7 @@ typedef enum {
 {
     NSURL *activeTileSetURL;
     NSURL *defaultTileSetURL;
+    NSString *defaultTileSetName;
 }
 
 @property (nonatomic, retain) NSURL *activeTileSetURL;
@@ -28,16 +30,24 @@ typedef enum {
 
 + (DSMapBoxTileSetManager *)defaultManager;
 
-- (NSArray *)alternateTileSetPathsOfType:(DSMapBoxTileSetType)tileSetType;
+- (NSArray *)alternateTileSetURLsOfType:(DSMapBoxTileSetType)desiredTileSetType;
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL;
 - (NSString *)attributionForTileSetAtURL:(NSURL *)tileSetURL;
 - (BOOL)isUsingDefaultTileSet;
 - (NSString *)defaultTileSetName;
-- (BOOL)deleteTileSetWithName:(NSString *)tileSetName;
 - (NSURL *)activeTileSetURL;
 - (NSString *)activeTileSetName;
 - (NSString *)activeTileSetAttribution;
 - (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated;
+
+@end
+
+#pragma mark -
+
+@interface NSURL (DSMapBoxTileSetManagerExtensions)
+
+- (BOOL)isMBTilesURL;
+- (BOOL)isTileStreamURL;
 
 @end

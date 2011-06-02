@@ -37,6 +37,10 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Layers";
+
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                           target:self.delegate
+                                                                                           action:@selector(presentAddLayerHelper)] autorelease];
     
     [self tappedDoneButton:self];
 }
@@ -282,18 +286,16 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id baseTileSetPath;
-    
+    NSURL *baseTileSetURL;
+
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionBase:
-            baseTileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+            baseTileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
        
             // don't allow deletion of OSM or bundled tile set
             //
-            if (([baseTileSetPath isKindOfClass:[NSString class]] && [baseTileSetPath isEqualToString:kDSOpenStreetMapURL]) ||
-                ( ! baseTileSetPath && [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:
-                                           [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]))
+            if ([baseTileSetURL isEqual:kDSOpenStreetMapURL] || [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName]])
                 return NO;
                 
             return YES;
@@ -336,9 +338,9 @@
     {
         // we want to warn the user if they are deleting a base layer, which is possibly quite large
         //
-        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
         
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetPath relativePath] error:NULL];
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
         
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
@@ -357,7 +359,7 @@
 
         // revert to default bundled tileset if active one was deleted
         //
-        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
+        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     }
     
@@ -372,14 +374,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqual:kDSOpenStreetMapURL])
-    {
+    NSDictionary *layer;
+    
+    if (indexPath.section == DSMapBoxLayerSectionBase)
+        layer = [self.layerManager.baseLayers objectAtIndex:indexPath.row];
+    
+    else if (indexPath.section == DSMapBoxLayerSectionTile)
+        layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+    
+    else if (indexPath.section == DSMapBoxLayerSectionData)
+        layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
+    
+    if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
+    {        
         if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                             message:[NSString stringWithFormat:@"%@ tiles require an active internet connection.", kDSOpenStreetMapURL]
+                                                             message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
                                                             delegate:nil
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:@"OK", nil] autorelease];
@@ -401,9 +414,9 @@
         
         NSDictionary *layer = [layers objectAtIndex:indexPath.row];
         
-        if ([[layer valueForKey:@"path"] isKindOfClass:[NSURL class]] && [[[layer valueForKey:@"path"] absoluteString] hasSuffix:@".mbtiles"])
+        if ([[[layer valueForKey:@"URL"] pathExtension] isEqualToString:@"mbtiles"])
         {
-            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"path"]] autorelease] maxZoomNative] < kLowerZoomBounds)
+            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] autorelease] maxZoomNative] < kLowerZoomBounds)
             {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
                 
@@ -486,11 +499,11 @@
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
-        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
 
         // revert to default bundled tileset if active one was deleted
         //
-        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
+        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
         
         [self.layerManager archiveLayerAtIndexPath:indexPath];

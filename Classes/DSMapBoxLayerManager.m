@@ -10,7 +10,6 @@
 
 #import "DSMapBoxDataOverlayManager.h";
 #import "DSMapBoxTileSetManager.h"
-#import "RMMBTilesTileSource.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapContents.h"
 #import "DSMapView.h"
@@ -20,6 +19,8 @@
 #import "SimpleKML.h"
 
 #import "RMOpenStreetMapSource.h"
+#import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -109,7 +110,7 @@
 {
     // base layers
     //
-    NSArray *baseSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeBaselayer];
+    NSArray *baseSetURLs = [[DSMapBoxTileSetManager defaultManager] alternateTileSetURLsOfType:DSMapBoxTileSetTypeBaselayer];
     
     NSMutableArray *mutableBaseLayers = [NSMutableArray array];
     
@@ -118,17 +119,17 @@
                                                                                    [NSNumber numberWithBool:[[DSMapBoxTileSetManager defaultManager] isUsingDefaultTileSet]], @"selected",
                                                                                    nil]];
     
-    for (NSURL *baseSetPath in baseSetPaths)
+    for (NSURL *baseSetURL in baseSetURLs)
     {
-        if ( ! [[mutableBaseLayers valueForKeyPath:@"path"] containsObject:baseSetPath])
+        if ( ! [[mutableBaseLayers valueForKeyPath:@"URL"] containsObject:baseSetURL])
         {
-            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:baseSetPath];
-            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:baseSetPath];
+            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:baseSetURL];
+            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:baseSetURL];
             
             BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name] && 
                               [[mutableBaseLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count] == 0;
             
-            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetPath,                          @"path",
+            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetURL,                           @"URL",
                                                                                            name,                                 @"name",
                                                                                            (description ? description : @""),    @"description",
                                                                                            [NSNumber numberWithBool:isSelected], @"selected",
@@ -143,7 +144,7 @@
     
     // tile layers
     //
-    NSArray *tileSetPaths = [[DSMapBoxTileSetManager defaultManager] alternateTileSetPathsOfType:DSMapBoxTileSetTypeOverlay];
+    NSArray *tileSetURLs = [[DSMapBoxTileSetManager defaultManager] alternateTileSetURLsOfType:DSMapBoxTileSetTypeOverlay];
     
     NSMutableArray *mutableTileLayers  = [NSMutableArray arrayWithArray:self.tileLayers];
     NSMutableArray *tileLayersToRemove = [NSMutableArray array];
@@ -152,7 +153,7 @@
     //
     for (NSDictionary *tileLayer in mutableTileLayers)
     {
-        if ( ! [tileSetPaths containsObject:[tileLayer objectForKey:@"path"]])
+        if ( ! [tileSetURLs containsObject:[tileLayer objectForKey:@"URL"]])
         {
             if ([[tileLayer objectForKey:@"selected"] boolValue])
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableTileLayers indexOfObject:tileLayer] inSection:DSMapBoxLayerSectionTile]];
@@ -170,14 +171,14 @@
     
     // pick up any new tiles on disk
     //
-    for (NSURL *tileSetPath in tileSetPaths)
+    for (NSURL *tileSetURL in tileSetURLs)
     {
-        if ( ! [[mutableTileLayers valueForKeyPath:@"path"] containsObject:tileSetPath])
+        if ( ! [[mutableTileLayers valueForKeyPath:@"URL"] containsObject:tileSetURL])
         {
-            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetPath];
-            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetPath];
+            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetURL];
+            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetURL];
             
-            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetPath,                       @"path",
+            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                        @"URL",
                                                                                            name,                              @"name",
                                                                                            (description ? description : @""), @"description",
                                                                                            [NSNumber numberWithBool:NO],      @"selected",
@@ -199,7 +200,7 @@
     //
     for (NSDictionary *dataLayer in mutableDataLayers)
     {
-        if ( ! [docs containsObject:[[dataLayer objectForKey:@"path"] lastPathComponent]])
+        if ( ! [docs containsObject:[[dataLayer objectForKey:@"URL"] lastPathComponent]])
         {
             if ([[dataLayer objectForKey:@"selected"] boolValue])
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableDataLayers indexOfObject:dataLayer] inSection:DSMapBoxLayerSectionData]];
@@ -223,7 +224,7 @@
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
         
         if (([[[path pathExtension] lowercaseString] isEqualToString:@"kml"] || [[[path pathExtension] lowercaseString] isEqualToString:@"kmz"]) && 
-             ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
+             ! [[mutableDataLayers valueForKeyPath:@"URL"] containsObject:[NSURL fileURLWithPath:path]])
         {
             NSString *description = [[[path pathExtension] lowercaseString] isEqualToString:@"kml"] ? @"KML File" : @"KMZ Archive";
             
@@ -239,7 +240,7 @@
                                                       options:NSCaseInsensitiveSearch 
                                                         range:NSMakeRange(0, [name length])];
 
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                          @"path", 
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                  @"URL", 
                                                                                            name,                                          @"name",
                                                                                            description,                                   @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
@@ -249,7 +250,7 @@
             [mutableDataLayers addObject:layer];
         }
         else if ([[[path pathExtension] lowercaseString] isEqualToString:@"rss"] && 
-                  ! [[mutableDataLayers valueForKeyPath:@"path"] containsObject:path])
+                  ! [[mutableDataLayers valueForKeyPath:@"URL"] containsObject:[NSURL fileURLWithPath:path]])
         {
             NSString *description = @"GeoRSS Feed";
 
@@ -260,7 +261,7 @@
                                                       options:NSCaseInsensitiveSearch
                                                         range:NSMakeRange(0, [name length])];
                         
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:path,                                             @"path", 
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                     @"URL", 
                                                                                            name,                                             @"name",
                                                                                            description,                                      @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
@@ -295,7 +296,7 @@
         //
         for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
         {
-            DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"path"]]] lastObject];
+            DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
             
             [baseMapView insertLayerMapView:layerMapView];
             
@@ -387,7 +388,7 @@
             if ([[layer objectForKey:@"selected"] boolValue])
                 [self toggleLayerAtIndexPath:indexPath];
             
-            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
             
             NSMutableArray *mutableBaseLayers = [NSMutableArray arrayWithArray:self.baseLayers];
             
@@ -405,7 +406,7 @@
             if ([[layer objectForKey:@"selected"] boolValue])
                 [self toggleLayerAtIndexPath:indexPath];
 
-            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"path"] relativePath] error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
             
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
             
@@ -423,7 +424,7 @@
             if ([[layer objectForKey:@"selected"] boolValue])
                 [self toggleLayerAtIndexPath:indexPath];
             
-            [[NSFileManager defaultManager] removeItemAtPath:[layer objectForKey:@"path"] error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
             
             NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
             
@@ -476,7 +477,7 @@
                 {
                     if ([baseMapPeer isKindOfClass:[DSTiledLayerMapView class]])
                     {
-                        if ([((DSTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"path"]])
+                        if ([((DSTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"URL"]])
                         {
                             // disassociate with master map
                             //
@@ -499,12 +500,15 @@
             {
                 // create tile source
                 //
-                NSURL *tileSetURL = [layer objectForKey:@"path"];
+                NSURL *tileSetURL = [layer objectForKey:@"URL"];
                 
                 id <RMTileSource>source;
                 
                 if ([tileSetURL isEqual:kDSOpenStreetMapURL])
                     source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+                
+                else if ([tileSetURL isTileStreamURL])
+                    source = [[[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL] autorelease];
                 
                 else
                     source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL] autorelease];
@@ -571,12 +575,12 @@
             {
                 if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML || [[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKMZ)
                 {
-                    SimpleKML *kml = [SimpleKML KMLWithContentsOfFile:[layer objectForKey:@"path"] error:NULL];
+                    SimpleKML *kml = [SimpleKML KMLWithContentsOfURL:[layer objectForKey:@"URL"] error:NULL];
                     
                     if ( ! kml)
                     {
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtPath:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtPath:[layer objectForKey:@"path"]];
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtPath:[layer objectForKey:@"URL"]];
                         
                         return;
                     }
@@ -589,8 +593,12 @@
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
                     if ( ! [layer objectForKey:@"source"])
-                        [layer setObject:[NSString stringWithContentsOfFile:[layer objectForKey:@"path"] encoding:NSUTF8StringEncoding error:NULL]
-                                  forKey:@"source"];
+                    {
+                        NSError *error = nil;
+                        NSString *source = [NSString stringWithContentsOfURL:[layer objectForKey:@"URL"] encoding:NSUTF8StringEncoding error:&error];
+                        
+                        [layer setObject:source forKey:@"source"];
+                    }
                     
                     [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
                 }

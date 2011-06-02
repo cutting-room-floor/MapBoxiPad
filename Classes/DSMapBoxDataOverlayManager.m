@@ -474,7 +474,9 @@
     
     if ( ! tileSource)
     {
-        if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]] && [((RMMBTilesTileSource *)self.mapView.contents.tileSource) supportsInteractivity])
+        if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]] && 
+            [self.mapView.contents.tileSource isKindOfClass:[RMMBTilesTileSource class]] && 
+            [((RMMBTilesTileSource *)self.mapView.contents.tileSource) supportsInteractivity])
         {
             // We are touching an interactive overlay. Pass to it. 
             //
@@ -493,7 +495,7 @@
                     if ([peerView isKindOfClass:[DSTiledLayerMapView class]])
                         continue;
                     
-                    if ([peerView isKindOfClass:[DSMapView class]])
+                    if ([peerView isKindOfClass:[DSMapView class]] && [((DSMapView *)peerView).contents.tileSource isKindOfClass:[RMMBTilesTileSource class]])
                     {                        
                         aMapView   = (DSMapView *)peerView;
                         tileSource = aMapView.contents.tileSource;
