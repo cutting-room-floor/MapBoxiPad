@@ -622,20 +622,19 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     }
-    else if ([newTileSetURL isTileStreamURL])
-    {
-        RMTileStreamSource *source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
-        
-        mapView.contents.tileSource = source;
-        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-    }    
     else
     {
-        RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+        id source;
+        
+        if ([newTileSetURL isTileStreamURL])
+            source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
+        
+        else
+            source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
         
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-        
+
         // switch to new base layer bounds if less than whole world
         //
         if ( ! [source coversFullWorld] && 

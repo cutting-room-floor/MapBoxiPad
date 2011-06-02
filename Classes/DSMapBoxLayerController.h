@@ -36,5 +36,6 @@
 
 - (IBAction)tappedEditButton:(id)sender;
 - (IBAction)tappedDoneButton:(id)sender;
+- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
 
 @end

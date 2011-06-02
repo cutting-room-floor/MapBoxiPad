@@ -15,6 +15,7 @@
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 #import "Reachability.h"
 
@@ -103,6 +104,34 @@
 
 #pragma mark -
 
+- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL
+{
+    BOOL shouldShowCrosshairs = NO;
+    
+    if ([layerURL isMBTilesURL])
+    {
+        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
+        
+        if ( ! [source coversFullWorld])
+            shouldShowCrosshairs = YES;
+        
+        [source release];
+    }
+    else if ([layerURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
+        
+        if ( ! [source coversFullWorld])
+            shouldShowCrosshairs = YES;
+        
+        [source release];
+    }
+
+    return shouldShowCrosshairs;
+}
+
+#pragma mark -
+
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
 {
     /**
@@ -141,10 +170,9 @@
             
     if ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
     {
-        NSURL *path = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
+        NSURL *layerURL = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
         
-        if (indexPath.section == DSMapBoxLayerSectionTile && 
-            ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld]))
+        if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -245,9 +273,9 @@
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
             {
-                NSURL *path = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
+                NSURL *layerURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
                 
-                if ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld])
+                if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
                     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
                     
