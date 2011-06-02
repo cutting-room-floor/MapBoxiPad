@@ -148,6 +148,7 @@
 		DDD2822B132939D700B30C1B /* CJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2821F132939D700B30C1B /* CJSONSerialization.m */; };
 		DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28221132939D700B30C1B /* CJSONSerializedData.m */; };
 		DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28222132939D700B30C1B /* CDataScanner.m */; };
+		DDD44DC413981E38009D1148 /* osm.png in Resources */ = {isa = PBXBuildFile; fileRef = DDD44DC313981E38009D1148 /* osm.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
@@ -443,6 +444,7 @@
 		DDD28221132939D700B30C1B /* CJSONSerializedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializedData.m; sourceTree = "<group>"; };
 		DDD28222132939D700B30C1B /* CDataScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDataScanner.m; path = Externals/TouchJSON/Source/CDataScanner.m; sourceTree = "<group>"; };
 		DDD28223132939D700B30C1B /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDataScanner.h; path = Externals/TouchJSON/Source/CDataScanner.h; sourceTree = "<group>"; };
+		DDD44DC313981E38009D1148 /* osm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = osm.png; sourceTree = SOURCE_ROOT; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
 		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
@@ -573,9 +575,7 @@
 		D75E3E7A12A0ADD50007996C /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D75E3E7F12A0ADF50007996C /* mbtiles.png */,
 				DD9830A01378CEE00071D5AD /* caution.png */,
-				DD19A3B9139069CA001D85E0 /* globe.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1115,6 +1115,9 @@
 		DDE1C4731342711E0049C325 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				D75E3E7F12A0ADF50007996C /* mbtiles.png */,
+				DD19A3B9139069CA001D85E0 /* globe.png */,
+				DDD44DC313981E38009D1148 /* osm.png */,
 				DDE1C6B41342E1180049C325 /* crosshairs.png */,
 				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
 			);
@@ -1300,6 +1303,7 @@
 				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
 				DD19A3BA139069CA001D85E0 /* globe.png in Resources */,
+				DDD44DC413981E38009D1148 /* osm.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

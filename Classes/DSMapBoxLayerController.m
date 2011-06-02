@@ -229,7 +229,15 @@
             cell.accessoryType        = [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
+            
+            if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
+                cell.imageView.image = [UIImage imageNamed:@"osm.png"];
+                
+            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+                cell.imageView.image = [UIImage imageNamed:@"globe.png"];
+                
+            else
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
@@ -266,7 +274,12 @@
 
             cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
+
+            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+                cell.imageView.image = [UIImage imageNamed:@"globe.png"];
+            
+            else
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles.png"];
             
             break;
             
