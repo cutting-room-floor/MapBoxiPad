@@ -10,6 +10,8 @@
 
 #import "iCarousel.h"
 
+extern NSString *const DSMapBoxLayersAdded;
+
 @interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <iCarouselDataSource, iCarouselDelegate>
 {
     IBOutlet UIActivityIndicatorView *spinner;

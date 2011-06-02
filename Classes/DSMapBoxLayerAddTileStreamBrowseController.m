@@ -8,12 +8,16 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
-#import "CJSONDeserializer.h"
-#import <CoreLocation/CoreLocation.h>
-#import "RMTile.h"
 #import "DSMapBoxLayerAddPreviewController.h"
 
+#import "CJSONDeserializer.h"
+
+#import "RMTile.h"
+
+#import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
+
+NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
 
@@ -86,7 +90,7 @@
 {
     [self.parentViewController dismissModalViewControllerAnimated:YES];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DSMapBoxLayersAdded" 
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxLayersAdded 
                                                         object:self 
                                                       userInfo:[NSDictionary dictionaryWithObject:selectedLayers forKey:@"selectedLayers"]];
 }
