@@ -199,8 +199,21 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         [UIView animateWithDuration:0.1
                               delay:0.0
                             options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^(void) { tileView.superview.transform = CGAffineTransformMakeScale(0.9, 0.9); } 
-                         completion:^(BOOL finished) { tileView.superview.transform = CGAffineTransformScale(tileView.superview.transform, 1 / 0.9, 1 / 0.9); }];
+                         animations:^(void)
+                         { 
+                             tileView.superview.transform = CGAffineTransformMakeScale(0.9, 0.9);
+                         } 
+                         completion:^(BOOL finished)
+                         { 
+                             [UIView beginAnimations:nil context:nil];
+
+                             [UIView setAnimationDuration:0.1];
+                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                             
+                             tileView.superview.transform = CGAffineTransformScale(tileView.superview.transform, 1 / 0.9, 1 / 0.9);
+
+                             [UIView commitAnimations];
+                         }];
     }
 }
 
