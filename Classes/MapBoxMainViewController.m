@@ -149,6 +149,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
             [seenZips addObject:zippedTile];
             
             UIAlertView *zipAlert = [[[UIAlertView alloc] initWithTitle:@"Zipped Tiles Found"
+
                                                                 message:[NSString stringWithFormat:@"Your %@ documents contain zipped tiles. Please unzip these tiles first in order to use them in %@.", appName, appName] 
                                                                delegate:nil
                                                       cancelButtonTitle:nil
@@ -529,7 +530,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
-    helpController.navigationItem.title = @"MapBox Help";
+    helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
     helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                                          style:UIBarButtonItemStyleDone
                                                                                         target:helpController
@@ -721,7 +722,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         if ([[NSDate date] timeIntervalSinceDate:self.lastLayerAlertDate] > 5.0)
         {
-            NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. MapBox lets you continue to zoom, but layers that don't support the current zoom level won't always appear reliably. %@ is now out of range.", [[notification object] valueForKeyPath:@"tileSource.shortName"]];
+            NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. %@ lets you continue to zoom, but layers that don't support the current zoom level won't always appear reliably. %@ is now out of range.", [[NSProcessInfo processInfo] processName], [[notification object] valueForKeyPath:@"tileSource.shortName"]];
             
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
                                                              message:message 
