@@ -30,23 +30,25 @@
 {
     [super viewDidLoad];
     
-    NSString *balloon = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"balloon" ofType:@"html"]
-                                                  encoding:NSUTF8StringEncoding
-                                                     error:NULL];
+    NSString *balloonText = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"balloon" ofType:@"html"]
+                                                      encoding:NSUTF8StringEncoding
+                                                         error:NULL];
     
     if (self.name && [self.name length])
     {
-        balloon = [balloon stringByReplacingOccurrencesOfString:@"##name##" withString:self.name];
+        balloonText = [balloonText stringByReplacingOccurrencesOfString:@"##name##" withString:self.name];
     }
     else
     {
-        balloon = [balloon stringByReplacingOccurrencesOfString:@"<strong>##name##</strong>" withString:@""];
-        balloon = [balloon stringByReplacingOccurrencesOfString:@"<br/>"                     withString:@""];
+        balloonText = [balloonText stringByReplacingOccurrencesOfString:@"<strong>##name##</strong>" withString:@""];
+        balloonText = [balloonText stringByReplacingOccurrencesOfString:@"<br/>"                     withString:@""];
     }
     
-    balloon = [balloon stringByReplacingOccurrencesOfString:@"##description##" withString:self.description];
+    balloonText = [balloonText stringByReplacingOccurrencesOfString:@"##description##" withString:self.description];
     
-    [webView loadHTMLString:balloon baseURL:nil];
+    webView.dataDetectorTypes = UIDataDetectorTypeLink;
+
+    [webView loadHTMLString:balloonText baseURL:nil];
 }
 
 - (void)dealloc
@@ -93,8 +95,6 @@
     //
     if ( ! [[[request URL] scheme] isEqualToString:@"about"])
     {
-        // we may want to put an alert in here prompting the user first
-        //
         [[UIApplication sharedApplication] openURL:[request URL]];
         
         return NO;
