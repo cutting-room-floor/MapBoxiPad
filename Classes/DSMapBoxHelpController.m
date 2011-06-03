@@ -23,7 +23,8 @@
     
     self.helpTableView.backgroundView  = nil;
     self.helpTableView.tableFooterView = versionInfoLabel;
-    self.versionInfoLabel.text = [NSString stringWithFormat:@"MapBox %@.%@", 
+    self.versionInfoLabel.text = [NSString stringWithFormat:@"%@ %@.%@", 
+                                     [[NSProcessInfo processInfo] processName],
                                      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                                      [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
 }
@@ -106,7 +107,7 @@
             break;
 
         case 2:
-            cell.textLabel.text = @"About MapBox";
+            cell.textLabel.text = [NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]];
             break;
     }
     
@@ -149,7 +150,7 @@
             break;
             
         case 2:
-            alert = [[[UIAlertView alloc] initWithTitle:@"About MapBox"
+            alert = [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]]
                                                 message:[NSString stringWithFormat:@"%@\n\n%@", 
                                                          self.versionInfoLabel.text, 
                                                          [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]
