@@ -41,6 +41,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     layers = [[NSArray array] retain];
     
     selectedLayers = [[NSMutableArray array] retain];
+    selectedImages = [[NSMutableArray array] retain];
     
     imagesToDownload = [[NSMutableArray array] retain];
     
@@ -69,6 +70,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [layers release];
     [imagesToDownload release];
     [selectedLayers release];
+    [selectedImages release];
 
     [serverURL release];
     
@@ -94,7 +96,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxLayersAdded 
                                                         object:self 
-                                                      userInfo:[NSDictionary dictionaryWithObject:selectedLayers forKey:@"selectedLayers"]];
+                                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:selectedLayers, @"selectedLayers",
+                                                                                                          selectedImages, @"selectedImages", 
+                                                                                                          nil]];
 }
 
 - (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer
@@ -143,17 +147,23 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     }
     else if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
     {
-        // wiggle tile & mark it selected
+        // bounce tile & mark it selected
         //
         NSDictionary *layer = [layers objectAtIndex:(gestureRecognizer.view.tag - 1 - 100)];
+        UIImage *layerImage = ((UIImageView *)[gestureRecognizer.view viewWithTag:gestureRecognizer.view.tag - 100]).image;
         
         // update selection
         //
         if ([selectedLayers containsObject:layer])
+        {
             [selectedLayers removeObject:layer];
-        
+            [selectedImages removeObject:layerImage];
+        }
         else
+        {
             [selectedLayers addObject:layer];
+            [selectedImages addObject:layerImage];
+        }
         
         // enable/disable action button
         //
@@ -184,17 +194,13 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         
         [UIView commitAnimations];
         
-        // wiggle-rotate the tile
+        // bounce-resize the tile
         //
-        [UIView beginAnimations:nil context:tileView.superview];
-        
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-        [UIView setAnimationDuration:0.1];
-        [UIView setAnimationDelegate:self];
-        
-        tileView.superview.transform = CGAffineTransformMakeRotation((2 * M_PI) / 24);
-        
-        [UIView commitAnimations];
+        [UIView animateWithDuration:0.1
+                              delay:0.0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^(void) { tileView.superview.transform = CGAffineTransformMakeScale(0.9, 0.9); } 
+                         completion:^(BOOL finished) { tileView.superview.transform = CGAffineTransformScale(tileView.superview.transform, 1 / 0.9, 1 / 0.9); }];
     }
 }
 
@@ -410,23 +416,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                             [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"maxzoom"]];
     
     detailsLabel.text = details;
-}
-
-#pragma mark -
-
-- (void)animationDidStop:(NSString *)animationID finished:(NSNumber *)finished context:(void *)context
-{
-    // tile rotation back to start
-    //
-    UIView *view = (UIView *)context;
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:0.1];
-    
-    view.transform = CGAffineTransformRotate(view.transform, (-2 * M_PI) / 24);
-    
-    [UIView commitAnimations];
 }
 
 @end

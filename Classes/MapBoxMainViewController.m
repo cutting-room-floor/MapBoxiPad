@@ -44,6 +44,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
+- (void)animateAddLayerImageView:(UIView *)aView withAbsoluteStartTime:(CFTimeInterval)beginTime;
 
 @end
 
@@ -787,6 +788,8 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)layersAdded:(NSNotification *)notification
 {
+    // add layers to disk
+    //
     NSArray *layers = [[notification userInfo] objectForKey:@"selectedLayers"];
     
     NSMutableString *message = [NSMutableString string];
@@ -825,13 +828,103 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layer objectForKey:@"id"]] atomically:YES];
     }
     
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layers Added"
-                                                     message:[NSString stringWithFormat:@"The following layers were added:\n\n%@\n", message] 
-                                                    delegate:nil
-                                           cancelButtonTitle:nil
-                                           otherButtonTitles:@"OK", nil] autorelease];
+    // play sound effect
+    //
+    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"paper_throw" ofType:@"wav"]];
+    SystemSoundID sound;
+    AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
+    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxMainViewController_SoundCompletionProc, self);
+    AudioServicesPlaySystemSound(sound);
     
-    [alert show];
+    // animate layers into layer UI
+    //
+    NSArray *layerImages = [[notification userInfo] objectForKey:@"selectedImages"];
+    
+    float delay = 0.1;
+    
+    for (int i = 0; i < [layerImages count]; i++)
+    {
+        UIImage *layerImage = [layerImages objectAtIndex:i];
+        
+        UIImageView *imageView = [[[UIImageView alloc] initWithImage:layerImage] autorelease];
+        
+        imageView.layer.shadowOpacity = 0.5;
+        imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
+        imageView.layer.shadowOffset = CGSizeMake(0, 1);
+        
+        [self.view insertSubview:imageView aboveSubview:toolbar];
+
+        imageView.center = CGPointMake(mapView.center.x + i * 5, mapView.center.y + i * 5);
+        
+        [self animateAddLayerImageView:imageView withAbsoluteStartTime:CACurrentMediaTime() + delay + (0.2 * i)];
+    }
+}
+
+- (void)animateAddLayerImageView:(UIView *)aView withAbsoluteStartTime:(CFTimeInterval)beginTime
+{
+    // path
+    //
+    CGPoint startPoint = aView.center;
+    CGPoint endPoint;
+    
+    for (id button in toolbar.subviews)
+        if ([[button valueForKeyPath:@"title"] isEqualToString:layersButton.title])
+            endPoint = ((UIView *)button).center;
+    
+    CGPoint controlPoint = CGPointMake(startPoint.x, startPoint.y + 100);
+    
+    UIBezierPath *arcPath = [UIBezierPath bezierPath];
+    
+    [arcPath moveToPoint:startPoint];
+    [arcPath addQuadCurveToPoint:endPoint controlPoint:controlPoint];
+    
+    CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+    
+    pathAnimation.path = [arcPath CGPath];
+    pathAnimation.calculationMode = kCAAnimationPaced;
+    pathAnimation.timingFunctions = [NSArray arrayWithObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    
+    // opacity
+    //
+    CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+    
+    [fadeAnimation setToValue:[NSNumber numberWithFloat:0.75]];
+    
+    // size
+    //
+    CABasicAnimation *sizeAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+    
+    [sizeAnimation setToValue:[NSValue valueWithCGSize:CGSizeMake(4, 4)]];
+    
+    // shadow path
+    //
+    CABasicAnimation *shadowPathAnimation = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+    
+    [shadowPathAnimation setToValue:(id)[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 4, 4)] CGPath]];
+    
+    // shadow fade
+    //
+    CABasicAnimation *shadowFadeAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+    
+    [shadowFadeAnimation setToValue:[NSNumber numberWithFloat:0.0]];
+    
+    // group
+    //
+    CAAnimationGroup *group = [CAAnimationGroup animation];
+    
+    group.animations = [NSArray arrayWithObjects:pathAnimation, fadeAnimation, sizeAnimation, shadowPathAnimation, shadowFadeAnimation, nil];
+    
+    group.fillMode = kCAFillModeForwards;
+    group.duration = 1.0;
+    group.beginTime = beginTime;
+    group.removedOnCompletion = NO;
+    
+    [CATransaction begin];
+    [CATransaction setCompletionBlock:^(void) { [aView removeFromSuperview]; }];
+    
+    [aView.layer addAnimation:group forKey:nil];
+    
+    [CATransaction commit];
 }
 
 #pragma mark -

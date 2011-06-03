@@ -29,6 +29,7 @@ extern NSString *const DSMapBoxLayersAdded;
     NSUInteger activeDownloadIndex;
     
     NSMutableArray *selectedLayers;
+    NSMutableArray *selectedImages;
     
     NSURL *serverURL;
 }
