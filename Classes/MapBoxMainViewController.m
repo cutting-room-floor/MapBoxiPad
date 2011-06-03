@@ -703,7 +703,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 - (void)offlineAlert
 {
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", [[DSMapBoxTileSetManager defaultManager] activeTileSetURL], [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", [[DSMapBoxTileSetManager defaultManager] activeTileSetName], [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
                                                     delegate:nil
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK", nil] autorelease];
