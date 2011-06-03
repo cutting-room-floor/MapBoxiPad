@@ -10,6 +10,10 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
+#import "MapBoxConstants.h"
+
+#import "CJSONDeserializer.h"
+
 @implementation DSMapBoxLayerAddTypeController
 
 - (void)viewDidLoad
@@ -31,19 +35,50 @@
     [spinner stopAnimating];
     
     successImage.hidden = YES;
-
-    [textField becomeFirstResponder];
     
-    [self textField:textField shouldChangeCharactersInRange:NSMakeRange(0, [textField.text length]) replacementString:textField.text];
+    receivedData = [[NSMutableData data] retain];
+
+    [entryField becomeFirstResponder];
 }
 
+- (void)dealloc
+{
+    if (validationConnection)
+    {
+        [validationConnection cancel];
+        [validationConnection release];
+    }
+
+    [receivedData release];
+    
+    [super dealloc];
+}
+
+
 #pragma mark -
+
+- (void)validateEntry
+{
+    NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ( ! [enteredValue hasPrefix:@"http"])
+        enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
+    
+    NSURL *validationURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamAPIPath]];
+    
+    if (validationURL)
+        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:validationURL] delegate:self];
+    
+    else
+        [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
+}
+
 
 - (void)tappedNextButton:(id)sender
 {
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
    
-    NSString *enteredValue = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     
     if ( ! [enteredValue hasPrefix:@"http"])
         enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
@@ -53,30 +88,27 @@
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
 }
 
-- (void)stopActivity
-{
-    [spinner stopAnimating];
-    successImage.hidden = NO;
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-}
-
 #pragma mark -
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:spinner];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
-
-    [spinner stopAnimating];
     
-    if ( ! spinner.isAnimating)
-        [spinner performSelector:@selector(startAnimating) withObject:nil afterDelay:0.5];
+    if (validationConnection)
+    {
+        [validationConnection cancel];
+        [validationConnection release];
+        validationConnection = nil;
+    }
+    
+    [spinner startAnimating];
     
     successImage.hidden = YES;
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    [self performSelector:@selector(stopActivity) withObject:nil afterDelay:2.5];
+    [self performSelector:@selector(validateEntry) withObject:nil afterDelay:0.5];
     
     return YES;
 }
@@ -87,6 +119,40 @@
         [self tappedNextButton:self];
         
     return YES;
+}
+
+#pragma mark -
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    [spinner stopAnimating];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    [spinner startAnimating];
+    
+    [receivedData setData:[NSData data]];    
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [receivedData appendData:data];
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    [spinner stopAnimating];
+
+    NSError *error = nil;
+    
+    NSArray *layers = [[CJSONDeserializer deserializer] deserializeAsArray:receivedData error:&error];
+
+    if ( ! error && [layers count])
+    {
+        successImage.hidden = NO;
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
 }
 
 @end

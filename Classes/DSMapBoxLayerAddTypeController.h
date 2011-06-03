@@ -10,9 +10,11 @@
 
 @interface DSMapBoxLayerAddTypeController : UIViewController <UITextFieldDelegate>
 {
-    IBOutlet UITextField *textField;
+    IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIImageView *successImage;
+    NSURLConnection *validationConnection;
+    NSMutableData *receivedData;
 }
 
 @end
