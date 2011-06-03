@@ -31,9 +31,7 @@
     [spinner stopAnimating];
     
     successImage.hidden = YES;
-    
-    textField.text = @"http://tiles.mapbox.com/mapbox";
-    
+
     [textField becomeFirstResponder];
     
     [self textField:textField shouldChangeCharactersInRange:NSMakeRange(0, [textField.text length]) replacementString:textField.text];
@@ -45,7 +43,12 @@
 {
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
    
-    controller.serverURL = [NSURL URLWithString:[textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]];
+    NSString *enteredValue = [textField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if ( ! [enteredValue hasPrefix:@"http"])
+        enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
+    
+    controller.serverURL = [NSURL URLWithString:enteredValue];
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
 }

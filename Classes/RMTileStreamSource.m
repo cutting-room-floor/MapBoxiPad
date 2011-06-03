@@ -84,10 +84,11 @@
     NSInteger x    = tile.x;
     NSInteger y    = pow(2, zoom) - tile.y - 1;
     
-	return [NSString stringWithFormat:@"http://%@:%@%@/1.0.0/%@/%d/%d/%d.png", 
+	return [NSString stringWithFormat:@"%@://%@:%@%@/1.0.0/%@/%d/%d/%d.png", 
+               [self.infoDictionary objectForKey:@"tileScheme"],
                [self.infoDictionary objectForKey:@"tileHostname"],
                [self.infoDictionary objectForKey:@"tilePort"],
-               ([[self.infoDictionary objectForKey:@"tilePath"] length] ? [@"/" stringByAppendingString:[self.infoDictionary objectForKey:@"tilePath"]] : @""),
+               [self.infoDictionary objectForKey:@"tilePath"],
                [self.infoDictionary objectForKey:@"id"],
                zoom, x, y];
 }

@@ -8,6 +8,8 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
+#import "MapBoxConstants.h"
+
 #import "DSMapBoxLayerAddPreviewController.h"
 
 #import "CJSONDeserializer.h"
@@ -36,7 +38,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [spinner startAnimating];
     
-    items = [[NSArray array] retain];
+    layers = [[NSArray array] retain];
     
     selectedLayers = [[NSMutableArray array] retain];
     
@@ -50,7 +52,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
-    NSString *fullURLString = [NSString stringWithFormat:@"%@/api/v1/Map", self.serverURL];
+    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamAPIPath];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
@@ -64,7 +66,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [tileCarousel removeFromSuperview];
     tileCarousel.delegate = nil;
     
-    [items release];
+    [layers release];
     [imagesToDownload release];
     [selectedLayers release];
 
@@ -78,7 +80,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)checkForImageDownloads
 {
-    if (activeDownloadIndex <= [items count])
+    if (activeDownloadIndex <= [layers count])
     {
         NSURL *nextURL = [imagesToDownload objectAtIndex:activeDownloadIndex - 1];
         
@@ -103,20 +105,21 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         //
         DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];
         
-        NSDictionary *layer = [[[items objectAtIndex:gestureRecognizer.view.tag - 1 - 100] objectForKey:@"layers"] lastObject];
+        NSDictionary *layer = [layers objectAtIndex:gestureRecognizer.view.tag - 1 - 100];
         
-        NSString *baseHostname;
+        NSURL *tileURL;
         
-        if ([[self.serverURL absoluteString] isEqualToString:@"http://tiles.mapbox.com/mapbox"])
-            baseHostname = @"http://a.tiles.mapbox.com:80/mapbox";
+        if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostedBaseURL])
+            tileURL = [NSURL URLWithString:[kTileStreamHostedTileURL stringByAppendingString:[self.serverURL path]]];
         
         else
-            baseHostname = [self.serverURL absoluteString];
+            tileURL = self.serverURL;
         
         preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                           [[NSURL URLWithString:baseHostname] host], @"tileHostname", 
-                           [[NSURL URLWithString:baseHostname] port], @"tilePort", 
-                           ([[NSURL URLWithString:baseHostname] path] ? [[NSURL URLWithString:baseHostname] path] : @""), @"tilePath", 
+                           [tileURL scheme], @"tileScheme",
+                           [tileURL host], @"tileHostname", 
+                           ([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]), @"tilePort", 
+                           ([tileURL path] ? [tileURL path] : @""), @"tilePath", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                            [layer objectForKey:@"id"], @"id", 
@@ -142,7 +145,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         // wiggle tile & mark it selected
         //
-        NSDictionary *layer = [items objectAtIndex:(gestureRecognizer.view.tag - 1 - 100)];
+        NSDictionary *layer = [layers objectAtIndex:(gestureRecognizer.view.tag - 1 - 100)];
         
         // update selection
         //
@@ -239,19 +242,19 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         
         NSError *error = nil;
         
-        [items release];
-        
-        items = [[[CJSONDeserializer deserializer] deserializeAsArray:receivedData error:&error] retain];
+        NSMutableArray *newLayers = [NSMutableArray arrayWithArray:[[CJSONDeserializer deserializer] deserializeAsArray:receivedData error:&error]];
         
         if (error)
             NSLog(@"%@", error);
         
         else
         {
-            for (int i = 0; i < [items count]; i++)
+            for (int i = 0; i < [newLayers count]; i++)
             {
-                NSDictionary *layer = [[[items objectAtIndex:i] objectForKey:@"layers"] objectAtIndex:0];
+                NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
                 
+                // determine center tile to download
+                //
                 CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
                                                                            [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
                 
@@ -269,19 +272,49 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     .y    = tileY,
                 };
                 
-                NSString *baseHostname;
+                NSURL *tileURL;
                 
-                if ([[self.serverURL absoluteString] isEqualToString:@"http://tiles.mapbox.com/mapbox"])
-                    baseHostname = @"http://a.tiles.mapbox.com/mapbox";
-
+                if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostedBaseURL])
+                    tileURL = [NSURL URLWithString:[kTileStreamHostedTileURL stringByAppendingString:[self.serverURL path]]];
+                
                 else
-                    baseHostname = [self.serverURL absoluteString];
+                    tileURL = self.serverURL;
                 
                 NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/1.0.0/%@/%d/%d/%d.png", 
-                                                        baseHostname, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
+                                                           tileURL, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
                 
                 [imagesToDownload addObject:imageURL];
+                
+                // update layer for server-wide variables
+                //
+                [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
+                [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
+                [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
+                
+                if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
+                {
+                    NSURL *tileHostURL = [NSURL URLWithString:[[layer objectForKey:@"host"] objectAtIndex:0]];
+                    
+                    [layer setValue:[tileHostURL scheme]                                                    forKey:@"tileScheme"];
+                    [layer setValue:[tileHostURL host]                                                      forKey:@"tileHostname"];
+                    [layer setValue:([tileHostURL port] ? [tileHostURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
+                    [layer setValue:([tileHostURL path] ? [tileHostURL path] : @"")                         forKey:@"tilePath"];
+                }
+                else
+                {
+                    [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
+                    [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
+                    [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
+                    [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
+                }
+                
+                [newLayers replaceObjectAtIndex:i withObject:layer];
             }
+            
+            [layers release];
+            
+            layers = [[NSArray arrayWithArray:newLayers] retain];
             
             activeDownloadIndex = 1;
             
@@ -302,7 +335,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    return [items count];
+    return [layers count];
 }
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index
@@ -370,11 +403,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)carouselCurrentItemIndexUpdated:(iCarousel *)carousel
 {
-    nameLabel.text = [[[[items objectAtIndex:carousel.currentItemIndex] objectForKey:@"layers"] lastObject] objectForKey:@"name"];
+    nameLabel.text = [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"name"];
     
     NSString *details = [NSString stringWithFormat:@"Zoom Levels %@-%@", 
-                            [[[[items objectAtIndex:carousel.currentItemIndex] objectForKey:@"layers"] lastObject] objectForKey:@"minzoom"], 
-                            [[[[items objectAtIndex:carousel.currentItemIndex] objectForKey:@"layers"] lastObject] objectForKey:@"maxzoom"]];
+                            [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"minzoom"], 
+                            [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"maxzoom"]];
     
     detailsLabel.text = details;
 }

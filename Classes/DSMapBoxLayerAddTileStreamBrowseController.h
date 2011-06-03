@@ -23,7 +23,7 @@ extern NSString *const DSMapBoxLayersAdded;
     NSURLConnection *downloadConnection;
     NSMutableData *receivedData;
     
-    NSArray *items;
+    NSArray *layers;
     NSMutableArray *imagesToDownload;
     
     NSUInteger activeDownloadIndex;

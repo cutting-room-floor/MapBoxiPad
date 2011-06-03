@@ -787,42 +787,42 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
 - (void)layersAdded:(NSNotification *)notification
 {
-    NSArray *info = [[notification userInfo] objectForKey:@"selectedLayers"];
+    NSArray *layers = [[notification userInfo] objectForKey:@"selectedLayers"];
     
     NSMutableString *message = [NSMutableString string];
     
-    for (NSDictionary *layer in info)
+    for (NSDictionary *layer in layers)
     {
-        [message appendString:[[[layer objectForKey:@"layers"] lastObject] objectForKey:@"name"]];
+        [message appendString:[layer objectForKey:@"name"]];
         [message appendString:@"\n"];
         
-        NSDictionary *layerDetails = [[layer objectForKey:@"layers"] lastObject];
-        
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 @"tiles.mapbox.com", @"apiHostname",
-                                 [NSNumber numberWithInt:80], @"apiPort",
-                                 @"mapbox", @"apiPath",
-                                 [layerDetails objectForKey:@"id"], @"id",
-                                 ([layerDetails objectForKey:@"bounds"] ? [[layerDetails objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
-                                 ([layerDetails objectForKey:@"center"] ? [[layerDetails objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
-                                 ([layerDetails objectForKey:@"name"] ? [layerDetails objectForKey:@"name"] : @""), @"name",
-                                 ([layerDetails objectForKey:@"attribution"] ? [layerDetails objectForKey:@"attribution"] : @""), @"attribution",
-                                 ([layerDetails objectForKey:@"type"] ? [layerDetails objectForKey:@"type"] : @""), @"type",
-                                 ([layerDetails objectForKey:@"version"] ? [layerDetails objectForKey:@"version"] : @""), @"version",
-                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"size"] intValue]], @"size",
-                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"maxzoom"] intValue]], @"maxzoom",
-                                 [NSNumber numberWithInt:[[layerDetails objectForKey:@"minzoom"] intValue]], @"minzoom",
-                                 ([layerDetails objectForKey:@"description"] ? [layerDetails objectForKey:@"description"] : @""), @"description",
-                                 [NSDate dateWithTimeIntervalSince1970:[[layerDetails objectForKey:@"mtime"] intValue]], @"mtime",
-                                 ([layerDetails objectForKey:@"basename"] ? [layerDetails objectForKey:@"basename"] : @""), @"basename",
-                                 @"a.tiles.mapbox.com", @"tileHostname",
-                                 [NSNumber numberWithInt:80], @"tilePort",
-                                 @"mapbox", @"tilePath",
+                                 [layer objectForKey:@"apiScheme"], @"apiScheme",
+                                 [layer objectForKey:@"apiHostname"], @"apiHostname",
+                                 [layer objectForKey:@"apiPort"], @"apiPort",
+                                 [layer objectForKey:@"apiPath"], @"apiPath",
+                                 [layer objectForKey:@"id"], @"id",
+                                 ([layer objectForKey:@"bounds"] ? [[layer objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
+                                 ([layer objectForKey:@"center"] ? [[layer objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
+                                 ([layer objectForKey:@"name"] ? [layer objectForKey:@"name"] : @""), @"name",
+                                 ([layer objectForKey:@"attribution"] ? [layer objectForKey:@"attribution"] : @""), @"attribution",
+                                 ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @""), @"type",
+                                 ([layer objectForKey:@"version"] ? [layer objectForKey:@"version"] : @""), @"version",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"size"] intValue]], @"size",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom",
+                                 ([layer objectForKey:@"description"] ? [layer objectForKey:@"description"] : @""), @"description",
+                                 [NSDate dateWithTimeIntervalSince1970:[[layer objectForKey:@"mtime"] intValue]], @"mtime",
+                                 ([layer objectForKey:@"basename"] ? [layer objectForKey:@"basename"] : @""), @"basename",
+                                 [layer objectForKey:@"tileScheme"], @"tileScheme",
+                                 [layer objectForKey:@"tileHostname"], @"tileHostname",
+                                 [layer objectForKey:@"tilePort"], @"tilePort",
+                                 [layer objectForKey:@"tilePath"], @"tilePath",
                                  nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
         
-        [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layerDetails objectForKey:@"id"]] atomically:YES];
+        [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layer objectForKey:@"id"]] atomically:YES];
     }
     
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layers Added"
