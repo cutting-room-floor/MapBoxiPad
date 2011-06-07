@@ -34,7 +34,7 @@
     
     [spinner stopAnimating];
     
-    successImage.hidden = YES;
+    successImageButton.hidden = YES;
     
     receivedData = [[NSMutableData data] retain];
 
@@ -74,7 +74,7 @@
 }
 
 
-- (void)tappedNextButton:(id)sender
+- (IBAction)tappedNextButton:(id)sender
 {
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
    
@@ -104,7 +104,7 @@
     
     [spinner startAnimating];
     
-    successImage.hidden = YES;
+    successImageButton.hidden = YES;
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -150,7 +150,7 @@
 
     if ( ! error && [layers count])
     {
-        successImage.hidden = NO;
+        successImageButton.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }

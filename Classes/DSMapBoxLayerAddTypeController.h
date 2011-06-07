@@ -12,9 +12,11 @@
 {
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet UIImageView *successImage;
+    IBOutlet UIButton *successImageButton;
     NSURLConnection *validationConnection;
     NSMutableData *receivedData;
 }
+
+- (IBAction)tappedNextButton:(id)sender;
 
 @end
