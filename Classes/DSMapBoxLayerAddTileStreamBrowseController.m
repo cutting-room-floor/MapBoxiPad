@@ -11,6 +11,7 @@
 #import "MapBoxConstants.h"
 
 #import "DSMapBoxLayerAddPreviewController.h"
+#import "DSMapBoxLayerAddNavigationController.h"
 
 #import "CJSONDeserializer.h"
 
@@ -133,16 +134,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                            [layer objectForKey:@"center"], @"center",
                            nil];
         
-        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:preview] autorelease];
+        DSMapBoxLayerAddNavigationController *wrapper = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:preview] autorelease];
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
         wrapper.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
-        
-        preview.navigationItem.title = [layer objectForKey:@"name"];
-        preview.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
-                                                                                                   target:self
-                                                                                                   action:@selector(dismissPreview:)] autorelease];
-        
+
         [self presentModalViewController:wrapper animated:YES];
     }
     else if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
@@ -215,11 +211,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                              [UIView commitAnimations];
                          }];
     }
-}
-
-- (void)dismissPreview:(id)sender
-{
-    [self dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -

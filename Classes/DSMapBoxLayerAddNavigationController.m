@@ -8,18 +8,7 @@
 
 #import "DSMapBoxLayerAddNavigationController.h"
 
-#import "DSMapBoxLayerAddTypeController.h"
-
 @implementation DSMapBoxLayerAddNavigationController
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
-    
-    [self pushViewController:typeController animated:NO];
-}
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {

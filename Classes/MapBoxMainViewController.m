@@ -18,6 +18,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxLayerAddTypeController.h"
 #import "DSMapBoxLayerAddNavigationController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
@@ -1168,13 +1169,14 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     // dismiss layer UI
     //
     [self tappedLayersButton:self];
+
+    DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxLayerAddNavigationController *wrapper  = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:typeController] autorelease];
     
-    DSMapBoxLayerAddNavigationController *layerAddController = [[[DSMapBoxLayerAddNavigationController alloc] initWithNibName:nil bundle:nil] autorelease];
+    wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
     
-    layerAddController.modalPresentationStyle = UIModalPresentationFormSheet;
-    layerAddController.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
-    
-    [self presentModalViewController:layerAddController animated:YES];
+    [self presentModalViewController:wrapper animated:YES];
 }
 
 @end

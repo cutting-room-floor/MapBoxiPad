@@ -161,7 +161,6 @@
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
 		DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */; };
 		DDEF8FF413831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */; };
-		DDEF8FF513831B1A00FF148C /* DSMapBoxLayerAddNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF8FF313831B1A00FF148C /* DSMapBoxLayerAddNavigationController.xib */; };
 		DDEF901313831DA800FF148C /* DSMapBoxLayerAddTypeController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */; };
 		DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */; };
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
@@ -462,7 +461,6 @@
 		DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMTileStreamSource.m; sourceTree = "<group>"; };
 		DDEF8FF113831B1A00FF148C /* DSMapBoxLayerAddNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddNavigationController.h; sourceTree = "<group>"; };
 		DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddNavigationController.m; sourceTree = "<group>"; };
-		DDEF8FF313831B1A00FF148C /* DSMapBoxLayerAddNavigationController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddNavigationController.xib; sourceTree = "<group>"; };
 		DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTypeController.h; sourceTree = "<group>"; };
 		DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTypeController.m; sourceTree = "<group>"; };
 		DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTypeController.xib; sourceTree = "<group>"; };
@@ -1162,7 +1160,6 @@
 			children = (
 				DDEF8FF113831B1A00FF148C /* DSMapBoxLayerAddNavigationController.h */,
 				DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */,
-				DDEF8FF313831B1A00FF148C /* DSMapBoxLayerAddNavigationController.xib */,
 				DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */,
 				DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */,
 				DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */,
@@ -1299,7 +1296,6 @@
 				DDADED5B137059AC0092226A /* world-light.mbtiles in Resources */,
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
-				DDEF8FF513831B1A00FF148C /* DSMapBoxLayerAddNavigationController.xib in Resources */,
 				DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */,
 				DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */,
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,

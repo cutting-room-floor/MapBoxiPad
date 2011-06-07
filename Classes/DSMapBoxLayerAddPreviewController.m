@@ -21,6 +21,11 @@
 {
     [super viewDidLoad];
     
+    self.navigationItem.title = [info objectForKey:@"name"];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
+                                                                                            target:self
+                                                                                            action:@selector(dismissPreview:)] autorelease];
+    
     NSArray *centerParts = [info objectForKey:@"center"];
     
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[centerParts objectAtIndex:1] floatValue], [[centerParts objectAtIndex:0] floatValue]);
@@ -46,6 +51,13 @@
     [info release];
     
     [super dealloc];
+}
+
+#pragma mark -
+
+- (void)dismissPreview:(id)sender
+{
+    [self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 @end
