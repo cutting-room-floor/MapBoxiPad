@@ -13,7 +13,7 @@
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
 
 - (void)reload;
-- (NSArray *)saveFiles;
+- (NSArray *)saveFilesReloadingFromDisk:(BOOL)shouldReloadFromDisk;
 - (void)updateMetadata;
 
 @end
@@ -30,12 +30,21 @@
     
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
     
+    saveFiles = [[NSArray array] retain];
+    
     [self reload];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
+}
+
+- (void)dealloc
+{
+    [saveFiles release];
+    
+    [super dealloc];
 }
 
 #pragma mark -
@@ -46,17 +55,17 @@
     
     // iterate documents
     //
-    for (NSString *saveFile in [self saveFiles])
+    for (NSString *saveFile in [self saveFilesReloadingFromDisk:YES])
     {
         // get snapshot
         //
-        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], saveFile]];
+        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [saveFile valueForKey:@"name"]]];
         UIImage *snapshot  = [UIImage imageWithData:[data objectForKey:@"mapSnapshot"]];
         
         // create & add snapshot view
         //
         DSMapBoxLargeSnapshotView *snapshotView = [[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease];
-        snapshotView.snapshotName = saveFile;
+        snapshotView.snapshotName = [saveFile valueForKey:@"name"];
         snapshotView.delegate = self;
         [scroller addSubview:snapshotView];
         snapshotView.frame = CGRectMake(kDSDocumentWidth * ([scroller.subviews count] - 1), 0, kDSDocumentWidth, kDSDocumentHeight);
@@ -72,33 +81,40 @@
     return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
 }
 
-- (NSArray *)saveFiles
+- (NSArray *)saveFilesReloadingFromDisk:(BOOL)shouldReloadFromDisk
 {
-    NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[self class] saveFolderPath] error:NULL];
-    
-    NSMutableArray *filesWithDates = [NSMutableArray array];
-    
-    for (NSString *file in files)
+    if (shouldReloadFromDisk)
     {
-        if ( ! [file hasPrefix:@"."] && [file hasSuffix:@".plist"])
+        NSArray *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[self class] saveFolderPath] error:NULL];
+        
+        NSMutableArray *filesWithDates = [NSMutableArray array];
+        
+        for (NSString *file in files)
         {
-            NSString *path = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], file];
-            NSDate   *date = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
-            
-            NSDictionary *fileDictionary = [NSDictionary dictionaryWithObjectsAndKeys:file, @"name", date, @"date", nil];
-            
-            [filesWithDates addObject:fileDictionary];
+            if ( ! [file hasPrefix:@"."] && [file hasSuffix:@".plist"])
+            {
+                NSString *path = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], file];
+                NSDate   *date = [[[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL] fileModificationDate];
+                
+                NSDictionary *fileDictionary = [NSDictionary dictionaryWithObjectsAndKeys:file, @"name", date, @"date", nil];
+                
+                [filesWithDates addObject:fileDictionary];
+            }
         }
+        
+        [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
+        
+        [saveFiles release];
+        
+        saveFiles = [[NSArray arrayWithArray:filesWithDates] retain];
     }
-
-    [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
     
-    return [filesWithDates valueForKeyPath:@"name"];
+    return saveFiles;
 }
 
 - (void)updateMetadata
 {
-    if ([[self saveFiles] count])
+    if ([[self saveFilesReloadingFromDisk:NO] count])
     {
         CGFloat needle = scroller.contentOffset.x / kDSDocumentWidth;
         
@@ -113,20 +129,18 @@
         if (index < 0 || index >= [[scroller subviews] count])
             return;
         
-        self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFiles] count]];
+        self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFilesReloadingFromDisk:NO] count]];
         
-        NSString *currentFile = [[self saveFiles] objectAtIndex:index];
+        NSString *currentFile = [[self saveFilesReloadingFromDisk:NO] objectAtIndex:index];
         
-        nameLabel.text = [currentFile stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-        
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], currentFile] error:NULL];
+        nameLabel.text = [[currentFile valueForKey:@"name"] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
         
         NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
-        
+
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         
-        dateLabel.text = [dateFormatter stringFromDate:[attributes objectForKey:NSFileModificationDate]];
+        dateLabel.text = [dateFormatter stringFromDate:[currentFile valueForKey:@"date"]];
         
         noDocsView.hidden   = YES;
         scroller.hidden     = NO;
@@ -176,7 +190,7 @@
         //
         NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
         
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[self saveFiles] objectAtIndex:index]];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
         
         NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
         
@@ -228,7 +242,7 @@
     {
         NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
         
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[self saveFiles] objectAtIndex:index]];
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
         
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         

@@ -80,6 +80,20 @@
         [self insertSubview:dimmer aboveSubview:imageView];
 
         dimmer.center = imageView.center;
+
+        // add shadow, but only on image
+        //
+        CGSize shadowOffset;
+        
+        if (width > height)
+            shadowOffset = CGSizeMake(0, (imageView.bounds.size.height - height) / 2 + 3);
+
+        else
+            shadowOffset = CGSizeMake((imageView.bounds.size.width - width) / 2, 3);
+        
+        imageView.layer.shadowOpacity = 0.5;
+        imageView.layer.shadowOffset  = shadowOffset;
+        imageView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:dimmer.bounds] CGPath];
     }
     
     return self;
