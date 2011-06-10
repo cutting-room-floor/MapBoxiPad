@@ -39,6 +39,7 @@
     IBOutlet UIButton *actionButton;
     IBOutlet UIButton *trashButton;
     id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
+    NSArray *saveFiles;
 }
 
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
