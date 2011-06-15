@@ -87,6 +87,10 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 
     mapView.contents.zoom = kStartingZoom;
 
+    // hide cluster button to start
+    //
+    [toolbar setItems:[[NSMutableArray arrayWithArray:toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", clusteringButton]] animated:NO];
+
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
@@ -824,6 +828,26 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 }
 
 #pragma mark -
+
+- (void)dataLayerHandler:(id)handler didUpdateDataLayerCount:(int)count
+{
+    if (count > 0 && ! [toolbar.items containsObject:clusteringButton])
+    {
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+
+        [newItems insertObject:clusteringButton atIndex:([newItems count] - 1)];
+
+        [toolbar setItems:newItems animated:YES];
+    }
+    else if (count == 0 && [toolbar.items containsObject:clusteringButton])
+    {
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+
+        [newItems removeObject:clusteringButton];
+
+        [toolbar setItems:newItems animated:YES];
+    }
+}
 
 - (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtPath:(NSString *)path
 {
