@@ -111,20 +111,12 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];
         
         NSDictionary *layer = [layers objectAtIndex:gestureRecognizer.view.tag - 1 - 100];
-        
-        NSURL *tileURL;
-        
-        if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostedBaseURL])
-            tileURL = [NSURL URLWithString:[kTileStreamHostedTileURL stringByAppendingString:[self.serverURL path]]];
-        
-        else
-            tileURL = self.serverURL;
-        
+
         preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                           [tileURL scheme], @"tileScheme",
-                           [tileURL host], @"tileHostname", 
-                           ([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]), @"tilePort", 
-                           ([tileURL path] ? [tileURL path] : @""), @"tilePath", 
+                           [layer objectForKey:@"tileScheme"], @"tileScheme",
+                           [layer objectForKey:@"tileHostname"], @"tileHostname", 
+                           [layer objectForKey:@"tilePort"], @"tilePort", 
+                           [layer objectForKey:@"tilePath"], @"tilePath", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                            [layer objectForKey:@"id"], @"id", 
@@ -284,13 +276,16 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 
                 NSURL *tileURL;
                 
-                if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostedBaseURL])
-                    tileURL = [NSURL URLWithString:[kTileStreamHostedTileURL stringByAppendingString:[self.serverURL path]]];
+                if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
+                    tileURL = [NSURL URLWithString:[[layer objectForKey:@"host"] lastObject]];
                 
                 else
                     tileURL = self.serverURL;
                 
-                NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/1.0.0/%@/%d/%d/%d.png", 
+                if ( ! [[tileURL absoluteString] hasSuffix:@"/"])
+                    tileURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/", tileURL]];
+                
+                NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@1.0.0/%@/%d/%d/%d.png", 
                                                            tileURL, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
                 
                 [imagesToDownload addObject:imageURL];
@@ -302,22 +297,10 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
                 [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
                 
-                if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
-                {
-                    NSURL *tileHostURL = [NSURL URLWithString:[[layer objectForKey:@"host"] objectAtIndex:0]];
-                    
-                    [layer setValue:[tileHostURL scheme]                                                    forKey:@"tileScheme"];
-                    [layer setValue:[tileHostURL host]                                                      forKey:@"tileHostname"];
-                    [layer setValue:([tileHostURL port] ? [tileHostURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
-                    [layer setValue:([tileHostURL path] ? [tileHostURL path] : @"")                         forKey:@"tilePath"];
-                }
-                else
-                {
-                    [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
-                    [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
-                    [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
-                    [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
-                }
+                [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
+                [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
+                [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
+                [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
                 
                 [newLayers replaceObjectAtIndex:i withObject:layer];
             }
