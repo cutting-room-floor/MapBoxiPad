@@ -609,6 +609,9 @@
     
     [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
     
+    if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayerCount:)])
+        [self.delegate dataLayerHandler:self didUpdateDataLayerCount:[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count]];
+
     if ([[layer objectForKey:@"selected"] boolValue])
         [self reorderLayerDisplay];
 }
