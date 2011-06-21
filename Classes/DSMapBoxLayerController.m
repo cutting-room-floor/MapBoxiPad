@@ -262,7 +262,7 @@
                 cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
 
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
-                cell.imageView.image = [UIImage imageNamed:@"mapquest.png"];
+                cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
             
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];

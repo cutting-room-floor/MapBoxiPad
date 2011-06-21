@@ -120,7 +120,6 @@
 		DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */; };
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
-		DDA3E87713B012EC004D861C /* mapquest.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E87613B012EC004D861C /* mapquest.png */; };
 		DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FB13B03A25004D861C /* tilestream_layer.png */; };
 		DDA3E90113B03A26004D861C /* osm_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FC13B03A25004D861C /* osm_layer.png */; };
 		DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */; };
@@ -150,6 +149,7 @@
 		DDD2822B132939D700B30C1B /* CJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2821F132939D700B30C1B /* CJSONSerialization.m */; };
 		DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28221132939D700B30C1B /* CJSONSerializedData.m */; };
 		DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28222132939D700B30C1B /* CDataScanner.m */; };
+		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
@@ -399,7 +399,6 @@
 		DDA1073B11E4436E008D00A7 /* balloon.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = balloon.html; path = ../balloon.html; sourceTree = "<group>"; };
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
-		DDA3E87613B012EC004D861C /* mapquest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest.png; sourceTree = SOURCE_ROOT; };
 		DDA3E8FB13B03A25004D861C /* tilestream_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tilestream_layer.png; sourceTree = SOURCE_ROOT; };
 		DDA3E8FC13B03A25004D861C /* osm_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = osm_layer.png; sourceTree = SOURCE_ROOT; };
 		DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_layer.png; sourceTree = SOURCE_ROOT; };
@@ -446,6 +445,7 @@
 		DDD28221132939D700B30C1B /* CJSONSerializedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializedData.m; sourceTree = "<group>"; };
 		DDD28222132939D700B30C1B /* CDataScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDataScanner.m; path = Externals/TouchJSON/Source/CDataScanner.m; sourceTree = "<group>"; };
 		DDD28223132939D700B30C1B /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDataScanner.h; path = Externals/TouchJSON/Source/CDataScanner.h; sourceTree = "<group>"; };
+		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
 		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
@@ -1110,9 +1110,9 @@
 				DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */,
 				DDA3E8FE13B03A25004D861C /* kml_layer.png */,
 				DDA3E8FF13B03A26004D861C /* georss_layer.png */,
+				DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */,
 				DDE1C6B41342E1180049C325 /* crosshairs.png */,
 				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
-				DDA3E87613B012EC004D861C /* mapquest.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1290,12 +1290,12 @@
 				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
 				DDB589BE1399873100654F00 /* paper_throw.wav in Resources */,
-				DDA3E87713B012EC004D861C /* mapquest.png in Resources */,
 				DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */,
 				DDA3E90113B03A26004D861C /* osm_layer.png in Resources */,
 				DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */,
 				DDA3E90313B03A26004D861C /* kml_layer.png in Resources */,
 				DDA3E90413B03A26004D861C /* georss_layer.png in Resources */,
+				DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
