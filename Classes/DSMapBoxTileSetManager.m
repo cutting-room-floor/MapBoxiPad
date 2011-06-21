@@ -116,10 +116,13 @@ static DSMapBoxTileSetManager *defaultManager;
             }
     }
     
-    // add OpenStreetMap for base layers
+    // add OpenStreetMap & MapQuest for base layers
     //
     if (desiredTileSetType == DSMapBoxTileSetTypeBaselayer)
+    {
         [tileSetURLs addObject:kDSOpenStreetMapURL];
+        [tileSetURLs addObject:kDSMapQuestOSMURL];
+    }
 
     return [NSArray arrayWithArray:tileSetURLs];
 }
@@ -128,7 +131,10 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     if ([tileSetURL isEqual:kDSOpenStreetMapURL])
         return kDSOpenStreetMapName;
-    
+
+    if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        return kDSMapQuestOSMName;
+
     if ([tileSetURL isTileStreamURL])
     {
         RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
@@ -158,7 +164,10 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     if ([tileSetURL isEqual:kDSOpenStreetMapURL])
         return @"Collaboratively-edited world map project";
-    
+
+    else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        return @"Map tiles courtesy of MapQuest";
+
     else if ([tileSetURL isTileStreamURL])
     {
         RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
@@ -188,7 +197,7 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSString *attribution = @"";
     
-    if ([tileSetURL isEqual:kDSOpenStreetMapURL])
+    if ([tileSetURL isEqual:kDSOpenStreetMapURL] || [tileSetURL isEqual:kDSMapQuestOSMURL])
         attribution = @"Copyright OpenStreetMap.org Contributors CC-BY-SA";
     
     else if ([tileSetURL isTileStreamURL])

@@ -19,6 +19,7 @@
 #import "SimpleKML.h"
 
 #import "RMOpenStreetMapSource.h"
+#import "RMMapQuestOSMSource.h"
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
@@ -506,7 +507,10 @@
                 
                 if ([tileSetURL isEqual:kDSOpenStreetMapURL])
                     source = [[[RMOpenStreetMapSource alloc] init] autorelease];
-                
+
+                else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+                    source = [[[RMMapQuestOSMSource alloc] init] autorelease];
+
                 else if ([tileSetURL isTileStreamURL])
                     source = [[[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL] autorelease];
                 

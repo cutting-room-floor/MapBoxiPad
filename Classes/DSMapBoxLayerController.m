@@ -260,7 +260,10 @@
             
             if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
                 cell.imageView.image = [UIImage imageNamed:@"osm.png"];
-                
+
+            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
+                cell.imageView.image = [UIImage imageNamed:@"mapquest.png"];
+            
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
                 cell.imageView.image = [UIImage imageNamed:@"globe.png"];
                 
@@ -336,7 +339,7 @@
        
             // don't allow deletion of OSM or bundled tile set
             //
-            if ([baseTileSetURL isEqual:kDSOpenStreetMapURL] || [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName]])
+            if ([baseTileSetURL isEqual:kDSOpenStreetMapURL] || [baseTileSetURL isEqual:kDSMapQuestOSMURL] || [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName]])
                 return NO;
                 
             return YES;
@@ -426,7 +429,7 @@
     else if (indexPath.section == DSMapBoxLayerSectionData)
         layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
     
-    if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
+    if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
     {        
         if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {

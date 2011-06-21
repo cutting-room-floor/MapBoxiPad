@@ -29,6 +29,7 @@
 
 #import "RMTileSource.h"
 #import "RMOpenStreetMapSource.h"
+#import "RMMapQuestOSMSource.h"
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
@@ -75,6 +76,9 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     if ([activeTileSetURL isEqual:kDSOpenStreetMapURL])
         source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+
+    else if ([activeTileSetURL isEqual:kDSMapQuestOSMURL])
+        source = [[[RMMapQuestOSMSource alloc] init] autorelease];
 
     else if ([activeTileSetURL isTileStreamURL])
         source = [[[RMTileStreamSource alloc] initWithInfo:[NSDictionary dictionaryWithContentsOfURL:activeTileSetURL]] autorelease];
@@ -292,11 +296,11 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         
         // apply base, if able
         //
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[restoreTileSetURL relativePath]] || [restoreTileSetURL isEqual:kDSOpenStreetMapURL])
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[restoreTileSetURL relativePath]] || [restoreTileSetURL isEqual:kDSOpenStreetMapURL] || [restoreTileSetURL isEqual:kDSMapQuestOSMURL])
         {        
             NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:restoreTileSetURL];
             
-            if (([restoreTileSetName isEqualToString:kDSOpenStreetMapName] || [restoreTileSetURL isTileStreamURL]) && 
+            if (([restoreTileSetName isEqualToString:kDSOpenStreetMapName] || [restoreTileSetName isEqualToString:kDSMapQuestOSMName] || [restoreTileSetURL isTileStreamURL]) && 
                 [reachability currentReachabilityStatus] == NotReachable)
                 [self offlineAlert];
             
@@ -616,9 +620,14 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     //
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
-    if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+    if ([newTileSetURL isEqual:kDSOpenStreetMapURL] || [newTileSetURL isEqual:kDSMapQuestOSMURL])
     {
-        id <RMTileSource>source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        id <RMTileSource>source;
+        
+        if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+            source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        else if ([newTileSetURL isEqual:kDSMapQuestOSMURL])
+            source = [[[RMMapQuestOSMSource alloc] init] autorelease];
         
         if (mapView.contents.zoom < [source minZoom])
             mapView.contents.zoom = [source minZoom];
@@ -702,7 +711,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
 {
     NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
-    if (([activeTileSetURL isEqual:kDSOpenStreetMapURL] || [activeTileSetURL isTileStreamURL]) && 
+    if (([activeTileSetURL isEqual:kDSOpenStreetMapURL] || [activeTileSetURL isEqual:kDSMapQuestOSMURL] || [activeTileSetURL isTileStreamURL]) && 
         [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
         [self offlineAlert];
 }
