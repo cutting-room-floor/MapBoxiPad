@@ -15,7 +15,6 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
-		D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */ = {isa = PBXBuildFile; fileRef = D75E3E7F12A0ADF50007996C /* mbtiles.png */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
@@ -43,7 +42,6 @@
 		DD0F616511ED5ABC0050174D /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616111ED5ABC0050174D /* FMDatabaseAdditions.m */; };
 		DD0F616611ED5ABC0050174D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616311ED5ABC0050174D /* FMResultSet.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
-		DD19A3BA139069CA001D85E0 /* globe.png in Resources */ = {isa = PBXBuildFile; fileRef = DD19A3B9139069CA001D85E0 /* globe.png */; };
 		DD1ADA171208DBEA00B052E9 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EC1208DBEA00B052E9 /* adler32.c */; };
 		DD1ADA181208DBEA00B052E9 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9ED1208DBEA00B052E9 /* compress.c */; };
 		DD1ADA191208DBEA00B052E9 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EE1208DBEA00B052E9 /* crc32.c */; };
@@ -113,8 +111,6 @@
 		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
 		DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8637AB1379BDF6006650EA /* UIAlertView_Additions.m */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
-		DD86B6F111FE792D00165CDF /* kml.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F011FE792D00165CDF /* kml.png */; };
-		DD86B6F311FE793300165CDF /* rss.png in Resources */ = {isa = PBXBuildFile; fileRef = DD86B6F211FE793300165CDF /* rss.png */; };
 		DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92F641121C9B84008CF88F /* MessageUI.framework */; };
 		DD9830A11378CEE00071D5AD /* caution.png in Resources */ = {isa = PBXBuildFile; fileRef = DD9830A01378CEE00071D5AD /* caution.png */; };
 		DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */; };
@@ -125,6 +121,11 @@
 		DDA1073C11E4436E008D00A7 /* balloon.html in Resources */ = {isa = PBXBuildFile; fileRef = DDA1073B11E4436E008D00A7 /* balloon.html */; };
 		DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */; };
 		DDA3E87713B012EC004D861C /* mapquest.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E87613B012EC004D861C /* mapquest.png */; };
+		DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FB13B03A25004D861C /* tilestream_layer.png */; };
+		DDA3E90113B03A26004D861C /* osm_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FC13B03A25004D861C /* osm_layer.png */; };
+		DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */; };
+		DDA3E90313B03A26004D861C /* kml_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FE13B03A25004D861C /* kml_layer.png */; };
+		DDA3E90413B03A26004D861C /* georss_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FF13B03A26004D861C /* georss_layer.png */; };
 		DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA58F6E1326CAA6000E0761 /* DSMapView.m */; };
 		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
@@ -149,7 +150,6 @@
 		DDD2822B132939D700B30C1B /* CJSONSerialization.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD2821F132939D700B30C1B /* CJSONSerialization.m */; };
 		DDD2822C132939D700B30C1B /* CJSONSerializedData.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28221132939D700B30C1B /* CJSONSerializedData.m */; };
 		DDD2822D132939D700B30C1B /* CDataScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD28222132939D700B30C1B /* CDataScanner.m */; };
-		DDD44DC413981E38009D1148 /* osm.png in Resources */ = {isa = PBXBuildFile; fileRef = DDD44DC313981E38009D1148 /* osm.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE09EA4123C16FC008ECB7A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE09EA2123C16FC008ECB7A /* Reachability.m */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
@@ -216,7 +216,6 @@
 		8D1107310486CEB800E47090 /* MapBoxiPad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPad-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		D7246FF01347B4D20069B3E2 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
-		D75E3E7F12A0ADF50007996C /* mbtiles.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles.png; sourceTree = SOURCE_ROOT; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0B1348121DD3D000A1309D /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action.png; sourceTree = SOURCE_ROOT; };
@@ -270,7 +269,6 @@
 		DD0F616311ED5ABC0050174D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = Externals/FMDB/src/FMResultSet.m; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
-		DD19A3B9139069CA001D85E0 /* globe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = globe.png; sourceTree = SOURCE_ROOT; };
 		DD1AD9EC1208DBEA00B052E9 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
 		DD1AD9ED1208DBEA00B052E9 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
 		DD1AD9EE1208DBEA00B052E9 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
@@ -387,8 +385,6 @@
 		DD8637AB1379BDF6006650EA /* UIAlertView_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertView_Additions.m; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
-		DD86B6F011FE792D00165CDF /* kml.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kml.png; sourceTree = SOURCE_ROOT; };
-		DD86B6F211FE793300165CDF /* rss.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rss.png; sourceTree = SOURCE_ROOT; };
 		DD92F641121C9B84008CF88F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DD9830A01378CEE00071D5AD /* caution.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = caution.png; sourceTree = SOURCE_ROOT; };
 		DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParser.h; sourceTree = "<group>"; };
@@ -404,6 +400,11 @@
 		DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIApplication_Additions.h; sourceTree = "<group>"; };
 		DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIApplication_Additions.m; sourceTree = "<group>"; };
 		DDA3E87613B012EC004D861C /* mapquest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest.png; sourceTree = SOURCE_ROOT; };
+		DDA3E8FB13B03A25004D861C /* tilestream_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tilestream_layer.png; sourceTree = SOURCE_ROOT; };
+		DDA3E8FC13B03A25004D861C /* osm_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = osm_layer.png; sourceTree = SOURCE_ROOT; };
+		DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_layer.png; sourceTree = SOURCE_ROOT; };
+		DDA3E8FE13B03A25004D861C /* kml_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kml_layer.png; sourceTree = SOURCE_ROOT; };
+		DDA3E8FF13B03A26004D861C /* georss_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = georss_layer.png; sourceTree = SOURCE_ROOT; };
 		DDA58F6D1326CAA6000E0761 /* DSMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapView.h; sourceTree = "<group>"; };
 		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
@@ -445,7 +446,6 @@
 		DDD28221132939D700B30C1B /* CJSONSerializedData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CJSONSerializedData.m; sourceTree = "<group>"; };
 		DDD28222132939D700B30C1B /* CDataScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CDataScanner.m; path = Externals/TouchJSON/Source/CDataScanner.m; sourceTree = "<group>"; };
 		DDD28223132939D700B30C1B /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDataScanner.h; path = Externals/TouchJSON/Source/CDataScanner.h; sourceTree = "<group>"; };
-		DDD44DC313981E38009D1148 /* osm.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = osm.png; sourceTree = SOURCE_ROOT; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE09EA2123C16FC008ECB7A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Externals/Reachability/Reachability.m; sourceTree = "<group>"; };
 		DDE09EA3123C16FC008ECB7A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Externals/Reachability/Reachability.h; sourceTree = "<group>"; };
@@ -909,15 +909,6 @@
 			name = FMDB;
 			sourceTree = "<group>";
 		};
-		DD86B6D611FE743B00165CDF /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				DD86B6F011FE792D00165CDF /* kml.png */,
-				DD86B6F211FE793300165CDF /* rss.png */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-		};
 		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -959,7 +950,6 @@
 				DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */,
 				DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */,
 				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
-				DD86B6D611FE743B00165CDF /* Resources */,
 			);
 			name = "Feed Parsing";
 			sourceTree = "<group>";
@@ -1115,9 +1105,11 @@
 		DDE1C4731342711E0049C325 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				D75E3E7F12A0ADF50007996C /* mbtiles.png */,
-				DD19A3B9139069CA001D85E0 /* globe.png */,
-				DDD44DC313981E38009D1148 /* osm.png */,
+				DDA3E8FB13B03A25004D861C /* tilestream_layer.png */,
+				DDA3E8FC13B03A25004D861C /* osm_layer.png */,
+				DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */,
+				DDA3E8FE13B03A25004D861C /* kml_layer.png */,
+				DDA3E8FF13B03A26004D861C /* georss_layer.png */,
 				DDE1C6B41342E1180049C325 /* crosshairs.png */,
 				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
 				DDA3E87613B012EC004D861C /* mapquest.png */,
@@ -1266,8 +1258,6 @@
 				DD72C76311E6847C0030C637 /* circle.png in Resources */,
 				DD10184511EE51FC00DF286F /* mapbox.png in Resources */,
 				DDFB5CB111F656EE00695B89 /* icon.png in Resources */,
-				DD86B6F111FE792D00165CDF /* kml.png in Resources */,
-				DD86B6F311FE793300165CDF /* rss.png in Resources */,
 				DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */,
 				DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */,
 				D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */,
@@ -1275,7 +1265,6 @@
 				DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */,
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
-				D75E3E8012A0ADF50007996C /* mbtiles.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
 				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
@@ -1300,10 +1289,13 @@
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,
 				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
-				DD19A3BA139069CA001D85E0 /* globe.png in Resources */,
-				DDD44DC413981E38009D1148 /* osm.png in Resources */,
 				DDB589BE1399873100654F00 /* paper_throw.wav in Resources */,
 				DDA3E87713B012EC004D861C /* mapquest.png in Resources */,
+				DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */,
+				DDA3E90113B03A26004D861C /* osm_layer.png in Resources */,
+				DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */,
+				DDA3E90313B03A26004D861C /* kml_layer.png in Resources */,
+				DDA3E90413B03A26004D861C /* georss_layer.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

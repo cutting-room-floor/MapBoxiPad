@@ -259,16 +259,16 @@
             cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
             
             if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
-                cell.imageView.image = [UIImage imageNamed:@"osm.png"];
+                cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
 
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
                 cell.imageView.image = [UIImage imageNamed:@"mapquest.png"];
             
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
-                cell.imageView.image = [UIImage imageNamed:@"globe.png"];
+                cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
                 
             else
-                cell.imageView.image = [UIImage imageNamed:@"mbtiles.png"];
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
             
             break;
             
@@ -307,10 +307,10 @@
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
-                cell.imageView.image = [UIImage imageNamed:@"globe.png"];
+                cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
             
             else
-                cell.imageView.image = [UIImage imageNamed:@"mbtiles.png"];
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
             
             break;
             
@@ -320,7 +320,7 @@
             cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
+            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml_layer.png" : @"georss_layer.png")];
             
             break;
     }
