@@ -30,14 +30,29 @@
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
     
+    receivedData = [[NSMutableData data] retain];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+
     [spinner stopAnimating];
     
     successImageButton.hidden = YES;
-    
-    receivedData = [[NSMutableData data] retain];
 
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
+        recentServersTableView.hidden = NO;
+    
+    else
+        recentServersTableView.hidden = YES;
+    
+    entryField.text = @"";
+    
+    [recentServersTableView reloadData];
+    
     [entryField becomeFirstResponder];
 }
 
@@ -83,6 +98,23 @@
     if ( ! [enteredValue hasPrefix:@"http"])
         enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
     
+    // save the server to recents
+    //
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *recents = [NSMutableArray array];
+
+    if ([defaults objectForKey:@"recentServers"])
+    {
+        [recents addObjectsFromArray:[defaults arrayForKey:@"recentServers"]];
+        [recents removeObject:enteredValue];
+    }
+    
+    [recents insertObject:enteredValue atIndex:0];
+    [defaults setObject:recents forKey:@"recentServers"];
+    [defaults synchronize];
+
+    // browse the server
+    //
     controller.serverURL = [NSURL URLWithString:enteredValue];
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
@@ -102,6 +134,16 @@
         validationConnection = nil;
     }
     
+    [UIView beginAnimations:nil context:nil];
+    
+    if ([textField.text length])
+        recentServersTableView.hidden = YES;
+    
+    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
+        recentServersTableView.hidden = NO;
+
+    [UIView commitAnimations];
+    
     [spinner startAnimating];
     
     successImageButton.hidden = YES;
@@ -118,6 +160,20 @@
     if (self.navigationItem.rightBarButtonItem.enabled)
         [self tappedNextButton:self];
         
+    return YES;
+}
+
+- (BOOL)textFieldShouldClear:(UITextField *)textField
+{
+    if (recentServersTableView.hidden && [[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
+    {
+        [UIView beginAnimations:nil context:nil];
+
+        recentServersTableView.hidden = NO;
+        
+        [UIView commitAnimations];
+    }
+    
     return YES;
 }
 
@@ -152,6 +208,66 @@
     {
         successImageButton.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
+    }
+}
+
+#pragma mark -
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    
+    entryField.text = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row];
+    
+    [self tappedNextButton:self];
+}
+
+#pragma mark -
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *RecentServerCellIdentifier = @"RecentServerCellIdentifier";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:RecentServerCellIdentifier];
+    
+    if ( ! cell)
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier] autorelease];
+    
+    cell.textLabel.text = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row];
+    
+    return cell;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return @"Recent Servers";
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    NSMutableArray *recents = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"recentServers"]];
+    
+    [recents removeObjectAtIndex:indexPath.row];
+    
+    [defaults setObject:recents forKey:@"recentServers"];
+    [defaults synchronize];
+    
+    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+    
+    if ([recents count] == 0)
+    {
+        [UIView beginAnimations:nil context:nil];
+
+        tableView.hidden = YES;
+        
+        [UIView commitAnimations];
     }
 }
 
