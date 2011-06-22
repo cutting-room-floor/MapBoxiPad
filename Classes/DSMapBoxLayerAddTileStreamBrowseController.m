@@ -13,7 +13,7 @@
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxLayerAddNavigationController.h"
 
-#import "CJSONDeserializer.h"
+#import "JSONKit.h"
 
 #import "RMTile.h"
 
@@ -242,14 +242,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         [spinner stopAnimating];
         
-        NSError *error = nil;
+        id newLayers = [receivedData mutableObjectFromJSONData];
         
-        NSMutableArray *newLayers = [NSMutableArray arrayWithArray:[[CJSONDeserializer deserializer] deserializeAsArray:receivedData error:&error]];
-        
-        if (error)
-            NSLog(@"%@", error);
-        
-        else
+        if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
         {
             for (int i = 0; i < [newLayers count]; i++)
             {

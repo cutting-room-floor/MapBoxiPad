@@ -4,9 +4,6 @@
 [submodule "Externals/TouchXML"]
 	path = Externals/TouchXML
 	url = https://github.com/TouchCode/TouchXML.git
-[submodule "Externals/TouchJSON"]
-	path = Externals/TouchJSON
-	url = https://github.com/TouchCode/TouchJSON.git
 [submodule "Externals/Fingertips"]
 	path = Externals/Fingertips
 	url = git@github.com:developmentseed/fingertips.git
@@ -19,3 +16,6 @@
 [submodule "Externals/iCarousel"]
 	path = Externals/iCarousel
 	url = https://github.com/demosthenese/iCarousel.git
+[submodule "Externals/JSONKit"]
+	path = Externals/JSONKit
+	url = https://github.com/johnezang/JSONKit.git

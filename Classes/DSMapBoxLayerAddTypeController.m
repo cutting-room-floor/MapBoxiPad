@@ -12,7 +12,7 @@
 
 #import "MapBoxConstants.h"
 
-#import "CJSONDeserializer.h"
+#import "JSONKit.h"
 
 @implementation DSMapBoxLayerAddTypeController
 
@@ -202,11 +202,9 @@
 {
     [spinner stopAnimating];
 
-    NSError *error = nil;
-    
-    NSArray *layers = [[CJSONDeserializer deserializer] deserializeAsArray:receivedData error:&error];
+    id layers = [receivedData objectFromJSONData];
 
-    if ( ! error && [layers count])
+    if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
     {
         successImageButton.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;

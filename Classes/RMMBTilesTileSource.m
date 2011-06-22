@@ -39,7 +39,7 @@
 
 #import "FMDatabase.h"
 
-#import "NSDictionary_JSONExtensions.h"
+#import "JSONKit.h"
 
 #include <zlib.h>
 
@@ -431,11 +431,9 @@
         NSData *inflatedData = [gridData gzipInflate];
         NSString *gridString = [[[NSString alloc] initWithData:inflatedData encoding:NSUTF8StringEncoding] autorelease];
         
-        NSError *error = nil;
+        id grid = [gridString objectFromJSONString];
         
-        NSDictionary *grid = [NSDictionary dictionaryWithJSONString:gridString error:&error];
-
-        if (grid && ! error)
+        if (grid && [grid isKindOfClass:[NSDictionary class]])
         {
             NSArray *rows = [grid objectForKey:@"grid"];
             NSArray *keys = [grid objectForKey:@"keys"];
