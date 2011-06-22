@@ -381,7 +381,7 @@
 		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
-		DDADED5A137059AC0092226A /* world-light.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.mbtiles"; path = "../stuff to not backup/world-light.mbtiles"; sourceTree = SOURCE_ROOT; };
+		DDADED5A137059AC0092226A /* world-light.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light.mbtiles"; path = "tiles/world-light.mbtiles"; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
 		DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentLoadController.m; sourceTree = "<group>"; };
 		DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentLoadController.xib; sourceTree = "<group>"; };
