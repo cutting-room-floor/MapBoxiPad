@@ -18,7 +18,7 @@
     BOOL openingExternalFile;
 }
 
-@property (nonatomic, retain) IBOutlet DSFingerTipWindow *window;
+@property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
 @property (nonatomic, assign) BOOL openingExternalFile;
 
