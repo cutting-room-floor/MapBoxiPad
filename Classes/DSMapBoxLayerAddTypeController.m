@@ -157,10 +157,12 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    [textField resignFirstResponder];
+    
     if (self.navigationItem.rightBarButtonItem.enabled)
         [self tappedNextButton:self];
-        
-    return YES;
+    
+    return NO;
 }
 
 - (BOOL)textFieldShouldClear:(UITextField *)textField
