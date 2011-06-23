@@ -1395,7 +1395,7 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
@@ -1426,7 +1426,7 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
@@ -1505,7 +1505,7 @@
 					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
