@@ -17,7 +17,6 @@
 #import "RMMapView.h"
 #import "RMMercatorToScreenProjection.h"
 #import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
 #import "RMCachedTileSource.h"
 
 NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";

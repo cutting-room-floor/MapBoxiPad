@@ -23,7 +23,7 @@
 #import "RMPath.h"
 #import "RMLatLong.h"
 #import "RMGlobalConstants.h"
-#import "RMMBTilesTileSource.h"
+#import "RMInteractiveSource.h"
 
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
@@ -466,22 +466,25 @@
         for (DSMapView *aMapView in layerMapViews)
         {
             tileSource = aMapView.contents.tileSource;
-
-            if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
+            
+            if ([tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)tileSource supportsInteractivity])
                 break;
         }
     }
     
     if ( ! tileSource)
     {
-        if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]] && 
-            [self.mapView.contents.tileSource isKindOfClass:[RMMBTilesTileSource class]] && 
-            [((RMMBTilesTileSource *)self.mapView.contents.tileSource) supportsInteractivity])
+        if ([self.mapView isKindOfClass:[DSTiledLayerMapView class]])
         {
-            // We are touching an interactive overlay. Pass to it. 
-            //
-            aMapView   = self.mapView;
-            tileSource = aMapView.contents.tileSource;
+            id <RMTileSource>aTileSource = self.mapView.contents.tileSource;
+            
+            if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
+            {
+                // We are touching an interactive overlay. Pass to it. 
+                //
+                aMapView   = self.mapView;
+                tileSource = aTileSource;
+            }
         }
         
         if ( ! tileSource)
@@ -495,12 +498,17 @@
                     if ([peerView isKindOfClass:[DSTiledLayerMapView class]])
                         continue;
                     
-                    if ([peerView isKindOfClass:[DSMapView class]] && [((DSMapView *)peerView).contents.tileSource isKindOfClass:[RMMBTilesTileSource class]])
-                    {                        
-                        aMapView   = (DSMapView *)peerView;
-                        tileSource = aMapView.contents.tileSource;
+                    if ([peerView isKindOfClass:[DSMapView class]])
+                    {
+                        id <RMTileSource>aTileSource = ((DSMapView *)peerView).contents.tileSource;
                         
-                        break;
+                        if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
+                        {                        
+                            aMapView   = (DSMapView *)peerView;
+                            tileSource = aTileSource;
+                            
+                            break;
+                        }
                     }
                 }
             }
@@ -516,7 +524,7 @@
 
     NSLog(@"querying for interactivity: %@", tileSource);    
     
-    if ([tileSource isKindOfClass:[RMMBTilesTileSource class]] && [((RMMBTilesTileSource *)tileSource) supportsInteractivity])
+    if ([tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)tileSource supportsInteractivity])
     {
         // determine renderer scroll layer sub-layer touched
         //
@@ -556,8 +564,8 @@
         //
         CGPoint tilePoint = CGPointMake(normalizedX, normalizedY);
         
-        NSDictionary *interactivityDictionary = [((RMMBTilesTileSource *)tileSource) interactivityDictionaryForPoint:tilePoint inTile:tile];
-        NSString     *formatterJavascript     = [((RMMBTilesTileSource *)tileSource) interactivityFormatterJavascript];
+        NSDictionary *interactivityDictionary = [(id <RMInteractiveSource>)tileSource interactivityDictionaryForPoint:tilePoint inTile:tile];
+        NSString     *formatterJavascript     = [(id <RMInteractiveSource>)tileSource interactivityFormatterJavascript];
         
         if (interactivityDictionary && formatterJavascript)
         {

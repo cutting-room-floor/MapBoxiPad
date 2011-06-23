@@ -65,15 +65,6 @@
     [super dealloc];
 }
 
-- (NSString *)description
-{
-    return [NSString stringWithFormat:@"TileStream: %@, zooms %i-%i, %@", 
-               [self shortName], 
-               (int)[self minZoomNative], 
-               (int)[self maxZoomNative], 
-               ([self coversFullWorld] ? @"full world" : @"partial world")];
-}
-
 #pragma mark 
 
 - (NSString *)tileURL:(RMTile)tile

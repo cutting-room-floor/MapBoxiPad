@@ -80,6 +80,7 @@
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
+		DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
@@ -325,6 +326,8 @@
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		DD41AE0113B2B33500AE338E /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
+		DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMInteractiveSource.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -946,6 +949,8 @@
 				DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */,
 				DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */,
 				DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */,
+				DD41AE0113B2B33500AE338E /* RMInteractiveSource.h */,
+				DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
 				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
 				DDA58F6D1326CAA6000E0761 /* DSMapView.h */,
@@ -1360,6 +1365,7 @@
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
 				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
+				DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
