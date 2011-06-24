@@ -42,7 +42,7 @@
 
 #define kMBTilesDefaultTileSize 256
 #define kMBTilesDefaultMinTileZoom 0
-#define kMBTilesDefaultMaxTileZoom 18
+#define kMBTilesDefaultMaxTileZoom 22
 #define kMBTilesDefaultLatLonBoundingBox ((RMSphericalTrapezium){ .northeast = { .latitude =  85, .longitude =  180 }, \
                                                                   .southwest = { .latitude = -85, .longitude = -180 } })
 
