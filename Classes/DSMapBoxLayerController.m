@@ -17,6 +17,8 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
+#import "MapBoxConstants.h"
+
 #import "Reachability.h"
 
 @interface DSMapBoxLayerController (DSMapBoxLayerControllerPrivate)
@@ -415,6 +417,12 @@
 }
 
 #pragma mark -
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+    cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
