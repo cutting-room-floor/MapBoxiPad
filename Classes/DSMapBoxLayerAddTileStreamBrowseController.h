@@ -8,25 +8,20 @@
 
 #import <UIKit/UIKit.h>
 
-#import "iCarousel.h"
+#import "DSMapBoxLayerAddTileView.h"
 
 extern NSString *const DSMapBoxLayersAdded;
 
-@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <iCarouselDataSource, iCarouselDelegate>
+@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddTileViewDelegate>
 {
-    IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet iCarousel *tileCarousel;
-    IBOutlet UILabel *nameLabel;
-    IBOutlet UILabel *detailsLabel;
     IBOutlet UILabel *helpLabel;
+    IBOutlet UIActivityIndicatorView *spinner;
+    IBOutlet UIScrollView *tileScrollView;
+    IBOutlet UIPageControl *tilePageControl;
     
-    NSURLConnection *downloadConnection;
     NSMutableData *receivedData;
     
     NSArray *layers;
-    NSMutableArray *imagesToDownload;
-    
-    NSUInteger activeDownloadIndex;
     
     NSMutableArray *selectedLayers;
     NSMutableArray *selectedImages;

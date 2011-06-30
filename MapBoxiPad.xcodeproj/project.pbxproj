@@ -76,6 +76,9 @@
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
+		DD2F015113BC59A700A72513 /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015013BC59A700A72513 /* corner_fold.png */; };
+		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
+		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -131,7 +134,7 @@
 		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
-		DDB589BE1399873100654F00 /* paper_throw.wav in Resources */ = {isa = PBXBuildFile; fileRef = DDB589BD1399873100654F00 /* paper_throw.wav */; };
+		DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
@@ -320,6 +323,9 @@
 		DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegacyMigrationManager.m; sourceTree = "<group>"; };
 		DD28C08013B263A6008BED70 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Externals/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		DD28C08113B263A6008BED70 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Externals/JSONKit/JSONKit.m; sourceTree = "<group>"; };
+		DD2F015013BC59A700A72513 /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = "<group>"; };
+		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
+		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -405,7 +411,8 @@
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
-		DDB589BD1399873100654F00 /* paper_throw.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw.wav; sourceTree = "<group>"; };
+		DDB96E9B13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileView.h; sourceTree = "<group>"; };
+		DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileView.m; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
 		DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentLoadController.m; sourceTree = "<group>"; };
 		DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentLoadController.xib; sourceTree = "<group>"; };
@@ -717,6 +724,7 @@
 			children = (
 				DD2754C813856838007B58AC /* check.png */,
 				DD2754CA1385683D007B58AC /* placeholder.png */,
+				DD2F015013BC59A700A72513 /* corner_fold.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -743,7 +751,8 @@
 			isa = PBXGroup;
 			children = (
 				DD48AC3F11D3D79A000AF79E /* page_flip.wav */,
-				DDB589BD1399873100654F00 /* paper_throw.wav */,
+				DD2F015313BC638B00A72513 /* paper_throw_start.wav */,
+				DD2F015213BC638B00A72513 /* paper_throw_end.wav */,
 			);
 			name = Sounds;
 			sourceTree = "<group>";
@@ -1089,6 +1098,8 @@
 				DDEF90D213832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.h */,
 				DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */,
 				DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */,
+				DDB96E9B13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.h */,
+				DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */,
 				DD27509E13844560007B58AC /* DSMapBoxLayerAddPreviewController.h */,
 				DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */,
 				DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */,
@@ -1223,13 +1234,15 @@
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,
 				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
-				DDB589BE1399873100654F00 /* paper_throw.wav in Resources */,
 				DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */,
 				DDA3E90113B03A26004D861C /* osm_layer.png in Resources */,
 				DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */,
 				DDA3E90313B03A26004D861C /* kml_layer.png in Resources */,
 				DDA3E90413B03A26004D861C /* georss_layer.png in Resources */,
 				DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */,
+				DD2F015113BC59A700A72513 /* corner_fold.png in Resources */,
+				DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */,
+				DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1366,6 +1379,7 @@
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
 				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
 				DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */,
+				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

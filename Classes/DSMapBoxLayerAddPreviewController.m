@@ -21,7 +21,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = [info objectForKey:@"name"];
+    self.navigationItem.title = [NSString stringWithFormat:@"Preview of \"%@\"", [info objectForKey:@"name"]];
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone 
                                                                                             target:self
                                                                                             action:@selector(dismissPreview:)] autorelease];

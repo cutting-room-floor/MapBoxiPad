@@ -10,6 +10,7 @@
 
 #import "MapBoxConstants.h"
 
+#import "DSMapBoxLayerAddTileView.h"
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxLayerAddNavigationController.h"
 
@@ -18,7 +19,6 @@
 #import "RMTile.h"
 
 #import <CoreLocation/CoreLocation.h>
-#import <QuartzCore/QuartzCore.h>
 
 NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
@@ -30,22 +30,15 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     [super viewDidLoad];
     
-    tileCarousel.type = iCarouselTypeCoverFlow;
-    tileCarousel.hidden = YES;
-    
-    nameLabel.text = @"";
-    detailsLabel.text = @"";
-    helpLabel.hidden = YES;
-    
-    [spinner startAnimating];
-    
+    // setup state
+    //
     layers = [[NSArray array] retain];
     
     selectedLayers = [[NSMutableArray array] retain];
     selectedImages = [[NSMutableArray array] retain];
     
-    imagesToDownload = [[NSMutableArray array] retain];
-    
+    // setup nav bar
+    //
     self.navigationItem.title = @"Browse Server";
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Add Layer"
                                                                                style:UIBarButtonItemStyleDone
@@ -54,22 +47,26 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
+    // setup progress indication
+    //
+    [spinner startAnimating];
+    
+    helpLabel.hidden       = YES;
+    tileScrollView.hidden  = YES;
+    tilePageControl.hidden = YES;
+    
+    // fire off layer list request
+    //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamAPIPath];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
-    downloadConnection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
 - (void)dealloc
 {
-    // needed to avoid follow-up delegate messaging
-    //
-    [tileCarousel removeFromSuperview];
-    tileCarousel.delegate = nil;
-    
     [layers release];
-    [imagesToDownload release];
     [selectedLayers release];
     [selectedImages release];
 
@@ -80,16 +77,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 
 #pragma mark -
-
-- (void)checkForImageDownloads
-{
-    if (activeDownloadIndex <= [layers count])
-    {
-        NSURL *nextURL = [imagesToDownload objectAtIndex:activeDownloadIndex - 1];
-        
-        downloadConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:nextURL] delegate:self];
-    }
-}
 
 - (void)tappedDoneButton:(id)sender
 {
@@ -102,116 +89,88 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                                                                                                           nil]];
 }
 
-- (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer
+- (void)tileView:(DSMapBoxLayerAddTileView *)tileView selectionDidChange:(BOOL)selected
 {
-    if ([gestureRecognizer isKindOfClass:[UIPinchGestureRecognizer class]])
+    // get layer & image in question
+    //
+    NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+    UIImage *layerImage = tileView.image;
+    
+    // update selection
+    //
+    if ([selectedLayers containsObject:layer])
     {
-        // preview tiles in a map view
-        //
-        DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];
-        
-        NSDictionary *layer = [layers objectAtIndex:gestureRecognizer.view.tag - 1 - 100];
-
-        preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                           [layer objectForKey:@"tileScheme"], @"tileScheme",
-                           [layer objectForKey:@"tileHostname"], @"tileHostname", 
-                           [layer objectForKey:@"tilePort"], @"tilePort", 
-                           [layer objectForKey:@"tilePath"], @"tilePath", 
-                           [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
-                           [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
-                           [layer objectForKey:@"id"], @"id", 
-                           [layer objectForKey:@"version"], @"version", 
-                           [layer objectForKey:@"name"], @"name", 
-                           [layer objectForKey:@"description"], @"description", 
-                           [layer objectForKey:@"center"], @"center",
-                           nil];
-        
-        DSMapBoxLayerAddNavigationController *wrapper = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:preview] autorelease];
-        
-        wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
-        wrapper.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
-
-        [self presentModalViewController:wrapper animated:YES];
+        [selectedLayers removeObject:layer];
+        [selectedImages removeObject:layerImage];
     }
-    else if ([gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
+    else
     {
-        // bounce tile & mark it selected
-        //
-        NSDictionary *layer = [layers objectAtIndex:(gestureRecognizer.view.tag - 1 - 100)];
-        UIImage *layerImage = ((UIImageView *)[gestureRecognizer.view viewWithTag:gestureRecognizer.view.tag - 100]).image;
-        
-        // update selection
-        //
-        if ([selectedLayers containsObject:layer])
-        {
-            [selectedLayers removeObject:layer];
-            [selectedImages removeObject:layerImage];
-        }
-        else
-        {
-            [selectedLayers addObject:layer];
-            [selectedImages addObject:layerImage];
-        }
-        
-        // enable/disable action button
-        //
-        if ([selectedLayers count])
-            self.navigationItem.rightBarButtonItem.enabled = YES;
-        
-        else
-            self.navigationItem.rightBarButtonItem.enabled = NO;
-        
-        // modify action button title
-        //
-        if ([selectedLayers count] > 1)
-            self.navigationItem.rightBarButtonItem.title = @"Add Layers";
-        
-        else
-            self.navigationItem.rightBarButtonItem.title = @"Add Layer";
-        
-        // toggle the checkmark
-        //
-        [UIView beginAnimations:nil context:nil];
-        
-        [UIView setAnimationDuration:2.0];
-        
-        UIView *tileView  = [gestureRecognizer.view viewWithTag:gestureRecognizer.view.tag - 100];
-        UIView *checkView = [tileView viewWithTag:tileView.tag + 200];
-        
-        checkView.hidden = ! checkView.hidden;
-        
-        [UIView commitAnimations];
-        
-        // bounce-resize the tile
-        //
-        [UIView animateWithDuration:0.1
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^(void)
-                         { 
-                             tileView.superview.transform = CGAffineTransformMakeScale(0.9, 0.9);
-                         } 
-                         completion:^(BOOL finished)
-                         { 
-                             [UIView beginAnimations:nil context:nil];
-
-                             [UIView setAnimationDuration:0.1];
-                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                             
-                             tileView.superview.transform = CGAffineTransformScale(tileView.superview.transform, 1 / 0.9, 1 / 0.9);
-
-                             [UIView commitAnimations];
-                         }];
+        [selectedLayers addObject:layer];
+        [selectedImages addObject:layerImage];
     }
+    
+    // enable/disable action button
+    //
+    if ([selectedLayers count])
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+    
+    else
+        self.navigationItem.rightBarButtonItem.enabled = NO;
+    
+    // modify action button title
+    //
+    if ([selectedLayers count] > 1)
+        self.navigationItem.rightBarButtonItem.title = [NSString stringWithFormat:@"Add %i Layers", [selectedLayers count]];
+    
+    else
+        self.navigationItem.rightBarButtonItem.title = @"Add Layer";
+}
+
+- (void)tileViewWantsToShowPreview:(DSMapBoxLayerAddTileView *)tileView
+{
+    // tap on top-right "preview" corner
+    //
+    DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];
+    
+    NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+    
+    preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
+                       [layer objectForKey:@"tileScheme"], @"tileScheme",
+                       [layer objectForKey:@"tileHostname"], @"tileHostname", 
+                       [layer objectForKey:@"tilePort"], @"tilePort", 
+                       [layer objectForKey:@"tilePath"], @"tilePath", 
+                       [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
+                       [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
+                       [layer objectForKey:@"id"], @"id", 
+                       [layer objectForKey:@"version"], @"version", 
+                       [layer objectForKey:@"name"], @"name", 
+                       [layer objectForKey:@"description"], @"description", 
+                       [layer objectForKey:@"center"], @"center",
+                       nil];
+    
+    DSMapBoxLayerAddNavigationController *wrapper = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:preview] autorelease];
+    
+    wrapper.navigationBar.translucent = YES;
+    
+    wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
+    
+    [self presentModalViewController:wrapper animated:YES];
 }
 
 #pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    // TODO: detect if offline and/or retry
+    //
     NSLog(@"%@", error);
     
+    [spinner stopAnimating];
+    
     [connection autorelease];
+    
+    [receivedData release];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -226,178 +185,139 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    [spinner stopAnimating];
+    
     [connection autorelease];
     
-    UIImage *image = [UIImage imageWithData:receivedData];
+    id newLayers = [receivedData mutableObjectFromJSONData];
     
-    if (image)
+    [receivedData release];
+    
+    // TODO: what if no layers? 
+    //
+    if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
     {
-        ((UIImageView *)[tileCarousel viewWithTag:activeDownloadIndex]).image = image;
-
-        activeDownloadIndex++;
+        helpLabel.hidden       = NO;
+        tileScrollView.hidden  = NO;
+        tilePageControl.hidden = NO;
         
-        [self checkForImageDownloads];
-    }
-    else
-    {
-        [spinner stopAnimating];
+        NSMutableArray *imagesToDownload = [NSMutableArray array];
         
-        id newLayers = [receivedData mutableObjectFromJSONData];
-        
-        if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
+        for (int i = 0; i < [newLayers count]; i++)
         {
-            for (int i = 0; i < [newLayers count]; i++)
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
+            
+            // determine center tile to download
+            //
+            CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
+                                                                       [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
+            
+            int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
+            
+            int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
+            int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
+                                               cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
+            
+            tileY = pow(2.0, tileZoom) - tileY - 1.0;
+            
+            RMTile tile = {
+                .zoom = tileZoom,
+                .x    = tileX,
+                .y    = tileY,
+            };
+            
+            NSURL *tileURL;
+            
+            if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
+                tileURL = [NSURL URLWithString:[[layer objectForKey:@"host"] lastObject]];
+            
+            else
+                tileURL = self.serverURL;
+            
+            if ( ! [[tileURL absoluteString] hasSuffix:@"/"])
+                tileURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/", tileURL]];
+            
+            NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@1.0.0/%@/%d/%d/%d.png", 
+                                                       tileURL, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
+            
+            [imagesToDownload addObject:imageURL];
+            
+            // update layer for server-wide variables
+            //
+            [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
+            [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
+            [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+            [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
+            
+            [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
+            [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
+            [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
+            [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
+            
+            [newLayers replaceObjectAtIndex:i withObject:layer];
+        }
+        
+        [layers release];
+        
+        layers = [[NSArray arrayWithArray:newLayers] retain];
+        
+        // layout preview tiles
+        //
+        int pageCount = ([layers count] / 9) + 1;
+        
+        tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
+        
+        tilePageControl.numberOfPages = pageCount;
+
+        for (int i = 0; i < pageCount; i++)
+        {
+            UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
+            
+            containerView.backgroundColor = [UIColor clearColor];
+            
+            for (int j = 0; j < 9; j++)
             {
-                NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
+                int index = i * 9 + j;
                 
-                // determine center tile to download
-                //
-                CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
-                                                                           [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
-                
-                int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
-                
-                int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
-                int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
-                                                   cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
-                
-                tileY = pow(2.0, tileZoom) - tileY - 1.0;
-                
-                RMTile tile = {
-                    .zoom = tileZoom,
-                    .x    = tileX,
-                    .y    = tileY,
-                };
-                
-                NSURL *tileURL;
-                
-                if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
-                    tileURL = [NSURL URLWithString:[[layer objectForKey:@"host"] lastObject]];
-                
-                else
-                    tileURL = self.serverURL;
-                
-                if ( ! [[tileURL absoluteString] hasSuffix:@"/"])
-                    tileURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/", tileURL]];
-                
-                NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@1.0.0/%@/%d/%d/%d.png", 
-                                                           tileURL, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
-                
-                [imagesToDownload addObject:imageURL];
-                
-                // update layer for server-wide variables
-                //
-                [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
-                [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
-                [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-                [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
-                
-                [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
-                [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
-                [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
-                [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
-                
-                [newLayers replaceObjectAtIndex:i withObject:layer];
+                if (index < [layers count])
+                {
+                    int row = j / 3;
+                    int col = j - (row * 3);
+
+                    CGFloat x;
+                    
+                    if (col == 0)
+                        x = 10;
+                    
+                    else if (col == 1)
+                        x = containerView.frame.size.width / 2 - 74;
+                    
+                    else if (col == 2)
+                        x = containerView.frame.size.width - 148 - 10;
+                    
+                    DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, row * 158 + 10, 148, 148) 
+                                                                                                 imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
+                    
+                    tileView.delegate = self;
+                    tileView.tag = index;
+                    
+                    [containerView addSubview:tileView];
+                }
             }
             
-            [layers release];
-            
-            layers = [[NSArray arrayWithArray:newLayers] retain];
-            
-            activeDownloadIndex = 1;
-            
-            [self checkForImageDownloads];
-            
-            [tileCarousel reloadData];
-            
-            [self carouselCurrentItemIndexUpdated:tileCarousel];
-            
-            tileCarousel.hidden = NO;
-
-            helpLabel.hidden = NO;
+            [tileScrollView addSubview:containerView];
         }
     }
 }
 
 #pragma mark -
 
-- (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
+// TODO: if scrolling too fast, doesn't update
+//
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    return [layers count];
-}
-
-- (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSUInteger)index
-{
-    // create tile view
-    //
-    UIView *baseView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 256, 256)] autorelease];
-    
-    baseView.backgroundColor = [UIColor whiteColor];
-    
-    baseView.layer.shadowOpacity = 0.5;
-    baseView.layer.shadowOffset = CGSizeMake(0, -1);
-    baseView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:baseView.bounds] CGPath];
-
-    baseView.tag = index + 1 + 100;
-    
-    // add image subview
-    //
-    UIImageView *view = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]] autorelease];
-    
-    view.tag = index + 1;
-    
-    [baseView addSubview:view];
-
-    // setup gestures on base view
-    //
-    UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
-    
-    UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
-    
-    tap.numberOfTapsRequired = 1;
-    tap.numberOfTouchesRequired = 1;
-    
-    baseView.gestureRecognizers = [NSArray arrayWithObjects:pinch, tap, nil];
-    
-    // add selection checkmark
-    //
-    UIImageView *check = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]] autorelease];
-    
-    [view addSubview:check];
-    
-    check.frame = CGRectMake(view.frame.size.width - check.frame.size.width + 10, -10, check.frame.size.width, check.frame.size.height);
-    
-    check.layer.shadowOpacity = 0.5;
-    check.layer.shadowOffset = CGSizeMake(0, -1);
-    
-    check.hidden = YES;
-    
-    check.tag = index + 1 + 200;
-    
-    return baseView;
-}
-
-#pragma mark -
-
-- (float)carouselItemWidth:(iCarousel *)carousel
-{
-    return 270;
-}
-
-- (BOOL)carouselShouldWrap:(iCarousel *)carousel
-{
-    return NO;
-}
-
-- (void)carouselCurrentItemIndexUpdated:(iCarousel *)carousel
-{
-    nameLabel.text = [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"name"];
-    
-    NSString *details = [NSString stringWithFormat:@"Zoom Levels %@-%@", 
-                            [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"minzoom"], 
-                            [[layers objectAtIndex:carousel.currentItemIndex] objectForKey:@"maxzoom"]];
-    
-    detailsLabel.text = details;
+    tilePageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
 }
 
 @end
