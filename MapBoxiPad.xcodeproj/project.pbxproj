@@ -139,6 +139,8 @@
 		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
+		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
+		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
 		DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
@@ -423,6 +425,9 @@
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
+		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
+		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
+		DDB23A7D13BE86970090FEC6 /* plus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_button.png; sourceTree = SOURCE_ROOT; };
 		DDB96E9B13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileView.h; sourceTree = "<group>"; };
 		DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileView.m; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
@@ -764,6 +769,8 @@
 			children = (
 				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
 				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
+				DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */,
+				DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */,
 				DD2F016013BE3A2200A72513 /* Resources */,
 			);
 			name = "Custom UI";
@@ -773,6 +780,7 @@
 			isa = PBXGroup;
 			children = (
 				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
+				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1281,6 +1289,7 @@
 				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
 				DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */,
 				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
+				DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1420,6 +1429,7 @@
 				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
 				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
+				DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

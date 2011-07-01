@@ -13,6 +13,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxTintedPlusItem.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
@@ -42,9 +43,8 @@
     
     self.navigationItem.title = @"Layers";
 
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
-                                                                                           target:self.delegate
-                                                                                           action:@selector(presentAddLayerHelper)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
+                                                                                     action:@selector(presentAddLayerHelper)] autorelease];
     
     [self tappedDoneButton:self];
 }
