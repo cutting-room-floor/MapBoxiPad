@@ -25,6 +25,7 @@
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
+#import "DSSound.h"
 
 #import "SimpleKML.h"
 
@@ -36,14 +37,12 @@
 
 #import "TouchXML.h"
 
-#import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 
 #import "Reachability.h"
 
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
-void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
@@ -673,11 +672,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         // start up page turn sound effect
         //
-        NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
-        SystemSoundID sound;
-        AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxMainViewController_SoundCompletionProc, self);
-        AudioServicesPlaySystemSound(sound);
+        [DSSound playSoundNamed:@"page_flip.wav"];
         
         // animate swap from old snapshot to new map
         //
@@ -700,11 +695,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {        
         attributionLabel.hidden = YES;
     }
-}
-
-void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
-{
-    AudioServicesDisposeSystemSoundID(sound);
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification
