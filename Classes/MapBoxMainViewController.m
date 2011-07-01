@@ -46,6 +46,7 @@
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
+- (void)setClusteringOn:(BOOL)clusteringOn;
 - (void)animateAddLayerImageView:(UIView *)aView withAbsoluteStartTime:(CFTimeInterval)beginTime;
 
 @end
@@ -195,13 +196,13 @@
                                                attributes:nil
                                                     error:NULL];
     
-    // set clustering button title
+    // set clustering button state
     //
     if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
-        clusteringButton.title = @"Turn Clustering Off";
+        [self setClusteringOn:YES];
 
     else
-        clusteringButton.title = @"Turn Clustering On";
+        [self setClusteringOn:NO];
 
     [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -549,11 +550,7 @@
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
     
-    if (markerManager.clusteringEnabled)
-        clusteringButton.title = @"Turn Clustering Off";
-    
-    else
-        clusteringButton.title = @"Turn Clustering On";
+    [self setClusteringOn:markerManager.clusteringEnabled];
 }
 
 - (IBAction)tappedHelpButton:(id)sender
@@ -583,6 +580,29 @@
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self presentModalViewController:wrapper animated:YES];
+}
+
+- (void)setClusteringOn:(BOOL)clusteringOn
+{
+    UIButton *button;
+
+    if ( ! clusteringButton.customView)
+    {
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [button addTarget:self action:@selector(tappedClusteringButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        clusteringButton.customView = button;
+    }
+    
+    else
+        button = ((UIButton *)clusteringButton.customView);
+
+    UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
+
+    button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+
+    [button setImage:stateImage forState:UIControlStateNormal];
 }
 
 #pragma mark -
