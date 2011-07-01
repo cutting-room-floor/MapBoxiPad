@@ -10,6 +10,11 @@
 
 @implementation DSMapBoxLayerAddNavigationController
 
+- (void)viewDidLoad
+{
+    self.navigationBar.tintColor = [UIColor blackColor];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return YES;

@@ -79,6 +79,8 @@
 		DD2F015113BC59A700A72513 /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015013BC59A700A72513 /* corner_fold.png */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
+		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
+		DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015E13BE2CB000A72513 /* mapbox_button.png */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -326,6 +328,9 @@
 		DD2F015013BC59A700A72513 /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
+		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
+		DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedBarButtonItem.m; sourceTree = "<group>"; };
+		DD2F015E13BE2CB000A72513 /* mapbox_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_button.png; path = ../mapbox_button.png; sourceTree = "<group>"; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -747,6 +752,24 @@
 			name = JSONKit;
 			sourceTree = "<group>";
 		};
+		DD2F015913BD189600A72513 /* Custom UI */ = {
+			isa = PBXGroup;
+			children = (
+				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
+				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
+				DD2F016013BE3A2200A72513 /* Resources */,
+			);
+			name = "Custom UI";
+			sourceTree = "<group>";
+		};
+		DD2F016013BE3A2200A72513 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -1073,6 +1096,7 @@
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DDEEAD84136F7BEC0058BA90 /* User Notification */,
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
+				DD2F015913BD189600A72513 /* Custom UI */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
@@ -1243,6 +1267,7 @@
 				DD2F015113BC59A700A72513 /* corner_fold.png in Resources */,
 				DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */,
 				DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */,
+				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1380,6 +1405,7 @@
 				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
 				DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */,
 				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
+				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

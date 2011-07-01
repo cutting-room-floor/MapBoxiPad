@@ -13,6 +13,7 @@
 #import "DSMapBoxLayerAddTileView.h"
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxLayerAddNavigationController.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "JSONKit.h"
 
@@ -40,10 +41,10 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     // setup nav bar
     //
     self.navigationItem.title = @"Browse Server";
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Add Layer"
-                                                                               style:UIBarButtonItemStyleDone
-                                                                              target:self
-                                                                              action:@selector(tappedDoneButton:)] autorelease];
+    
+    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
+                                                                                          target:self 
+                                                                                          action:@selector(tappedDoneButton:)] autorelease];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
