@@ -82,6 +82,8 @@
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* RMMBTilesTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
+		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
+		DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */; };
 		DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */ = {isa = PBXBuildFile; fileRef = DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */; };
 		DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD52697012C1E051002E890C /* Haiti Aid Projects.kml */; };
 		DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */ = {isa = PBXBuildFile; fileRef = DD52697112C1E051002E890C /* USGS Earthquakes.rss */; };
@@ -322,6 +324,8 @@
 		DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMBTilesTileSource.m; sourceTree = "<group>"; };
 		DD4BABF613BE62C50043FA21 /* DSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSSound.h; sourceTree = "<group>"; };
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
+		DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_off.png; sourceTree = "<group>"; };
+		DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_on.png; sourceTree = "<group>"; };
 		DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Afghanistan Election Fraud by Province.kmz"; sourceTree = "<group>"; };
 		DD52697012C1E051002E890C /* Haiti Aid Projects.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Haiti Aid Projects.kml"; sourceTree = "<group>"; };
 		DD52697112C1E051002E890C /* USGS Earthquakes.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "USGS Earthquakes.rss"; sourceTree = "<group>"; };
@@ -821,6 +825,8 @@
 				DDEEACAE136F516A0058BA90 /* loading.png */,
 				DDEEACF0136F53CC0058BA90 /* linen.png */,
 				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
+				DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */,
+				DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1233,6 +1239,8 @@
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
 				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
+				DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */,
+				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
