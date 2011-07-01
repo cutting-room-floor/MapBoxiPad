@@ -231,7 +231,14 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:RecentServerCellIdentifier];
     
     if ( ! cell)
+    {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier] autorelease];
+        
+        cell.backgroundColor     = [UIColor blackColor];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        
+        cell.textLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    }
     
     cell.textLabel.text = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row];
     
@@ -241,11 +248,6 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count];
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return @"Recent Servers";
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
