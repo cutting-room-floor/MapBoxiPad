@@ -66,7 +66,7 @@
     
     CGSize textSize = [title sizeWithFont:tintedButton.titleLabel.font];
     
-    tintedButton.bounds = CGRectMake(0, 0, textSize.width + 15, textSize.height + 15);
+    tintedButton.bounds = CGRectMake(0, 0, textSize.width + 22, textSize.height + 15);
 }
 
 @end
