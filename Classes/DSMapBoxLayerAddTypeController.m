@@ -44,10 +44,15 @@
     successImageButton.hidden = YES;
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
+    {
         recentServersTableView.hidden = NO;
-    
+        recentServersLabel.hidden = NO;
+    }
     else
+    {
         recentServersTableView.hidden = YES;
+        recentServersLabel.hidden = YES;
+    }
     
     entryField.text = @"";
     
@@ -234,6 +239,8 @@
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier] autorelease];
         
+        cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+        cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
         cell.backgroundColor     = [UIColor blackColor];
         cell.textLabel.textColor = [UIColor whiteColor];
         

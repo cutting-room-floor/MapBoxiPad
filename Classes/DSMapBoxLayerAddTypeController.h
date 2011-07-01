@@ -13,6 +13,7 @@
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIButton *successImageButton;
+    IBOutlet UILabel *recentServersLabel;
     IBOutlet UITableView *recentServersTableView;
     NSURLConnection *validationConnection;
     NSMutableData *receivedData;
