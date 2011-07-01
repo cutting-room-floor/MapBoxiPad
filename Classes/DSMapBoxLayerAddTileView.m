@@ -53,8 +53,6 @@
         
         [imageView addSubview:label];
         
-        label.hidden = YES;
-        
         // fire off image download request
         //
         [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:imageURL] delegate:self];
@@ -312,7 +310,6 @@
                          {
                              imageView.layer.shadowPath = [corneredPath CGPath];
                              
-                             label.hidden           = NO;
                              cornerImageView.hidden = NO;
                              coverView.hidden       = YES;
                          }
