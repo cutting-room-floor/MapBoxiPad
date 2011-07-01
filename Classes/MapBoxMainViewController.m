@@ -835,11 +835,7 @@
     
     // play sound effect
     //
-    NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"paper_throw" ofType:@"wav"]];
-    SystemSoundID sound;
-    AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxMainViewController_SoundCompletionProc, self);
-    AudioServicesPlaySystemSound(sound);
+    [DSSound playSoundNamed:@"paper_throw_start.wav"];
     
     // animate layers into layer UI
     //
