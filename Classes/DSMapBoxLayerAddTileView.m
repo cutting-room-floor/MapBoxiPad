@@ -260,7 +260,7 @@
 
         // draw tile
         //
-        CGContextDrawImage(c, imageView.bounds, [tileImage CGImage]);
+        [tileImage drawInRect:imageView.bounds];
 
         UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
         
