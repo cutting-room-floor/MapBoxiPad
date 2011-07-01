@@ -70,6 +70,8 @@
 		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
+		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
+		DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015E13BE2CB000A72513 /* mapbox_button.png */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -302,6 +304,9 @@
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
 		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
+		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
+		DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedBarButtonItem.m; sourceTree = "<group>"; };
+		DD2F015E13BE2CB000A72513 /* mapbox_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_button.png; path = ../mapbox_button.png; sourceTree = "<group>"; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -690,6 +695,24 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		DD2F015913BD189600A72513 /* Custom UI */ = {
+			isa = PBXGroup;
+			children = (
+				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
+				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
+				DD2F016013BE3A2200A72513 /* Resources */,
+			);
+			name = "Custom UI";
+			sourceTree = "<group>";
+		};
+		DD2F016013BE3A2200A72513 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,6 +1089,7 @@
 				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DDEEAD84136F7BEC0058BA90 /* User Notification */,
+				DD2F015913BD189600A72513 /* Custom UI */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
@@ -1203,6 +1227,7 @@
 				DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */,
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
+				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1340,6 +1365,7 @@
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
 				DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */,
+				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
