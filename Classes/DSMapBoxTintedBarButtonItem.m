@@ -33,7 +33,7 @@
     [tintedButton.layer setCornerRadius:4.0];
     [tintedButton.layer setMasksToBounds:YES];
     [tintedButton.layer setBorderWidth:1.0];
-    [tintedButton.layer setBorderColor: [[UIColor blackColor] CGColor]];
+    [tintedButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
 
     [tintedButton addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
     
