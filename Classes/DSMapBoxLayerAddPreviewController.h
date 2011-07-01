@@ -13,6 +13,7 @@
 @interface DSMapBoxLayerAddPreviewController : UIViewController
 {
     IBOutlet DSMapView *mapView;
+    IBOutlet UILabel *metadataLabel;
     
     NSDictionary *info;
 }
