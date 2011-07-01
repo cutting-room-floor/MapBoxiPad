@@ -12,6 +12,7 @@
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
@@ -70,10 +71,9 @@
 
 - (IBAction)tappedEditButton:(id)sender
 {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" 
-                                                                               style:UIBarButtonItemStyleDone
-                                                                              target:self
-                                                                              action:@selector(tappedDoneButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                          target:self
+                                                                                          action:@selector(tappedDoneButton:)] autorelease];
 
     self.tableView.editing = YES;
 }

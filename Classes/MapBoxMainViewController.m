@@ -18,6 +18,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -535,10 +536,10 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     }
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
-    helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                         style:UIBarButtonItemStyleDone
-                                                                                        target:helpController
-                                                                                        action:@selector(tappedHelpDoneButton:)] autorelease];
+    
+    helpController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                                    target:helpController
+                                                                                                    action:@selector(tappedHelpDoneButton:)] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     
@@ -804,10 +805,9 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                                                             target:self
                                                                                             action:@selector(dismissModalViewControllerAnimated:)] autorelease];
         
-        saveController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Save" 
-                                                                                             style:UIBarButtonItemStyleDone 
-                                                                                            target:self
-                                                                                            action:@selector(saveState:)] autorelease];
+        saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
+                                                                                                        target:self
+                                                                                                        action:@selector(saveState:)] autorelease];
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
 

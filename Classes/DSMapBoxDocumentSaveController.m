@@ -17,6 +17,8 @@
 {
     [super viewDidLoad];
     
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
     snapshotView.image = self.snapshot;
     nameTextField.text = self.name;
     

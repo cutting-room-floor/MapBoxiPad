@@ -21,6 +21,8 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    
     self.helpTableView.backgroundView  = nil;
     self.helpTableView.tableFooterView = versionInfoLabel;
     self.versionInfoLabel.text = [NSString stringWithFormat:@"%@ %@.%@", 
@@ -94,7 +96,13 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:HelpCellIdentifier];
     
     if ( ! cell)
+    {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HelpCellIdentifier] autorelease];
+        
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+        cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+    }
     
     switch (indexPath.row)
     {
@@ -110,8 +118,6 @@
             cell.textLabel.text = [NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]];
             break;
     }
-    
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     
     return cell;
 }
