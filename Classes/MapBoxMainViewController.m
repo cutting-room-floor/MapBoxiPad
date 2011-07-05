@@ -888,9 +888,9 @@
     CGPoint startPoint = aView.center;
     CGPoint endPoint;
     
-    for (id button in toolbar.subviews)
-        if ([[button valueForKeyPath:@"title"] isEqualToString:layersButton.title])
-            endPoint = ((UIView *)button).center;
+    for (UIBarButtonItem *item in toolbar.items)
+        if (item.action == @selector(tappedLayersButton:))
+            endPoint = [[[item valueForKeyPath:@"view"] valueForKeyPath:@"center"] CGPointValue];
     
     CGPoint controlPoint = CGPointMake(startPoint.x, startPoint.y + 100);
     
