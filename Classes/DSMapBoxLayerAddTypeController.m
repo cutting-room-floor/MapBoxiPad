@@ -9,6 +9,7 @@
 #import "DSMapBoxLayerAddTypeController.h"
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
+#import "DSMapBoxAlphaModalManager.h"
 
 #import "MapBoxConstants.h"
 
@@ -22,13 +23,16 @@
     
     self.navigationItem.title = @"Server Details";
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                           target:self.parentViewController
+                                                                                           target:[DSMapBoxAlphaModalManager defaultManager]
                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse Server"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
+    
+    entryField.borderStyle = UITextBorderStyleNone;
+    entryField.background = [UIImage imageNamed:@"black_textfield.png"];
     
     receivedData = [[NSMutableData data] retain];
 }
@@ -58,7 +62,16 @@
     
     [recentServersTableView reloadData];
     
-    [entryField becomeFirstResponder];
+    // TODO: this is because we're in a custom modal & keyboard comes up too fast
+    //
+    [entryField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.1];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    
+    [entryField resignFirstResponder];
 }
 
 - (void)dealloc
@@ -176,6 +189,7 @@
     {
         [UIView beginAnimations:nil context:nil];
 
+        recentServersLabel.hidden = NO;
         recentServersTableView.hidden = NO;
         
         [UIView commitAnimations];

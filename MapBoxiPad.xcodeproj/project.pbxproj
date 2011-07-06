@@ -72,7 +72,6 @@
 		DD274EFF13842622007B58AC /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = DD274EFE13842622007B58AC /* iCarousel.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
-		DD2754C913856838007B58AC /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754C813856838007B58AC /* check.png */; };
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
@@ -158,6 +157,8 @@
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
+		DDE8454213C3DF57004108C4 /* black_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE8454113C3DF57004108C4 /* black_textfield.png */; };
+		DDE8454813C4DEEB004108C4 /* DSMapBoxAlphaModalManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE8454713C4DEEA004108C4 /* DSMapBoxAlphaModalManager.m */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEACF1136F53CC0058BA90 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACF0136F53CC0058BA90 /* linen.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
@@ -324,7 +325,6 @@
 		DD27509E13844560007B58AC /* DSMapBoxLayerAddPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddPreviewController.h; sourceTree = "<group>"; };
 		DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddPreviewController.m; sourceTree = "<group>"; };
 		DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddPreviewController.xib; sourceTree = "<group>"; };
-		DD2754C813856838007B58AC /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = SOURCE_ROOT; };
 		DD2754CA1385683D007B58AC /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = SOURCE_ROOT; };
 		DD2755DF1385AD86007B58AC /* DSMapBoxLegacyMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegacyMigrationManager.h; sourceTree = "<group>"; };
 		DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegacyMigrationManager.m; sourceTree = "<group>"; };
@@ -452,6 +452,9 @@
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
+		DDE8454113C3DF57004108C4 /* black_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_textfield.png; sourceTree = SOURCE_ROOT; };
+		DDE8454613C4DEEA004108C4 /* DSMapBoxAlphaModalManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalManager.h; sourceTree = "<group>"; };
+		DDE8454713C4DEEA004108C4 /* DSMapBoxAlphaModalManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalManager.m; sourceTree = "<group>"; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEACF0136F53CC0058BA90 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
@@ -739,7 +742,6 @@
 		DD2754D613856855007B58AC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DD2754C813856838007B58AC /* check.png */,
 				DD2754CA1385683D007B58AC /* placeholder.png */,
 				DD2F015013BC59A700A72513 /* corner_fold.png */,
 			);
@@ -767,6 +769,8 @@
 		DD2F015913BD189600A72513 /* Custom UI */ = {
 			isa = PBXGroup;
 			children = (
+				DDE8454613C4DEEA004108C4 /* DSMapBoxAlphaModalManager.h */,
+				DDE8454713C4DEEA004108C4 /* DSMapBoxAlphaModalManager.m */,
 				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
 				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
 				DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */,
@@ -781,6 +785,7 @@
 			children = (
 				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
 				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
+				DDE8454113C3DF57004108C4 /* black_textfield.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1275,7 +1280,6 @@
 				DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */,
 				DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */,
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,
-				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
 				DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */,
 				DDA3E90113B03A26004D861C /* osm_layer.png in Resources */,
@@ -1290,6 +1294,7 @@
 				DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */,
 				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
 				DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */,
+				DDE8454213C3DF57004108C4 /* black_textfield.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1430,6 +1435,7 @@
 				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
 				DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */,
+				DDE8454813C4DEEB004108C4 /* DSMapBoxAlphaModalManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

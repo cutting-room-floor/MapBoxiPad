@@ -12,7 +12,10 @@
 
 - (void)viewDidLoad
 {
-    self.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationBar.barStyle = UIBarStyleBlack;
+    self.navigationBar.translucent = YES;
+    
+    self.view.backgroundColor    = [UIColor clearColor];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
