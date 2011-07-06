@@ -33,24 +33,41 @@ static DSMapBoxAlphaModalManager *defaultManager;
 {
     // set to form sheet size
     //
-    modalViewController.view.frame = CGRectMake(0, 0, 540, 620);
+    modalViewController.view.frame = CGRectMake(5, 5, 540, 620);
     
-    // create modal window
+    // create modal window (larger than view for donut-shaped shadow)
     //
-    modalWindow = [[DSFingerTipWindow alloc] initWithFrame:modalViewController.view.frame];
-    
-    modalWindow.layer.cornerRadius = 5.0;
-    modalWindow.clipsToBounds = YES;
-    
-    // TODO: custom shadow path that hollows out interior to avoid darkening alpha
-    //
-    // modalWindow.layer.shadowOpacity = 0.5;
-    // modalWindow.layer.shadowRadius  = 20.0;
-    // modalWindow.layer.shadowOffset  = CGSizeMake(0, 0);
-    
+    CGRect windowRect = CGRectMake(0, 0, modalViewController.view.bounds.size.width + 10, modalViewController.view.bounds.size.height + 10);
+    modalWindow = [[DSFingerTipWindow alloc] initWithFrame:windowRect];
     modalWindow.rootViewController = modalViewController;
-    
     [modalWindow addSubview:modalViewController.view];
+    
+    // round-rect the modal view
+    //
+    modalViewController.view.layer.cornerRadius = 5.0;
+    modalViewController.view.clipsToBounds = YES;
+    
+    // add donut-shaped shadow to window
+    //
+    modalWindow.layer.shadowOpacity = 0.5;
+    modalWindow.layer.shadowRadius  = 5.0;
+    modalWindow.layer.shadowOffset  = CGSizeMake(0, 1);
+    
+    UIBezierPath *shadowPath = [UIBezierPath bezierPath];
+    
+    [shadowPath moveToPoint:CGPointMake(0, 0)];
+    [shadowPath addLineToPoint:CGPointMake(modalWindow.bounds.size.width, 0)];
+    [shadowPath addLineToPoint:CGPointMake(modalWindow.bounds.size.width, modalWindow.bounds.size.height)];
+    [shadowPath addLineToPoint:CGPointMake(0, modalWindow.bounds.size.height)];
+    [shadowPath closePath];
+    
+    [shadowPath moveToPoint:CGPointMake(2, 2)];
+    [shadowPath addLineToPoint:CGPointMake(2, modalWindow.bounds.size.height - 4)];
+    [shadowPath addLineToPoint:CGPointMake(modalWindow.bounds.size.width - 4, modalWindow.bounds.size.height - 4)];
+    [shadowPath addLineToPoint:CGPointMake(modalWindow.bounds.size.width - 4, 2)];
+    [shadowPath closePath];
+    
+    modalWindow.layer.shadowPath = [shadowPath CGPath];
     
     // create shield window
     //
