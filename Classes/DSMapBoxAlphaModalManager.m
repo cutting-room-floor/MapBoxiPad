@@ -96,7 +96,7 @@ static DSMapBoxAlphaModalManager *defaultManager;
     {
         CGPoint destinationPoint = modalWindow.center;
         CGPoint offScreenCenter  = CGPointMake([UIScreen mainScreen].bounds.size.width / 2.0, [UIScreen mainScreen].bounds.size.height * 1.5);
-        modalWindow.center      = offScreenCenter;
+        modalWindow.center       = offScreenCenter;
         
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.75];
@@ -120,18 +120,18 @@ static DSMapBoxAlphaModalManager *defaultManager;
         
         [UIView animateWithDuration:0.75
                          animations:^(void)
-         {
-             modalWindow.center = destinationPoint;
-             shieldWindow.alpha = 0.0;
-         }
+                         {
+                             modalWindow.center = destinationPoint;
+                             shieldWindow.alpha = 0.0;
+                         }
                          completion:^(BOOL finished)
-         {
-             [modalWindow  removeFromSuperview];
-             [shieldWindow removeFromSuperview];
-             
-             [modalWindow  release];
-             [shieldWindow release];
-         }];
+                         {
+                             [modalWindow  removeFromSuperview];
+                             [shieldWindow removeFromSuperview];
+                             
+                             [modalWindow  release];
+                             [shieldWindow release];
+                         }];
     }
     else
     {
