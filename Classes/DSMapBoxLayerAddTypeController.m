@@ -15,6 +15,17 @@
 
 #import "JSONKit.h"
 
+#import <QuartzCore/QuartzCore.h>
+
+@interface DSMapBoxLayerAddTypeController (DSMapBoxLayerAddTypeControllerPrivate)
+
+- (void)setRecentServersHidden:(BOOL)flag;
+- (void)reloadRecents;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerAddTypeController
 
 - (void)viewDidLoad
@@ -31,6 +42,12 @@
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
     
+    // table styling, including selection background clipping
+    //
+    recentServersTableView.layer.cornerRadius = 10.0;
+    recentServersTableView.clipsToBounds      = YES;
+    recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
+    
     receivedData = [[NSMutableData data] retain];
 }
 
@@ -45,19 +62,14 @@
     successImage.hidden = YES;
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
-    {
-        recentServersTableView.hidden = NO;
-        recentServersLabel.hidden = NO;
-    }
-    else
-    {
-        recentServersTableView.hidden = YES;
-        recentServersLabel.hidden = YES;
-    }
+        [self setRecentServersHidden:NO];
     
+    else
+        [self setRecentServersHidden:YES];
+        
     entryField.text = @"";
     
-    [recentServersTableView reloadData];
+    [self reloadRecents];
     
     // TODO: this is because we're in a custom modal & keyboard comes up too fast
     //
@@ -86,6 +98,27 @@
 
 
 #pragma mark -
+
+- (void)setRecentServersHidden:(BOOL)flag
+{
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:0.5];
+    
+    recentServersLabel.hidden = flag;
+    recentServersTableView.hidden = flag;
+    
+    [UIView commitAnimations];
+}
+
+- (void)reloadRecents
+{
+    [recentServersTableView reloadData];
+    
+    recentServersTableView.frame = CGRectMake(recentServersTableView.frame.origin.x,
+                                              recentServersTableView.frame.origin.y,
+                                              recentServersTableView.frame.size.width,
+                                              [recentServersTableView numberOfRowsInSection:0] * [recentServersTableView rowHeight] - 1);
+}
 
 - (void)validateEntry
 {
@@ -148,17 +181,7 @@
         [validationConnection release];
         validationConnection = nil;
     }
-    
-    [UIView beginAnimations:nil context:nil];
-    
-    if ([textField.text length])
-        recentServersTableView.hidden = YES;
-    
-    else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
-        recentServersTableView.hidden = NO;
 
-    [UIView commitAnimations];
-    
     [spinner startAnimating];
     
     successImage.hidden = YES;
@@ -180,21 +203,6 @@
     return NO;
 }
 
-- (BOOL)textFieldShouldClear:(UITextField *)textField
-{
-    if (recentServersTableView.hidden && [[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
-    {
-        [UIView beginAnimations:nil context:nil];
-
-        recentServersLabel.hidden = NO;
-        recentServersTableView.hidden = NO;
-        
-        [UIView commitAnimations];
-    }
-    
-    return YES;
-}
-
 #pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
@@ -206,7 +214,7 @@
 {
     [spinner startAnimating];
     
-    [receivedData setData:[NSData data]];    
+    [receivedData setData:[NSData data]];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -250,11 +258,22 @@
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier] autorelease];
         
+        // white chevron, unlike black default
+        //
+        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]] autorelease];
+        
+        // background view for color highlighting
+        //
         cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
         cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+        
+        // normal text & background colors
+        //
         cell.backgroundColor     = [UIColor blackColor];
         cell.textLabel.textColor = [UIColor whiteColor];
         
+        // cell font
+        //
         cell.textLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     }
     
@@ -270,24 +289,23 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    
-    NSMutableArray *recents = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"recentServers"]];
-    
-    [recents removeObjectAtIndex:indexPath.row];
-    
-    [defaults setObject:recents forKey:@"recentServers"];
-    [defaults synchronize];
-    
-    [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
-    
-    if ([recents count] == 0)
+    if (editingStyle == UITableViewCellEditingStyleDelete)
     {
-        [UIView beginAnimations:nil context:nil];
-
-        tableView.hidden = YES;
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         
-        [UIView commitAnimations];
+        NSMutableArray *recents = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"recentServers"]];
+        
+        [recents removeObjectAtIndex:indexPath.row];
+        
+        [defaults setObject:recents forKey:@"recentServers"];
+        [defaults synchronize];
+        
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+        
+        [self reloadRecents];
+        
+        if ([recents count] == 0)
+            [self setRecentServersHidden:YES];
     }
 }
 

@@ -47,7 +47,7 @@
 					<object class="IBUITableView" id="664041601">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">293</int>
-						<string key="NSFrame">{{75, 302}, {450, 137}}</string>
+						<string key="NSFrame">{{75, 305}, {450, 131}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView"/>
@@ -213,7 +213,6 @@
 									<int key="IBUIReturnKeyType">9</int>
 									<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 								</object>
-								<int key="IBUIClearButtonMode">1</int>
 								<reference key="IBUIFontDescription" ref="31403650"/>
 								<reference key="IBUIFont" ref="555509016"/>
 							</object>
@@ -374,21 +373,16 @@
 						<object class="NSMutableArray" key="children">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<reference ref="631089145"/>
-							<reference ref="664041601"/>
 							<reference ref="856090626"/>
 							<reference ref="807073565"/>
 							<reference ref="679222116"/>
+							<reference ref="664041601"/>
 						</object>
 						<reference key="parent" ref="0"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">10</int>
 						<reference key="object" ref="631089145"/>
-						<reference key="parent" ref="766721923"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">24</int>
-						<reference key="object" ref="664041601"/>
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -432,6 +426,12 @@
 						<int key="objectID">12</int>
 						<reference key="object" ref="685570437"/>
 						<reference key="parent" ref="679222116"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">24</int>
+						<reference key="object" ref="664041601"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Table View</string>
 					</object>
 				</object>
 			</object>
@@ -484,7 +484,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">37</int>
+			<int key="maxID">38</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
