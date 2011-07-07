@@ -16,9 +16,6 @@
 
 - (void)viewDidLoad
 {
-    self.navigationBar.barStyle = UIBarStyleBlack;
-    self.navigationBar.translucent = YES;
-    
     backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     
     // poor man's blur
@@ -33,6 +30,9 @@
 {
     [super viewWillAppear:animated];
     
+    self.navigationBar.barStyle    = UIBarStyleBlack;
+    self.navigationBar.translucent = YES;
+
     self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 
     backgroundImageView.frame = self.view.bounds;

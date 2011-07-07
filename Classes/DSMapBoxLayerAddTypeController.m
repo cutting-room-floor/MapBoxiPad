@@ -267,8 +267,8 @@
         // normal text & background colors
         //
         cell.backgroundColor     = [UIColor blackColor];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        
+        cell.textLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.75];
+    
         // cell font
         //
         cell.textLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];

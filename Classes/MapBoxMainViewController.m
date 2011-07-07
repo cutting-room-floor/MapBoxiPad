@@ -563,7 +563,7 @@
     
     DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController] autorelease];
     
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
     {
@@ -578,6 +578,8 @@
                                                                                                     action:@selector(tappedHelpDoneButton:)] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    [self prepareNavigationControllerForAlphaModal:wrapper];
     
     [self presentModalViewController:wrapper animated:YES];
 }
