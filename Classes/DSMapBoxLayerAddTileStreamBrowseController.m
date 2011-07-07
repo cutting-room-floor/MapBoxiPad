@@ -201,7 +201,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         helpLabel.hidden       = NO;
         tileScrollView.hidden  = NO;
-        tilePageControl.hidden = NO;
+        
+        if ([newLayers count] > 9)
+            tilePageControl.hidden = NO;
         
         NSMutableArray *imagesToDownload = [NSMutableArray array];
         
