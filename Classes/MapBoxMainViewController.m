@@ -22,7 +22,6 @@
 #import "DSMapBoxLayerAddNavigationController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
-#import "DSMapBoxAlphaModalManager.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -1212,7 +1211,12 @@
     DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
     DSMapBoxLayerAddNavigationController *wrapper  = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:typeController] autorelease];
     
-    [[DSMapBoxAlphaModalManager defaultManager] presentModalViewController:wrapper overView:self.view animated:YES];
+    wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
+
+    [self prepareNavigationControllerForAlphaModal:wrapper];
+
+    [self presentModalViewController:wrapper animated:YES];
 }
 
 @end

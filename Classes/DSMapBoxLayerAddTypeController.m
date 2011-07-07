@@ -9,7 +9,6 @@
 #import "DSMapBoxLayerAddTypeController.h"
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
-#import "DSMapBoxAlphaModalManager.h"
 
 #import "MapBoxConstants.h"
 
@@ -34,7 +33,7 @@
     
     self.navigationItem.title = @"Server Details";
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                           target:[DSMapBoxAlphaModalManager defaultManager]
+                                                                                           target:self.parentViewController
                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse Server"
@@ -71,9 +70,7 @@
     
     [self reloadRecents];
     
-    // TODO: this is because we're in a custom modal & keyboard comes up too fast
-    //
-    [entryField performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.1];
+    [entryField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
