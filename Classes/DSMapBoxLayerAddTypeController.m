@@ -41,6 +41,12 @@
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
     
+    // text field styling
+    //
+    entryField.superview.backgroundColor    = [UIColor blackColor];
+    entryField.superview.layer.cornerRadius = 10.0;
+    entryField.superview.clipsToBounds      = YES;
+    
     // table styling, including selection background clipping
     //
     recentServersTableView.layer.cornerRadius = 10.0;

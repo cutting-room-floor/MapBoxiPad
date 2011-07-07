@@ -159,7 +159,6 @@
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
-		DDE8454213C3DF57004108C4 /* black_textfield.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE8454113C3DF57004108C4 /* black_textfield.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEACF1136F53CC0058BA90 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACF0136F53CC0058BA90 /* linen.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
@@ -455,7 +454,6 @@
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
-		DDE8454113C3DF57004108C4 /* black_textfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_textfield.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEACF0136F53CC0058BA90 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
@@ -788,7 +786,6 @@
 			children = (
 				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
 				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
-				DDE8454113C3DF57004108C4 /* black_textfield.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1294,7 +1291,6 @@
 				DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */,
 				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
 				DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */,
-				DDE8454213C3DF57004108C4 /* black_textfield.png in Resources */,
 				DD3E66B213C5337300D09B4B /* check.png in Resources */,
 				DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */,
 				DD3E66B613C53BA100D09B4B /* chevron.png in Resources */,
