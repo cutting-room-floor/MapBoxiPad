@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DSMapBoxLayerAddNavigationController : UINavigationController
+@interface DSMapBoxAlphaModalNavigationController : UINavigationController
 {
     UIImageView *backgroundImageView;
     UIImage *backgroundImage;
@@ -22,6 +22,6 @@
 
 @interface UIViewController (UIViewController_CustomUIAdditions)
 
-- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxLayerAddNavigationController *)navigationController;
+- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxAlphaModalNavigationController *)navigationController;
 
 @end

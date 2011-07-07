@@ -6,11 +6,11 @@
 //  Copyright 2011 Code Sorcery Workshop. All rights reserved.
 //
 
-#import "DSMapBoxLayerAddNavigationController.h"
+#import "DSMapBoxAlphaModalNavigationController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-@implementation DSMapBoxLayerAddNavigationController
+@implementation DSMapBoxAlphaModalNavigationController
 
 @synthesize backgroundImage;
 
@@ -84,7 +84,7 @@
 
 @implementation UIViewController (UIViewController_CustomUIAdditions)
 
-- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxLayerAddNavigationController *)navigationController
+- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxAlphaModalNavigationController *)navigationController
 {
     if (navigationController.modalPresentationStyle == UIModalPresentationFormSheet)
     {

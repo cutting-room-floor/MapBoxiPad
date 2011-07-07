@@ -12,7 +12,7 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 #import "DSMapBoxLayerAddPreviewController.h"
-#import "DSMapBoxLayerAddNavigationController.h"
+#import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
 #import "JSONKit.h"
@@ -150,7 +150,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                        [layer objectForKey:@"type"], @"type",
                        nil];
     
-    DSMapBoxLayerAddNavigationController *wrapper = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:preview] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview] autorelease];
     
     wrapper.navigationBar.translucent = YES;
     

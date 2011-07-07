@@ -19,7 +19,7 @@
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxLayerAddTypeController.h"
-#import "DSMapBoxLayerAddNavigationController.h"
+#import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
@@ -1209,7 +1209,7 @@
     [self tappedLayersButton:self];
 
     DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
-    DSMapBoxLayerAddNavigationController *wrapper  = [[[DSMapBoxLayerAddNavigationController alloc] initWithRootViewController:typeController] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper  = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:typeController] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

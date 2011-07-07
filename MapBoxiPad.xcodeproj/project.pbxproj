@@ -164,7 +164,7 @@
 		DDEEACF1136F53CC0058BA90 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACF0136F53CC0058BA90 /* linen.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
 		DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */; };
-		DDEF8FF413831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */; };
+		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
 		DDEF901313831DA800FF148C /* DSMapBoxLayerAddTypeController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */; };
 		DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */; };
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
@@ -462,8 +462,8 @@
 		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationView.m; sourceTree = "<group>"; };
 		DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileStreamSource.h; sourceTree = "<group>"; };
 		DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMTileStreamSource.m; sourceTree = "<group>"; };
-		DDEF8FF113831B1A00FF148C /* DSMapBoxLayerAddNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddNavigationController.h; sourceTree = "<group>"; };
-		DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddNavigationController.m; sourceTree = "<group>"; };
+		DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalNavigationController.h; sourceTree = "<group>"; };
+		DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalNavigationController.m; sourceTree = "<group>"; };
 		DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTypeController.h; sourceTree = "<group>"; };
 		DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTypeController.m; sourceTree = "<group>"; };
 		DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTypeController.xib; sourceTree = "<group>"; };
@@ -772,6 +772,8 @@
 		DD2F015913BD189600A72513 /* Custom UI */ = {
 			isa = PBXGroup;
 			children = (
+				DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */,
+				DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */,
 				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
 				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
 				DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */,
@@ -1139,8 +1141,6 @@
 		DDEF900F13831D7A00FF148C /* Layer Addition */ = {
 			isa = PBXGroup;
 			children = (
-				DDEF8FF113831B1A00FF148C /* DSMapBoxLayerAddNavigationController.h */,
-				DDEF8FF213831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m */,
 				DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */,
 				DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */,
 				DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */,
@@ -1426,7 +1426,7 @@
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
 				DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */,
 				DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */,
-				DDEF8FF413831B1A00FF148C /* DSMapBoxLayerAddNavigationController.m in Sources */,
+				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
 				DDEF901313831DA800FF148C /* DSMapBoxLayerAddTypeController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
 				DD274EFF13842622007B58AC /* iCarousel.m in Sources */,
