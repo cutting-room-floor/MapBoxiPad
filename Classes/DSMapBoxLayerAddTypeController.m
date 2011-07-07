@@ -31,9 +31,6 @@
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
     
-    entryField.borderStyle = UITextBorderStyleNone;
-    entryField.background = [UIImage imageNamed:@"black_textfield.png"];
-    
     receivedData = [[NSMutableData data] retain];
 }
 
