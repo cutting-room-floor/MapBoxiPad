@@ -72,7 +72,6 @@
 		DD274EFF13842622007B58AC /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = DD274EFE13842622007B58AC /* iCarousel.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
-		DD2754C913856838007B58AC /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754C813856838007B58AC /* check.png */; };
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
@@ -324,7 +323,6 @@
 		DD27509E13844560007B58AC /* DSMapBoxLayerAddPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddPreviewController.h; sourceTree = "<group>"; };
 		DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddPreviewController.m; sourceTree = "<group>"; };
 		DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddPreviewController.xib; sourceTree = "<group>"; };
-		DD2754C813856838007B58AC /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = SOURCE_ROOT; };
 		DD2754CA1385683D007B58AC /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = SOURCE_ROOT; };
 		DD2755DF1385AD86007B58AC /* DSMapBoxLegacyMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegacyMigrationManager.h; sourceTree = "<group>"; };
 		DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegacyMigrationManager.m; sourceTree = "<group>"; };
@@ -739,7 +737,6 @@
 		DD2754D613856855007B58AC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DD2754C813856838007B58AC /* check.png */,
 				DD2754CA1385683D007B58AC /* placeholder.png */,
 				DD2F015013BC59A700A72513 /* corner_fold.png */,
 			);
@@ -1275,7 +1272,6 @@
 				DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */,
 				DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */,
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,
-				DD2754C913856838007B58AC /* check.png in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
 				DDA3E90013B03A26004D861C /* tilestream_layer.png in Resources */,
 				DDA3E90113B03A26004D861C /* osm_layer.png in Resources */,

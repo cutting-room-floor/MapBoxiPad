@@ -10,6 +10,18 @@
 
 @interface DSMapBoxLayerAddNavigationController : UINavigationController
 {
+    UIImageView *backgroundImageView;
+    UIImage *backgroundImage;
 }
+
+@property (nonatomic, retain) UIImage *backgroundImage;
+
+@end
+
+#pragma mark -
+
+@interface UIViewController (UIViewController_CustomUIAdditions)
+
+- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxLayerAddNavigationController *)navigationController;
 
 @end

@@ -1213,7 +1213,9 @@
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
-    
+
+    [self prepareNavigationControllerForAlphaModal:wrapper];
+
     [self presentModalViewController:wrapper animated:YES];
 }
 
