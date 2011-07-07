@@ -75,7 +75,6 @@
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
-		DD2F015113BC59A700A72513 /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015013BC59A700A72513 /* corner_fold.png */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
@@ -84,6 +83,8 @@
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
+		DD3E66B213C5337300D09B4B /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B113C5337300D09B4B /* check.png */; };
+		DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B313C5339300D09B4B /* corner_fold.png */; };
 		DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
@@ -330,7 +331,6 @@
 		DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegacyMigrationManager.m; sourceTree = "<group>"; };
 		DD28C08013B263A6008BED70 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Externals/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		DD28C08113B263A6008BED70 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Externals/JSONKit/JSONKit.m; sourceTree = "<group>"; };
-		DD2F015013BC59A700A72513 /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
 		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
@@ -342,6 +342,8 @@
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
 		DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait.png"; sourceTree = "<group>"; };
+		DD3E66B113C5337300D09B4B /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = SOURCE_ROOT; };
+		DD3E66B313C5339300D09B4B /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = SOURCE_ROOT; };
 		DD41AE0113B2B33500AE338E /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
 		DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMInteractiveSource.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
@@ -743,7 +745,8 @@
 			isa = PBXGroup;
 			children = (
 				DD2754CA1385683D007B58AC /* placeholder.png */,
-				DD2F015013BC59A700A72513 /* corner_fold.png */,
+				DD3E66B313C5339300D09B4B /* corner_fold.png */,
+				DD3E66B113C5337300D09B4B /* check.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1287,7 +1290,6 @@
 				DDA3E90313B03A26004D861C /* kml_layer.png in Resources */,
 				DDA3E90413B03A26004D861C /* georss_layer.png in Resources */,
 				DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */,
-				DD2F015113BC59A700A72513 /* corner_fold.png in Resources */,
 				DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */,
 				DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */,
 				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
@@ -1295,6 +1297,8 @@
 				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
 				DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */,
 				DDE8454213C3DF57004108C4 /* black_textfield.png in Resources */,
+				DD3E66B213C5337300D09B4B /* check.png in Resources */,
+				DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
