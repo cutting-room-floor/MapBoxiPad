@@ -45,7 +45,7 @@
 
     [spinner stopAnimating];
     
-    successImageButton.hidden = YES;
+    successImage.hidden = YES;
 
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
     {
@@ -164,7 +164,7 @@
     
     [spinner startAnimating];
     
-    successImageButton.hidden = YES;
+    successImage.hidden = YES;
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -225,7 +225,7 @@
 
     if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
     {
-        successImageButton.hidden = NO;
+        successImage.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }

@@ -12,7 +12,7 @@
 {
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet UIButton *successImageButton;
+    IBOutlet UIImageView *successImage;
     IBOutlet UILabel *recentServersLabel;
     IBOutlet UITableView *recentServersTableView;
     NSURLConnection *validationConnection;
