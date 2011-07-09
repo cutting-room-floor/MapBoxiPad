@@ -18,9 +18,11 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
+#import "DSSound.h"
 
 #import "SimpleKML.h"
 
@@ -30,17 +32,16 @@
 
 #import "TouchXML.h"
 
-#import <AudioToolbox/AudioToolbox.h>
 #import <QuartzCore/QuartzCore.h>
 
 #import "Reachability.h"
 
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
-void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData);
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
+- (void)setClusteringOn:(BOOL)clusteringOn;
 
 @end
 
@@ -165,13 +166,13 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         }
     }
     
-    // set clustering button title
+    // set clustering button state
     //
     if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
-        clusteringButton.title = @"Turn Clustering Off";
+        [self setClusteringOn:YES];
 
     else
-        clusteringButton.title = @"Turn Clustering On";
+        [self setClusteringOn:NO];
 
     [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
     [[NSUserDefaults standardUserDefaults] synchronize];
@@ -253,7 +254,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
         if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
             mapView.contents.mapCenter = mapCenter;
         
-        if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kMBTilesDefaultMaxTileZoom)
+        if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kUpperZoomBounds)
             mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
         
         NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
@@ -509,11 +510,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
     
-    if (markerManager.clusteringEnabled)
-        clusteringButton.title = @"Turn Clustering Off";
-    
-    else
-        clusteringButton.title = @"Turn Clustering On";
+    [self setClusteringOn:markerManager.clusteringEnabled];
 }
 
 - (IBAction)tappedHelpButton:(id)sender
@@ -535,14 +532,37 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     }
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
-    helpController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                         style:UIBarButtonItemStyleDone
-                                                                                        target:helpController
-                                                                                        action:@selector(tappedHelpDoneButton:)] autorelease];
+    
+    helpController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                                    target:helpController
+                                                                                                    action:@selector(tappedHelpDoneButton:)] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     
     [self presentModalViewController:wrapper animated:YES];
+}
+
+- (void)setClusteringOn:(BOOL)clusteringOn
+{
+    UIButton *button;
+
+    if ( ! clusteringButton.customView)
+    {
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [button addTarget:self action:@selector(tappedClusteringButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        clusteringButton.customView = button;
+    }
+    
+    else
+        button = ((UIButton *)clusteringButton.customView);
+
+    UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
+
+    button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+
+    [button setImage:stateImage forState:UIControlStateNormal];
 }
 
 #pragma mark -
@@ -627,11 +647,7 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {
         // start up page turn sound effect
         //
-        NSURL *soundURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"page_flip" ofType:@"wav"]];
-        SystemSoundID sound;
-        AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
-        AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, MapBoxMainViewController_SoundCompletionProc, self);
-        AudioServicesPlaySystemSound(sound);
+        [DSSound playSoundNamed:@"page_flip.wav"];
         
         // animate swap from old snapshot to new map
         //
@@ -654,11 +670,6 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
     {        
         attributionLabel.hidden = YES;
     }
-}
-
-void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *clientData)
-{
-    AudioServicesDisposeSystemSoundID(sound);
 }
 
 - (void)reachabilityDidChange:(NSNotification *)notification
@@ -804,10 +815,9 @@ void MapBoxMainViewController_SoundCompletionProc (SystemSoundID sound, void *cl
                                                                                             target:self
                                                                                             action:@selector(dismissModalViewControllerAnimated:)] autorelease];
         
-        saveController.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Save" 
-                                                                                             style:UIBarButtonItemStyleDone 
-                                                                                            target:self
-                                                                                            action:@selector(saveState:)] autorelease];
+        saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
+                                                                                                        target:self
+                                                                                                        action:@selector(saveState:)] autorelease];
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
 

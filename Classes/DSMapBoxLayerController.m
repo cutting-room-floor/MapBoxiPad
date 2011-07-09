@@ -12,9 +12,12 @@
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
+
+#import "MapBoxConstants.h"
 
 #import "Reachability.h"
 
@@ -68,10 +71,9 @@
 
 - (IBAction)tappedEditButton:(id)sender
 {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Done" 
-                                                                               style:UIBarButtonItemStyleDone
-                                                                              target:self
-                                                                              action:@selector(tappedDoneButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                          target:self
+                                                                                          action:@selector(tappedDoneButton:)] autorelease];
 
     self.tableView.editing = YES;
 }
@@ -369,6 +371,12 @@
 }
 
 #pragma mark -
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+    cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {

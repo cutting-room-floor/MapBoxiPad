@@ -690,6 +690,22 @@
 
 - (void)mapViewRegionDidChange:(RMMapView *)map
 {
+    //
+    // TODO: debug - remove before shipping
+    //
+    NSPredicate *labelsPredicate = [NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [UILabel class]];
+    
+    if ([[map.superview.subviews filteredArrayUsingPredicate:labelsPredicate] count] != 2)
+        [map.superview addSubview:[[[UILabel alloc] initWithFrame:CGRectMake(10, 54, 300, 20)] autorelease]];
+    
+    UILabel *zoomLabel = [[map.superview.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [UILabel class]]] lastObject];
+    
+    zoomLabel.text = [NSString stringWithFormat:@"Debug zoom: %f", map.contents.zoom];
+    zoomLabel.backgroundColor = [UIColor clearColor];
+    //
+    //
+    //
+
     if (balloon)
     {
         if (lastKnownZoom != map.contents.zoom)
