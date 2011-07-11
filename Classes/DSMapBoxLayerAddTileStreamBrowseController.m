@@ -136,10 +136,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     NSDictionary *layer = [layers objectAtIndex:tileView.tag];
     
     preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                       [layer objectForKey:@"tileScheme"], @"tileScheme",
-                       [layer objectForKey:@"tileHostname"], @"tileHostname", 
-                       [layer objectForKey:@"tilePort"], @"tilePort", 
-                       [layer objectForKey:@"tilePath"], @"tilePath", 
+                       [layer objectForKey:@"tileURL"], @"tileURL",
+                       [layer objectForKey:@"gridURL"], @"gridURL",
+                       [layer objectForKey:@"formatter"], @"formatter",
                        [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                        [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                        [layer objectForKey:@"id"], @"id", 
@@ -230,35 +229,40 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 .y    = tileY,
             };
             
-            NSURL *tileURL;
-            
-            if ([layer objectForKey:@"host"] && [[layer objectForKey:@"host"] isKindOfClass:[NSArray class]])
-                tileURL = [NSURL URLWithString:[[layer objectForKey:@"host"] lastObject]];
-            
-            else
-                tileURL = self.serverURL;
-            
-            if ( ! [[tileURL absoluteString] hasSuffix:@"/"])
-                tileURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/", tileURL]];
-            
-            NSURL *imageURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@1.0.0/%@/%d/%d/%d.png", 
-                                                       tileURL, [layer objectForKey:@"id"], tile.zoom, tile.x, tile.y]];
-            
-            [imagesToDownload addObject:imageURL];
-            
-            // update layer for server-wide variables
-            //
-            [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
-            [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
-            [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-            [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
-            
-            [layer setValue:[tileURL scheme]                                                forKey:@"tileScheme"];
-            [layer setValue:[tileURL host]                                                  forKey:@"tileHostname"];
-            [layer setValue:([tileURL port] ? [tileURL port] : [NSNumber numberWithInt:80]) forKey:@"tilePort"];
-            [layer setValue:([tileURL path] ? [tileURL path] : @"")                         forKey:@"tilePath"];
-            
-            [newLayers replaceObjectAtIndex:i withObject:layer];
+            if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
+            {
+                // TODO: handle missing key
+                //
+                // http://a.tiles.mapbox.com/mapbox/1.0.0/afghanistan-dari/{z}/{x}/{y}.png
+                //
+                NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
+                
+                // update layer for server-wide variables
+                //
+                [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
+                [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
+                [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
+                [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
+
+                if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
+                    [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
+                
+                if ([layer objectForKey:@"formatter"] && [[layer objectForKey:@"formatter"] isKindOfClass:[NSString class]])
+                    [layer setValue:[layer objectForKey:@"formatter"] forKey:@"formatter"];
+                
+                [newLayers replaceObjectAtIndex:i withObject:layer];
+
+                // swap in x/y/z
+                //
+                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
+                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[NSString stringWithFormat:@"%d", tile.x]];
+                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[NSString stringWithFormat:@"%d", tile.y]];
+
+                // queue up center tile download
+                //
+                [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
+            }
         }
         
         [layers release];

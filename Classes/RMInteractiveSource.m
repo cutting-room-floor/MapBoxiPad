@@ -170,76 +170,84 @@
 
 - (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile
 {
-    // flip y value per OSM-style
-    //
-    NSInteger zoom = tile.zoom;
-    NSInteger x    = tile.x;
-    NSInteger y    = tile.y; //pow(2, zoom) - tile.y - 1;
-    
-    NSData *gridData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@%@/1.0.0/%@/%d/%d/%d.grid.json?callback=grid", 
-                                                                              [self.infoDictionary objectForKey:@"tileScheme"],
-                                                                              [self.infoDictionary objectForKey:@"tileHostname"],
-                                                                              [self.infoDictionary objectForKey:@"tilePort"],
-                                                                              [self.infoDictionary objectForKey:@"tilePath"],
-                                                                              [self.infoDictionary objectForKey:@"id"],
-                                                                              zoom, x, y]]];
-    
-    if (gridData)
+    if ([self.infoDictionary objectForKey:@"gridURL"])
     {
+        NSInteger zoom = tile.zoom;
+        NSInteger x    = tile.x;
+        NSInteger y    = tile.y;
         
-        NSMutableString *gridString = [[[NSMutableString alloc] initWithData:gridData encoding:NSUTF8StringEncoding] autorelease];
+        NSString *gridURLString = [self.infoDictionary objectForKey:@"gridURL"];
         
-        // remove JSONP 'grid(' and ');' bits
+        gridURLString = [gridURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[[NSNumber numberWithInteger:zoom] stringValue]];
+        gridURLString = [gridURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[[NSNumber numberWithInteger:x]    stringValue]];
+        gridURLString = [gridURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[[NSNumber numberWithInteger:y]    stringValue]];
+
+        // ensure JSONP format
         //
-        if ([gridString hasPrefix:@"grid("])
-        {
-            [gridString replaceCharactersInRange:NSMakeRange(0, 5)                       withString:@""];
-            [gridString replaceCharactersInRange:NSMakeRange([gridString length] - 2, 2) withString:@""];
-        }
+        if ( ! [gridURLString hasSuffix:@"?callback=grid"])
+            gridURLString = [gridURLString stringByAppendingString:@"?callback=grid"];
+
+        // get the data for this tile
+        //
+        NSData *gridData = [NSData dataWithContentsOfURL:[NSURL URLWithString:gridURLString]];
         
-        id grid = [gridString objectFromJSONString];
-        
-        if (grid && [grid isKindOfClass:[NSDictionary class]])
+        if (gridData)
         {
-            NSArray      *rows = [grid objectForKey:@"grid"];
-            NSArray      *keys = [grid objectForKey:@"keys"];
-            NSDictionary *data = [grid objectForKey:@"data"];
             
-            if (rows && [rows count] > 0)
+            NSMutableString *gridString = [[[NSMutableString alloc] initWithData:gridData encoding:NSUTF8StringEncoding] autorelease];
+            
+            // remove JSONP 'grid(' and ');' bits
+            //
+            if ([gridString hasPrefix:@"grid("])
             {
-                // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
-                //
-                int factor = 256 / [rows count];
-                int row    = point.y / factor;
-                int col    = point.x / factor;
+                [gridString replaceCharactersInRange:NSMakeRange(0, 5)                       withString:@""];
+                [gridString replaceCharactersInRange:NSMakeRange([gridString length] - 2, 2) withString:@""];
+            }
+            
+            id grid = [gridString objectFromJSONString];
+            
+            if (grid && [grid isKindOfClass:[NSDictionary class]])
+            {
+                NSArray      *rows = [grid objectForKey:@"grid"];
+                NSArray      *keys = [grid objectForKey:@"keys"];
+                NSDictionary *data = [grid objectForKey:@"data"];
                 
-                if (row < [rows count])
+                if (rows && [rows count] > 0)
                 {
-                    NSString *line = [rows objectAtIndex:row];
+                    // get grid coordinates per https://github.com/mapbox/mbtiles-spec/blob/master/1.1/utfgrid.md
+                    //
+                    int factor = 256 / [rows count];
+                    int row    = point.y / factor;
+                    int col    = point.x / factor;
                     
-                    if (col < [line length])
+                    if (row < [rows count])
                     {
-                        unichar theChar = [line characterAtIndex:col];
-                        unsigned short decoded = theChar;
+                        NSString *line = [rows objectAtIndex:row];
                         
-                        if (decoded >= 93)
-                            decoded--;
-                        
-                        if (decoded >=35)
-                            decoded--;
-                        
-                        decoded = decoded - 32;
-                        
-                        NSString *keyName = nil;
-                        
-                        if (decoded < [keys count])
-                            keyName = [keys objectAtIndex:decoded];
-                        
-                        if (keyName)
+                        if (col < [line length])
                         {
-                            return [NSDictionary dictionaryWithObjectsAndKeys:keyName,                                  @"keyName",
-                                                                              [[data objectForKey:keyName] JSONString], @"keyJSON",
-                                                                              nil];
+                            unichar theChar = [line characterAtIndex:col];
+                            unsigned short decoded = theChar;
+                            
+                            if (decoded >= 93)
+                                decoded--;
+                            
+                            if (decoded >=35)
+                                decoded--;
+                            
+                            decoded = decoded - 32;
+                            
+                            NSString *keyName = nil;
+                            
+                            if (decoded < [keys count])
+                                keyName = [keys objectAtIndex:decoded];
+                            
+                            if (keyName)
+                            {
+                                return [NSDictionary dictionaryWithObjectsAndKeys:keyName,                                  @"keyName",
+                                                                                  [[data objectForKey:keyName] JSONString], @"keyJSON",
+                                                                                  nil];
+                            }
                         }
                     }
                 }
@@ -252,37 +260,10 @@
 
 - (NSString *)interactivityFormatterJavascript
 {
-    NSString *js = nil;
+    if ([self.infoDictionary objectForKey:@"formatter"])
+        return [self.infoDictionary objectForKey:@"formatter"];
     
-    // specify '?callback=grid' to guarantee JSONP, which we'll parse for
-    // see https://github.com/developmentseed/tilestream-pro/issues/142
-    //
-    NSData *manifestData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@://%@:%@%@/1.0.0/%@/layer.json?callback=grid", 
-                                                                                  [self.infoDictionary objectForKey:@"tileScheme"],
-                                                                                  [self.infoDictionary objectForKey:@"tileHostname"],
-                                                                                  [self.infoDictionary objectForKey:@"tilePort"],
-                                                                                  [self.infoDictionary objectForKey:@"tilePath"],
-                                                                                  [self.infoDictionary objectForKey:@"id"]]]];
-    
-    if (manifestData)
-    {
-        NSMutableString *manifestString = [[[NSMutableString alloc] initWithData:manifestData encoding:NSUTF8StringEncoding] autorelease];
-        
-        // remove JSONP 'grid(' and ');' bits
-        //
-        if ([manifestString hasPrefix:@"grid("])
-        {
-            [manifestString replaceCharactersInRange:NSMakeRange(0, 5)                           withString:@""];
-            [manifestString replaceCharactersInRange:NSMakeRange([manifestString length] - 2, 2) withString:@""];
-        }
-        
-        id manifest = [manifestString objectFromJSONString];
-        
-        if (manifest && [manifest isKindOfClass:[NSDictionary class]])
-            js = [manifest objectForKey:@"formatter"];
-    }
-    
-    return js;
+    return nil;
 }
 
 @end

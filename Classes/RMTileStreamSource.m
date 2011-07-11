@@ -75,13 +75,13 @@
     NSInteger x    = tile.x;
     NSInteger y    = pow(2, zoom) - tile.y - 1;
     
-	return [NSString stringWithFormat:@"%@://%@:%@%@/1.0.0/%@/%d/%d/%d.png", 
-               [self.infoDictionary objectForKey:@"tileScheme"],
-               [self.infoDictionary objectForKey:@"tileHostname"],
-               [self.infoDictionary objectForKey:@"tilePort"],
-               [self.infoDictionary objectForKey:@"tilePath"],
-               [self.infoDictionary objectForKey:@"id"],
-               zoom, x, y];
+    NSString *tileURLString = [self.infoDictionary objectForKey:@"tileURL"];
+    
+    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[[NSNumber numberWithInteger:zoom] stringValue]];
+    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[[NSNumber numberWithInteger:x]    stringValue]];
+    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[[NSNumber numberWithInteger:y]    stringValue]];
+    
+	return tileURLString;
 }
 
 - (float)minZoom
