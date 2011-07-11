@@ -578,9 +578,9 @@
                                                                                                     action:@selector(tappedHelpDoneButton:)] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
     
     [self prepareNavigationControllerForAlphaModal:wrapper];
-    
     [self presentModalViewController:wrapper animated:YES];
 }
 
@@ -1007,6 +1007,7 @@
                                                                                                         action:@selector(saveState:)] autorelease];
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+        wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
 
         [self prepareNavigationControllerForAlphaModal:wrapper];
         [self presentModalViewController:wrapper animated:YES];
@@ -1218,7 +1219,6 @@
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
 
     [self prepareNavigationControllerForAlphaModal:wrapper];
-
     [self presentModalViewController:wrapper animated:YES];
 }
 
