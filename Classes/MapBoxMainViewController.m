@@ -995,7 +995,7 @@
         
         saveController.name = docName;
         
-        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:saveController] autorelease];
+        DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
         
         saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                              style:UIBarButtonItemStylePlain
@@ -1008,6 +1008,7 @@
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
 
+        [self prepareNavigationControllerForAlphaModal:wrapper];
         [self presentModalViewController:wrapper animated:YES];
     }
 }
