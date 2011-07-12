@@ -209,6 +209,53 @@
                     accountView.delegate = self;
                     accountView.tag = index;
                     
+                    if (i == 0)
+                    {
+                        // slide-fade-animate in first page of results
+                        //
+                        CGRect destRect = accountView.frame;
+                        
+                        accountView.frame = CGRectMake(accountView.frame.origin.x - 500, 
+                                                       accountView.frame.origin.y, 
+                                                       accountView.frame.size.width, 
+                                                       accountView.frame.size.height);
+                        
+                        accountView.alpha = 0.0;
+                        
+                        [UIView beginAnimations:nil context:nil];
+                        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                        [UIView setAnimationDuration:0.25];
+                        [UIView setAnimationDelay:(0.05 + index * 0.05)];
+                        
+                        accountView.frame = destRect;
+                        accountView.alpha = 1.0;
+                        
+                        [UIView commitAnimations];
+                        
+                        // bounce-animate first entry (MapBox default)
+                        //
+                        if (index == 0)
+                        {
+                            [UIView animateWithDuration:0.5
+                                                  delay:0.5
+                                                options:UIViewAnimationCurveEaseInOut
+                                             animations:^(void)
+                                             {
+                                                 accountView.transform = CGAffineTransformMakeScale(1.1, 1.1);
+                                             }
+                                             completion:^(BOOL finished)
+                                             {
+                                                 [UIView beginAnimations:nil context:nil];
+                                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                                                 [UIView setAnimationDuration:0.5];
+                                                 
+                                                 accountView.transform = CGAffineTransformScale(accountView.transform, 1 / 1.1, 1 / 1.1);
+                                                 
+                                                 [UIView commitAnimations];
+                                             }];
+                        }
+                    }
+                    
                     [containerView addSubview:accountView];
                 }
             }
