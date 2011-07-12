@@ -142,6 +142,10 @@
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
 		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
+		DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */; };
+		DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */; };
+		DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390C13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.m */; };
+		DDB8390F13CBC05F00D6A034 /* corner_fold_preview.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB8390E13CBC05E00D6A034 /* corner_fold_preview.png */; };
 		DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */; };
 		DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA88E41210E77F00E5B572 /* DSMapBoxDocumentLoadController.m */; };
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
@@ -430,6 +434,12 @@
 		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
 		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
 		DDB23A7D13BE86970090FEC6 /* plus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_button.png; sourceTree = SOURCE_ROOT; };
+		DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamAlbumController.m; sourceTree = "<group>"; };
+		DDB8390713CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileStreamAlbumController.h; sourceTree = "<group>"; };
+		DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamAlbumController.xib; sourceTree = "<group>"; };
+		DDB8390B13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddAccountView.h; sourceTree = "<group>"; };
+		DDB8390C13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddAccountView.m; sourceTree = "<group>"; };
+		DDB8390E13CBC05E00D6A034 /* corner_fold_preview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold_preview.png; sourceTree = SOURCE_ROOT; };
 		DDB96E9B13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileView.h; sourceTree = "<group>"; };
 		DDB96E9C13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileView.m; sourceTree = "<group>"; };
 		DDBA88E31210E77F00E5B572 /* DSMapBoxDocumentLoadController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentLoadController.h; sourceTree = "<group>"; };
@@ -743,6 +753,7 @@
 			children = (
 				DD2754CA1385683D007B58AC /* placeholder.png */,
 				DD3E66B313C5339300D09B4B /* corner_fold.png */,
+				DDB8390E13CBC05E00D6A034 /* corner_fold_preview.png */,
 				DD3E66B113C5337300D09B4B /* check.png */,
 				DD3E66B513C53BA100D09B4B /* chevron.png */,
 			);
@@ -1138,6 +1149,11 @@
 		DDEF900F13831D7A00FF148C /* Layer Addition */ = {
 			isa = PBXGroup;
 			children = (
+				DDB8390713CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.h */,
+				DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */,
+				DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */,
+				DDB8390B13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.h */,
+				DDB8390C13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.m */,
 				DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */,
 				DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */,
 				DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */,
@@ -1294,6 +1310,8 @@
 				DD3E66B213C5337300D09B4B /* check.png in Resources */,
 				DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */,
 				DD3E66B613C53BA100D09B4B /* chevron.png in Resources */,
+				DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */,
+				DDB8390F13CBC05F00D6A034 /* corner_fold_preview.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1434,6 +1452,8 @@
 				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
 				DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */,
+				DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */,
+				DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

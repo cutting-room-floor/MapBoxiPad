@@ -26,9 +26,11 @@ extern NSString *const DSMapBoxLayersAdded;
     NSMutableArray *selectedLayers;
     NSMutableArray *selectedImages;
     
+    NSString *serverName;
     NSURL *serverURL;
 }
 
+@property (nonatomic, retain) NSString *serverName;
 @property (nonatomic, retain) NSURL *serverURL;
 
 @end

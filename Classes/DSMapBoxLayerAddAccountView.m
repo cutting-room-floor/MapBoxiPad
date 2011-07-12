@@ -1,22 +1,21 @@
 //
-//  DSMapBoxLayerAddTileView.m
+//  DSMapBoxLayerAddAccountView.m
 //  MapBoxiPad
 //
-//  Created by Justin Miller on 6/29/11.
+//  Created by Justin Miller on 7/11/11.
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "DSMapBoxLayerAddTileView.h"
+#import "DSMapBoxLayerAddAccountView.h"
 
 #import "MapBoxConstants.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-@implementation DSMapBoxLayerAddTileView
+@implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
 @synthesize image;
-@synthesize selected;
 @synthesize touched;
 
 - (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText
@@ -68,37 +67,10 @@
     return imageView.image;
 }
 
-- (void)setSelected:(BOOL)flag
-{
-    // set flag
-    //
-    selected = flag;
-    
-    // animate background color change
-    //
-    [UIView beginAnimations:nil context:nil];
-    
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-    [UIView setAnimationDuration:0.1];
-    
-    self.backgroundColor = (flag ? kMapBoxBlue : [UIColor clearColor]);
-    
-    [UIView commitAnimations];
-
-    // notify delegate
-    //
-    if (self.delegate)
-        [self.delegate tileView:self selectionDidChange:flag];
-}
-
 - (void)setTouched:(BOOL)flag
 {
     if (flag)
     {
-        // toggle selection
-        //
-        self.selected = ! self.selected;
-        
         // scale down
         //
         [UIView beginAnimations:nil context:nil];
@@ -112,44 +84,19 @@
     }
     else
     {
-        if (touched)
-        {
-            // scale back up
-            //
-            [UIView beginAnimations:nil context:nil];
-            
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:0.1];
-            
-            imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
-            
-            [UIView commitAnimations];
-        }
-        else
-        {
-            // must have been a quick tap that didn't register initially; do full cycle
-            //
-            self.selected = ! self.selected;
-            
-            [UIView animateWithDuration:0.1
-                                  delay:0.0
-                                options:UIViewAnimationCurveEaseInOut
-                             animations:^(void)
-                             {
-                                 imageView.transform = CGAffineTransformMakeScale(0.9, 0.9);
-                             }
-                             completion:^(BOOL selected)
-                             {
-                                 [UIView beginAnimations:nil context:nil];
-                                 
-                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                                 [UIView setAnimationDuration:0.1];
-                                 
-                                 imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
-                                 
-                                 [UIView commitAnimations];
-                             }];
-        }
+        // scale back up & push server view
+        //
+        [UIView animateWithDuration:0.1
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseInOut
+                         animations:^(void)
+                         {
+                             imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
+                         }
+                         completion:^(BOOL selected)
+                         {
+                             [self.delegate accountViewWasSelected:self];
+                         }];
     }
     
     // update state
@@ -161,39 +108,18 @@
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
-    {
-        // top corner preview
-        //
-        [super touchesCancelled:touches withEvent:event];
-        
-        [self.delegate tileViewWantsToShowPreview:self];
-    }
-
-    else
-        self.touched = YES;
+    self.touched = YES;
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // top corner preview
-    //
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
-        return;
-        
     self.touched = NO;
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // top corner preview
-    //
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
-        return;
-
     self.touched = NO;
 }
-
 
 #pragma mark -
 
@@ -228,7 +154,7 @@
     {
         // get corner image
         //
-        UIImage *cornerImage = [UIImage imageNamed:@"corner_fold_preview.png"];
+        UIImage *cornerImage = [UIImage imageNamed:@"corner_fold.png"];
         
         // create cornered path
         //

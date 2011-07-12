@@ -10,7 +10,6 @@
 
 #import "MapBoxConstants.h"
 
-#import "DSMapBoxLayerAddTileView.h"
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
@@ -25,6 +24,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
 
+@synthesize serverName;
 @synthesize serverURL;
 
 - (void)viewDidLoad
@@ -40,7 +40,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // setup nav bar
     //
-    self.navigationItem.title = @"Browse Server";
+    self.navigationItem.title = [NSString stringWithFormat:@"Browse \"%@\"", self.serverName];
     
     self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
                                                                                           target:self 
@@ -58,7 +58,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // fire off layer list request
     //
-    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamAPIPath];
+    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
     
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
@@ -71,6 +71,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [selectedLayers release];
     [selectedImages release];
 
+    [serverName release];
     [serverURL release];
     
     [super dealloc];
@@ -89,6 +90,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                                                                                                           selectedImages, @"selectedImages", 
                                                                                                           nil]];
 }
+
+#pragma mark -
 
 - (void)tileView:(DSMapBoxLayerAddTileView *)tileView selectionDidChange:(BOOL)selected
 {

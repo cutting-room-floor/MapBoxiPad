@@ -18,9 +18,9 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
-#import "DSMapBoxLayerAddTypeController.h"
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxLayerAddTileStreamAlbumController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
+#import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
 #import "UIApplication_Additions.h"
@@ -1211,8 +1211,8 @@
     //
     [self tappedLayersButton:self];
 
-    DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
-    DSMapBoxAlphaModalNavigationController *wrapper  = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:typeController] autorelease];
+    DSMapBoxLayerAddTileStreamAlbumController *albumController = [[[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper  = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

@@ -31,12 +31,9 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Server Details";
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                           target:self.parentViewController
-                                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse Server"
+    self.navigationItem.title = @"Add Custom Server";
+
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedNextButton:)] autorelease];
@@ -130,7 +127,7 @@
     if ( ! [enteredValue hasPrefix:@"http"])
         enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
     
-    NSURL *validationURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamAPIPath]];
+    NSURL *validationURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
     
     if (validationURL)
         validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:validationURL] delegate:self];
