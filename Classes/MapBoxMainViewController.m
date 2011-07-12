@@ -845,8 +845,8 @@
                                  [NSDate dateWithTimeIntervalSince1970:[[layer objectForKey:@"mtime"] intValue]], @"mtime",
                                  ([layer objectForKey:@"basename"] ? [layer objectForKey:@"basename"] : @""), @"basename",
                                  [layer objectForKey:@"tileURL"], @"tileURL",
-                                 [layer objectForKey:@"gridURL"], @"gridURL",
-                                 [layer objectForKey:@"formatter"], @"formatter",
+                                 ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : [NSNull null]), @"gridURL",
+                                 ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : [NSNull null]), @"formatter",
                                  nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];

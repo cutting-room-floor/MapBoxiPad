@@ -23,7 +23,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = [NSString stringWithFormat:@"Preview of \"%@\"", [info objectForKey:@"name"]];
+    self.navigationItem.title = [NSString stringWithFormat:@"Preview of %@", [info objectForKey:@"name"]];
     
     self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
                                                                                           target:self
