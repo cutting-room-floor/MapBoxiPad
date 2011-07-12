@@ -11,7 +11,7 @@
 #import "MapBoxConstants.h"
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
-#import "DSMapBoxLayerAddTypeController.h"
+#import "DSMapBoxLayerAddCustomServerController.h"
 
 #import "JSONKit.h"
 
@@ -27,18 +27,13 @@
     
     // setup nav bar
     //
-    self.navigationItem.title = @"Choose TileStream Server";
+    self.navigationItem.title = @"Choose TileStream";
     
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Choose Server"
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:nil
-                                                                             action:nil] autorelease];
-
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
                                                                                            target:self.parentViewController
                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Add Custom"
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Custom"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedAddButton:)] autorelease];
@@ -71,9 +66,9 @@
 
 - (void)tappedAddButton:(id)sender
 {
-    DSMapBoxLayerAddTypeController *typeController = [[[DSMapBoxLayerAddTypeController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxLayerAddCustomServerController *customController = [[[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    [(UINavigationController *)self.parentViewController pushViewController:typeController animated:YES];
+    [(UINavigationController *)self.parentViewController pushViewController:customController animated:YES];
 }
 
 #pragma mark -
@@ -86,8 +81,8 @@
     
     DSMapBoxLayerAddTileStreamBrowseController *browseController = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    browseController.serverName = [account valueForKey:@"id"];
-    browseController.serverURL  = [NSURL URLWithString:serverURLString];
+    browseController.serverTitle = [NSString stringWithFormat:@"%@%@ TileStream", [account valueForKey:@"id"], ([[account valueForKey:@"id"] hasSuffix:@"s"] ? @"'" : @"'s")];
+    browseController.serverURL   = [NSURL URLWithString:serverURLString];
     
     [(UINavigationController *)self.parentViewController pushViewController:browseController animated:YES];
 }
@@ -148,6 +143,9 @@
         helpLabel.hidden         = NO;
         accountScrollView.hidden = NO;
         
+        if ([newServers count] > 9)
+            accountPageControl.hidden = NO;
+
         // queue up images
         //
         NSMutableArray *imagesToDownload = [NSMutableArray array];
@@ -167,18 +165,12 @@
         
         // layout preview tiles
         //
-        int pageCount = ([servers count] / 9) + 1;
-        
-        accountPageControl.numberOfPages = pageCount;
-        
-        if ([newServers count] > 9)
-            accountPageControl.hidden = NO;
-
-        else
-            accountPageControl.hidden = YES;
+        int pageCount = ([servers count] / 9) + ([servers count] % 9 ? 1 : 0);
         
         accountScrollView.contentSize = CGSizeMake((accountScrollView.frame.size.width * pageCount), accountScrollView.frame.size.height);
-        
+
+        accountPageControl.numberOfPages = pageCount;
+
         for (int i = 0; i < pageCount; i++)
         {
             UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * accountScrollView.frame.size.width, 0, accountScrollView.frame.size.width, accountScrollView.frame.size.height)] autorelease];

@@ -168,8 +168,8 @@
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
 		DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */; };
 		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
-		DDEF901313831DA800FF148C /* DSMapBoxLayerAddTypeController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */; };
-		DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */; };
+		DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */; };
+		DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */; };
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
 		DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
@@ -472,9 +472,9 @@
 		DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMTileStreamSource.m; sourceTree = "<group>"; };
 		DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalNavigationController.h; sourceTree = "<group>"; };
 		DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalNavigationController.m; sourceTree = "<group>"; };
-		DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTypeController.h; sourceTree = "<group>"; };
-		DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTypeController.m; sourceTree = "<group>"; };
-		DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTypeController.xib; sourceTree = "<group>"; };
+		DDEF901013831DA800FF148C /* DSMapBoxLayerAddCustomServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddCustomServerController.h; sourceTree = "<group>"; };
+		DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddCustomServerController.m; sourceTree = "<group>"; };
+		DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddCustomServerController.xib; sourceTree = "<group>"; };
 		DDEF90D213832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileStreamBrowseController.h; sourceTree = "<group>"; };
 		DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamBrowseController.m; sourceTree = "<group>"; };
 		DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamBrowseController.xib; sourceTree = "<group>"; };
@@ -1154,9 +1154,9 @@
 				DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */,
 				DDB8390B13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.h */,
 				DDB8390C13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.m */,
-				DDEF901013831DA800FF148C /* DSMapBoxLayerAddTypeController.h */,
-				DDEF901113831DA800FF148C /* DSMapBoxLayerAddTypeController.m */,
-				DDEF901213831DA800FF148C /* DSMapBoxLayerAddTypeController.xib */,
+				DDEF901013831DA800FF148C /* DSMapBoxLayerAddCustomServerController.h */,
+				DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */,
+				DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */,
 				DDEF90D213832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.h */,
 				DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */,
 				DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */,
@@ -1291,7 +1291,7 @@
 				DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */,
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
-				DDEF901413831DA800FF148C /* DSMapBoxLayerAddTypeController.xib in Resources */,
+				DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */,
 				DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */,
 				DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */,
 				DD2754CB1385683D007B58AC /* placeholder.png in Resources */,
@@ -1441,7 +1441,7 @@
 				DD8637AC1379BDF6006650EA /* UIAlertView_Additions.m in Sources */,
 				DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */,
 				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
-				DDEF901313831DA800FF148C /* DSMapBoxLayerAddTypeController.m in Sources */,
+				DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
 				DD274EFF13842622007B58AC /* iCarousel.m in Sources */,
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,

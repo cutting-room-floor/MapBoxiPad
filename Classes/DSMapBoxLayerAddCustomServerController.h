@@ -1,5 +1,5 @@
 //
-//  DSMapBoxLayerAddTypeController.h
+//  DSMapBoxLayerAddCustomServerController.h
 //  MapBoxiPad
 //
 //  Created by Justin R. Miller on 5/17/11.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DSMapBoxLayerAddTypeController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface DSMapBoxLayerAddCustomServerController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
@@ -17,6 +17,7 @@
     IBOutlet UITableView *recentServersTableView;
     NSURLConnection *validationConnection;
     NSMutableData *receivedData;
+    NSURL *finalURL;
 }
 
 - (IBAction)tappedNextButton:(id)sender;

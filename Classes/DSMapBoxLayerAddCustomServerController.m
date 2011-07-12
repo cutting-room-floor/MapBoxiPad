@@ -1,12 +1,12 @@
     //
-//  DSMapBoxLayerAddTypeController.m
+//  DSMapBoxLayerAddCustomServerController.m
 //  MapBoxiPad
 //
 //  Created by Justin R. Miller on 5/17/11.
 //  Copyright 2011 Code Sorcery Workshop. All rights reserved.
 //
 
-#import "DSMapBoxLayerAddTypeController.h"
+#import "DSMapBoxLayerAddCustomServerController.h"
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
@@ -16,7 +16,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface DSMapBoxLayerAddTypeController (DSMapBoxLayerAddTypeControllerPrivate)
+@interface DSMapBoxLayerAddCustomServerController (DSMapBoxLayerAddTypeControllerPrivate)
 
 - (void)setRecentServersHidden:(BOOL)flag;
 - (void)reloadRecents;
@@ -25,13 +25,13 @@
 
 #pragma mark -
 
-@implementation DSMapBoxLayerAddTypeController
+@implementation DSMapBoxLayerAddCustomServerController
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Add Custom Server";
+    self.navigationItem.title = @"Custom TileStream";
 
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse"
                                                                                style:UIBarButtonItemStyleBordered
@@ -122,15 +122,29 @@
 
 - (void)validateEntry
 {
+    finalURL = nil;
+    
     NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+              enteredValue = [enteredValue    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+
+    if ([[enteredValue componentsSeparatedByString:@"."] count] > 1 || [[enteredValue componentsSeparatedByString:@":"] count] > 1 || [[enteredValue componentsSeparatedByString:@"localhost"] count] > 1)
+    {
+        // assume server hostname/IP if it contains a period
+        //
+        if ( ! [enteredValue hasPrefix:@"http"])
+            enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
+        
+        finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
+    }
+    else
+    {
+        // assume hosting account username
+        //
+        finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
+    }
     
-    if ( ! [enteredValue hasPrefix:@"http"])
-        enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
-    
-    NSURL *validationURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
-    
-    if (validationURL)
-        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:validationURL] delegate:self];
+    if (finalURL)
+        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:finalURL] delegate:self];
     
     else
         [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
@@ -139,13 +153,6 @@
 
 - (IBAction)tappedNextButton:(id)sender
 {
-    DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
-   
-    NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    if ( ! [enteredValue hasPrefix:@"http"])
-        enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
-    
     // save the server to recents
     //
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -154,16 +161,18 @@
     if ([defaults objectForKey:@"recentServers"])
     {
         [recents addObjectsFromArray:[defaults arrayForKey:@"recentServers"]];
-        [recents removeObject:enteredValue];
+        [recents removeObject:[finalURL absoluteString]];
     }
     
-    [recents insertObject:enteredValue atIndex:0];
+    [recents insertObject:[finalURL absoluteString] atIndex:0];
     [defaults setObject:recents forKey:@"recentServers"];
     [defaults synchronize];
 
     // browse the server
     //
-    controller.serverURL = [NSURL URLWithString:enteredValue];
+    DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
+
+    controller.serverURL = finalURL;
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
 }
@@ -228,8 +237,10 @@
 
     id layers = [receivedData objectFromJSONData];
 
-    if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
+    if (layers && [layers isKindOfClass:[NSArray class]])
     {
+        finalURL = [NSURL URLWithString:[[finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
+        
         successImage.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
@@ -241,7 +252,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    entryField.text = [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row];
+    finalURL = [NSURL URLWithString:[[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row]];
     
     [self tappedNextButton:self];
 }

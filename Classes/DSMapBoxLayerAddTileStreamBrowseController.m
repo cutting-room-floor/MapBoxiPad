@@ -24,7 +24,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
 
-@synthesize serverName;
+@synthesize serverTitle;
 @synthesize serverURL;
 
 - (void)viewDidLoad
@@ -40,7 +40,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // setup nav bar
     //
-    self.navigationItem.title = [NSString stringWithFormat:@"Browse \"%@\"", self.serverName];
+    self.navigationItem.title = self.serverTitle;
     
     self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
                                                                                           target:self 
@@ -71,7 +71,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [selectedLayers release];
     [selectedImages release];
 
-    [serverName release];
+    [serverTitle release];
     [serverURL release];
     
     [super dealloc];
@@ -274,7 +274,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         
         // layout preview tiles
         //
-        int pageCount = ([layers count] / 9) + 1;
+        int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
         
         tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
         
