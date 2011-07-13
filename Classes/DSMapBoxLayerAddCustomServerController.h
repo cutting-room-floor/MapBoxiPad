@@ -8,15 +8,19 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DSMapBoxLayerAddCustomServerController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
+#import "ASIHTTPRequestDelegate.h"
+
+@interface DSMapBoxLayerAddCustomServerController : UIViewController <UITextFieldDelegate, 
+                                                                      UITableViewDelegate, 
+                                                                      UITableViewDataSource,
+                                                                      ASIHTTPRequestDelegate>
 {
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIImageView *successImage;
     IBOutlet UILabel *recentServersLabel;
     IBOutlet UITableView *recentServersTableView;
-    NSURLConnection *validationConnection;
-    NSMutableData *receivedData;
+    ASIHTTPRequest *validationConnection;
     NSURL *finalURL;
 }
 

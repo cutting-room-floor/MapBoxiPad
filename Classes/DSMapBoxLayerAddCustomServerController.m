@@ -12,6 +12,8 @@
 
 #import "MapBoxConstants.h"
 
+#import "ASIHTTPRequest.h"
+
 #import "JSONKit.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -51,8 +53,6 @@
     recentServersTableView.layer.cornerRadius = 10.0;
     recentServersTableView.clipsToBounds      = YES;
     recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
-    
-    receivedData = [[NSMutableData data] retain];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -89,11 +89,10 @@
 {
     if (validationConnection)
     {
-        [validationConnection cancel];
+        [validationConnection clearDelegatesAndCancel];
         [validationConnection release];
     }
 
-    [receivedData release];
     [finalURL release];
     
     [super dealloc];
@@ -147,7 +146,17 @@
     }
     
     if (self.finalURL)
-        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:self.finalURL] delegate:self];
+    {
+        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+        
+        validationConnection = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
+
+        validationConnection.delegate = self;
+        
+        [validationConnection startAsynchronous];
+        
+        [spinner startAnimating];
+    }
     
     else
         [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
@@ -189,7 +198,7 @@
     
     if (validationConnection)
     {
-        [validationConnection cancel];
+        [validationConnection clearDelegatesAndCancel];
         [validationConnection release];
         validationConnection = nil;
     }
@@ -217,28 +226,24 @@
 
 #pragma mark -
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    [spinner startAnimating];
+    [request autorelease];
     
-    [receivedData setData:[NSData data]];
+    [spinner stopAnimating];
+    
+    validationConnection = nil;
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
+    [request autorelease];
+    
     [spinner stopAnimating];
 
-    id layers = [receivedData objectFromJSONData];
+    id layers = [request.responseData objectFromJSONData];
+
+    validationConnection = nil;
 
     if (layers && [layers isKindOfClass:[NSArray class]])
     {

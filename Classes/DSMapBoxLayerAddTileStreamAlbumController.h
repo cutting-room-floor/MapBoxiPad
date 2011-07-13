@@ -10,14 +10,16 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddAccountViewDelegate>
+#import "ASIHTTPRequestDelegate.h"
+
+@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, 
+                                                                         DSMapBoxLayerAddAccountViewDelegate,
+                                                                         ASIHTTPRequestDelegate>
 {
     IBOutlet UILabel *helpLabel;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIScrollView *accountScrollView;
     IBOutlet UIPageControl *accountPageControl;
-    
-    NSMutableData *receivedData;
     
     NSArray *servers;
 }

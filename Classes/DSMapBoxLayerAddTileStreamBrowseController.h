@@ -10,16 +10,18 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
+#import "ASIHTTPRequestDelegate.h"
+
 extern NSString *const DSMapBoxLayersAdded;
 
-@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddTileViewDelegate>
+@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, 
+                                                                          DSMapBoxLayerAddTileViewDelegate,
+                                                                          ASIHTTPRequestDelegate>
 {
     IBOutlet UILabel *helpLabel;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIScrollView *tileScrollView;
     IBOutlet UIPageControl *tilePageControl;
-    
-    NSMutableData *receivedData;
     
     NSArray *layers;
     

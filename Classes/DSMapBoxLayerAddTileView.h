@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ASIHTTPRequestDelegate.h"
+
 @class DSMapBoxLayerAddTileView;
 
 @protocol DSMapBoxLayerAddTileViewDelegate
@@ -21,12 +23,11 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerAddTileView : UIView
+@interface DSMapBoxLayerAddTileView : UIView <ASIHTTPRequestDelegate>
 {
     id <DSMapBoxLayerAddTileViewDelegate>delegate;
     UIImageView *imageView;
     UILabel *label;
-    NSMutableData *receivedData;
     BOOL selected;
     BOOL touched;
 }

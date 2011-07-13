@@ -323,6 +323,8 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [request autorelease];
+    
     // we can still try for the secondaries
     //
     [self downloadSecondaryImages];
@@ -330,10 +332,10 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    UIImage *tileImage = [UIImage imageWithData:request.responseData];
-
     [request autorelease];
     
+    UIImage *tileImage = [UIImage imageWithData:request.responseData];
+
     [self downloadSecondaryImages];
     
     // process & update primary image

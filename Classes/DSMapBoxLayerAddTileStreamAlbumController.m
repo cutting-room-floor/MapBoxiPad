@@ -13,6 +13,8 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxLayerAddCustomServerController.h"
 
+#import "ASIHTTPRequest.h"
+
 #import "JSONKit.h"
 
 @implementation DSMapBoxLayerAddTileStreamAlbumController
@@ -52,9 +54,13 @@
     //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", kTileStreamHostingURL, kTileStreamAlbumAPIPath];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
+    [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+
+    ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
     
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    request.delegate = self;
+
+    [request startAsynchronous];
 }
 
 - (void)dealloc
@@ -91,38 +97,20 @@
 
 #pragma mark -
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    // TODO: detect if offline and/or retry
-    //
-    NSLog(@"%@", error);
+    [request autorelease];
+    
+    [spinner stopAnimating];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    [request autorelease];
     
     [spinner stopAnimating];
     
-    [connection autorelease];
-    
-    [receivedData release];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    receivedData = [[NSMutableData data] retain];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [spinner stopAnimating];
-    
-    [connection autorelease];
-    
-    id newServers = [receivedData mutableObjectFromJSONData];
-    
-    [receivedData release];
+    id newServers = [request.responseData mutableObjectFromJSONData];
     
     if (newServers && [newServers isKindOfClass:[NSMutableArray class]])
     {

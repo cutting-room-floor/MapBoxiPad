@@ -14,6 +14,8 @@
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
+#import "ASIHTTPRequest.h"
+
 #import "JSONKit.h"
 
 #import "RMTile.h"
@@ -60,9 +62,13 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
     
-    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
+    [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
     
-    [[NSURLConnection alloc] initWithRequest:request delegate:self];
+    ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
+    
+    request.delegate = self;
+    
+    [request startAsynchronous];
 }
 
 - (void)dealloc
@@ -164,38 +170,20 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 #pragma mark -
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    // TODO: detect if offline and/or retry
-    //
-    NSLog(@"%@", error);
+    [request autorelease];
+    
+    [spinner stopAnimating];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    [request autorelease];
     
     [spinner stopAnimating];
     
-    [connection autorelease];
-    
-    [receivedData release];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-    receivedData = [[NSMutableData data] retain];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [spinner stopAnimating];
-    
-    [connection autorelease];
-    
-    id newLayers = [receivedData mutableObjectFromJSONData];
-    
-    [receivedData release];
+    id newLayers = [request.responseData mutableObjectFromJSONData];
     
     // TODO: what if no layers? 
     //

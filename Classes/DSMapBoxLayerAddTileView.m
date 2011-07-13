@@ -10,6 +10,8 @@
 
 #import "MapBoxConstants.h"
 
+#import "ASIHTTPRequest.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @implementation DSMapBoxLayerAddTileView
@@ -55,7 +57,13 @@
         
         // fire off image download request
         //
-        [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:imageURL] delegate:self];
+        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+        
+        ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:imageURL] retain];
+        
+        request.delegate = self;
+        
+        [request startAsynchronous];
     }
     
     return self;
@@ -194,35 +202,18 @@
     self.touched = NO;
 }
 
-
 #pragma mark -
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)requestFailed:(ASIHTTPRequest *)request
 {
-    // TODO: detect if offline and/or retry
-    //
-    NSLog(@"%@", error);
-    
-    [connection autorelease];
+    [request autorelease];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    receivedData = [[NSMutableData data] retain];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [connection autorelease];
+    [request autorelease];
     
-    UIImage *tileImage = [UIImage imageWithData:receivedData];
-    
-    [receivedData release];
+    UIImage *tileImage = [UIImage imageWithData:request.responseData];
     
     if (tileImage)
     {
