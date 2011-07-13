@@ -20,6 +20,8 @@
     NSURL *finalURL;
 }
 
+@property (nonatomic, retain) NSURL *finalURL;
+
 - (IBAction)tappedNextButton:(id)sender;
 
 @end

@@ -27,6 +27,8 @@
 
 @implementation DSMapBoxLayerAddCustomServerController
 
+@synthesize finalURL;
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -92,6 +94,7 @@
     }
 
     [receivedData release];
+    [finalURL release];
     
     [super dealloc];
 }
@@ -122,7 +125,7 @@
 
 - (void)validateEntry
 {
-    finalURL = nil;
+    self.finalURL = nil;
     
     NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
               enteredValue = [enteredValue    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
@@ -134,17 +137,17 @@
         if ( ! [enteredValue hasPrefix:@"http"])
             enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
         
-        finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
+        self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
     }
     else
     {
         // assume hosting account username
         //
-        finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
+        self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
     }
     
-    if (finalURL)
-        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:finalURL] delegate:self];
+    if (self.finalURL)
+        validationConnection = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:self.finalURL] delegate:self];
     
     else
         [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
@@ -161,10 +164,10 @@
     if ([defaults objectForKey:@"recentServers"])
     {
         [recents addObjectsFromArray:[defaults arrayForKey:@"recentServers"]];
-        [recents removeObject:[finalURL absoluteString]];
+        [recents removeObject:[self.finalURL absoluteString]];
     }
     
-    [recents insertObject:[finalURL absoluteString] atIndex:0];
+    [recents insertObject:[self.finalURL absoluteString] atIndex:0];
     [defaults setObject:recents forKey:@"recentServers"];
     [defaults synchronize];
 
@@ -172,7 +175,7 @@
     //
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
 
-    controller.serverURL = finalURL;
+    controller.serverURL = self.finalURL;
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
 }
@@ -239,7 +242,7 @@
 
     if (layers && [layers isKindOfClass:[NSArray class]])
     {
-        finalURL = [NSURL URLWithString:[[finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
+        self.finalURL = [NSURL URLWithString:[[self.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
         
         successImage.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
@@ -252,7 +255,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    finalURL = [NSURL URLWithString:[[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row]];
+    self.finalURL = [NSURL URLWithString:[[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row]];
     
     [self tappedNextButton:self];
 }
