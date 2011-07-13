@@ -55,6 +55,12 @@
         
         [imageView addSubview:label];
         
+        // attach gesture
+        //
+        UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
+        longPress.minimumPressDuration = 0.01;
+        [self addGestureRecognizer:longPress];
+        
         // fire off image download request
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
@@ -128,44 +134,16 @@
     }
     else
     {
-        if (touched)
-        {
-            // scale back up
-            //
-            [UIView beginAnimations:nil context:nil];
-            
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:0.1];
-            
-            imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
-            
-            [UIView commitAnimations];
-        }
-        else
-        {
-            // must have been a quick tap that didn't register initially; do full cycle
-            //
-            self.selected = ! self.selected;
-            
-            [UIView animateWithDuration:0.1
-                                  delay:0.0
-                                options:UIViewAnimationCurveEaseInOut
-                             animations:^(void)
-                             {
-                                 imageView.transform = CGAffineTransformMakeScale(0.9, 0.9);
-                             }
-                             completion:^(BOOL selected)
-                             {
-                                 [UIView beginAnimations:nil context:nil];
-                                 
-                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                                 [UIView setAnimationDuration:0.1];
-                                 
-                                 imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
-                                 
-                                 [UIView commitAnimations];
-                             }];
-        }
+        // scale back up
+        //
+        [UIView beginAnimations:nil context:nil];
+        
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:0.1];
+        
+        imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
+        
+        [UIView commitAnimations];
     }
     
     // update state
@@ -175,39 +153,40 @@
 
 #pragma mark -
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)longPressGesture:(UIGestureRecognizer *)recognizer
 {
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
+    switch (recognizer.state)
     {
-        // top corner preview
-        //
-        [super touchesCancelled:touches withEvent:event];
-        
-        [self.delegate tileViewWantsToShowPreview:self];
+        case UIGestureRecognizerStateBegan:
+            
+            // top corner preview
+            //
+            if ([recognizer locationInView:self].x >= self.bounds.size.width - 50 && [recognizer locationInView:self].y <= 50)
+            {
+                // cancel gesture to avoid any animation
+                //
+                recognizer.enabled = NO;
+                recognizer.enabled = YES;
+                
+                // go straight to preview
+                //
+                [self.delegate tileViewWantsToShowPreview:self];
+            }
+            
+            else
+                self.touched = YES;
+
+            break;
+            
+        case UIGestureRecognizerStateEnded:
+
+            self.touched = NO;
+
+            break;
+            
+        default:
+            break;
     }
-
-    else
-        self.touched = YES;
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    // top corner preview
-    //
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
-        return;
-        
-    self.touched = NO;
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    // top corner preview
-    //
-    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
-        return;
-
-    self.touched = NO;
 }
 
 #pragma mark -
