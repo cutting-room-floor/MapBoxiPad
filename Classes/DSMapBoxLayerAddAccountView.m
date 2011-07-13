@@ -56,8 +56,9 @@
         longPress.minimumPressDuration = 0.01;
         [self addGestureRecognizer:longPress];
         
-        [self addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease]];
-        
+        UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
+        [self addGestureRecognizer:pinch];
+
         // fire off primary image download request
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
