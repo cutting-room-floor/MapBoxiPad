@@ -262,17 +262,25 @@
         {
             // spread stack tiles apart
             //
-            CGFloat distance = (gesture.scale - 1.0) * 50;
+            CGFloat distance = ((gesture.scale - 1.0) * 50) > 75 ? 75 : ((gesture.scale - 1.0) * 50);
+            
+            if ([gesture numberOfTouches] < 2)
+            {
+                gesture.enabled = NO;
+                gesture.enabled = YES;
+                
+                return;
+            }
             
             [UIView beginAnimations:nil context:nil];
-
+            
             CGPoint pointA = [gesture locationOfTouch:0 inView:self.superview];
             CGPoint pointB = [gesture locationOfTouch:1 inView:self.superview];
             
             self.center = CGPointMake((pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2);
-            
+
             CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
-            
+
             ((UIView *)[self.subviews objectAtIndex:0]).center = CGPointMake(myCenter.x - distance, myCenter.y - distance);
             ((UIView *)[self.subviews objectAtIndex:1]).center = CGPointMake(myCenter.x + distance, myCenter.y - distance);
             ((UIView *)[self.subviews objectAtIndex:2]).center = CGPointMake(myCenter.x - distance, myCenter.y + distance);
@@ -281,7 +289,7 @@
             [UIView commitAnimations];
         }
     }
-    else if (gesture.state == UIGestureRecognizerStateEnded)
+    else if (gesture.state == UIGestureRecognizerStateEnded || gesture.state == UIGestureRecognizerStateCancelled)
     {
         if ([previewImageURLs count] == 0)
         {
