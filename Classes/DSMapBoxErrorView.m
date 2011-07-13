@@ -10,6 +10,7 @@
 
 #define DSMapBoxErrorViewWidth  400.0f
 #define DSMapBoxErrorViewHeight 150.0f
+#define DSMapBoxErrorViewAlpha    0.8f
 
 @interface DSMapBoxErrorView (DSMapBoxErrorViewPrivate)
 
@@ -67,13 +68,13 @@
     imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"error.png"]];
     
     imageView.frame = CGRectMake((DSMapBoxErrorViewWidth - imageView.bounds.size.width) / 2, 0, imageView.bounds.size.width, imageView.bounds.size.height);
-    imageView.alpha = 0.75;
+    imageView.alpha = DSMapBoxErrorViewAlpha;
     
     [self addSubview:imageView];
     
     textField = [[UITextField alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 20, self.bounds.size.width, 20)];
     
-    textField.textColor                 = [UIColor whiteColor];
+    textField.textColor                 = [UIColor colorWithWhite:1.0 alpha:0.75];
     textField.backgroundColor           = [UIColor clearColor];
     textField.textAlignment             = UITextAlignmentCenter;
     textField.text                      = @"Error";
