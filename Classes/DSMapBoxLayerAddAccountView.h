@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import "ASIHTTPRequestDelegate.h"
+
 @class DSMapBoxLayerAddAccountView;
 
 @protocol DSMapBoxLayerAddAccountViewDelegate
@@ -20,19 +22,19 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerAddAccountView : UIView
+@interface DSMapBoxLayerAddAccountView : UIView <ASIHTTPRequestDelegate>
 {
     id <DSMapBoxLayerAddAccountViewDelegate>delegate;
+    NSArray *previewImageURLs;
     UIImageView *imageView;
     UILabel *label;
-    NSMutableData *receivedData;
+    CGPoint originalCenter;
     BOOL touched;
 }
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddAccountViewDelegate>delegate;
-@property (nonatomic, readonly, assign) UIImage *image;
 @property (nonatomic, assign) BOOL touched;
 
-- (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText;
+- (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText;
 
 @end

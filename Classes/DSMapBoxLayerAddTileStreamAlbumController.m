@@ -46,6 +46,8 @@
     accountScrollView.hidden  = YES;
     accountPageControl.hidden = YES;
     
+    accountScrollView.clipsToBounds = NO;
+    
     // fire off account list request
     //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", kTileStreamHostingURL, kTileStreamAlbumAPIPath];
@@ -154,7 +156,12 @@
         {
             NSMutableDictionary *server = [NSMutableDictionary dictionaryWithDictionary:[newServers objectAtIndex:i]];
 
-            [imagesToDownload addObject:[NSURL URLWithString:[[server objectForKey:@"thumbs"] objectAtIndex:0]]];
+            NSMutableArray *thumbURLs = [NSMutableArray array];
+            
+            for (NSString *thumbURLString in [server objectForKey:@"thumbs"])
+                [thumbURLs addObject:[NSURL URLWithString:thumbURLString]];
+            
+            [imagesToDownload addObject:thumbURLs];
         }
         
         // update content
@@ -203,7 +210,7 @@
                     NSString *layerCount  = [[[servers objectAtIndex:index] valueForKey:@"quota"] valueForKey:@"count"];
 
                     DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, row * 168, 148, 148) 
-                                                                                                          imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                         imageURLs:[imagesToDownload objectAtIndex:index]
                                                                                                          labelText:[NSString stringWithFormat:@"%@ (%@)", accountName, layerCount]] autorelease];
                     
                     accountView.delegate = self;
@@ -231,29 +238,6 @@
                         accountView.alpha = 1.0;
                         
                         [UIView commitAnimations];
-                        
-                        // bounce-animate first entry (MapBox default)
-                        //
-                        if (index == 0)
-                        {
-                            [UIView animateWithDuration:0.5
-                                                  delay:0.5
-                                                options:UIViewAnimationCurveEaseInOut
-                                             animations:^(void)
-                                             {
-                                                 accountView.transform = CGAffineTransformMakeScale(1.1, 1.1);
-                                             }
-                                             completion:^(BOOL finished)
-                                             {
-                                                 [UIView beginAnimations:nil context:nil];
-                                                 [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                                                 [UIView setAnimationDuration:0.5];
-                                                 
-                                                 accountView.transform = CGAffineTransformScale(accountView.transform, 1 / 1.1, 1 / 1.1);
-                                                 
-                                                 [UIView commitAnimations];
-                                             }];
-                        }
                     }
                     
                     [containerView addSubview:accountView];

@@ -10,26 +10,24 @@
 
 #import "MapBoxConstants.h"
 
+#import "ASIHTTPRequest.h"
+
+#import "UIImage+Alpha.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
-@synthesize image;
 @synthesize touched;
 
-- (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText
+- (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText
 {
     self = [super initWithFrame:rect];
 
     if (self)
     {
-        // prep selection indicator
-        //
-        self.backgroundColor = [UIColor clearColor];
-        self.layer.cornerRadius = 10.0;
-        
-        // create inset image view
+        // create front, inset image view
         //
         imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)] autorelease];
         
@@ -38,7 +36,7 @@
         imageView.layer.shadowOpacity = 0.5;
         imageView.layer.shadowOffset  = CGSizeMake(-5, 5);
         imageView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
-
+        
         [self addSubview:imageView];
         
         // create label
@@ -52,20 +50,58 @@
         
         [imageView addSubview:label];
         
-        // fire off image download request
+        // attach gestures
         //
-        [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:imageURL] delegate:self];
+        UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
+        longPress.minimumPressDuration = 0.01;
+        [self addGestureRecognizer:longPress];
+        
+        [self addGestureRecognizer:[[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease]];
+        
+        // fire off primary image download request
+        //
+        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+        
+        ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]] retain];
+        
+        request.delegate = self;
+        
+        [request startAsynchronous];
+        
+        // save secondary image URLs for later
+        //
+        NSMutableArray *downloadURLs = [NSMutableArray arrayWithArray:imageURLs];
+        [downloadURLs removeObjectAtIndex:0];
+        previewImageURLs = [[NSArray arrayWithArray:downloadURLs] retain];
+        
+        // add preview views underneath
+        //
+        for (int i = 0; i < 3; i++)
+        {
+            UIImageView *preview = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]] autorelease];
+            
+            preview.frame = imageView.frame;
+            
+            // hide if not enough thumbnails
+            //
+            if (i >= [previewImageURLs count])
+                preview.hidden = YES;
+            
+            [self insertSubview:preview belowSubview:imageView];
+        }
     }
     
     return self;
 }
 
-#pragma mark -
-
-- (UIImage *)image
+- (void)dealloc
 {
-    return imageView.image;
+    [previewImageURLs release];
+    
+    [super dealloc];
 }
+
+#pragma mark -
 
 - (void)setTouched:(BOOL)flag
 {
@@ -106,50 +142,204 @@
 
 #pragma mark -
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)downloadSecondaryImages
 {
-    self.touched = YES;
-}
+    // queue up secondary image downloads
+    //
+    NSArray *rotationValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:-3], [NSNumber numberWithInt:4], [NSNumber numberWithInt:-1], nil];
+    
+    for (int i = 0; i < [previewImageURLs count]; i++)
+    {
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
+        
+        [request setCompletionBlock:^(void)
+        {
+            UIImageView *preview = ((UIImageView *)[[self subviews] objectAtIndex:i]);
 
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.touched = NO;
-}
+            UIImage *image = [UIImage imageWithData:request.responseData];
+            
+            // begin image mods
+            //
+            UIGraphicsBeginImageContext(preview.bounds.size);
+            
+            CGContextRef c = UIGraphicsGetCurrentContext();
+            
+            // fill background with white
+            //
+            CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath]);
+            CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+            CGContextFillPath(c);
+            
+            // draw tile
+            //
+            [image drawInRect:preview.bounds];
+            
+            image = UIGraphicsGetImageFromCurrentImageContext();
+            
+            UIGraphicsEndImageContext();
 
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    self.touched = NO;
+            // update image view (adding border to fix jaggies)
+            //
+            preview.image = [image transparentBorderImage:1];
+            
+            // style shadow
+            //
+            preview.layer.shadowOpacity = 0.5;
+            preview.layer.shadowOffset  = CGSizeMake(-1, 1);
+            preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
+            
+            // animate offset rotation
+            //
+            [UIView beginAnimations:nil context:nil];
+            
+            preview.transform = CGAffineTransformMakeRotation(2 * M_PI * [[rotationValues objectAtIndex:i] intValue] / 360);
+            
+            [UIView commitAnimations];
+        }];
+        
+        [request startAsynchronous];
+    }
 }
 
 #pragma mark -
 
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)longPressGesture:(UIGestureRecognizer *)recognizer
 {
-    // TODO: detect if offline and/or retry
+    switch (recognizer.state)
+    {
+        case UIGestureRecognizerStateBegan:
+            self.touched = YES;
+            break;
+            
+        case UIGestureRecognizerStateEnded:
+            self.touched = NO;
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void)pinchGesture:(UIGestureRecognizer *)recognizer
+{
+    UIPinchGestureRecognizer *gesture = (UIPinchGestureRecognizer *)recognizer;
+
+    if (gesture.state == UIGestureRecognizerStateBegan && [previewImageURLs count])
+    {
+        [self.superview bringSubviewToFront:self];
+        
+        originalCenter = self.center;
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.25];
+        
+        label.alpha = 0.0;
+
+        [UIView commitAnimations];
+    }
+    else if (gesture.state == UIGestureRecognizerStateChanged && gesture.scale > 1.0)
+    {
+        if ([previewImageURLs count] == 0)
+        {
+            // disallow stack gesture since not a stack
+            //
+            UIView *frontView = ((UIView *)[self.subviews objectAtIndex:3]);
+
+            // rotate up to 10 degrees
+            //
+            int rotation = ((gesture.scale - 1.0) * 10) > 10 ? 10 : ((gesture.scale - 1.0) * 10);
+            
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.5];
+            
+            frontView.transform = CGAffineTransformMakeRotation(2 * M_PI * rotation / 360);
+            
+            [UIView commitAnimations];
+        }
+        else
+        {
+            // spread stack tiles apart
+            //
+            CGFloat distance = (gesture.scale - 1.0) * 50;
+            
+            [UIView beginAnimations:nil context:nil];
+
+            CGPoint pointA = [gesture locationOfTouch:0 inView:self.superview];
+            CGPoint pointB = [gesture locationOfTouch:1 inView:self.superview];
+            
+            self.center = CGPointMake((pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2);
+            
+            CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+            
+            ((UIView *)[self.subviews objectAtIndex:0]).center = CGPointMake(myCenter.x - distance, myCenter.y - distance);
+            ((UIView *)[self.subviews objectAtIndex:1]).center = CGPointMake(myCenter.x + distance, myCenter.y - distance);
+            ((UIView *)[self.subviews objectAtIndex:2]).center = CGPointMake(myCenter.x - distance, myCenter.y + distance);
+            ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + distance, myCenter.y + distance);
+
+            [UIView commitAnimations];
+        }
+    }
+    else if (gesture.state == UIGestureRecognizerStateEnded)
+    {
+        if ([previewImageURLs count] == 0)
+        {
+            // rotate single tile back into place
+            //
+            UIView *frontView = ((UIView *)[self.subviews objectAtIndex:3]);
+
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.5];
+            
+            frontView.transform = CGAffineTransformMakeRotation(0);
+            
+            [UIView commitAnimations];
+        }
+        else
+        {
+            // swoop stack tiles back together
+            //
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+            [UIView setAnimationDuration:0.25];
+            
+            self.center = originalCenter;
+            
+            CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+            
+            for (int i = 0; i < 4; i++)
+                ((UIView *)[self.subviews objectAtIndex:i]).center = myCenter;
+            
+            for (int i = 0; i < 3; i++)
+                ((UIView *)[self.subviews objectAtIndex:i]).layer.shadowOpacity = 0.0;
+            
+            label.alpha = 1.0;
+
+            [UIView commitAnimations];
+        }
+    }
+}
+
+#pragma mark -
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    // we can still try for the secondaries
     //
-    NSLog(@"%@", error);
-    
-    [connection autorelease];
+    [self downloadSecondaryImages];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    receivedData = [[NSMutableData data] retain];
-}
+    UIImage *tileImage = [UIImage imageWithData:request.responseData];
 
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
-{
-    [receivedData appendData:data];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
-{
-    [connection autorelease];
+    [request autorelease];
     
-    UIImage *tileImage = [UIImage imageWithData:receivedData];
+    [self downloadSecondaryImages];
     
-    [receivedData release];
-    
+    // process & update primary image
+    //
     if (tileImage)
     {
         // get corner image
@@ -225,7 +415,7 @@
         
         // update tile
         //
-        imageView.image = clippedImage;
+        imageView.image = [clippedImage transparentBorderImage:1];
         
         // animate cover removal
         //

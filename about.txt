@@ -2,18 +2,20 @@ MapBox (c) 2010-2011 Development Seed, Inc.
 
 Libraries used under license: 
 
+ * ASIHTTPRequest, (c) 2007-2011 All-Seeing Interactive https://github.com/pokeb/asi-http-request
+
  * Fingertips, (c) 2011 Development Seed, Inc. https://github.com/developmentseed/fingertips
 
  * FMDB, (c) 2008 Flying Meat Inc. https://github.com/ccgus/fmdb
 
  * JSONKit, (c) 2011 John Engelhart https://github.com/johnezang/JSONKit
 
- * Reachability, (c) 2009 Apple Inc. http://developer.apple.com/library/ios/#samplecode/Reachability/Introduction/Intro.html
+ * Route-Me, (c) 2008-2010 Route-Me Contributors https://github.com/route-me/route-me
 
- * Route-Me map library, (c) 2008-2010 Route-Me Contributors https://github.com/route-me/route-me
-
- * Simple KML, (c) 2010, Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
+ * Simple KML, (c) 2010 Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
 
  * TouchXML, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchXML
+
+ * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
 
 Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
