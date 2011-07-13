@@ -44,10 +44,10 @@
         //
         label = [[[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)] autorelease];
         
-        label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-        label.textColor       = [UIColor whiteColor];
         label.font            = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
         label.text            = [NSString stringWithFormat:@" %@", labelText];
+
+        self.featured = NO;
         
         [imageView addSubview:label];
         
@@ -116,6 +116,11 @@
         CGColorRelease(color);
         
         label.textColor = [UIColor blackColor];
+    }
+    else
+    {
+        label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+        label.textColor       = [UIColor whiteColor];
     }
 
     featured = flag;    
