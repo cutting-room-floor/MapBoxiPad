@@ -294,15 +294,15 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                             CGFloat x;
                             
                             if (col == 0)
-                                x = 10;
+                                x = 32;
                             
                             else if (col == 1)
                                 x = containerView.frame.size.width / 2 - 74;
                             
                             else if (col == 2)
-                                x = containerView.frame.size.width - 148 - 10;
+                                x = containerView.frame.size.width - 148 - 32;
                             
-                            DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, row * 168, 148, 148) 
+                            DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
                                                                                                          imageURL:[imagesToDownload objectAtIndex:index]
                                                                                                         labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
                             

@@ -49,8 +49,6 @@
     accountScrollView.hidden  = YES;
     accountPageControl.hidden = YES;
     
-    accountScrollView.clipsToBounds = NO;
-    
     // fire off account list request
     //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", kTileStreamHostingURL, kTileStreamAlbumAPIPath];
@@ -191,20 +189,20 @@
                     CGFloat x;
                     
                     if (col == 0)
-                        x = 10;
+                        x = 32;
                     
                     else if (col == 1)
                         x = containerView.frame.size.width / 2 - 74;
                     
                     else if (col == 2)
-                        x = containerView.frame.size.width - 148 - 10;
+                        x = containerView.frame.size.width - 148 - 32;
                     
                     // get label bits
                     //
                     NSString *accountName = [[servers objectAtIndex:index] valueForKey:@"id"];
                     NSString *layerCount  = [[[servers objectAtIndex:index] valueForKey:@"quota"] valueForKey:@"count"];
 
-                    DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, row * 168, 148, 148) 
+                    DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
                                                                                                          imageURLs:[imagesToDownload objectAtIndex:index]
                                                                                                          labelText:[NSString stringWithFormat:@"%@ (%@)", accountName, layerCount]] autorelease];
                     

@@ -12,8 +12,8 @@
 		</object>
 		<object class="NSArray" key="IBDocument.IntegratedClassDependencies">
 			<bool key="EncodedWithXMLCoder">YES</bool>
-			<string>IBUIPageControl</string>
 			<string>IBUILabel</string>
+			<string>IBUIPageControl</string>
 			<string>IBUIActivityIndicatorView</string>
 			<string>IBUIView</string>
 			<string>IBUIScrollView</string>
@@ -48,7 +48,7 @@
 						<string key="NSFrame">{{20, 66}, {560, 21}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="902268139"/>
+						<reference key="NSNextKeyView" ref="723828643"/>
 						<string key="NSReuseIdentifierKey">_NS:330</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClipsSubviews">YES</bool>
@@ -78,16 +78,15 @@
 					<object class="IBUIScrollView" id="902268139">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{20, 101}, {560, 507}}</string>
+						<string key="NSFrameSize">{600, 637}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView" ref="723828643"/>
+						<reference key="NSNextKeyView" ref="173883873"/>
 						<string key="NSReuseIdentifierKey">_NS:192</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEgMAA</bytes>
 						</object>
-						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIPagingEnabled">YES</bool>
@@ -126,7 +125,7 @@
 				<string key="NSFrameSize">{600, 637}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
-				<reference key="NSNextKeyView" ref="173883873"/>
+				<reference key="NSNextKeyView" ref="902268139"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">1</int>
 					<bytes key="NSRGB">MCAwIDAgMC43AA</bytes>
@@ -230,12 +229,6 @@
 						<reference key="parent" ref="766721923"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">28</int>
-						<reference key="object" ref="793433887"/>
-						<reference key="parent" ref="766721923"/>
-						<string key="objectName">Page Control</string>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">32</int>
 						<reference key="object" ref="723828643"/>
 						<reference key="parent" ref="766721923"/>
@@ -244,6 +237,12 @@
 						<int key="objectID">37</int>
 						<reference key="object" ref="173883873"/>
 						<reference key="parent" ref="766721923"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">28</int>
+						<reference key="object" ref="793433887"/>
+						<reference key="parent" ref="766721923"/>
+						<string key="objectName">Page Control</string>
 					</object>
 				</object>
 			</object>

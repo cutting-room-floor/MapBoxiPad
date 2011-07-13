@@ -78,7 +78,7 @@
 					<object class="IBUIScrollView" id="902268139">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">274</int>
-						<string key="NSFrame">{{20, 101}, {560, 507}}</string>
+						<string key="NSFrameSize">{600, 637}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="723828643"/>
@@ -87,7 +87,6 @@
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MSAxIDEgMAA</bytes>
 						</object>
-						<bool key="IBUIClipsSubviews">YES</bool>
 						<bool key="IBUIMultipleTouchEnabled">YES</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 						<bool key="IBUIPagingEnabled">YES</bool>
