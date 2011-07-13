@@ -311,9 +311,6 @@
             for (int i = 0; i < 4; i++)
                 ((UIView *)[self.subviews objectAtIndex:i]).center = myCenter;
             
-            for (int i = 0; i < 3; i++)
-                ((UIView *)[self.subviews objectAtIndex:i]).layer.shadowOpacity = 0.0;
-            
             label.alpha = 1.0;
 
             [UIView commitAnimations];
