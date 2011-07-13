@@ -12,6 +12,7 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxLayerAddCustomServerController.h"
+#import "DSMapBoxErrorView.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -102,6 +103,12 @@
     [request autorelease];
     
     [spinner stopAnimating];
+    
+    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to download TileStreams"];
+    
+    [self.view addSubview:errorView];
+    
+    errorView.center = self.view.center;
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request

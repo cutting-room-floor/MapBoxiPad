@@ -13,6 +13,7 @@
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxErrorView.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -175,6 +176,12 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [request autorelease];
     
     [spinner stopAnimating];
+    
+    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse TileStream"];
+    
+    [self.view addSubview:errorView];
+    
+    errorView.center = self.view.center;
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -185,128 +192,155 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     id newLayers = [request.responseData mutableObjectFromJSONData];
     
-    // TODO: what if no layers? 
-    //
     if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
     {
-        helpLabel.hidden       = NO;
-        tileScrollView.hidden  = NO;
-        
-        if ([newLayers count] > 9)
-            tilePageControl.hidden = NO;
-        
-        NSMutableArray *imagesToDownload = [NSMutableArray array];
-        
-        for (int i = 0; i < [newLayers count]; i++)
+        if ([newLayers count])
         {
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
+            NSMutableArray *validLayers      = [NSMutableArray array];
+            NSMutableArray *imagesToDownload = [NSMutableArray array];
             
-            // determine center tile to download
-            //
-            CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
-                                                                       [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
-            
-            int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
-            
-            int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
-            int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
-                                               cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
-            
-            tileY = pow(2.0, tileZoom) - tileY - 1.0;
-            
-            RMTile tile = {
-                .zoom = tileZoom,
-                .x    = tileX,
-                .y    = tileY,
-            };
-            
-            if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
+            for (int i = 0; i < [newLayers count]; i++)
             {
-                // TODO: handle missing key
-                //
-                // http://a.tiles.mapbox.com/mapbox/1.0.0/afghanistan-dari/{z}/{x}/{y}.png
-                //
-                NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
+                NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
                 
-                // update layer for server-wide variables
+                // determine center tile to download
                 //
-                [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
-                [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
-                [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-                [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
-                [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
-
-                if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
-                    [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
+                CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
+                                                                           [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
                 
-                if ([layer objectForKey:@"formatter"] && [[layer objectForKey:@"formatter"] isKindOfClass:[NSString class]])
-                    [layer setValue:[layer objectForKey:@"formatter"] forKey:@"formatter"];
+                int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
                 
-                [newLayers replaceObjectAtIndex:i withObject:layer];
-
-                // swap in x/y/z
-                //
-                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
-                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[NSString stringWithFormat:@"%d", tile.x]];
-                tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[NSString stringWithFormat:@"%d", tile.y]];
-
-                // queue up center tile download
-                //
-                [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
-            }
-        }
-        
-        [layers release];
-        
-        layers = [[NSArray arrayWithArray:newLayers] retain];
-        
-        // layout preview tiles
-        //
-        int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
-        
-        tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
-        
-        tilePageControl.numberOfPages = pageCount;
-
-        for (int i = 0; i < pageCount; i++)
-        {
-            UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
-            
-            containerView.backgroundColor = [UIColor clearColor];
-            
-            for (int j = 0; j < 9; j++)
-            {
-                int index = i * 9 + j;
+                int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
+                int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
+                                                   cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
                 
-                if (index < [layers count])
+                tileY = pow(2.0, tileZoom) - tileY - 1.0;
+                
+                RMTile tile = {
+                    .zoom = tileZoom,
+                    .x    = tileX,
+                    .y    = tileY,
+                };
+                
+                if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
                 {
-                    int row = j / 3;
-                    int col = j - (row * 3);
+                    NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
+                    
+                    // update layer for server-wide variables
+                    //
+                    [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
+                    [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
+                    [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                    [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
+                    [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
 
-                    CGFloat x;
+                    if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
+                        [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
                     
-                    if (col == 0)
-                        x = 10;
+                    if ([layer objectForKey:@"formatter"] && [[layer objectForKey:@"formatter"] isKindOfClass:[NSString class]])
+                        [layer setValue:[layer objectForKey:@"formatter"] forKey:@"formatter"];
                     
-                    else if (col == 1)
-                        x = containerView.frame.size.width / 2 - 74;
-                    
-                    else if (col == 2)
-                        x = containerView.frame.size.width - 148 - 10;
-                    
-                    DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, row * 168, 148, 148) 
-                                                                                                 imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
-                    
-                    tileView.delegate = self;
-                    tileView.tag = index;
-                    
-                    [containerView addSubview:tileView];
+                    // add valid layer
+                    //
+                    [validLayers addObject:layer];
+
+                    // swap in x/y/z
+                    //
+                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
+                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[NSString stringWithFormat:@"%d", tile.x]];
+                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[NSString stringWithFormat:@"%d", tile.y]];
+
+                    // queue up center tile download
+                    //
+                    [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
                 }
             }
             
-            [tileScrollView addSubview:containerView];
+            if ([validLayers count])
+            {
+                helpLabel.hidden       = NO;
+                tileScrollView.hidden  = NO;
+                
+                if ([validLayers count] > 9)
+                    tilePageControl.hidden = NO;
+
+                [layers release];
+                
+                layers = [[NSArray arrayWithArray:validLayers] retain];
+                
+                // layout preview tiles
+                //
+                int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
+                
+                tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
+                
+                tilePageControl.numberOfPages = pageCount;
+                
+                for (int i = 0; i < pageCount; i++)
+                {
+                    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
+                    
+                    containerView.backgroundColor = [UIColor clearColor];
+                    
+                    for (int j = 0; j < 9; j++)
+                    {
+                        int index = i * 9 + j;
+                        
+                        if (index < [layers count])
+                        {
+                            int row = j / 3;
+                            int col = j - (row * 3);
+                            
+                            CGFloat x;
+                            
+                            if (col == 0)
+                                x = 10;
+                            
+                            else if (col == 1)
+                                x = containerView.frame.size.width / 2 - 74;
+                            
+                            else if (col == 2)
+                                x = containerView.frame.size.width - 148 - 10;
+                            
+                            DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, row * 168, 148, 148) 
+                                                                                                         imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                        labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
+                            
+                            tileView.delegate = self;
+                            tileView.tag = index;
+                            
+                            [containerView addSubview:tileView];
+                        }
+                    }
+                    
+                    [tileScrollView addSubview:containerView];
+                }
+            }
+            else
+            {
+                DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"TileStream has no layers"];
+                
+                [self.view addSubview:errorView];
+                
+                errorView.center = self.view.center;
+            }
         }
+        else
+        {
+            DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"TileStream has no layers"];
+            
+            [self.view addSubview:errorView];
+            
+            errorView.center = self.view.center;
+        }
+    }
+    else
+    {
+        DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse TileStream"];
+        
+        [self.view addSubview:errorView];
+        
+        errorView.center = self.view.center;
     }
 }
 

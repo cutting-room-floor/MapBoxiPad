@@ -154,6 +154,7 @@
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
 		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
+		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
 		DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */; };
 		DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */; };
 		DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390C13CBBB1800D6A034 /* DSMapBoxLayerAddAccountView.m */; };
@@ -169,6 +170,7 @@
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
+		DDE011A113CE33390070F421 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE011A013CE33390070F421 /* error.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
@@ -470,6 +472,8 @@
 		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
 		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
 		DDB23A7D13BE86970090FEC6 /* plus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_button.png; sourceTree = SOURCE_ROOT; };
+		DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxErrorView.h; sourceTree = "<group>"; };
+		DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxErrorView.m; sourceTree = "<group>"; };
 		DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamAlbumController.m; sourceTree = "<group>"; };
 		DDB8390713CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddTileStreamAlbumController.h; sourceTree = "<group>"; };
 		DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamAlbumController.xib; sourceTree = "<group>"; };
@@ -493,6 +497,7 @@
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
+		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs_highlight.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
@@ -1131,6 +1136,14 @@
 			name = Classes;
 			sourceTree = "<group>";
 		};
+		DDB7BEDD13CE192000280095 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DDE011A013CE33390070F421 /* error.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		DDBA88E21210E71000E5B572 /* Document Management */ = {
 			isa = PBXGroup;
 			children = (
@@ -1211,6 +1224,9 @@
 			children = (
 				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */,
 				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
+				DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */,
+				DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */,
+				DDB7BEDD13CE192000280095 /* Resources */,
 			);
 			name = "User Notification";
 			sourceTree = "<group>";
@@ -1381,6 +1397,7 @@
 				DD3E66B613C53BA100D09B4B /* chevron.png in Resources */,
 				DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */,
 				DDB8390F13CBC05F00D6A034 /* corner_fold_preview.png in Resources */,
+				DDE011A113CE33390070F421 /* error.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1531,6 +1548,7 @@
 				DD1ACD7D13CD1D44001244D2 /* ASINetworkQueue.m in Sources */,
 				DD1ACD7E13CD1D44001244D2 /* Reachability.m in Sources */,
 				DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */,
+				DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
