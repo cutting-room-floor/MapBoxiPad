@@ -55,16 +55,19 @@
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
 
-    ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
+    albumRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
     
-    request.delegate = self;
+    albumRequest.delegate = self;
 
-    [request startAsynchronous];
+    [albumRequest startAsynchronous];
 }
 
 - (void)dealloc
 {
     [servers release];
+    
+    [albumRequest clearDelegatesAndCancel];
+    [albumRequest release];
     
     [super dealloc];
 }
@@ -98,8 +101,6 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to download TileStreams"];
@@ -111,8 +112,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
     
     id newServers = [request.responseData mutableObjectFromJSONData];

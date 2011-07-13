@@ -20,7 +20,7 @@
     IBOutlet UIImageView *successImage;
     IBOutlet UILabel *recentServersLabel;
     IBOutlet UITableView *recentServersTableView;
-    ASIHTTPRequest *validationConnection;
+    ASIHTTPRequest *validationRequest;
     NSURL *finalURL;
 }
 

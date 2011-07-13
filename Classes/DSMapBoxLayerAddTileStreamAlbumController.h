@@ -20,6 +20,7 @@
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIScrollView *accountScrollView;
     IBOutlet UIPageControl *accountPageControl;
+    ASIHTTPRequest *albumRequest;
     
     NSArray *servers;
 }

@@ -29,6 +29,8 @@
     UIImageView *imageView;
     UILabel *label;
     CGPoint originalCenter;
+    ASIHTTPRequest *primaryImageRequest;
+    NSMutableArray *secondaryImageRequests;
     BOOL featured;
     BOOL touched;
 }

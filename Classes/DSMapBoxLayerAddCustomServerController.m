@@ -87,10 +87,10 @@
 
 - (void)dealloc
 {
-    if (validationConnection)
+    if (validationRequest)
     {
-        [validationConnection clearDelegatesAndCancel];
-        [validationConnection release];
+        [validationRequest clearDelegatesAndCancel];
+        [validationRequest release];
     }
 
     [finalURL release];
@@ -149,11 +149,11 @@
     {
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
         
-        validationConnection = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
+        validationRequest = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
 
-        validationConnection.delegate = self;
+        validationRequest.delegate = self;
         
-        [validationConnection startAsynchronous];
+        [validationRequest startAsynchronous];
         
         [spinner startAnimating];
     }
@@ -196,11 +196,11 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:spinner];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-    if (validationConnection)
+    if (validationRequest)
     {
-        [validationConnection clearDelegatesAndCancel];
-        [validationConnection release];
-        validationConnection = nil;
+        [validationRequest clearDelegatesAndCancel];
+        [validationRequest release];
+        validationRequest = nil;
     }
 
     [spinner startAnimating];
@@ -228,22 +228,14 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
-    
-    validationConnection = nil;
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
 
     id layers = [request.responseData objectFromJSONData];
-
-    validationConnection = nil;
 
     if (layers && [layers isKindOfClass:[NSArray class]])
     {

@@ -59,14 +59,22 @@
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
         
-        ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:imageURL] retain];
+        imageRequest = [[ASIHTTPRequest requestWithURL:imageURL] retain];
         
-        request.delegate = self;
+        imageRequest.delegate = self;
         
-        [request startAsynchronous];
+        [imageRequest startAsynchronous];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [imageRequest clearDelegatesAndCancel];
+    [imageRequest release];
+    
+    [super dealloc];
 }
 
 #pragma mark -
@@ -204,17 +212,10 @@
 
 #pragma mark -
 
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    [request autorelease];
-}
-
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     UIImage *tileImage = [UIImage imageWithData:request.responseData];
-    
+
     if (tileImage)
     {
         // get corner image

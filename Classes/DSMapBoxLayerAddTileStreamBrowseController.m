@@ -65,11 +65,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
     
-    ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
+    layersRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
     
-    request.delegate = self;
+    layersRequest.delegate = self;
     
-    [request startAsynchronous];
+    [layersRequest startAsynchronous];
 }
 
 - (void)dealloc
@@ -80,6 +80,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
     [serverTitle release];
     [serverURL release];
+    
+    [layersRequest clearDelegatesAndCancel];
+    [layersRequest release];
     
     [super dealloc];
 }
@@ -173,8 +176,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse TileStream"];
@@ -186,12 +187,10 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     [spinner stopAnimating];
     
     id newLayers = [request.responseData mutableObjectFromJSONData];
-    
+
     if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
     {
         if ([newLayers count])

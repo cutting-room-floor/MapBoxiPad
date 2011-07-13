@@ -28,6 +28,8 @@ extern NSString *const DSMapBoxLayersAdded;
     NSMutableArray *selectedLayers;
     NSMutableArray *selectedImages;
     
+    ASIHTTPRequest *layersRequest;
+    
     NSString *serverTitle;
     NSURL *serverURL;
 }

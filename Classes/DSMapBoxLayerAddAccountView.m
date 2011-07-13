@@ -64,17 +64,19 @@
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
         
-        ASIHTTPRequest *request = [[ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]] retain];
+        primaryImageRequest = [[ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]] retain];
         
-        request.delegate = self;
+        primaryImageRequest.delegate = self;
         
-        [request startAsynchronous];
+        [primaryImageRequest startAsynchronous];
         
         // save secondary image URLs for later
         //
         NSMutableArray *downloadURLs = [NSMutableArray arrayWithArray:imageURLs];
         [downloadURLs removeObjectAtIndex:0];
         previewImageURLs = [[NSArray arrayWithArray:downloadURLs] retain];
+        
+        secondaryImageRequests = [[NSMutableArray array] retain];
         
         // add preview views underneath
         //
@@ -99,6 +101,20 @@
 - (void)dealloc
 {
     [previewImageURLs release];
+    
+    [primaryImageRequest clearDelegatesAndCancel];
+    [primaryImageRequest release];
+    
+    if ([secondaryImageRequests count])
+    {
+        for (ASIHTTPRequest *request in secondaryImageRequests)
+        {
+            [request clearDelegatesAndCancel];
+            [request release];
+        }
+    }
+    
+    [secondaryImageRequests release];
     
     [super dealloc];
 }
@@ -174,6 +190,8 @@
     for (int i = 0; i < [previewImageURLs count]; i++)
     {
         __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
+        
+        [secondaryImageRequests addObject:request];
         
         [request setCompletionBlock:^(void)
         {
@@ -353,8 +371,6 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     // we can still try for the secondaries
     //
     [self downloadSecondaryImages];
@@ -362,8 +378,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [request autorelease];
-    
     UIImage *tileImage = [UIImage imageWithData:request.responseData];
 
     [self downloadSecondaryImages];
