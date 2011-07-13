@@ -497,7 +497,7 @@
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
-		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = error.png; sourceTree = "<group>"; };
+		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = error.png; path = ../error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs_highlight.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
