@@ -38,7 +38,7 @@
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Enter Custom"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
-                                                                              action:@selector(tappedAddButton:)] autorelease];
+                                                                              action:@selector(tappedCustomButton:)] autorelease];
 
     // setup progress indication
     //
@@ -72,7 +72,7 @@
 
 #pragma mark -
 
-- (void)tappedAddButton:(id)sender
+- (void)tappedCustomButton:(id)sender
 {
     DSMapBoxLayerAddCustomServerController *customController = [[[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil] autorelease];
     
