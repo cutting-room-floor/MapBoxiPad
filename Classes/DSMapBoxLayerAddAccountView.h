@@ -29,10 +29,12 @@
     UIImageView *imageView;
     UILabel *label;
     CGPoint originalCenter;
+    BOOL featured;
     BOOL touched;
 }
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddAccountViewDelegate>delegate;
+@property (nonatomic, assign) BOOL featured;
 @property (nonatomic, assign) BOOL touched;
 
 - (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText;

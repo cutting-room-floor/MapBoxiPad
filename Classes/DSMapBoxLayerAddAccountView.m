@@ -19,6 +19,7 @@
 @implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
+@synthesize featured;
 @synthesize touched;
 
 - (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText
@@ -103,6 +104,22 @@
 }
 
 #pragma mark -
+
+- (void)setFeatured:(BOOL)flag
+{
+    if (flag)
+    {
+        CGColorRef color = CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.8);
+        
+        label.backgroundColor = [UIColor colorWithCGColor:color];
+        
+        CGColorRelease(color);
+        
+        label.textColor = [UIColor blackColor];
+    }
+
+    featured = flag;    
+}
 
 - (void)setTouched:(BOOL)flag
 {

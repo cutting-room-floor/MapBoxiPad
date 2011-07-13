@@ -204,6 +204,9 @@
                     accountView.delegate = self;
                     accountView.tag = index;
                     
+                    if (i == 0 && index == 0)
+                        accountView.featured = YES;
+                    
                     if (i == 0)
                     {
                         // slide-fade-animate in first page of results
