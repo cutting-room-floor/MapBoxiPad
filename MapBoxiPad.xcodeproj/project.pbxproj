@@ -82,7 +82,6 @@
 		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
-		DD274EFF13842622007B58AC /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = DD274EFE13842622007B58AC /* iCarousel.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
@@ -363,8 +362,6 @@
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
 		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
-		DD274EFD13842622007B58AC /* iCarousel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = iCarousel.h; path = Externals/iCarousel/iCarousel/iCarousel.h; sourceTree = "<group>"; };
-		DD274EFE13842622007B58AC /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = iCarousel.m; path = Externals/iCarousel/iCarousel/iCarousel.m; sourceTree = "<group>"; };
 		DD27509E13844560007B58AC /* DSMapBoxLayerAddPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddPreviewController.h; sourceTree = "<group>"; };
 		DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddPreviewController.m; sourceTree = "<group>"; };
 		DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddPreviewController.xib; sourceTree = "<group>"; };
@@ -829,15 +826,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DD274EFC1384260E007B58AC /* iCarousel */ = {
-			isa = PBXGroup;
-			children = (
-				DD274EFD13842622007B58AC /* iCarousel.h */,
-				DD274EFE13842622007B58AC /* iCarousel.m */,
-			);
-			name = iCarousel;
-			sourceTree = "<group>";
-		};
 		DD2754D613856855007B58AC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -916,7 +904,6 @@
 				DD1ACD0713CD1735001244D2 /* ASIHTTPRequest */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
 				DD72C37D11E53CF60030C637 /* FMDB */,
-				DD274EFC1384260E007B58AC /* iCarousel */,
 				DD28C07F13B26381008BED70 /* JSONKit */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
@@ -1524,7 +1511,6 @@
 				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
 				DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
-				DD274EFF13842622007B58AC /* iCarousel.m in Sources */,
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
 				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
