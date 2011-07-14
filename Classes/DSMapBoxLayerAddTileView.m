@@ -58,7 +58,7 @@
         // attach gesture
         //
         UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
-        longPress.minimumPressDuration = 0.01;
+        longPress.minimumPressDuration = 0.05;
         [self addGestureRecognizer:longPress];
         
         // fire off image download request
