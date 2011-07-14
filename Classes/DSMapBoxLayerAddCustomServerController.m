@@ -168,15 +168,30 @@
     // save the server to recents
     //
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *recents = [NSMutableArray array];
+    NSMutableArray *recents  = [NSMutableArray array];
 
     if ([defaults objectForKey:@"recentServers"])
     {
+        // get current values
+        //
         [recents addObjectsFromArray:[defaults arrayForKey:@"recentServers"]];
+
+        // remove new one if there previously
+        //
         [recents removeObject:[self.finalURL absoluteString]];
+
+        // trim to 6 total (before new one)
+        //
+        if ([recents count] > 6)
+            recents = [NSMutableArray arrayWithArray:[recents subarrayWithRange:NSMakeRange(0, 6)]];
     }
     
+    // add new one
+    //
     [recents insertObject:[self.finalURL absoluteString] atIndex:0];
+
+    // save to disk
+    //
     [defaults setObject:recents forKey:@"recentServers"];
     [defaults synchronize];
 
