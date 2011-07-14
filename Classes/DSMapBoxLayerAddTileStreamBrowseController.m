@@ -154,8 +154,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
                        [layer objectForKey:@"tileURL"], @"tileURL",
-                       ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : [NSNull null]), @"gridURL",
-                       ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : [NSNull null]), @"formatter",
+                       ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
+                       ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
                        [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                        [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                        [layer objectForKey:@"id"], @"id", 
@@ -237,11 +237,18 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
                     [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
 
+                    // handle null that needs to be serialized later
+                    //
+                    // see https://github.com/developmentseed/tilestream-pro/issues/230
+                    //
+                    for (NSString *key in [layer allKeys])
+                        if ([[layer objectForKey:key] isKindOfClass:[NSNull class]])
+                            [layer setObject:@"" forKey:key];
+                    
+                    // pull out first grid URL
+                    //
                     if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
                         [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
-                    
-                    if ([layer objectForKey:@"formatter"] && [[layer objectForKey:@"formatter"] isKindOfClass:[NSString class]])
-                        [layer setValue:[layer objectForKey:@"formatter"] forKey:@"formatter"];
                     
                     // add valid layer
                     //
