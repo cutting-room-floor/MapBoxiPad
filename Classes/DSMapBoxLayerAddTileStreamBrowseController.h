@@ -30,11 +30,11 @@ extern NSString *const DSMapBoxLayersAdded;
     
     ASIHTTPRequest *layersRequest;
     
-    NSString *serverTitle;
+    NSString *serverName;
     NSURL *serverURL;
 }
 
-@property (nonatomic, retain) NSString *serverTitle;
+@property (nonatomic, retain) NSString *serverName;
 @property (nonatomic, retain) NSURL *serverURL;
 
 @end

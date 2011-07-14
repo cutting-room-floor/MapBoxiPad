@@ -91,8 +91,8 @@
     
     DSMapBoxLayerAddTileStreamBrowseController *browseController = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    browseController.serverTitle = [NSString stringWithFormat:@"%@%@ TileStream", [account valueForKey:@"id"], ([[account valueForKey:@"id"] hasSuffix:@"s"] ? @"'" : @"'s")];
-    browseController.serverURL   = [NSURL URLWithString:serverURLString];
+    browseController.serverName = [account valueForKey:@"id"];
+    browseController.serverURL  = [NSURL URLWithString:serverURLString];
     
     [(UINavigationController *)self.parentViewController pushViewController:browseController animated:YES];
 }

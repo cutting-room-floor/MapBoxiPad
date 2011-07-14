@@ -205,7 +205,20 @@
     //
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
 
-    controller.serverURL = self.finalURL;
+    if ([[self.finalURL absoluteString] hasPrefix:kTileStreamHostingURL])
+    {
+        NSMutableString *serverName = [NSMutableString stringWithString:[self.finalURL absoluteString]];
+        
+        [serverName replaceOccurrencesOfString:kTileStreamHostingURL withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [serverName length])];
+        [serverName replaceOccurrencesOfString:@"/"                  withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [serverName length])];
+        
+        controller.serverName = serverName;
+    }
+    
+    else
+        controller.serverName = [self.finalURL absoluteString];
+    
+    controller.serverURL  = self.finalURL;
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
 }

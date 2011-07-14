@@ -27,7 +27,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
 
-@synthesize serverTitle;
+@synthesize serverName;
 @synthesize serverURL;
 
 - (void)viewDidLoad
@@ -43,7 +43,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // setup nav bar
     //
-    self.navigationItem.title = self.serverTitle;
+    if ([self.serverName hasPrefix:@"http"])
+        self.navigationItem.title = self.serverName;
+    
+    else
+        self.navigationItem.title = [NSString stringWithFormat:@"%@%@ TileStream", self.serverName, ([self.serverName hasSuffix:@"s"] ? @"'" : @"'s")];
     
     self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
                                                                                           target:self 
@@ -78,7 +82,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [selectedLayers release];
     [selectedImages release];
 
-    [serverTitle release];
+    [serverName release];
     [serverURL release];
     
     [layersRequest clearDelegatesAndCancel];
