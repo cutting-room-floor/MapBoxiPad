@@ -74,11 +74,11 @@
     
     textField = [[UITextField alloc] initWithFrame:CGRectMake(0, self.bounds.size.height - 20, self.bounds.size.width, 20)];
     
-    textField.textColor                 = [UIColor colorWithWhite:1.0 alpha:0.75];
+    textField.textColor                 = [UIColor whiteColor];
     textField.backgroundColor           = [UIColor clearColor];
     textField.textAlignment             = UITextAlignmentCenter;
     textField.text                      = @"Error";
-    textField.font                      = [UIFont systemFontOfSize:[UIFont systemFontSize]];
+    textField.font                      = [UIFont boldSystemFontOfSize:[UIFont systemFontSize]];
     textField.adjustsFontSizeToFitWidth = NO;
     
     [self addSubview:textField];
