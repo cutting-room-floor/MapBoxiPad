@@ -842,7 +842,7 @@
                                  [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom",
                                  [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom",
                                  ([layer objectForKey:@"description"] ? [layer objectForKey:@"description"] : @""), @"description",
-                                 [NSDate dateWithTimeIntervalSince1970:[[layer objectForKey:@"mtime"] intValue]], @"mtime",
+                                 [NSDate dateWithTimeIntervalSince1970:([[layer objectForKey:@"mtime"] doubleValue] / 1000)], @"mtime",
                                  ([layer objectForKey:@"basename"] ? [layer objectForKey:@"basename"] : @""), @"basename",
                                  [layer objectForKey:@"tileURL"], @"tileURL",
                                  ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
