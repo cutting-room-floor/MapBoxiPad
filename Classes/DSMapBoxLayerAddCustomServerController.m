@@ -21,7 +21,7 @@
 @interface DSMapBoxLayerAddCustomServerController (DSMapBoxLayerAddTypeControllerPrivate)
 
 - (void)setRecentServersHidden:(BOOL)flag;
-- (void)reloadRecents;
+- (void)updateRecentServersAppearance;
 
 @end
 
@@ -65,16 +65,12 @@
     
     successImage.hidden = YES;
 
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] && [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count])
-        [self setRecentServersHidden:NO];
+    [recentServersTableView reloadData];
     
-    else
-        [self setRecentServersHidden:YES];
-        
+    [self updateRecentServersAppearance];
+    
     entryField.text = @"";
-    
-    [self reloadRecents];
-    
+
     [entryField becomeFirstResponder];
 }
 
@@ -112,54 +108,64 @@
     [UIView commitAnimations];
 }
 
-- (void)reloadRecents
+- (void)updateRecentServersAppearance
 {
-    [recentServersTableView reloadData];
-    
     recentServersTableView.frame = CGRectMake(recentServersTableView.frame.origin.x,
                                               recentServersTableView.frame.origin.y,
                                               recentServersTableView.frame.size.width,
                                               [recentServersTableView numberOfRowsInSection:0] * [recentServersTableView rowHeight] - 1);
+
+    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] || [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count] == 0)
+        [self setRecentServersHidden:YES];
+    
+    else
+        [self setRecentServersHidden:NO];
 }
 
 - (void)validateEntry
 {
-    self.finalURL = nil;
-    
-    NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-              enteredValue = [enteredValue    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+    if ([entryField.text length])
+    {
+        self.finalURL = nil;
+        
+        NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                  enteredValue = [enteredValue    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
 
-    if ([[enteredValue componentsSeparatedByString:@"."] count] > 1 || [[enteredValue componentsSeparatedByString:@":"] count] > 1 || [[enteredValue componentsSeparatedByString:@"localhost"] count] > 1)
-    {
-        // assume server hostname/IP if it contains a period
-        //
-        if ( ! [enteredValue hasPrefix:@"http"])
-            enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
+        if ([[enteredValue componentsSeparatedByString:@"."] count] > 1 || [[enteredValue componentsSeparatedByString:@":"] count] > 1 || [[enteredValue componentsSeparatedByString:@"localhost"] count] > 1)
+        {
+            // assume server hostname/IP if it contains a period
+            //
+            if ( ! [enteredValue hasPrefix:@"http"])
+                enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
+            
+            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
+        }
+        else
+        {
+            // assume hosting account username
+            //
+            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
+        }
         
-        self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
-    }
-    else
-    {
-        // assume hosting account username
-        //
-        self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
-    }
-    
-    if (self.finalURL)
-    {
-        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-        
-        validationRequest = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
+        if (self.finalURL)
+        {
+            [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+            
+            validationRequest = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
 
-        validationRequest.delegate = self;
+            validationRequest.delegate = self;
+            
+            [validationRequest startAsynchronous];
+            
+            [spinner startAnimating];
+        }
         
-        [validationRequest startAsynchronous];
-        
-        [spinner startAnimating];
+        else
+            [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
     }
-    
+
     else
-        [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
+        [spinner stopAnimating];
 }
 
 
@@ -328,10 +334,7 @@
         
         [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
         
-        [self reloadRecents];
-        
-        if ([recents count] == 0)
-            [self setRecentServersHidden:YES];
+        [self updateRecentServersAppearance];
     }
 }
 
