@@ -30,13 +30,13 @@
     
     // setup nav bar
     //
-    self.navigationItem.title = @"Choose TileStream";
+    self.navigationItem.title = @"Add Layers";
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
                                                                                            target:self.parentViewController
                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Enter Custom"
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"More Options"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedCustomButton:)] autorelease];
