@@ -1,5 +1,5 @@
     //
-//  DSMapBoxLayerAddNavigationController.m
+//  DSMapBoxAlphaModalNavigationController.m
 //  MapBoxiPad
 //
 //  Created by Justin R. Miller on 5/17/11.
@@ -12,33 +12,73 @@
 
 @implementation DSMapBoxAlphaModalNavigationController
 
-@synthesize backgroundImage;
-
 - (void)viewDidLoad
 {
-    backgroundImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    
-    // poor man's blur
+    self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+
+    self.navigationBar.barStyle    = UIBarStyleBlack;
+    self.navigationBar.translucent = YES;
+
+    // image background with poor man's blur
     //
+    backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)] autorelease];
+    
+    backgroundImageView.contentMode = UIViewContentModeCenter;
+    
     [[backgroundImageView layer] setRasterizationScale:0.5];
     [[backgroundImageView layer] setShouldRasterize:YES];
     
     [self.view insertSubview:backgroundImageView atIndex:0];
+    
+    // watch for keyboard show/hide to adjust background image in landscape
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification 
+                                               object:self.view.window];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification 
+                                               object:self.view.window];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    self.navigationBar.barStyle    = UIBarStyleBlack;
-    self.navigationBar.translucent = YES;
+    if ( ! backgroundImageView.image)
+    {
+        NSAssert(self.modalPresentationStyle == UIModalPresentationFormSheet, @"alpha modals only supported with form sheet presentation");
 
-    self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-
-    backgroundImageView.frame = self.view.bounds;
-    backgroundImageView.alpha = 0.0;
+        // Not totally in love with manually accessing the main app view,
+        // but how else could we do this? Also note that we don't retain
+        // the view, since, assuming we are modal, it is below us and 
+        // isn't going anywhere.
+        //
+        baseView = [[UIApplication sharedApplication].keyWindow.subviews objectAtIndex:0];
+            
+        BOOL viewIsFullscreen = ((baseView.bounds.size.width >= 748 && baseView.bounds.size.width <= 768 && baseView.bounds.size.height >= 1004 && baseView.bounds.size.height <= 1024) ||
+                                 (baseView.bounds.size.height >= 748 && baseView.bounds.size.height <= 768 && baseView.bounds.size.width >= 1004 && baseView.bounds.size.height <= 1024));
+        
+        NSAssert(viewIsFullscreen, @"main app view must be full screen for iPad");
+        
+        UIGraphicsBeginImageContext(baseView.bounds.size);
+        [baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
+        UIImage *fullImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        
+        CGImageRef croppedImage = CGImageCreateWithImageInRect(fullImage.CGImage, CGRectMake((baseView.bounds.size.width - 540) / 2, 
+                                                                                             0, 
+                                                                                             540, 
+                                                                                             baseView.bounds.size.height));
+        
+        backgroundImageView.image = [UIImage imageWithCGImage:croppedImage];
+        
+        CGImageRelease(croppedImage);
+    }
     
-    backgroundImageView.image = self.backgroundImage;
+    backgroundImageView.alpha = 0.0;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.25];
@@ -62,9 +102,9 @@
 
 - (void)dealloc
 {
-    [backgroundImageView release];
-    [backgroundImage release];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:self.view.window];
+    
     [super dealloc];
 }
 
@@ -78,29 +118,35 @@
     return NO;
 }
 
-@end
-
 #pragma mark -
 
-@implementation UIViewController (UIViewController_CustomUIAdditions)
-
-- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxAlphaModalNavigationController *)navigationController
+- (void)keyboardWillShow:(NSNotification *)notification
 {
-    if (navigationController.modalPresentationStyle == UIModalPresentationFormSheet)
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
-        UIGraphicsBeginImageContext(self.view.bounds.size);
-        [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-        UIImage *fullImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
+        CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
         
-        CGImageRef croppedImage = CGImageCreateWithImageInRect(fullImage.CGImage, CGRectMake((self.view.bounds.size.width  - 540) / 2, 
-                                                                                             (self.view.bounds.size.height - 620) / 2, 
-                                                                                             540, 
-                                                                                             620));
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.3];
         
-        navigationController.backgroundImage = [UIImage imageWithCGImage:croppedImage];
+        backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y + delta);
         
-        CGImageRelease(croppedImage);
+        [UIView commitAnimations];
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
+    {
+        CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationDuration:0.3];
+        
+        backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y - delta);
+        
+        [UIView commitAnimations];
     }
 }
 

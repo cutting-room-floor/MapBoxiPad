@@ -1,5 +1,5 @@
 //
-//  DSMapBoxLayerAddNavigationController.h
+//  DSMapBoxAlphaModalNavigationController.h
 //  MapBoxiPad
 //
 //  Created by Justin R. Miller on 5/17/11.
@@ -10,18 +10,8 @@
 
 @interface DSMapBoxAlphaModalNavigationController : UINavigationController
 {
+    UIView *baseView;
     UIImageView *backgroundImageView;
-    UIImage *backgroundImage;
 }
-
-@property (nonatomic, retain) UIImage *backgroundImage;
-
-@end
-
-#pragma mark -
-
-@interface UIViewController (UIViewController_CustomUIAdditions)
-
-- (void)prepareNavigationControllerForAlphaModal:(DSMapBoxAlphaModalNavigationController *)navigationController;
 
 @end
