@@ -958,7 +958,8 @@
 
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
         
-        wrapper.navigationBar.barStyle = UIBarStyleBlack;
+        wrapper.navigationBar.barStyle    = UIBarStyleBlack;
+        wrapper.navigationBar.translucent = YES;
         
         loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                              style:UIBarButtonItemStylePlain
