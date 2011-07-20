@@ -169,6 +169,8 @@
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
+		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
+		DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6413D75EEC00DDEA58 /* layers.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
 		DDE011A113CE33390070F421 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE011A013CE33390070F421 /* error.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
@@ -496,6 +498,8 @@
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
+		DDDA3C6313D75EEC00DDEA58 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
+		DDDA3C6413D75EEC00DDEA58 /* layers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layers.png; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
 		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = error.png; path = ../error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -994,6 +998,8 @@
 				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
 				DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */,
 				DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */,
+				DDDA3C6313D75EEC00DDEA58 /* help.png */,
+				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1398,6 +1404,8 @@
 				DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */,
 				DDB8390F13CBC05F00D6A034 /* corner_fold_preview.png in Resources */,
 				DDE011A113CE33390070F421 /* error.png in Resources */,
+				DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */,
+				DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
