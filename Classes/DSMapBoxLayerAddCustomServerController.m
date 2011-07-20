@@ -35,7 +35,12 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Custom TileStream";
+    self.navigationItem.title = @"Custom TileStream account";
+
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil 
+                                                                             action:nil] autorelease];
 
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse"
                                                                                style:UIBarButtonItemStyleBordered
@@ -102,7 +107,6 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     
-    recentServersLabel.hidden = flag;
     recentServersTableView.hidden = flag;
     
     [UIView commitAnimations];
@@ -188,8 +192,8 @@
 
         // trim to 6 total (before new one)
         //
-        if ([recents count] > 6)
-            recents = [NSMutableArray arrayWithArray:[recents subarrayWithRange:NSMakeRange(0, 6)]];
+        if ([recents count] > 7)
+            recents = [NSMutableArray arrayWithArray:[recents subarrayWithRange:NSMakeRange(0, 7)]];
     }
     
     // add new one

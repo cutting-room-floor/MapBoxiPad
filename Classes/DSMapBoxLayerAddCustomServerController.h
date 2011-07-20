@@ -18,7 +18,6 @@
     IBOutlet UITextField *entryField;
     IBOutlet UIActivityIndicatorView *spinner;
     IBOutlet UIImageView *successImage;
-    IBOutlet UILabel *recentServersLabel;
     IBOutlet UITableView *recentServersTableView;
     ASIHTTPRequest *validationRequest;
     NSURL *finalURL;

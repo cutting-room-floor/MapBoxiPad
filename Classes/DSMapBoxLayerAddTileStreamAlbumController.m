@@ -30,13 +30,13 @@
     
     // setup nav bar
     //
-    self.navigationItem.title = @"Choose TileStream";
+    self.navigationItem.title = @"Choose TileStream account";
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
                                                                                            target:self.parentViewController
                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Enter Custom"
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"More Options"
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedCustomButton:)] autorelease];
@@ -76,6 +76,11 @@
 
 - (void)tappedCustomButton:(id)sender
 {
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Choose Account"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil 
+                                                                             action:nil] autorelease];
+
     DSMapBoxLayerAddCustomServerController *customController = [[[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil] autorelease];
     
     [(UINavigationController *)self.parentViewController pushViewController:customController animated:YES];
@@ -85,6 +90,11 @@
 
 - (void)accountViewWasSelected:(DSMapBoxLayerAddAccountView *)accountView
 {
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Account"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:nil 
+                                                                             action:nil] autorelease];
+
     NSDictionary *account = [servers objectAtIndex:accountView.tag];
     
     NSString *serverURLString = [NSString stringWithFormat:@"%@/%@", kTileStreamHostingURL, [account valueForKey:@"id"]];
