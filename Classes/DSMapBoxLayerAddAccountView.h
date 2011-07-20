@@ -33,6 +33,7 @@
     NSMutableArray *secondaryImageRequests;
     BOOL featured;
     BOOL touched;
+    BOOL flicked;
 }
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddAccountViewDelegate>delegate;

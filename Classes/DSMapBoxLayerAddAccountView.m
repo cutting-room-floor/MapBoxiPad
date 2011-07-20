@@ -176,7 +176,8 @@
                          }
                          completion:^(BOOL selected)
                          {
-                             [self.delegate accountViewWasSelected:self];
+                             if ( ! flicked)
+                                 [self.delegate accountViewWasSelected:self];
                          }];
     }
     
@@ -300,31 +301,75 @@
         {
             // spread stack tiles apart
             //
-            CGFloat distance = ((gesture.scale - 1.0) * 50) > 75 ? 75 : ((gesture.scale - 1.0) * 50);
+            CGFloat kDistanceMax = 75.0;
+            
+            CGFloat distance = ((gesture.scale - 1.0) * 50) > kDistanceMax ? kDistanceMax : ((gesture.scale - 1.0) * 50);
             
             if ([gesture numberOfTouches] < 2)
             {
+                // cancel to revert position
+                //
                 gesture.enabled = NO;
                 gesture.enabled = YES;
                 
                 return;
             }
             
-            [UIView beginAnimations:nil context:nil];
-            
-            CGPoint pointA = [gesture locationOfTouch:0 inView:self.superview];
-            CGPoint pointB = [gesture locationOfTouch:1 inView:self.superview];
-            
-            self.center = CGPointMake((pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2);
+            if (distance == kDistanceMax && gesture.velocity > 40)
+            {
+                // flick gesture
+                //
+                flicked = YES;
 
-            CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+                [UIView animateWithDuration:0.5
+                                      delay:0.0
+                                    options:UIViewAnimationCurveEaseInOut
+                                 animations:^(void)
+                                 {
+                                     CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+                                     
+                                     ((UIView *)[self.subviews objectAtIndex:0]).center = CGPointMake(myCenter.x - 2 * distance, myCenter.y - 2 * distance);
+                                     ((UIView *)[self.subviews objectAtIndex:1]).center = CGPointMake(myCenter.x + 2 * distance, myCenter.y - 2 * distance);
+                                     ((UIView *)[self.subviews objectAtIndex:2]).center = CGPointMake(myCenter.x - 2 * distance, myCenter.y + 2 * distance);
+                                     ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + 2 * distance, myCenter.y + 2 * distance);
+                                     
+                                     for (int i = 0; i < 4; i++)
+                                         ((UIView *)[self.subviews objectAtIndex:i]).transform = CGAffineTransformScale(((UIView *)[self.subviews objectAtIndex:i]).transform, 1.2, 1.2);
+                                         
+                                     self.alpha = 0.0;
+                                 }
+                                 completion:^(BOOL finished)
+                                 {
+                                     // cancel gesture
+                                     //
+                                     gesture.enabled = NO;
+                                     gesture.enabled = YES;
 
-            ((UIView *)[self.subviews objectAtIndex:0]).center = CGPointMake(myCenter.x - distance, myCenter.y - distance);
-            ((UIView *)[self.subviews objectAtIndex:1]).center = CGPointMake(myCenter.x + distance, myCenter.y - distance);
-            ((UIView *)[self.subviews objectAtIndex:2]).center = CGPointMake(myCenter.x - distance, myCenter.y + distance);
-            ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + distance, myCenter.y + distance);
+                                     // do the actual push
+                                     //
+                                     [self.delegate accountViewWasSelected:self];
+                                 }];
+            }
+            else
+            {
+                // regular spread gesture
+                //
+                [UIView beginAnimations:nil context:nil];
+                
+                CGPoint pointA = [gesture locationOfTouch:0 inView:self.superview];
+                CGPoint pointB = [gesture locationOfTouch:1 inView:self.superview];
+                
+                self.center = CGPointMake((pointA.x + pointB.x) / 2, (pointA.y + pointB.y) / 2);
 
-            [UIView commitAnimations];
+                CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+
+                ((UIView *)[self.subviews objectAtIndex:0]).center = CGPointMake(myCenter.x - distance, myCenter.y - distance);
+                ((UIView *)[self.subviews objectAtIndex:1]).center = CGPointMake(myCenter.x + distance, myCenter.y - distance);
+                ((UIView *)[self.subviews objectAtIndex:2]).center = CGPointMake(myCenter.x - distance, myCenter.y + distance);
+                ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + distance, myCenter.y + distance);
+
+                [UIView commitAnimations];
+            }
         }
     }
     else if (gesture.state == UIGestureRecognizerStateEnded || gesture.state == UIGestureRecognizerStateCancelled)
@@ -345,22 +390,51 @@
         }
         else
         {
-            // swoop stack tiles back together
+            // put stack tiles back together
             //
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
-            [UIView setAnimationDuration:0.25];
-            
-            self.center = originalCenter;
-            
-            CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
-            
-            for (int i = 0; i < 4; i++)
-                ((UIView *)[self.subviews objectAtIndex:i]).center = myCenter;
-            
-            label.alpha = 1.0;
+            if (flicked)
+            {
+                // invisibly on a delay for cleaning up after flicks
+                //
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                {
+                    self.center = originalCenter;
 
-            [UIView commitAnimations];
+                    CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        UIView *subview = ((UIView *)[self.subviews objectAtIndex:i]);
+                        
+                        subview.transform = CGAffineTransformScale(subview.transform, 1 / 1.2, 1 / 1.2);
+                        subview.center    = myCenter;
+                    }
+
+                    self.alpha = 1.0;
+                    label.alpha = 1.0;
+
+                    flicked = NO;
+                });
+            }
+            else
+            {
+                // visibly animated swoop for normal spreads
+                //
+                [UIView beginAnimations:nil context:nil];
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+                [UIView setAnimationDuration:0.25];
+                
+                self.center = originalCenter;
+                
+                CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+                
+                for (int i = 0; i < 4; i++)
+                    ((UIView *)[self.subviews objectAtIndex:i]).center = myCenter;
+                
+                label.alpha = 1.0;
+
+                [UIView commitAnimations];
+            }
         }
     }
 }
