@@ -67,6 +67,7 @@
         
         imageRequest = [[ASIHTTPRequest requestWithURL:imageURL] retain];
         
+        imageRequest.timeOutSeconds = 10;
         imageRequest.delegate = self;
         
         [imageRequest startAsynchronous];

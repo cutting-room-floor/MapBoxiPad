@@ -62,6 +62,7 @@
 
     albumRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
     
+    albumRequest.timeOutSeconds = 10;
     albumRequest.delegate = self;
 
     [albumRequest startAsynchronous];

@@ -71,6 +71,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     layersRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
     
+    layersRequest.timeOutSeconds = 10;
     layersRequest.delegate = self;
     
     [layersRequest startAsynchronous];

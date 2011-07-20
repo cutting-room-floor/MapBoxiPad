@@ -157,6 +157,7 @@
             
             validationRequest = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
 
+            validationRequest.timeOutSeconds = 10;
             validationRequest.delegate = self;
             
             [validationRequest startAsynchronous];

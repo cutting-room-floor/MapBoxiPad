@@ -66,6 +66,7 @@
         
         primaryImageRequest = [[ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]] retain];
         
+        primaryImageRequest.timeOutSeconds = 10;
         primaryImageRequest.delegate = self;
         
         [primaryImageRequest startAsynchronous];
@@ -193,6 +194,8 @@
     for (int i = 0; i < [previewImageURLs count]; i++)
     {
         __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
+        
+        request.timeOutSeconds = 10;
         
         [secondaryImageRequests addObject:request];
         
