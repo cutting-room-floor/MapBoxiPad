@@ -419,8 +419,8 @@
     {
         if (([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
             [[[overlayDict objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source]) ||
-            [[overlayDict objectForKey:@"source"] isKindOfClass:[NSString class]] &&
-            [[overlayDict objectForKey:@"source"] isEqualToString:source])
+            ([[overlayDict objectForKey:@"source"] isKindOfClass:[NSString class]] &&
+            [[overlayDict objectForKey:@"source"] isEqualToString:source]))
         {
             NSArray *components = [overlayDict objectForKey:@"overlay"];
             
@@ -700,22 +700,6 @@
 
 - (void)mapViewRegionDidChange:(RMMapView *)map
 {
-    //
-    // TODO: debug - remove before shipping
-    //
-    NSPredicate *labelsPredicate = [NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [UILabel class]];
-    
-    if ([[map.superview.subviews filteredArrayUsingPredicate:labelsPredicate] count] != 2)
-        [map.superview addSubview:[[[UILabel alloc] initWithFrame:CGRectMake(10, 54, 300, 20)] autorelease]];
-    
-    UILabel *zoomLabel = [[map.superview.subviews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@", [UILabel class]]] lastObject];
-    
-    zoomLabel.text = [NSString stringWithFormat:@"Debug zoom: %f", map.contents.zoom];
-    zoomLabel.backgroundColor = [UIColor clearColor];
-    //
-    //
-    //
-
     if (balloon)
     {
         if (lastKnownZoom != map.contents.zoom)
@@ -741,22 +725,22 @@
             CGFloat threshold = 20;
             CGFloat arrowSize = 30;
             
-            if (d == UIPopoverArrowDirectionRight && pX > mWidth - threshold                        || // popup on left hitting right edge of map
-                d == UIPopoverArrowDirectionRight && pX - arrowSize - pWidth - threshold < 0        || // popup on left hitting left edge of map
-                d == UIPopoverArrowDirectionLeft  && pX > mWidth - pWidth - arrowSize - threshold   || // popup on right hitting right edge of map
-                d == UIPopoverArrowDirectionLeft  && pX < threshold                                 || // popup on right hitting left edge of map
-                d == UIPopoverArrowDirectionDown  && pY > mHeight - threshold                       || // popup on top hitting bottom edge of map
-                d == UIPopoverArrowDirectionDown  && pY - pHeight - arrowSize < threshold           || // popup on top hitting top edge of map
-                d == UIPopoverArrowDirectionUp    && pY + arrowSize + pHeight > mHeight - threshold || // popup on bottom hitting bottom edge of map
-                d == UIPopoverArrowDirectionUp    && pY < threshold                                 || // popup on bottom hitting top edge of map
-                d == UIPopoverArrowDirectionRight && pY - (pHeight / 2) < threshold                 || // popup on left hitting top edge of map
-                d == UIPopoverArrowDirectionRight && pY + (pHeight / 2) > mHeight - threshold       || // popup on left hitting bottom edge of map
-                d == UIPopoverArrowDirectionLeft  && pY - (pHeight / 2) < threshold                 || // popup on right hitting top edge of map
-                d == UIPopoverArrowDirectionLeft  && pY + (pHeight / 2) > mHeight - threshold       || // popup on right hitting bottom edge of map
-                d == UIPopoverArrowDirectionDown  && pX + (pWidth  / 2) > mWidth  - threshold       || // popup on top hitting right edge of map
-                d == UIPopoverArrowDirectionDown  && pX - (pWidth  / 2) < threshold                 || // popup on top hitting left edge of map
-                d == UIPopoverArrowDirectionUp    && pX - (pWidth  / 2) < threshold                 || // popup on bottom hitting left edge of map
-                d == UIPopoverArrowDirectionUp    && pX + (pWidth  / 2) > mWidth  - threshold)         // popup on bottom hitting rigth edge of map
+            if ((d == UIPopoverArrowDirectionRight && pX > mWidth - threshold)                        || // popup on left hitting right edge of map
+                (d == UIPopoverArrowDirectionRight && pX - arrowSize - pWidth - threshold < 0)        || // popup on left hitting left edge of map
+                (d == UIPopoverArrowDirectionLeft  && pX > mWidth - pWidth - arrowSize - threshold)   || // popup on right hitting right edge of map
+                (d == UIPopoverArrowDirectionLeft  && pX < threshold)                                 || // popup on right hitting left edge of map
+                (d == UIPopoverArrowDirectionDown  && pY > mHeight - threshold)                       || // popup on top hitting bottom edge of map
+                (d == UIPopoverArrowDirectionDown  && pY - pHeight - arrowSize < threshold)           || // popup on top hitting top edge of map
+                (d == UIPopoverArrowDirectionUp    && pY + arrowSize + pHeight > mHeight - threshold) || // popup on bottom hitting bottom edge of map
+                (d == UIPopoverArrowDirectionUp    && pY < threshold)                                 || // popup on bottom hitting top edge of map
+                (d == UIPopoverArrowDirectionRight && pY - (pHeight / 2) < threshold)                 || // popup on left hitting top edge of map
+                (d == UIPopoverArrowDirectionRight && pY + (pHeight / 2) > mHeight - threshold)       || // popup on left hitting bottom edge of map
+                (d == UIPopoverArrowDirectionLeft  && pY - (pHeight / 2) < threshold)                 || // popup on right hitting top edge of map
+                (d == UIPopoverArrowDirectionLeft  && pY + (pHeight / 2) > mHeight - threshold)       || // popup on right hitting bottom edge of map
+                (d == UIPopoverArrowDirectionDown  && pX + (pWidth  / 2) > mWidth  - threshold)       || // popup on top hitting right edge of map
+                (d == UIPopoverArrowDirectionDown  && pX - (pWidth  / 2) < threshold)                 || // popup on top hitting left edge of map
+                (d == UIPopoverArrowDirectionUp    && pX - (pWidth  / 2) < threshold)                 || // popup on bottom hitting left edge of map
+                (d == UIPopoverArrowDirectionUp    && pX + (pWidth  / 2) > mWidth  - threshold))         // popup on bottom hitting rigth edge of map
                 
                 [balloon dismissPopoverAnimated:NO];
 
