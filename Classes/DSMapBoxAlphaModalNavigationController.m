@@ -23,7 +23,8 @@
     //
     backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)] autorelease];
     
-    backgroundImageView.contentMode = UIViewContentModeCenter;
+    backgroundImageView.contentMode = UIViewContentModeBottom;
+    backgroundImageView.alpha       = 0.5;
     
     [[backgroundImageView layer] setRasterizationScale:0.5];
     [[backgroundImageView layer] setShouldRasterize:YES];
@@ -63,41 +64,29 @@
         
         NSAssert(viewIsFullscreen, @"main app view must be full screen for iPad");
         
-        UIGraphicsBeginImageContext(baseView.bounds.size);
-        [baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
-        UIImage *fullImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        
-        CGImageRef croppedImage = CGImageCreateWithImageInRect(fullImage.CGImage, CGRectMake((baseView.bounds.size.width - 540) / 2, 
-                                                                                             0, 
-                                                                                             540, 
-                                                                                             baseView.bounds.size.height));
-        
-        backgroundImageView.image = [UIImage imageWithCGImage:croppedImage];
-        
-        CGImageRelease(croppedImage);
+       // take snapshot of main view to fake background
+       //
+       // start with a vertical slice of the middle, slightly taller than modal
+       //
+       UIGraphicsBeginImageContext(CGSizeMake(540, baseView.bounds.size.height - ((baseView.bounds.size.height - 620) / 2)));
+       
+       // translate & clip layer before rendering for performance
+       //
+       CGContextTranslateCTM(UIGraphicsGetCurrentContext(), (baseView.bounds.size.width - 540) / -2, 0);
+       CGContextClipToRect(UIGraphicsGetCurrentContext(), CGRectMake((baseView.bounds.size.width - 540) / 2, 0, 540, baseView.bounds.size.height - ((baseView.bounds.size.height - 620) / 2)));
+       
+       // render to context
+       //
+       [baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
+       
+       // set image from it
+       //
+       backgroundImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+
+       // clean up
+       //
+       UIGraphicsEndImageContext();
     }
-    
-    backgroundImageView.alpha = 0.0;
-    
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    
-    backgroundImageView.alpha = 0.5;
-    
-    [UIView commitAnimations];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    
-    backgroundImageView.alpha = 0.0;
-    
-    [UIView commitAnimations];
 }
 
 - (void)dealloc
