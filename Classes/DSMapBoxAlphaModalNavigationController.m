@@ -48,10 +48,8 @@
 {
     [super viewWillAppear:animated];
     
-    if ( ! backgroundImageView.image)
+    if ( ! backgroundImageView.image && self.modalPresentationStyle == UIModalPresentationFormSheet)
     {
-        NSAssert(self.modalPresentationStyle == UIModalPresentationFormSheet, @"alpha modals only supported with form sheet presentation");
-
         // Not totally in love with manually accessing the main app view,
         // but how else could we do this? Also note that we don't retain
         // the view, since, assuming we are modal, it is below us and 
