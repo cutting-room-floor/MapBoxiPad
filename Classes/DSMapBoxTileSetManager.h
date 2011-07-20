@@ -11,7 +11,7 @@
 #define kDSOpenStreetMapURL  [NSURL URLWithString:@"file://localhost/tmp/OpenStreetMap"]
 #define kDSOpenStreetMapName @"OpenStreetMap"
 #define kDSMapQuestOSMURL    [NSURL URLWithString:@"file://localhost/tmp/MapQuestOSM"]
-#define kDSMapQuestOSMName   @"MapQuest"
+#define kDSMapQuestOSMName   @"MapQuest Open"
 
 static NSString *const DSMapBoxTileSetChangedNotification = @"DSMapBoxTileSetChangedNotification";
 

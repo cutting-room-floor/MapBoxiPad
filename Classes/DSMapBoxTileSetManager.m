@@ -166,7 +166,7 @@ static DSMapBoxTileSetManager *defaultManager;
         return @"Collaboratively-edited world map project";
 
     else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
-        return @"Map tiles courtesy of MapQuest";
+        return @"Open map tiles from MapQuest";
 
     else if ([tileSetURL isTileStreamURL])
     {
@@ -197,8 +197,11 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSString *attribution = @"";
     
-    if ([tileSetURL isEqual:kDSOpenStreetMapURL] || [tileSetURL isEqual:kDSMapQuestOSMURL])
+    if ([tileSetURL isEqual:kDSOpenStreetMapURL])
         attribution = @"Copyright OpenStreetMap.org Contributors CC-BY-SA";
+
+    else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        attribution = @"Tiles Courtesy of MapQuest";
     
     else if ([tileSetURL isTileStreamURL])
     {
