@@ -80,6 +80,8 @@
         
         // add preview views underneath
         //
+        NSArray *rotationValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:-3], [NSNumber numberWithInt:4], [NSNumber numberWithInt:-1], nil];
+        
         for (int i = 0; i < 3; i++)
         {
             UIImageView *preview = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]] autorelease];
@@ -90,6 +92,9 @@
             //
             if (i >= [previewImageURLs count])
                 preview.hidden = YES;
+            
+            else
+                preview.transform = CGAffineTransformMakeRotation(2 * M_PI * [[rotationValues objectAtIndex:i] intValue] / 360);
             
             [self insertSubview:preview belowSubview:imageView];
         }
@@ -185,8 +190,6 @@
 {
     // queue up secondary image downloads
     //
-    NSArray *rotationValues = [NSArray arrayWithObjects:[NSNumber numberWithInt:-3], [NSNumber numberWithInt:4], [NSNumber numberWithInt:-1], nil];
-    
     for (int i = 0; i < [previewImageURLs count]; i++)
     {
         __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
@@ -228,14 +231,6 @@
             preview.layer.shadowOpacity = 0.5;
             preview.layer.shadowOffset  = CGSizeMake(-1, 1);
             preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
-            
-            // animate offset rotation
-            //
-            [UIView beginAnimations:nil context:nil];
-            
-            preview.transform = CGAffineTransformMakeRotation(2 * M_PI * [[rotationValues objectAtIndex:i] intValue] / 360);
-            
-            [UIView commitAnimations];
         }];
         
         [request startAsynchronous];
