@@ -65,6 +65,7 @@
         if (self.interactivityDelegate)
             [self.interactivityDelegate hideInteractivityAnimated:NO];
         
+        
         [self zoomInToNextNativeZoomAt:lastGesture.center animated:YES];
     }
 
@@ -90,8 +91,12 @@
             [self.interactivityDelegate hideInteractivityAnimated:NO];
     }
         
-    else
+    else if (touch.tapCount != 2)
+    {
+        // avoid double-send of double-tap zoom
+        //
         [super touchesEnded:touches withEvent:event];
+    }
 }
 
 #pragma mark -
