@@ -206,11 +206,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                            [layer objectForKey:@"id"], @"id", 
-                           [layer objectForKey:@"version"], @"version", 
                            [layer objectForKey:@"name"], @"name", 
-                           [layer objectForKey:@"description"], @"description", 
                            [layer objectForKey:@"center"], @"center",
-                           [layer objectForKey:@"type"], @"type",
+                           ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @"baselayer"), @"type",
                            [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
