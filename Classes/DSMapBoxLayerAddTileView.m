@@ -43,6 +43,8 @@
         imageView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
 
         [self addSubview:imageView];
+
+        image = [imageView.image retain];
         
         // create label
         //
@@ -83,16 +85,12 @@
 {
     [imageRequest clearDelegatesAndCancel];
     [imageRequest release];
+    [image release];
     
     [super dealloc];
 }
 
 #pragma mark -
-
-- (UIImage *)image
-{
-    return imageView.image;
-}
 
 - (void)setSelected:(BOOL)flag
 {
@@ -219,7 +217,7 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     UIImage *tileImage = [UIImage imageWithData:request.responseData];
-
+    
     if (tileImage)
     {
         // get corner image
@@ -245,16 +243,32 @@
         
         // fill background with white
         //
-        CGContextAddPath(c, [corneredPath CGPath]);
+        CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath]);
         CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
         CGContextFillPath(c);
         
+        // store unclipped version for later & reset context
+        //
+        [tileImage drawInRect:imageView.bounds];
+        
+        [image release];
+        
+        image = [UIGraphicsGetImageFromCurrentImageContext() retain];
+        
+        CGContextClearRect(c, imageView.bounds);
+        
+        // fill background with white again, but cornered
+        //
+        CGContextAddPath(c, [corneredPath CGPath]);
+        CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+        CGContextFillPath(c);
+
         // clip corner of drawing
         //
         CGContextAddPath(c, [corneredPath CGPath]);
         CGContextClip(c);
 
-        // draw tile
+        // draw again for our display
         //
         [tileImage drawInRect:imageView.bounds];
 
@@ -283,36 +297,20 @@
         
         [imageView addSubview:cornerImageView];
         
-        // cover tile for animated reveal
-        //
-        cornerImageView.hidden = YES;
-        
-        UIImageView *coverView = [[[UIImageView alloc] initWithFrame:self.bounds] autorelease];
-        
-        coverView.image = imageView.image;
-        
-        [self addSubview:coverView];
-        
         // update tile
         //
         imageView.image = clippedImage;
         
         // animate cover removal
         //
-        [UIView animateWithDuration:0.1
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^(void)
-                         {
-                             imageView.layer.shadowPath = [corneredPath CGPath];
-                             
-                             cornerImageView.hidden = NO;
-                             coverView.hidden       = YES;
-                         }
-                         completion:^(BOOL finished)
-                         {
-                             [coverView removeFromSuperview];
-                         }];
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        [UIView setAnimationDuration:0.1];
+        
+        imageView.layer.shadowPath = [corneredPath CGPath];
+        cornerImageView.hidden = NO;
+
+        [UIView commitAnimations];
     }
 }
 

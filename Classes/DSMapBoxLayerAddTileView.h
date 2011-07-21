@@ -27,6 +27,7 @@
 {
     id <DSMapBoxLayerAddTileViewDelegate>delegate;
     UIImageView *imageView;
+    UIImage *image;
     UILabel *label;
     ASIHTTPRequest *imageRequest;
     BOOL selected;
