@@ -28,7 +28,7 @@
 
 - (BOOL)supportsInteractivity
 {
-    return ([self interactivityFormatterJavascript] != nil);
+    return ([self interactivityFormatterJavascript] && [[self interactivityFormatterJavascript] length]);
 }
 
 - (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile
@@ -165,7 +165,7 @@
 
 - (BOOL)supportsInteractivity
 {
-    return ([self interactivityFormatterJavascript] != nil);
+    return ([self interactivityFormatterJavascript] && [[self interactivityFormatterJavascript] length]);
 }
 
 - (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile
