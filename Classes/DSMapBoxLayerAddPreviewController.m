@@ -14,6 +14,7 @@
 #import "DSMapContents.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "RMInteractiveSource.h"
+#import "DSMapBoxDataOverlayManager.h"
 
 @implementation DSMapBoxLayerAddPreviewController
 
@@ -50,6 +51,13 @@
     
     mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     
+    // setup interactivity manager
+    //
+    overlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
+    
+    mapView.delegate = overlayManager;
+    mapView.interactivityDelegate = overlayManager;
+    
     // setup metadata label
     //
     NSMutableString *metadata = [NSMutableString string];
@@ -71,6 +79,7 @@
 
 - (void)dealloc
 {
+    [overlayManager release];
     [info release];
     
     [super dealloc];

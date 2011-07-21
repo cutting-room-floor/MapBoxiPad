@@ -9,12 +9,14 @@
 #import <UIKit/UIKit.h>
 
 @class DSMapView;
+@class DSMapBoxDataOverlayManager;
 
 @interface DSMapBoxLayerAddPreviewController : UIViewController
 {
     IBOutlet DSMapView *mapView;
     IBOutlet UILabel *metadataLabel;
     
+    DSMapBoxDataOverlayManager *overlayManager;
     NSDictionary *info;
 }
 
