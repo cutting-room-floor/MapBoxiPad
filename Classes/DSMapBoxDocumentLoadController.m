@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+    self.view.backgroundColor = [UIColor colorWithRed:0.138 green:0.138 blue:0.138 alpha:1.000];
     
     saveFiles = [[NSArray array] retain];
     

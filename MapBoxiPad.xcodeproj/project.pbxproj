@@ -179,7 +179,6 @@
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
-		DDEEACF1136F53CC0058BA90 /* linen.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACF0136F53CC0058BA90 /* linen.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
 		DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */; };
 		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
@@ -508,7 +507,6 @@
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
-		DDEEACF0136F53CC0058BA90 /* linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = linen.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
 		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationView.m; sourceTree = "<group>"; };
 		DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileStreamSource.h; sourceTree = "<group>"; };
@@ -994,7 +992,6 @@
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 				DD25422C12C03E79009261C1 /* dialog_background.png */,
 				DDEEACAE136F516A0058BA90 /* loading.png */,
-				DDEEACF0136F53CC0058BA90 /* linen.png */,
 				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
 				DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */,
 				DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */,
@@ -1378,7 +1375,6 @@
 				DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */,
 				DDE1C6BA1342E12F0049C325 /* point.png in Resources */,
 				DDEEACAF136F516A0058BA90 /* loading.png in Resources */,
-				DDEEACF1136F53CC0058BA90 /* linen.png in Resources */,
 				DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */,
 				DD9830A11378CEE00071D5AD /* caution.png in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
