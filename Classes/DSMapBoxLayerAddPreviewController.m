@@ -74,6 +74,9 @@
     if ([source supportsInteractivity])
         [metadata appendString:@", interactive"];
 
+    if ([source coversFullWorld])
+        [metadata appendString:@", full-world coverage"];
+    
     metadataLabel.text = metadata;
 }
 
