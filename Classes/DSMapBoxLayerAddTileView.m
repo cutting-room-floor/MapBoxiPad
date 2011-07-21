@@ -57,25 +57,55 @@
         
         [imageView addSubview:label];
         
-        // attach gesture
-        //
-        UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
-        longPress.minimumPressDuration = 0.05;
-        [self addGestureRecognizer:longPress];
-        
-        UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
-        [self addGestureRecognizer:pinch];
+        if ( ! [imageURL isEqual:[NSNull null]])
+        {
+            // attach gesture
+            //
+            UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
+            longPress.minimumPressDuration = 0.05;
+            [self addGestureRecognizer:longPress];
+            
+            UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
+            [self addGestureRecognizer:pinch];
 
-        // fire off image download request
-        //
-        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-        
-        imageRequest = [[ASIHTTPRequest requestWithURL:imageURL] retain];
-        
-        imageRequest.timeOutSeconds = 10;
-        imageRequest.delegate = self;
-        
-        [imageRequest startAsynchronous];
+            // fire off image download request
+            //
+            [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
+            
+            imageRequest = [[ASIHTTPRequest requestWithURL:imageURL] retain];
+            
+            imageRequest.timeOutSeconds = 10;
+            imageRequest.delegate = self;
+            
+            [imageRequest startAsynchronous];
+        }
+        else
+        {
+            // add empty image
+            //
+            UIImageView *emptyView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)] autorelease];
+            
+            emptyView.image = [UIImage imageNamed:@"empty.png"];
+
+            [self addSubview:emptyView];
+
+            // fill image view itself with solid white
+            //
+            UIGraphicsBeginImageContext(imageView.bounds.size);
+            
+            CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), [[UIColor whiteColor] CGColor]);
+            
+            CGContextFillRect(UIGraphicsGetCurrentContext(), imageView.bounds);
+            
+            imageView.image = UIGraphicsGetImageFromCurrentImageContext();
+            
+            UIGraphicsEndImageContext();
+            
+            // disable & grey out
+            //
+            self.userInteractionEnabled = NO;
+            self.alpha = 0.75;
+        }
     }
     
     return self;

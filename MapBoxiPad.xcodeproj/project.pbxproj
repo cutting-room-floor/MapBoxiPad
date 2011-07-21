@@ -42,6 +42,7 @@
 		DD0F616511ED5ABC0050174D /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616111ED5ABC0050174D /* FMDatabaseAdditions.m */; };
 		DD0F616611ED5ABC0050174D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616311ED5ABC0050174D /* FMResultSet.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
+		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
 		DD1ACD5E13CD1CD2001244D2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */; };
@@ -290,6 +291,7 @@
 		DD0F616311ED5ABC0050174D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = Externals/FMDB/src/FMResultSet.m; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
+		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
@@ -841,6 +843,7 @@
 				DDB8390E13CBC05E00D6A034 /* corner_fold_preview.png */,
 				DD3E66B113C5337300D09B4B /* check.png */,
 				DD3E66B513C53BA100D09B4B /* chevron.png */,
+				DD15ED6D13D8E86200B0ABAE /* empty.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1402,6 +1405,7 @@
 				DDE011A113CE33390070F421 /* error.png in Resources */,
 				DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */,
 				DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */,
+				DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

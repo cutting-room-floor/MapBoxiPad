@@ -65,7 +65,13 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // fire off layer list request
     //
-    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
+    NSString *fullURLString;
+    
+    if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostingURL])
+        fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamMapAPIPath];
+
+    else
+        fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
     
@@ -242,7 +248,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         if ([newLayers count])
         {
-            NSMutableArray *validLayers      = [NSMutableArray array];
             NSMutableArray *imagesToDownload = [NSMutableArray array];
             
             for (int i = 0; i < [newLayers count]; i++)
@@ -293,10 +298,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
                         [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
                     
-                    // add valid layer
-                    //
-                    [validLayers addObject:layer];
-
                     // swap in x/y/z
                     //
                     tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
@@ -307,75 +308,68 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     //
                     [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
                 }
-            }
-            
-            if ([validLayers count])
-            {
-                helpLabel.hidden       = NO;
-                tileScrollView.hidden  = NO;
-                
-                if ([validLayers count] > 9)
-                    tilePageControl.hidden = NO;
-
-                [layers release];
-                
-                layers = [[NSArray arrayWithArray:validLayers] retain];
-                
-                // layout preview tiles
-                //
-                int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
-                
-                tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
-                
-                tilePageControl.numberOfPages = pageCount;
-                
-                for (int i = 0; i < pageCount; i++)
+                else
                 {
-                    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
-                    
-                    containerView.backgroundColor = [UIColor clearColor];
-                    
-                    for (int j = 0; j < 9; j++)
-                    {
-                        int index = i * 9 + j;
-                        
-                        if (index < [layers count])
-                        {
-                            int row = j / 3;
-                            int col = j - (row * 3);
-                            
-                            CGFloat x;
-                            
-                            if (col == 0)
-                                x = 32;
-                            
-                            else if (col == 1)
-                                x = containerView.frame.size.width / 2 - 74;
-                            
-                            else if (col == 2)
-                                x = containerView.frame.size.width - 148 - 32;
-                            
-                            DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
-                                                                                                         imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                        labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
-                            
-                            tileView.delegate = self;
-                            tileView.tag = index;
-                            
-                            [containerView addSubview:tileView];
-                        }
-                    }
-                    
-                    [tileScrollView addSubview:containerView];
+                    [imagesToDownload addObject:[NSNull null]];
                 }
             }
-            else
+            
+            helpLabel.hidden       = NO;
+            tileScrollView.hidden  = NO;
+            
+            if ([newLayers count] > 9)
+                tilePageControl.hidden = NO;
+
+            [layers release];
+            
+            layers = [[NSArray arrayWithArray:newLayers] retain];
+            
+            // layout preview tiles
+            //
+            int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
+            
+            tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
+            
+            tilePageControl.numberOfPages = pageCount;
+            
+            for (int i = 0; i < pageCount; i++)
             {
-                DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"TileStream has no layers"];
+                UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
                 
-                [self.view addSubview:errorView];
+                containerView.backgroundColor = [UIColor clearColor];
                 
-                errorView.center = self.view.center;
+                for (int j = 0; j < 9; j++)
+                {
+                    int index = i * 9 + j;
+                    
+                    if (index < [layers count])
+                    {
+                        int row = j / 3;
+                        int col = j - (row * 3);
+                        
+                        CGFloat x;
+                        
+                        if (col == 0)
+                            x = 32;
+                        
+                        else if (col == 1)
+                            x = containerView.frame.size.width / 2 - 74;
+                        
+                        else if (col == 2)
+                            x = containerView.frame.size.width - 148 - 32;
+                        
+                        DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
+                                                                                                     imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                    labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
+                        
+                        tileView.delegate = self;
+                        tileView.tag = index;
+                        
+                        [containerView addSubview:tileView];
+                    }
+                }
+                
+                [tileScrollView addSubview:containerView];
             }
         }
         else
