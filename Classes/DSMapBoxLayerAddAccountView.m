@@ -174,7 +174,7 @@
                          {
                              imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
                          }
-                         completion:^(BOOL selected)
+                         completion:^(BOOL finished)
                          {
                              if ( ! flicked)
                                  [self.delegate accountViewWasSelected:self];
