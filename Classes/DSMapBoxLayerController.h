@@ -15,6 +15,7 @@
 @protocol DSMapBoxLayerControllerDelegate
 
 - (void)zoomToLayer:(NSDictionary *)layer;
+- (void)presentAddLayerHelper;
 
 @end
 
@@ -35,5 +36,6 @@
 
 - (IBAction)tappedEditButton:(id)sender;
 - (IBAction)tappedDoneButton:(id)sender;
+- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
 
 @end

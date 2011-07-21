@@ -18,6 +18,9 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
+#import "DSMapBoxLayerAddTileStreamAlbumController.h"
+#import "DSMapBoxLayerAddTileStreamBrowseController.h"
+#import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
 #import "UIApplication_Additions.h"
@@ -28,13 +31,17 @@
 
 #import "RMTileSource.h"
 #import "RMOpenStreetMapSource.h"
+#import "RMMapQuestOSMSource.h"
 #import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 #import "TouchXML.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 #import "Reachability.h"
+
+#import "UIImage+Alpha.h"
 
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
@@ -67,9 +74,17 @@
     //
     NSObject <RMTileSource>*source;
     
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
-        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
+    if ([activeTileSetURL isEqual:kDSOpenStreetMapURL])
+        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+
+    else if ([activeTileSetURL isEqual:kDSMapQuestOSMURL])
+        source = [[[RMMapQuestOSMSource alloc] init] autorelease];
+
+    else if ([activeTileSetURL isTileStreamURL])
+        source = [[[RMTileStreamSource alloc] initWithInfo:[NSDictionary dictionaryWithContentsOfURL:activeTileSetURL]] autorelease];
+
     else
         source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]] autorelease];
     
@@ -127,6 +142,13 @@
     
     self.lastLayerAlertDate = [NSDate date];
     
+    // watch for new layer additions
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(layersAdded:)
+                                                 name:DSMapBoxLayersAdded
+                                               object:nil];
+    
     // restore app state
     //
     [self restoreState:self];
@@ -166,6 +188,15 @@
         }
     }
     
+    // make sure online tiles folder exists
+    //
+    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]];
+
+    [[NSFileManager defaultManager] createDirectoryAtPath:onlineLayersFolder
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:NULL];
+    
     // set clustering button state
     //
     if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
@@ -202,6 +233,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -229,23 +261,25 @@
     if ([sender isKindOfClass:[NSString class]])
     {
         NSString *saveFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName, sender];
-        NSDictionary *data = [NSDictionary dictionaryWithContentsOfFile:saveFile];
+        NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:saveFile];
         
-        baseMapState = [data objectForKey:@"baseMapState"];
-        tileOverlayState  = [data objectForKey:@"tileOverlayState"];
-        dataOverlayState  = [data objectForKey:@"dataOverlayState"];
+        baseMapState      = [dict objectForKey:@"baseMapState"];
+        tileOverlayState  = [dict objectForKey:@"tileOverlayState"];
+        dataOverlayState  = [dict objectForKey:@"dataOverlayState"];
     }
     else
     {
-        baseMapState = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"baseMapState"];
+        baseMapState      = [[NSUserDefaults standardUserDefaults] dictionaryForKey:@"baseMapState"];
         tileOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"tileOverlayState"];
         dataOverlayState  = [[NSUserDefaults standardUserDefaults] arrayForKey:@"dataOverlayState"];
     }
-    
+
     // load it up
     //
     if (baseMapState)
     {
+        // get map center & zoom level
+        //
         CLLocationCoordinate2D mapCenter = {
             .latitude  = [[baseMapState objectForKey:@"centerLatitude"]  floatValue],
             .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
@@ -257,13 +291,18 @@
         if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kUpperZoomBounds)
             mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
         
-        NSString *restoreTileSetURLString = [baseMapState objectForKey:@"tileSetURL"];
+        // get base tile set
+        //
+        NSURL *restoreTileSetURL = [NSURL fileURLWithPath:[baseMapState objectForKey:@"tileSetURL"]];
         
-        if ([[NSFileManager defaultManager] fileExistsAtPath:restoreTileSetURLString] || [restoreTileSetURLString isEqual:kDSOpenStreetMapURL])
+        // apply base, if able
+        //
+        if ([[NSFileManager defaultManager] fileExistsAtPath:[restoreTileSetURL relativePath]] || [restoreTileSetURL isEqual:kDSOpenStreetMapURL] || [restoreTileSetURL isEqual:kDSMapQuestOSMURL])
         {        
-            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:[NSURL fileURLWithPath:restoreTileSetURLString]];
+            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:restoreTileSetURL];
             
-            if ([restoreTileSetName isEqualToString:kDSOpenStreetMapURL] && [reachability currentReachabilityStatus] == NotReachable)
+            if (([restoreTileSetName isEqualToString:kDSOpenStreetMapName] || [restoreTileSetName isEqualToString:kDSMapQuestOSMName] || [restoreTileSetURL isTileStreamURL]) && 
+                [reachability currentReachabilityStatus] == NotReachable)
                 [self offlineAlert];
             
             else
@@ -284,12 +323,16 @@
         
         // toggle new ones
         //
-        for (NSString *tileOverlayPath in tileOverlayState)
+        for (NSString *tileOverlayURLString in tileOverlayState)
+        {
+            NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
+            
             for (NSDictionary *tileLayer in layerManager.tileLayers)
-                if ([[[tileLayer objectForKey:@"path"] relativePath] isEqualToString:tileOverlayPath] &&
-                    [[NSFileManager defaultManager] fileExistsAtPath:tileOverlayPath])
+                if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
                                                                             inSection:DSMapBoxLayerSectionTile]];
+        }
     }
     
     // load data overlay state(s)
@@ -305,14 +348,20 @@
 
         // toggle new ones
         //
-        for (NSString *dataOverlayPath in dataOverlayState)
+        for (NSString *dataOverlayURLString in dataOverlayState)
+        {
+            NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
+            
             for (NSDictionary *dataLayer in layerManager.dataLayers)
-                if ([[dataLayer objectForKey:@"path"] isEqualToString:dataOverlayPath] &&
-                    [[NSFileManager defaultManager] fileExistsAtPath:dataOverlayPath])
+                if ([[dataLayer objectForKey:@"URL"] isEqual:dataOverlayURL] &&
+                    [[NSFileManager defaultManager] fileExistsAtPath:[dataOverlayURL relativePath]])
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
                                                                             inSection:DSMapBoxLayerSectionData]];
+        }
     }
 
+    // dismiss document loader
+    //
     if ([sender isKindOfClass:[NSString class]])
         [self dismissModalViewControllerAnimated:YES];
 }
@@ -325,32 +374,24 @@
     
     // get base map state
     //
-    NSString *tileSetURLString;
-    
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL])
-        tileSetURLString = [NSString stringWithFormat:@"%@", [[DSMapBoxTileSetManager defaultManager] activeTileSetURL]];
-    
-    else
-        tileSetURLString = [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath];
-    
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     tileSetURLString,                                                @"tileSetURL",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],  @"centerLatitude",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude], @"centerLongitude",
-                                     [NSNumber numberWithFloat:mapView.contents.zoom],                @"zoomLevel",
+                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
+                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
+                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
                                      nil];
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [[((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL"] valueForKeyPath:@"relativePath"];
+    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.relativePath"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]valueForKeyPath:@"path"];
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.relativePath"];
 
     // determine if document or global save
     //
-    if ([sender isKindOfClass:[UIBarButtonItem class]] || [sender isKindOfClass:[NSString class]])
+    if ([sender isKindOfClass:[UIButton class]] || [sender isKindOfClass:[NSString class]])
     {
         NSString *saveFolderPath = [DSMapBoxDocumentLoadController saveFolderPath];
         
@@ -364,7 +405,7 @@
         
         NSString *stateName;
         
-        if ([sender isKindOfClass:[UIBarButtonItem class]]) // button save
+        if ([sender isKindOfClass:[UIButton class]]) // button save
             stateName = saveController.name;
         
         else if ([sender isKindOfClass:[NSString class]]) // load controller save
@@ -523,7 +564,7 @@
     
     DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:helpController] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController] autorelease];
     
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
     {
@@ -538,6 +579,7 @@
                                                                                                     action:@selector(tappedHelpDoneButton:)] autorelease];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
     
     [self presentModalViewController:wrapper animated:YES];
 }
@@ -599,9 +641,14 @@
     //
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
     
-    if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+    if ([newTileSetURL isEqual:kDSOpenStreetMapURL] || [newTileSetURL isEqual:kDSMapQuestOSMURL])
     {
-        id <RMTileSource>source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        id <RMTileSource>source;
+        
+        if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
+            source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+        else if ([newTileSetURL isEqual:kDSMapQuestOSMURL])
+            source = [[[RMMapQuestOSMSource alloc] init] autorelease];
         
         if (mapView.contents.zoom < [source minZoom])
             mapView.contents.zoom = [source minZoom];
@@ -614,17 +661,17 @@
     }
     else
     {
-        RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+        id source;
         
-        if (mapView.contents.zoom < [source minZoom])
-            mapView.contents.zoom = [source minZoom];
+        if ([newTileSetURL isTileStreamURL])
+            source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
         
-        else if (mapView.contents.zoom > [source maxZoom])
-            mapView.contents.zoom = [source maxZoom];
-
+        else
+            source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+        
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-        
+
         // switch to new base layer bounds if less than whole world
         //
         if ( ! [source coversFullWorld] && 
@@ -674,19 +721,22 @@
 
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
-    if ([[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] isEqual:kDSOpenStreetMapURL] && [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
+    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
+    
+    if (([activeTileSetURL isEqual:kDSOpenStreetMapURL] || [activeTileSetURL isEqual:kDSMapQuestOSMURL] || [activeTileSetURL isTileStreamURL]) && 
+        [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
         [self offlineAlert];
 }
 
 - (void)offlineAlert
 {
-    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
-    
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:[NSString stringWithFormat:@"You are now offline. %@ tiles require an active internet connection, so %@ was activated instead.", kDSOpenStreetMapURL, [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", [[DSMapBoxTileSetManager defaultManager] activeTileSetName], [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
                                                     delegate:nil
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK", nil] autorelease];
+
+    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     
     [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
 }
@@ -763,6 +813,214 @@
     [alert show];
 }
 
+- (void)layersAdded:(NSNotification *)notification
+{
+    // add layers to disk
+    //
+    NSArray *layers = [[notification userInfo] objectForKey:@"selectedLayers"];
+    
+    NSMutableString *message = [NSMutableString string];
+    
+    for (NSDictionary *layer in layers)
+    {
+        [message appendString:[layer objectForKey:@"name"]];
+        [message appendString:@"\n"];
+        
+        NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 [layer objectForKey:@"apiScheme"], @"apiScheme",
+                                 [layer objectForKey:@"apiHostname"], @"apiHostname",
+                                 [layer objectForKey:@"apiPort"], @"apiPort",
+                                 [layer objectForKey:@"apiPath"], @"apiPath",
+                                 [layer objectForKey:@"id"], @"id",
+                                 ([layer objectForKey:@"bounds"] ? [[layer objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
+                                 ([layer objectForKey:@"center"] ? [[layer objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
+                                 ([layer objectForKey:@"name"] ? [layer objectForKey:@"name"] : @""), @"name",
+                                 ([layer objectForKey:@"attribution"] ? [layer objectForKey:@"attribution"] : @""), @"attribution",
+                                 ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @""), @"type",
+                                 ([layer objectForKey:@"version"] ? [layer objectForKey:@"version"] : @""), @"version",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"size"] intValue]], @"size",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom",
+                                 [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom",
+                                 ([layer objectForKey:@"description"] ? [layer objectForKey:@"description"] : @""), @"description",
+                                 [NSDate dateWithTimeIntervalSince1970:([[layer objectForKey:@"mtime"] doubleValue] / 1000)], @"mtime",
+                                 ([layer objectForKey:@"basename"] ? [layer objectForKey:@"basename"] : @""), @"basename",
+                                 [layer objectForKey:@"tileURL"], @"tileURL",
+                                 ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
+                                 ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
+                                 nil];
+        
+        NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
+        
+        [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layer objectForKey:@"id"]] atomically:YES];
+    }
+    
+    // animate layers into layer UI
+    //
+    NSArray *layerImages = [[notification userInfo] objectForKey:@"selectedImages"];
+    
+    NSArray *angles = [NSArray arrayWithObjects:[NSNumber numberWithInt:2], 
+                                                [NSNumber numberWithInt:-3], 
+                                                [NSNumber numberWithInt:0], 
+                                                [NSNumber numberWithInt:-1], 
+                                                [NSNumber numberWithInt:-2], 
+                                                nil];
+
+    NSMutableArray *imageViews = [NSMutableArray array];
+    
+    int max = [layerImages count];
+    
+    for (int i = 0; i < max; i++)
+    {
+        // create tile image view
+        //
+        UIImageView *imageView = [[[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] transparentBorderImage:1]] autorelease];
+        
+        imageView.layer.shadowOpacity = 0.5;
+        imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
+        imageView.layer.shadowOffset = CGSizeMake(0, 1);
+        
+        [self.view insertSubview:imageView aboveSubview:toolbar];
+        
+        // determine even spacing
+        //
+        int delta;
+        
+        if (max % 2 && i == max / 2)
+            delta = 0;
+        
+        else if (max % 2)
+            delta = ((max / 2) - i) * -50;
+        
+        else
+            delta = (i >= (max / 2) ? (i - (max / 2) + 1) * 50 : ((max / 2) - i) * -50);
+        
+        // place & rotate initially
+        //
+        imageView.center = CGPointMake(mapView.center.x + delta, mapView.center.y);
+        
+        imageView.transform = CGAffineTransformMakeRotation([[angles objectAtIndex:(i % 5)] intValue] * M_PI / 180);
+        
+        // store reference for later
+        //
+        [imageViews addObject:imageView];
+    }
+    
+    [UIView animateWithDuration:0.25
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^(void)
+                     {
+                         // slide up from center of screen
+                         //
+                         for (UIView *view in imageViews)
+                             view.center = CGPointMake(view.center.x, mapView.center.y - 200);
+                     }
+                     completion:^(BOOL finished)
+                     {
+                         [UIView animateWithDuration:0.25
+                                               delay:0.75
+                                             options:UIViewAnimationCurveEaseInOut
+                                          animations:^(void)
+                                          {
+                                              if (max > 1)
+                                              {
+                                                  // play scrunching-together sound for multiple tiles
+                                                  //
+                                                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.6 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                                  {
+                                                      [DSSound playSoundNamed:@"paper_throw_start.wav"];
+                                                  });
+                                              }
+                                              
+                                              // move together into stack
+                                              //
+                                              for (UIView *view in imageViews)
+                                                  view.center = CGPointMake(mapView.center.x, mapView.center.y - 200);
+                                          }
+                                          completion:^(BOOL finished)
+                                          {
+                                              // animate stack over to layers button
+                                              //
+                                              for (UIView *view in imageViews)
+                                              {
+                                                  // path
+                                                  //
+                                                  CGPoint startPoint = view.center;
+                                                  CGPoint endPoint;
+                                                  
+                                                  for (UIBarButtonItem *item in toolbar.items)
+                                                      if (item.action == @selector(tappedLayersButton:))
+                                                          endPoint = [[[item valueForKeyPath:@"view"] valueForKeyPath:@"center"] CGPointValue];
+                                                  
+                                                  CGPoint controlPoint = CGPointMake(startPoint.x, startPoint.y + 100);
+                                                  
+                                                  UIBezierPath *arcPath = [UIBezierPath bezierPath];
+                                                  
+                                                  [arcPath moveToPoint:startPoint];
+                                                  [arcPath addQuadCurveToPoint:endPoint controlPoint:controlPoint];
+                                                  
+                                                  CAKeyframeAnimation *pathAnimation = [CAKeyframeAnimation animationWithKeyPath:@"position"];
+                                                  
+                                                  pathAnimation.path = [arcPath CGPath];
+                                                  pathAnimation.calculationMode = kCAAnimationPaced;
+                                                  pathAnimation.timingFunctions = [NSArray arrayWithObject:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+                                                  
+                                                  // opacity
+                                                  //
+                                                  CABasicAnimation *fadeAnimation = [CABasicAnimation animationWithKeyPath:@"opacity"];
+                                                  
+                                                  [fadeAnimation setToValue:[NSNumber numberWithFloat:0.75]];
+                                                  
+                                                  // size
+                                                  //
+                                                  CABasicAnimation *sizeAnimation = [CABasicAnimation animationWithKeyPath:@"bounds.size"];
+                                                  
+                                                  [sizeAnimation setToValue:[NSValue valueWithCGSize:CGSizeMake(4, 4)]];
+                                                  
+                                                  // shadow path
+                                                  //
+                                                  CABasicAnimation *shadowPathAnimation = [CABasicAnimation animationWithKeyPath:@"shadowPath"];
+                                                  
+                                                  [shadowPathAnimation setToValue:(id)[[UIBezierPath bezierPathWithRect:CGRectMake(0, 0, 4, 4)] CGPath]];
+                                                  
+                                                  // shadow fade
+                                                  //
+                                                  CABasicAnimation *shadowFadeAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+                                                  
+                                                  [shadowFadeAnimation setToValue:[NSNumber numberWithFloat:0.0]];
+                                                  
+                                                  // group
+                                                  //
+                                                  CAAnimationGroup *group = [CAAnimationGroup animation];
+                                                  
+                                                  group.animations = [NSArray arrayWithObjects:pathAnimation, fadeAnimation, sizeAnimation, shadowPathAnimation, shadowFadeAnimation, nil];
+                                                  
+                                                  group.fillMode = kCAFillModeForwards;
+                                                  group.duration = 1.0;
+                                                  group.beginTime = CACurrentMediaTime() + 0.5;
+                                                  group.removedOnCompletion = NO;
+                                                  
+                                                  [CATransaction begin];
+                                                  [CATransaction setCompletionBlock:^(void)
+                                                  {
+                                                      [view removeFromSuperview];
+                                                  }];
+                                                  
+                                                  [view.layer addAnimation:group forKey:nil];
+                                                  
+                                                  [CATransaction commit];
+                                              }
+                                              
+                                              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                              {
+                                                  // play landing sound
+                                                  //
+                                                  [DSSound playSoundNamed:@"paper_throw_end.wav"];
+                                              });
+                         }];
+    }];
+}
+
 #pragma mark -
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -773,7 +1031,8 @@
 
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
         
-        wrapper.navigationBar.barStyle = UIBarStyleBlack;
+        wrapper.navigationBar.barStyle    = UIBarStyleBlack;
+        wrapper.navigationBar.translucent = YES;
         
         loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                              style:UIBarButtonItemStylePlain
@@ -785,7 +1044,30 @@
         wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
         wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
 
+        // put up dimmer & spinner
+        //
+        UIView *dimmer = [[[UIView alloc] initWithFrame:loadController.view.frame] autorelease];
+        
+        dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+
+        [self.view addSubview:dimmer];
+        
+        UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+        
+        [spinner startAnimating];
+        
+        spinner.center = loadController.view.center;
+        
+        [self.view addSubview:spinner];
+        
+        // start the flip
+        //
         [self presentModalViewController:wrapper animated:YES];
+        
+        // dispose of dimmer & spinner
+        //
+        [dimmer  performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
+        [spinner performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
     }
     else if (buttonIndex > -1)
     {
@@ -808,7 +1090,7 @@
         
         saveController.name = docName;
         
-        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:saveController] autorelease];
+        DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
         
         saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                              style:UIBarButtonItemStylePlain
@@ -820,6 +1102,7 @@
                                                                                                         action:@selector(saveState:)] autorelease];
         
         wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+        wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
 
         [self presentModalViewController:wrapper animated:YES];
     }
@@ -829,6 +1112,24 @@
 
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller didLoadDocumentWithName:(NSString *)name
 {
+    // put up dimmer & spinner (these will release when the load controller modal goes away)
+    //
+    UIView *dimmer = [[[UIView alloc] initWithFrame:controller.view.frame] autorelease];
+    
+    dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    
+    [controller.view addSubview:dimmer];
+    
+    UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+    
+    [spinner startAnimating];
+    
+    spinner.center = controller.view.center;
+    
+    [controller.view addSubview:spinner];
+    
+    // actually load state
+    //
     [self restoreState:name];
 }
 
@@ -976,8 +1277,19 @@
 
 - (void)zoomToLayer:(NSDictionary *)layer
 {
-    RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer objectForKey:@"path"]] autorelease];
+    NSURL *layerURL = [layer objectForKey:@"URL"];
+    
+    id source;
+    
+    if ([layerURL isMBTilesURL])
+        source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL] autorelease];
 
+    else if ([layerURL isTileStreamURL])
+        source = [[[RMTileStreamSource alloc] initWithReferenceURL:layerURL] autorelease];
+    
+    if ( ! source)
+        return;
+    
     mapView.contents.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
     
     if ( ! [source coversFullWorld])
@@ -991,6 +1303,34 @@
         
         [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
     }
+}
+
+- (void)presentAddLayerHelper
+{
+    if ([reachability currentReachabilityStatus] == NotReachable)
+    {
+        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                         message:@"Adding a layer requires an active internet connection."
+                                                        delegate:nil
+                                               cancelButtonTitle:nil
+                                               otherButtonTitles:@"OK", nil] autorelease];
+        
+        [alert show];
+        
+        return;
+    }
+    
+    // dismiss layer UI
+    //
+    [self tappedLayersButton:self];
+
+    DSMapBoxLayerAddTileStreamAlbumController *albumController = [[[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper  = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController] autorelease];
+    
+    wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+    wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
+
+    [self presentModalViewController:wrapper animated:YES];
 }
 
 @end

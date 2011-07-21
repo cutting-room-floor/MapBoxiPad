@@ -8,6 +8,8 @@
 
 #import "DSMapBoxDocumentSaveController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @implementation DSMapBoxDocumentSaveController
 
 @synthesize snapshot;
@@ -17,12 +19,16 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.barStyle    = UIBarStyleBlack;
+    self.navigationController.navigationBar.translucent = YES;
     
     snapshotView.image = self.snapshot;
     nameTextField.text = self.name;
     
-    nameTextField.clearButtonMode = UITextFieldViewModeAlways;
+    nameTextField.superview.backgroundColor    = [UIColor blackColor];
+    nameTextField.superview.layer.cornerRadius = 10.0;
+    nameTextField.superview.clipsToBounds      = YES;
+    nameTextField.clearButtonMode              = UITextFieldViewModeAlways;
         
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateName:)

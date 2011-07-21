@@ -28,7 +28,7 @@
 {
     [super viewDidLoad];
     
-    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"linen.png"]];
+    self.view.backgroundColor = [UIColor colorWithRed:0.138 green:0.138 blue:0.138 alpha:1.000];
     
     saveFiles = [[NSArray array] retain];
     
@@ -184,43 +184,16 @@
 
 - (IBAction)tappedSendButton:(id)sender
 {
-    if ([MFMailComposeViewController canSendMail])
-    {
-        // get the current image
-        //
-        NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
-        
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
-        
-        NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
-        
-        // configure & present mailer
-        //
-        MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
-        
-        mailer.mailComposeDelegate = self;
-        
-        [mailer setSubject:@""];
-        [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
-
-        [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
-                         mimeType:@"image/jpeg" 
-                         fileName:@"MapBoxSnapshot.jpg"];
-                
-        mailer.modalPresentationStyle = UIModalPresentationPageSheet;
-        
-        [self presentModalViewController:mailer animated:YES];
-    }
-    else
-    {
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                         message:@"Please setup Mail before trying to send map snapshots."
-                                                        delegate:nil
+    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                        delegate:self
                                                cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
-    }
+                                          destructiveButtonTitle:nil
+                                               otherButtonTitles:@"Email Snapshot", nil] autorelease];
+    
+    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    sheet.tag = 0;
+    
+    [sheet showFromRect:actionButton.bounds inView:actionButton animated:YES];
 }
 
 - (IBAction)tappedTrashButton:(id)sender
@@ -231,6 +204,9 @@
                                           destructiveButtonTitle:@"Delete Map"
                                                otherButtonTitles:nil] autorelease];
     
+    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    sheet.tag = 1;
+    
     [sheet showFromRect:trashButton.bounds inView:trashButton animated:YES];
 }
 
@@ -238,8 +214,52 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == actionSheet.destructiveButtonIndex)
+    if (actionSheet.tag == 0 && buttonIndex == actionSheet.firstOtherButtonIndex)
     {
+        // email button: compose
+        //
+        if ([MFMailComposeViewController canSendMail])
+        {
+            // get the current image
+            //
+            NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
+            
+            NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
+            
+            NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
+            
+            // configure & present mailer
+            //
+            MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+            
+            mailer.mailComposeDelegate = self;
+            
+            [mailer setSubject:@""];
+            [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
+            
+            [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
+                             mimeType:@"image/jpeg" 
+                             fileName:@"MapBoxSnapshot.jpg"];
+            
+            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
+            
+            [self presentModalViewController:mailer animated:YES];
+        }
+        else
+        {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                             message:@"Please setup Mail before trying to send map snapshots."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+        }
+    }
+    else if (actionSheet.tag == 1 && buttonIndex == actionSheet.destructiveButtonIndex)
+    {
+        // trash button: delete
+        //
         NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
         
         NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];

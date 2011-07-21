@@ -7,8 +7,11 @@
 //
 
 #import "DSMapBoxTileSetManager.h"
+
 #import "UIApplication_Additions.h"
-#import "FMDatabase.h"
+
+#import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 @implementation DSMapBoxTileSetManager
 
@@ -51,153 +54,177 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     [activeTileSetURL  release];
     [defaultTileSetURL release];
+    [defaultTileSetName release];
     
     [super dealloc];
 }
 
 #pragma mark -
 
-- (NSArray *)alternateTileSetPathsOfType:(DSMapBoxTileSetType)tileSetType
+- (NSArray *)alternateTileSetURLsOfType:(DSMapBoxTileSetType)desiredTileSetType
 {
-    NSArray *docsContents = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
-    
-    NSArray *alternateFileNames = [docsContents filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF ENDSWITH '.mbtiles'"]];
+    NSFileManager *fileManager  = [NSFileManager defaultManager];
+    NSString *docsPath          = [[UIApplication sharedApplication] documentsFolderPathString];
+    NSString *onlineLayersPath  = [NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]];
+    NSMutableArray *tileSetURLs = [NSMutableArray array];
 
-    NSMutableArray *paths = [NSMutableArray array];
-    
-    for (NSString *alternateFileName in alternateFileNames)
+    // MBTiles in docs folder
+    //
+    NSArray *localLayers  = [fileManager contentsOfDirectoryAtPath:docsPath error:NULL];
+
+    // TileStream sources in prefs
+    //
+    NSArray *onlineLayers = [fileManager contentsOfDirectoryAtPath:onlineLayersPath error:NULL];
+
+    // iterate & look for proper type
+    //
+    for (NSString *localLayer in localLayers)
     {
-        NSString *path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], alternateFileName];
+        NSString *layerPath = [NSString stringWithFormat:@"%@/%@", docsPath, localLayer];
+        NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
         
-        FMDatabase *db = [FMDatabase databaseWithPath:path];
+        if ([[layerURL pathExtension] isEqualToString:@"mbtiles"])
+            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:[self defaultTileSetName]])
+            {
+                RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
+                
+                if ([source layerType] == desiredTileSetType)
+                    [tileSetURLs addObject:layerURL];
 
-        if ( ! [db open])
-            continue;
-        
-        FMResultSet *results = [db executeQuery:@"select value from metadata where name = 'type'"];
-        
-        if ([db hadError] && [db close])
-            continue;
-        
-        [results next];
-        
-        if (tileSetType == DSMapBoxTileSetTypeBaselayer && 
-            [[results stringForColumn:@"value"] isEqualToString:@"baselayer"] &&
-             ! [[self displayNameForTileSetAtURL:[NSURL fileURLWithPath:path]] isEqualToString:[self defaultTileSetName]])
-            [paths addObject:[NSURL fileURLWithPath:path]];
-        
-        else if (tileSetType == DSMapBoxTileSetTypeOverlay && [[results stringForColumn:@"value"] isEqualToString:@"overlay"])
-            [paths addObject:[NSURL fileURLWithPath:path]];
-        
-        [results close];
-        
-        [db close];
+                // close explicitly to avoid file descriptor problems
+                //
+                [source release];
+            }
     }
     
-    if (tileSetType == DSMapBoxTileSetTypeBaselayer)
-        [paths addObject:@"OpenStreetMap"];
+    for (NSString *onlineLayer in onlineLayers)
+    {
+        NSString *layerPath = [NSString stringWithFormat:@"%@/%@", onlineLayersPath, onlineLayer];
+        NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
+        
+        if ([[[layerURL pathExtension] lowercaseString] isEqualToString:@"plist"])
+            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:[self defaultTileSetName]])
+            {
+                RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
+                
+                if ([source layerType] == desiredTileSetType)
+                    [tileSetURLs addObject:layerURL];
+                
+                // close explicitly to avoid file descriptor problems
+                //
+                [source release];
+            }
+    }
+    
+    // add OpenStreetMap & MapQuest for base layers
+    //
+    if (desiredTileSetType == DSMapBoxTileSetTypeBaselayer)
+    {
+        [tileSetURLs addObject:kDSOpenStreetMapURL];
+        [tileSetURLs addObject:kDSMapQuestOSMURL];
+    }
 
-    return [NSArray arrayWithArray:paths];
+    return [NSArray arrayWithArray:tileSetURLs];
 }
 
 - (NSString *)displayNameForTileSetAtURL:(NSURL *)tileSetURL
 {
     if ([tileSetURL isEqual:kDSOpenStreetMapURL])
-        return kDSOpenStreetMapURL;
-    
-    NSString *defaultName = [[tileSetURL relativePath] lastPathComponent];
-    
-    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
-    
-    if ( ! [db open])
-        return defaultName;
-    
-    FMResultSet *nameResults = [db executeQuery:@"select value from metadata where name = 'name'"];
-    
-    if ([db hadError] && [db close])
-        return defaultName;
-    
-    [nameResults next];
-    
-    NSString *displayName = [nameResults stringForColumn:@"value"];
-    
-    [nameResults close];
-    
-    FMResultSet *versionResults = [db executeQuery:@"select value from metadata where name = 'version'"];
-    
-    if ([db hadError] && [db close])
-        return defaultName;
-    
-    [versionResults next];
-    
-    NSString *version = [versionResults stringForColumn:@"value"];
-    
-    [versionResults close];
+        return kDSOpenStreetMapName;
 
-    [db close];
+    if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        return kDSMapQuestOSMName;
+
+    if ([tileSetURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+        
+        NSString *name = [source shortName];
+        
+        [source release];
+        
+        return name;
+    }
     
-    if ([version isEqualToString:@"1.0"] || [tileSetURL isEqual:[self defaultTileSetURL]])
-        return displayName;
+    if ([tileSetURL isMBTilesURL])
+    {
+        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+        
+        NSString *name = [source shortName];
+        
+        [source release];
+        
+        return name;
+    }
     
-    else
-        return [NSString stringWithFormat:@"%@ (%@)", displayName, version];
-    
-    return defaultName;
+    return @"";
 }
 
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL
 {
     if ([tileSetURL isEqual:kDSOpenStreetMapURL])
-        return @"Online tiles from the OSM project";
+        return @"Collaboratively-edited world map project";
+
+    else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        return @"Open map tiles from MapQuest";
+
+    else if ([tileSetURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+        
+        NSString *description = [source longDescription];
+        
+        [source release];
+        
+        return description;
+    }
     
-    NSString *defaultDescription = @"";
-    
-    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
-    
-    if ( ! [db open])
-        return defaultDescription;
-    
-    FMResultSet *descriptionResults = [db executeQuery:@"select value from metadata where name = 'description'"];
-    
-    if ([db hadError] && [db close])
-        return defaultDescription;
-    
-    [descriptionResults next];
-    
-    NSString *description = [descriptionResults stringForColumn:@"value"];
-    
-    [descriptionResults close];
-    
-    [db close];
-    
-    return description;
+    else if ([tileSetURL isMBTilesURL])
+    {             
+        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+        
+        NSString *description = [source longDescription];
+        
+        [source release];
+        
+        return description;
+    }
+
+    return @"";
 }
 
 - (NSString *)attributionForTileSetAtURL:(NSURL *)tileSetURL
 {
+    NSString *attribution = @"";
+    
     if ([tileSetURL isEqual:kDSOpenStreetMapURL])
-        return @"Copyright OpenStreetMap.org Contributors CC-BY-SA";
+        attribution = @"Copyright OpenStreetMap.org Contributors CC-BY-SA";
+
+    else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
+        attribution = @"Tiles Courtesy of MapQuest";
     
-    NSString *defaultAttribution = @"";
-    
-    FMDatabase *db = [FMDatabase databaseWithPath:[tileSetURL relativePath]];
-    
-    if ( ! [db open])
-        return defaultAttribution;
-    
-    FMResultSet *attributionResults = [db executeQuery:@"select value from metadata where name = 'attribution'"];
-    
-    if ([db hadError] && [db close])
-        return defaultAttribution;
-    
-    [attributionResults next];
-    
-    NSString *attribution = [attributionResults stringForColumn:@"value"];
-    
-    [attributionResults close];
-    
-    [db close];
-    
+    else if ([tileSetURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+        
+        NSString *attribution = [source shortAttribution];
+        
+        [source release];
+        
+        return attribution;
+    }
+
+    else if ([tileSetURL isMBTilesURL])
+    {
+        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+        
+        NSString *attribution = [source shortAttribution];
+        
+        [source release];
+        
+        return attribution;        
+    }
+        
     // strip HTML
     //
     NSScanner *scanner = [NSScanner scannerWithString:attribution];
@@ -223,12 +250,12 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (NSString *)defaultTileSetName
 {
-    return [self displayNameForTileSetAtURL:self.defaultTileSetURL];
-}
-
-- (BOOL)deleteTileSetWithName:(NSString *)tileSetName
-{
-    return NO;
+    // do the actual lookup once
+    //
+    if ( ! defaultTileSetName)
+        defaultTileSetName = [[self displayNameForTileSetAtURL:self.defaultTileSetURL] retain];
+    
+    return defaultTileSetName;
 }
 
 - (NSString *)activeTileSetName
@@ -245,31 +272,49 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSLog(@"activating %@", tileSetName);
     
-    NSURL *currentPath = [[self.activeTileSetURL copy] autorelease];
+    NSURL *currentURL = [[self.activeTileSetURL copy] autorelease];
     
     if ([tileSetName isEqualToString:[self displayNameForTileSetAtURL:self.defaultTileSetURL]])
     {
-        if ( ! [currentPath isEqual:self.defaultTileSetURL])
+        if ( ! [currentURL isEqual:self.defaultTileSetURL])
             self.activeTileSetURL = [[self.defaultTileSetURL copy] autorelease];
     }
     else
     {
-        for (NSURL *alternatePath in [self alternateTileSetPathsOfType:DSMapBoxTileSetTypeBaselayer])
+        NSArray *alternateTileSetURLs = [self alternateTileSetURLsOfType:DSMapBoxTileSetTypeBaselayer];
+        
+        for (NSURL *alternateURL in alternateTileSetURLs)
         {
-            if ([[self displayNameForTileSetAtURL:alternatePath] isEqualToString:tileSetName])
+            if ([[self displayNameForTileSetAtURL:alternateURL] isEqualToString:tileSetName])
             {
-                self.activeTileSetURL = [[alternatePath copy] autorelease];
+                self.activeTileSetURL = [[alternateURL copy] autorelease];
                 
                 break;
             }
         }
     }
 
-    if ( ! [currentPath isEqual:self.activeTileSetURL])
+    if ( ! [currentURL isEqual:self.activeTileSetURL])
         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification 
                                                                                              object:[NSNumber numberWithBool:animated]]];
 
-    return ! [currentPath isEqual:self.activeTileSetURL];
+    return ! [currentURL isEqual:self.activeTileSetURL];
+}
+
+@end
+
+#pragma mark -
+
+@implementation NSURL (DSMapBoxTileSetManagerExtensions)
+
+- (BOOL)isMBTilesURL
+{
+    return ([self isFileURL] && [[[self pathExtension] lowercaseString] isEqualToString:@"mbtiles"]);
+}
+             
+- (BOOL)isTileStreamURL
+{
+    return ([self isFileURL] && [[[self pathExtension] lowercaseString] isEqualToString:@"plist"]);
 }
 
 @end

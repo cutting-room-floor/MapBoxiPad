@@ -10,6 +10,8 @@
 
 #import "MapBoxConstants.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @implementation DSMapBoxHelpController
 
 @synthesize moviePlayButton;
@@ -21,10 +23,10 @@
 {
     [super viewWillAppear:animated];
     
-    self.navigationController.navigationBar.tintColor = [UIColor blackColor];
-    
-    self.helpTableView.backgroundView  = nil;
-    self.helpTableView.tableFooterView = versionInfoLabel;
+    self.helpTableView.layer.cornerRadius = 10.0;
+    self.helpTableView.clipsToBounds      = YES;
+    self.helpTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
+
     self.versionInfoLabel.text = [NSString stringWithFormat:@"%@ %@.%@", 
                                      [[NSProcessInfo processInfo] processName],
                                      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
@@ -99,9 +101,23 @@
     {
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HelpCellIdentifier] autorelease];
         
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        // white chevron, unlike black default
+        //
+        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]] autorelease];
+        
+        // background view for color highlighting
+        //
         cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
         cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+        
+        // normal text & background colors
+        //
+        cell.backgroundColor     = [UIColor blackColor];
+        cell.textLabel.textColor = [UIColor colorWithWhite:1.0 alpha:0.75];
+        
+        // cell font
+        //
+        cell.textLabel.font = [UIFont systemFontOfSize:[UIFont systemFontSize]];
     }
     
     switch (indexPath.row)
@@ -141,7 +157,7 @@
             // open delayed to avoid button press glitches
             //
             [[UIApplication sharedApplication] performSelector:@selector(openURL:)
-                                                    withObject:[NSURL URLWithString:kSupportLink]
+                                                    withObject:[NSURL URLWithString:kSupportURL]
                                                     afterDelay:0.25];
 
             break;
@@ -150,7 +166,7 @@
             // open delayed to avoid button press glitches
             //
             [[UIApplication sharedApplication] performSelector:@selector(openURL:)
-                                                    withObject:[NSURL URLWithString:kReleaseNotes]
+                                                    withObject:[NSURL URLWithString:kReleaseNotesURL]
                                                     afterDelay:0.25];
             
             break;

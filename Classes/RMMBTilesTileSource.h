@@ -82,8 +82,5 @@ typedef enum {
 - (NSString *)shortAttribution;
 - (NSString *)longAttribution;
 - (void)removeAllCachedImages;
-- (BOOL)supportsInteractivity;
-- (NSDictionary *)interactivityDictionaryForPoint:(CGPoint)point inTile:(RMTile)tile;
-- (NSString *)interactivityFormatterJavascript;
 
 @end

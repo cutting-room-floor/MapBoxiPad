@@ -7,11 +7,14 @@
 //
 
 #import "MapBoxAppDelegate.h"
+
 #import "MapBoxMainViewController.h"
 
 #import "DSFingerTipWindow.h"
 
 #import "UIApplication_Additions.h"
+
+#import "DSMapBoxLegacyMigrationManager.h"
 
 @interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
 
@@ -38,7 +41,13 @@
 #pragma mark -
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{    
+{
+    // legacy data migration
+    //
+    [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
+    
+    // main UI setup
+    //
     [window addSubview:viewController.view];
     [window makeKeyAndVisible];
 

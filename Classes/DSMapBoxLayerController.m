@@ -13,9 +13,11 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxTintedPlusItem.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
+#import "RMTileStreamSource.h"
 
 #import "MapBoxConstants.h"
 
@@ -40,6 +42,9 @@
     [super viewDidLoad];
     
     self.navigationItem.title = @"Layers";
+
+    self.navigationItem.leftBarButtonItem = [[[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
+                                                                                     action:@selector(presentAddLayerHelper)] autorelease];
     
     [self tappedDoneButton:self];
 }
@@ -101,6 +106,34 @@
 
 #pragma mark -
 
+- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL
+{
+    BOOL shouldShowCrosshairs = NO;
+    
+    if ([layerURL isMBTilesURL])
+    {
+        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
+        
+        if ( ! [source coversFullWorld])
+            shouldShowCrosshairs = YES;
+        
+        [source release];
+    }
+    else if ([layerURL isTileStreamURL])
+    {
+        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
+        
+        if ( ! [source coversFullWorld])
+            shouldShowCrosshairs = YES;
+        
+        [source release];
+    }
+
+    return shouldShowCrosshairs;
+}
+
+#pragma mark -
+
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
 {
     /**
@@ -139,10 +172,9 @@
             
     if ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
     {
-        NSURL *path = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
+        NSURL *layerURL = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
         
-        if (indexPath.section == DSMapBoxLayerSectionTile && 
-            ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld]))
+        if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             
@@ -227,7 +259,18 @@
             cell.accessoryType        = [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
+            
+            if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
+                cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
+
+            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
+                cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
+            
+            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+                cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
+                
+            else
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
             
             break;
             
@@ -235,9 +278,9 @@
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
             {
-                NSURL *path = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"path"];
+                NSURL *layerURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
                 
-                if ([[path absoluteString] hasSuffix:@".mbtiles"] && ! [[[[RMMBTilesTileSource alloc] initWithTileSetURL:path] autorelease] coversFullWorld])
+                if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
                     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
                     
@@ -264,7 +307,12 @@
 
             cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:@"mbtiles.png"];
+
+            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+                cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
+            
+            else
+                cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
             
             break;
             
@@ -274,7 +322,7 @@
             cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml.png" : @"rss.png")];
+            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml_layer.png" : @"georss_layer.png")];
             
             break;
     }
@@ -284,18 +332,16 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    id baseTileSetPath;
-    
+    NSURL *baseTileSetURL;
+
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionBase:
-            baseTileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+            baseTileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
        
             // don't allow deletion of OSM or bundled tile set
             //
-            if (([baseTileSetPath isKindOfClass:[NSString class]] && [baseTileSetPath isEqualToString:kDSOpenStreetMapURL]) ||
-                ( ! baseTileSetPath && [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:
-                                           [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]))
+            if ([baseTileSetURL isEqual:kDSOpenStreetMapURL] || [baseTileSetURL isEqual:kDSMapQuestOSMURL] || [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName]])
                 return NO;
                 
             return YES;
@@ -338,9 +384,9 @@
     {
         // we want to warn the user if they are deleting a base layer, which is possibly quite large
         //
-        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
         
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetPath relativePath] error:NULL];
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
         
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
@@ -359,7 +405,7 @@
 
         // revert to default bundled tileset if active one was deleted
         //
-        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
+        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     }
     
@@ -380,14 +426,25 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([[tableView cellForRowAtIndexPath:indexPath].textLabel.text isEqual:kDSOpenStreetMapURL])
-    {
+    NSDictionary *layer;
+    
+    if (indexPath.section == DSMapBoxLayerSectionBase)
+        layer = [self.layerManager.baseLayers objectAtIndex:indexPath.row];
+    
+    else if (indexPath.section == DSMapBoxLayerSectionTile)
+        layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+    
+    else if (indexPath.section == DSMapBoxLayerSectionData)
+        layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
+    
+    if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
+    {        
         if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                             message:[NSString stringWithFormat:@"%@ tiles require an active internet connection.", kDSOpenStreetMapURL]
+                                                             message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
                                                             delegate:nil
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:@"OK", nil] autorelease];
@@ -409,9 +466,9 @@
         
         NSDictionary *layer = [layers objectAtIndex:indexPath.row];
         
-        if ([[layer valueForKey:@"path"] isKindOfClass:[NSURL class]] && [[[layer valueForKey:@"path"] absoluteString] hasSuffix:@".mbtiles"])
+        if ([[[layer valueForKey:@"URL"] pathExtension] isEqualToString:@"mbtiles"])
         {
-            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"path"]] autorelease] maxZoomNative] < kLowerZoomBounds)
+            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] autorelease] maxZoomNative] < kLowerZoomBounds)
             {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
                 
@@ -494,11 +551,11 @@
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
-        NSURL *tileSetPath = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"path"];
+        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
 
         // revert to default bundled tileset if active one was deleted
         //
-        if ([tileSetPath isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
+        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
         
         [self.layerManager archiveLayerAtIndexPath:indexPath];
