@@ -61,6 +61,9 @@
         longPress.minimumPressDuration = 0.05;
         [self addGestureRecognizer:longPress];
         
+        UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
+        [self addGestureRecognizer:pinch];
+
         // fire off image download request
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
@@ -187,6 +190,23 @@
             
         default:
             break;
+    }
+}
+
+- (void)pinchGesture:(UIGestureRecognizer *)recognizer
+{
+    UIPinchGestureRecognizer *gesture = (UIPinchGestureRecognizer *)recognizer;
+    
+    if (gesture.state == UIGestureRecognizerStateChanged && gesture.scale > 1.0)
+    {
+        // cancel gesture to avoid any animation
+        //
+        recognizer.enabled = NO;
+        recognizer.enabled = YES;
+        
+        // go straight to preview
+        //
+        [self.delegate tileViewWantsToShowPreview:self];
     }
 }
 
