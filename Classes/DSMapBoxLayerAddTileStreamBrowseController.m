@@ -165,7 +165,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                        [layer objectForKey:@"description"], @"description", 
                        [layer objectForKey:@"center"], @"center",
                        [layer objectForKey:@"type"], @"type",
-                       [layer objectForKey:@"bounds"], @"bounds",
+                       [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                        nil];
     
     DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview] autorelease];

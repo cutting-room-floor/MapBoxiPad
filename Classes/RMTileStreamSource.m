@@ -106,7 +106,7 @@
 
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox
 {
-    NSArray *parts = [self.infoDictionary objectForKey:@"bounds"];
+    NSArray *parts = [[self.infoDictionary objectForKey:@"bounds"] componentsSeparatedByString:@","];
         
     if ([parts count] == 4)
     {
