@@ -77,6 +77,29 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     [layersRequest startAsynchronous];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (animatedTileView)
+    {
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseIn
+                         animations:^(void)
+                         {
+                             animatedTileView.transform = CGAffineTransformScale(animatedTileView.transform, 1 / 8.0, 1 / 8.0);
+                             animatedTileView.center    = originalTileViewCenter;
+                             animatedTileView.alpha     = 1.0;
+                         }
+                         completion:^(BOOL finished)
+                         {
+                             [animatedTileView release];
+                             animatedTileView = nil;
+                         }];
+    }
+}
+
 - (void)dealloc
 {
     [layers release];
@@ -147,35 +170,53 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)tileViewWantsToShowPreview:(DSMapBoxLayerAddTileView *)tileView
 {
-    // tap on top-right "preview" corner
+    // tapped on top-right "preview" corner; animate
     //
-    DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];
+    animatedTileView       = [tileView retain];
+    originalTileViewCenter = animatedTileView.center;
     
-    NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
+    [UIView setAnimationDuration:0.5];
     
-    preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                       [layer objectForKey:@"tileURL"], @"tileURL",
-                       ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
-                       ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
-                       [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
-                       [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
-                       [layer objectForKey:@"id"], @"id", 
-                       [layer objectForKey:@"version"], @"version", 
-                       [layer objectForKey:@"name"], @"name", 
-                       [layer objectForKey:@"description"], @"description", 
-                       [layer objectForKey:@"center"], @"center",
-                       [layer objectForKey:@"type"], @"type",
-                       [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
-                       nil];
+    tileView.transform = CGAffineTransformMakeScale(8.0, 8.0);
+    tileView.center    = self.view.center;
+    tileView.alpha     = 0.0;
     
-    DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview] autorelease];
+    [UIView commitAnimations];
     
-    wrapper.navigationBar.translucent = YES;
-    
-    wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
-    wrapper.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
-    
-    [self presentModalViewController:wrapper animated:YES];
+    // display preview partway through
+    //
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.4 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+    {
+        DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];                         
+        
+        NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+        
+        preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
+                           [layer objectForKey:@"tileURL"], @"tileURL",
+                           ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
+                           ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
+                           [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
+                           [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
+                           [layer objectForKey:@"id"], @"id", 
+                           [layer objectForKey:@"version"], @"version", 
+                           [layer objectForKey:@"name"], @"name", 
+                           [layer objectForKey:@"description"], @"description", 
+                           [layer objectForKey:@"center"], @"center",
+                           [layer objectForKey:@"type"], @"type",
+                           [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
+                           nil];
+        
+        DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview] autorelease];
+        
+        wrapper.navigationBar.translucent = YES;
+        
+        wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
+        wrapper.modalTransitionStyle   = UIModalTransitionStyleCrossDissolve;
+        
+        [self presentModalViewController:wrapper animated:YES];
+    });
 }
 
 #pragma mark -
