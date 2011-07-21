@@ -248,6 +248,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         if ([newLayers count])
         {
+            NSMutableArray *updatedLayers    = [NSMutableArray array];
             NSMutableArray *imagesToDownload = [NSMutableArray array];
             
             for (int i = 0; i < [newLayers count]; i++)
@@ -312,17 +313,19 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 {
                     [imagesToDownload addObject:[NSNull null]];
                 }
+
+                [updatedLayers addObject:layer];
             }
             
             helpLabel.hidden       = NO;
             tileScrollView.hidden  = NO;
             
-            if ([newLayers count] > 9)
+            if ([updatedLayers count] > 9)
                 tilePageControl.hidden = NO;
 
             [layers release];
             
-            layers = [[NSArray arrayWithArray:newLayers] retain];
+            layers = [[NSArray arrayWithArray:updatedLayers] retain];
             
             // layout preview tiles
             //
