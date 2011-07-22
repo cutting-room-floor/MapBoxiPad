@@ -200,6 +200,10 @@
                 recognizer.enabled = NO;
                 recognizer.enabled = YES;
                 
+                // bring to front
+                //
+                [self.superview bringSubviewToFront:self];
+
                 // go straight to preview
                 //
                 [self.delegate tileViewWantsToShowPreview:self];
