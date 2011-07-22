@@ -583,8 +583,8 @@
                     
                     if ( ! kml)
                     {
-                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtPath:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtPath:[layer objectForKey:@"URL"]];
+                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
                         
                         return;
                     }

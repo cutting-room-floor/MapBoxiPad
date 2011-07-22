@@ -42,12 +42,12 @@
     UIActionSheet *documentsActionSheet;
     
     @private
-        NSString *badParsePath;
+        NSURL *badParseURL;
         Reachability *reachability;
         NSDate *lastLayerAlertDate;
 }
 
-@property (nonatomic, retain) NSString *badParsePath;
+@property (nonatomic, retain) NSURL *badParseURL;
 @property (nonatomic, retain) NSDate *lastLayerAlertDate;
 
 - (void)restoreState:(id)sender;

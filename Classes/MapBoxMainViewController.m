@@ -56,7 +56,7 @@
 
 @implementation MapBoxMainViewController
 
-@synthesize badParsePath;
+@synthesize badParseURL;
 @synthesize lastLayerAlertDate;
 
 - (void)viewDidLoad
@@ -241,7 +241,7 @@
     [layersPopover release];
     [layerManager release];
     [dataOverlayManager release];
-    [badParsePath release];
+    [badParseURL release];
     [documentsActionSheet release];
     [lastLayerAlertDate release];
 
@@ -1160,9 +1160,9 @@
     }
 }
 
-- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtPath:(NSString *)path
+- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtURL:(NSURL *)layerURL
 {
-    self.badParsePath = path;
+    self.badParseURL = layerURL;
     
     NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the layer file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
     
@@ -1194,29 +1194,29 @@
                 [mailer setToRecipients:[NSArray arrayWithObject:KSupportEmail]];
                 [mailer setMessageBody:@"<em>Please provide any additional details about this file or about the error you encountered here.</em>" isHTML:YES];
                 
-                if ([self.badParsePath hasSuffix:@".kml"])
+                if ([[self.badParseURL pathExtension] isEqualToString:@"kml"])
                 {
                     [mailer setSubject:@"Problem KML file"];
                     
-                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
                                      mimeType:@"application/vnd.google-earth.kml+xml" 
-                                     fileName:[self.badParsePath lastPathComponent]];
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
-                else if ([self.badParsePath hasSuffix:@".kmz"])
+                else if ([[self.badParseURL pathExtension] isEqualToString:@"kmz"])
                 {
                     [mailer setSubject:@"Problem KMZ file"];
                     
-                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                      
                                      mimeType:@"application/vnd.google-earth.kmz" 
-                                     fileName:[self.badParsePath lastPathComponent]];
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
-                else if ([self.badParsePath hasSuffix:@".rss"] || [self.badParsePath hasSuffix:@".xml"])
+                else if ([[self.badParseURL pathExtension] isEqualToString:@"rss"] || [[self.badParseURL pathExtension] hasSuffix:@".xml"])
                 {
                     [mailer setSubject:@"Problem RSS file"];
                     
-                    [mailer addAttachmentData:[NSData dataWithContentsOfFile:self.badParsePath]                       
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
                                      mimeType:@"application/rss+xml" 
-                                     fileName:[self.badParsePath lastPathComponent]];
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
                 
                 mailer.modalPresentationStyle = UIModalPresentationPageSheet;

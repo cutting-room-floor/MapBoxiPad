@@ -30,7 +30,7 @@ static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocument
 @protocol DSDataLayerHandlerDelegate
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayerCount:(int)count;
-- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtPath:(NSString *)path;
+- (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtURL:(NSURL *)layerURL;
 
 @end
 
