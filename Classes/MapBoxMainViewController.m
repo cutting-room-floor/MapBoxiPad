@@ -838,7 +838,7 @@
                                  ([layer objectForKey:@"attribution"] ? [layer objectForKey:@"attribution"] : @""), @"attribution",
                                  ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @""), @"type",
                                  ([layer objectForKey:@"version"] ? [layer objectForKey:@"version"] : @""), @"version",
-                                 [NSNumber numberWithInt:[[layer objectForKey:@"size"] intValue]], @"size",
+                                 [layer objectForKey:@"size"], @"size",
                                  [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom",
                                  [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom",
                                  ([layer objectForKey:@"description"] ? [layer objectForKey:@"description"] : @""), @"description",

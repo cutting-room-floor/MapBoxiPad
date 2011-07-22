@@ -284,6 +284,10 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
                     [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
 
+                    // set size for downloadable tiles
+                    //
+                    [layer setValue:[NSNumber numberWithInt:([[layer objectForKey:@"size"] isKindOfClass:[NSString class]] ? [[layer objectForKey:@"size"] intValue] : 0)] forKey:@"size"];
+                    
                     // handle null that needs to be serialized later
                     //
                     // see https://github.com/developmentseed/tilestream-pro/issues/230
