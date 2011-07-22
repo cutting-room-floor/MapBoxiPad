@@ -31,6 +31,23 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    // Hack to dismiss interactivity when tapping on interactive
+    // map view, despite it being the only popover passthrough view.
+    // Adding, say, the top toolbar to passthrough results in multiple
+    // popovers possibly being displayed (ex: interactivity + layers),
+    // which is grounds for App Store rejection. Easiest thing for now
+    // is just to assume all map views (currently main & TileStream 
+    // preview) have a top toolbar and account for that. 
+    //
+    // See https://github.com/developmentseed/MapBoxiPad/issues/52
+    //
+    if ([[[touches allObjects] objectAtIndex:0] locationInView:self].y <= 44)
+    {
+        [self.interactivityDelegate hideInteractivityAnimated:YES];
+
+        return;
+    }
+
     UITouch *touch = [[touches allObjects] objectAtIndex:0];
 
     // hit test for markers to skirt interactivity
