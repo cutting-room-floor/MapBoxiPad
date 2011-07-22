@@ -37,7 +37,10 @@
 #import "SimpleKMLLinearRing.h"
 #import "SimpleKMLLineStyle.h"
 #import "SimpleKMLPolyStyle.h"
+#import "SimpleKMLGroundOverlay.h"
 #import "SimpleKML_UIImage.h"
+
+#import "UIImage-Extensions.h"
 
 #define kDSPlacemarkAlpha 0.9f
 
@@ -115,15 +118,15 @@
 
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml
 {
+    NSMutableArray *overlay = [NSMutableArray array];
+    
+    CGFloat minLat =  kMaxLat;
+    CGFloat maxLat = -kMaxLat;
+    CGFloat minLon =  kMaxLong;
+    CGFloat maxLon = -kMaxLong;
+
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
-        NSMutableArray *overlay = [NSMutableArray array];
-        
-        CGFloat minLat =  kMaxLat;
-        CGFloat maxLat = -kMaxLat;
-        CGFloat minLon =  kMaxLong;
-        CGFloat maxLon = -kMaxLong;
-        
         for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).flattenedPlacemarks)
         {
             // draw placemarks as RMMarkers with popups
@@ -283,29 +286,92 @@
         
         [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
         
-        if ([overlay count])
-        {
-            NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
-                                                                                   overlay, @"overlay",
-                                                                                   nil];
-            
-            [overlays addObject:overlayDict];
-            
-            // calculate bounds showing all points plus a 10% border on the edges
-            //
-            RMSphericalTrapezium overlayBounds = { 
-                .northeast = {
-                    .latitude  = maxLat + (0.1 * (maxLat - minLat)),
-                    .longitude = maxLon + (0.1 * (maxLon - minLon))
-                },
-                .southwest = {
-                    .latitude  = minLat - (0.1 * (maxLat - minLat)),
-                    .longitude = minLon - (0.1 * (maxLat - minLat))
-                }
-            };
-            
-            return overlayBounds;
-        }
+    }
+    else if ([kml.feature isKindOfClass:[SimpleKMLGroundOverlay class]])
+    {
+        // get overlay, create layer, and get bounds
+        //
+        SimpleKMLGroundOverlay *groundOverlay = (SimpleKMLGroundOverlay *)kml.feature;
+        
+        RMMapLayer *overlayLayer = [RMMapLayer layer];
+
+        RMLatLong ne = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east);
+        RMLatLong nw = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.west);
+        RMLatLong se = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.east);
+        RMLatLong sw = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.west);
+        
+        CGPoint nePoint = [mapView.contents latLongToPixel:ne];
+        CGPoint nwPoint = [mapView.contents latLongToPixel:nw];
+        CGPoint sePoint = [mapView.contents latLongToPixel:se];
+        
+        // rotate & size image as necessary
+        //
+        UIImage *overlayImage = groundOverlay.icon;
+        
+        CGSize originalSize = overlayImage.size;
+        
+        if (groundOverlay.rotation)
+            overlayImage = [overlayImage imageRotatedByDegrees:-groundOverlay.rotation];
+        
+        // account for rotated corners now sticking out
+        //
+        CGFloat xFactor = (nePoint.x - nwPoint.x) / originalSize.width;
+        CGFloat yFactor = (sePoint.y - nePoint.y) / originalSize.height;
+        
+        CGFloat xDelta  = (overlayImage.size.width  - originalSize.width)  * xFactor;
+        CGFloat yDelta  = (overlayImage.size.height - originalSize.height) * yFactor;
+        
+        CGRect overlayRect = CGRectMake(nwPoint.x - (xDelta / 2), nwPoint.y - (yDelta / 2), nePoint.x - nwPoint.x + xDelta, sePoint.y - nePoint.y + yDelta);
+        
+        overlayImage = [overlayImage imageWithWidth:overlayRect.size.width height:overlayRect.size.height];
+        
+        // size & place layer with image
+        //
+        overlayLayer.frame = overlayRect;
+        
+        overlayLayer.contents = (id)[overlayImage CGImage];
+        
+        // update reported bounds & store for later
+        //
+        if (sw.latitude < minLat)
+            minLat = sw.latitude;
+        
+        if (nw.latitude > maxLat)
+            maxLat = nw.latitude;
+        
+        if (sw.longitude < minLon)
+            minLon = sw.longitude;
+        
+        if (nw.longitude > maxLon)
+            maxLon = nw.longitude;
+    
+        [mapView.contents.overlay addSublayer:overlayLayer];
+    
+        [overlay addObject:overlayLayer];
+    }
+    
+    if ([overlay count])
+    {
+        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
+                                                                               overlay, @"overlay",
+                                                                               nil];
+        
+        [overlays addObject:overlayDict];
+        
+        // calculate bounds showing all points plus a 10% border on the edges
+        //
+        RMSphericalTrapezium overlayBounds = { 
+            .northeast = {
+                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+                .longitude = maxLon + (0.1 * (maxLon - minLon))
+            },
+            .southwest = {
+                .latitude  = minLat - (0.1 * (maxLat - minLat)),
+                .longitude = minLon - (0.1 * (maxLat - minLat))
+            }
+        };
+        
+        return overlayBounds;
     }
     
     return [mapView.contents latitudeLongitudeBoundingBoxForScreen];

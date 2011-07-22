@@ -16,6 +16,7 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
+		DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
 		DD0F614911ED5A9F0050174D /* SimpleKML.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F612111ED5A9F0050174D /* SimpleKML.m */; };
@@ -87,6 +88,8 @@
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
 		DD2754CB1385683D007B58AC /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2754CA1385683D007B58AC /* placeholder.png */; };
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
+		DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */; };
+		DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */; };
 		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
@@ -240,6 +243,8 @@
 		D7246FF01347B4D20069B3E2 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
+		DD0A9E0E13DA313600D7B7D1 /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
+		DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extensions.m"; sourceTree = "<group>"; };
 		DD0B1348121DD3D000A1309D /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action.png; sourceTree = SOURCE_ROOT; };
 		DD0F611E11ED5A9F0050174D /* SimpleKML_UIImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKML_UIImage.h; path = "Externals/Simple KML/SimpleKML_UIImage.h"; sourceTree = "<group>"; };
 		DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKML_UIImage.m; path = "Externals/Simple KML/SimpleKML_UIImage.m"; sourceTree = "<group>"; };
@@ -373,6 +378,10 @@
 		DD2754CA1385683D007B58AC /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = SOURCE_ROOT; };
 		DD2755DF1385AD86007B58AC /* DSMapBoxLegacyMigrationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegacyMigrationManager.h; sourceTree = "<group>"; };
 		DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegacyMigrationManager.m; sourceTree = "<group>"; };
+		DD283A2813A93BF600AB9BD2 /* SimpleKMLOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLOverlay.h; path = "Externals/Simple KML/SimpleKMLOverlay.h"; sourceTree = "<group>"; };
+		DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLOverlay.m; path = "Externals/Simple KML/SimpleKMLOverlay.m"; sourceTree = "<group>"; };
+		DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLGroundOverlay.h; path = "Externals/Simple KML/SimpleKMLGroundOverlay.h"; sourceTree = "<group>"; };
+		DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLGroundOverlay.m; path = "Externals/Simple KML/SimpleKMLGroundOverlay.m"; sourceTree = "<group>"; };
 		DD28C08013B263A6008BED70 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Externals/JSONKit/JSONKit.h; sourceTree = "<group>"; };
 		DD28C08113B263A6008BED70 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Externals/JSONKit/JSONKit.m; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
@@ -640,6 +649,16 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DD0A9E0E13DA313600D7B7D1 /* UIImage-Extensions.h */,
+				DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */,
+			);
+			name = "UIImage-Extensions";
+			path = "Externals/UIImage-Extensions";
+			sourceTree = "<group>";
+		};
 		DD0F615D11ED5AA70050174D /* Simple KML */ = {
 			isa = PBXGroup;
 			children = (
@@ -661,6 +680,8 @@
 				DD0F612D11ED5A9F0050174D /* SimpleKMLFolder.m */,
 				DD0F612E11ED5A9F0050174D /* SimpleKMLGeometry.h */,
 				DD0F612F11ED5A9F0050174D /* SimpleKMLGeometry.m */,
+				DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */,
+				DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */,
 				DD0F613011ED5A9F0050174D /* SimpleKMLIconStyle.h */,
 				DD0F613111ED5A9F0050174D /* SimpleKMLIconStyle.m */,
 				DD0F613211ED5A9F0050174D /* SimpleKMLLinearRing.h */,
@@ -671,6 +692,8 @@
 				DD0F613711ED5A9F0050174D /* SimpleKMLLineStyle.m */,
 				DD0F613811ED5A9F0050174D /* SimpleKMLObject.h */,
 				DD0F613911ED5A9F0050174D /* SimpleKMLObject.m */,
+				DD283A2813A93BF600AB9BD2 /* SimpleKMLOverlay.h */,
+				DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */,
 				DD0F613A11ED5A9F0050174D /* SimpleKMLPlacemark.h */,
 				DD0F613B11ED5A9F0050174D /* SimpleKMLPlacemark.m */,
 				DD0F613C11ED5A9F0050174D /* SimpleKMLPoint.h */,
@@ -919,6 +942,7 @@
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
+				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
 			);
 			name = Externals;
 			sourceTree = "<group>";
@@ -1557,6 +1581,9 @@
 				DD1ACD7E13CD1D44001244D2 /* Reachability.m in Sources */,
 				DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */,
 				DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */,
+				DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */,
+				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
+				DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

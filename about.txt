@@ -18,4 +18,6 @@ Libraries used under license:
 
  * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
 
+ * UIImage-Extensions, (c) 2009 Catamount Software http://www.catamount.com/blog/1015/uiimage-extensions-for-cutting-scaling-and-rotating-uiimages/
+
 Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
