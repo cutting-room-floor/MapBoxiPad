@@ -92,17 +92,21 @@
     //
     [((DSMapBoxMarkerManager *)inMapView.markerManager) takeClustersFromMarkerManager:((DSMapBoxMarkerManager *)mapView.markerManager)];
 
-    // Then we take the path-based layers (i.e., what's left).
+    // Then we take the CALayer-based layers (paths, overlays, etc.)
     //
     RMLayerCollection *newOverlay = inMapView.contents.overlay;
     
-    NSArray *paths = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];
+    NSArray *sublayers = [NSArray arrayWithArray:mapView.contents.overlay.sublayers];
     
-    for (RMPath *path in paths)
+    for (CALayer *layer in sublayers)
     {  
-        [path removeFromSuperlayer];
-        [newOverlay addSublayer:path];
-        path.mapContents = inMapView.contents;
+        [layer removeFromSuperlayer];
+        [newOverlay addSublayer:layer];
+        
+        // update RMPath contents
+        //
+        if ([layer respondsToSelector:@selector(setMapContents:)])
+            [layer setValue:inMapView.contents forKey:@"mapContents"];
     }
     
     [mapView release];
