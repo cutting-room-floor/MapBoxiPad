@@ -29,6 +29,7 @@
     UIImageView *imageView;
     UILabel *label;
     CGPoint originalCenter;
+    CGSize originalSize;
     ASIHTTPRequest *primaryImageRequest;
     NSMutableArray *secondaryImageRequests;
     BOOL featured;

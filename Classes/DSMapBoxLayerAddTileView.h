@@ -29,6 +29,7 @@
     UIImageView *imageView;
     UIImage *image;
     UILabel *label;
+    CGSize originalSize;
     ASIHTTPRequest *imageRequest;
     BOOL selected;
     BOOL touched;

@@ -51,12 +51,8 @@
         
         [imageView addSubview:label];
         
-        // attach gestures
+        // attach flick open gesture
         //
-        UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
-        longPress.minimumPressDuration = 0.05;
-        [self addGestureRecognizer:longPress];
-        
         UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
         [self addGestureRecognizer:pinch];
 
@@ -99,6 +95,8 @@
             
             [self insertSubview:preview belowSubview:imageView];
         }
+        
+        originalSize = rect.size;
     }
     
     return self;
@@ -159,26 +157,22 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformMakeScale(0.9, 0.9);
+        imageView.transform = CGAffineTransformMakeScale(originalSize.width / self.frame.size.width * 0.9, originalSize.height / self.frame.size.height * 0.9);
         
         [UIView commitAnimations];
     }
     else
     {
-        // scale back up & push server view
+        // scale back up
         //
-        [UIView animateWithDuration:0.1
-                              delay:0.0
-                            options:UIViewAnimationCurveEaseInOut
-                         animations:^(void)
-                         {
-                             imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
-                         }
-                         completion:^(BOOL finished)
-                         {
-                             if ( ! flicked)
-                                 [self.delegate accountViewWasSelected:self];
-                         }];
+        [UIView beginAnimations:nil context:nil];
+        
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationDuration:0.1];
+        
+        imageView.transform = CGAffineTransformScale(imageView.transform, originalSize.width / self.frame.size.width / 0.9, originalSize.height / self.frame.size.height / 0.9);
+        
+        [UIView commitAnimations];
     }
     
     // update state
@@ -188,77 +182,26 @@
 
 #pragma mark -
 
-- (void)downloadSecondaryImages
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    // queue up secondary image downloads
+    self.touched = YES;
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.touched = NO;
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    self.touched = NO;
+    
+    // this is timed to coincide with ending the scale up animation in setTouched:
     //
-    for (int i = 0; i < [previewImageURLs count]; i++)
-    {
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
-        
-        request.timeOutSeconds = 10;
-        
-        [secondaryImageRequests addObject:request];
-        
-        [request setCompletionBlock:^(void)
-        {
-            UIImageView *preview = ((UIImageView *)[[self subviews] objectAtIndex:i]);
-
-            UIImage *image = [UIImage imageWithData:request.responseData];
-            
-            // begin image mods
-            //
-            UIGraphicsBeginImageContext(preview.bounds.size);
-            
-            CGContextRef c = UIGraphicsGetCurrentContext();
-            
-            // fill background with white
-            //
-            CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath]);
-            CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
-            CGContextFillPath(c);
-            
-            // draw tile
-            //
-            [image drawInRect:preview.bounds];
-            
-            image = UIGraphicsGetImageFromCurrentImageContext();
-            
-            UIGraphicsEndImageContext();
-
-            // update image view (adding border to fix jaggies)
-            //
-            preview.image = [image transparentBorderImage:1];
-            
-            // style shadow
-            //
-            preview.layer.shadowOpacity = 0.5;
-            preview.layer.shadowOffset  = CGSizeMake(-1, 1);
-            preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
-        }];
-        
-        [request startAsynchronous];
-    }
+    [((NSObject *)self.delegate) performSelector:@selector(accountViewWasSelected:) withObject:self afterDelay:0.1];
 }
 
 #pragma mark -
-
-- (void)longPressGesture:(UIGestureRecognizer *)recognizer
-{
-    switch (recognizer.state)
-    {
-        case UIGestureRecognizerStateBegan:
-            self.touched = YES;
-            break;
-            
-        case UIGestureRecognizerStateEnded:
-            self.touched = NO;
-            break;
-            
-        default:
-            break;
-    }
-}
 
 - (void)pinchGesture:(UIGestureRecognizer *)recognizer
 {
@@ -436,6 +379,61 @@
                 [UIView commitAnimations];
             }
         }
+    }
+}
+
+#pragma mark -
+
+- (void)downloadSecondaryImages
+{
+    // queue up secondary image downloads
+    //
+    for (int i = 0; i < [previewImageURLs count]; i++)
+    {
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
+        
+        request.timeOutSeconds = 10;
+        
+        [secondaryImageRequests addObject:request];
+        
+        [request setCompletionBlock:^(void)
+        {
+            UIImageView *preview = ((UIImageView *)[[self subviews] objectAtIndex:i]);
+            
+            UIImage *image = [UIImage imageWithData:request.responseData];
+            
+            // begin image mods
+            //
+            UIGraphicsBeginImageContext(preview.bounds.size);
+            
+            CGContextRef c = UIGraphicsGetCurrentContext();
+            
+            // fill background with white
+            //
+            CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath]);
+            CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+            CGContextFillPath(c);
+            
+            // draw tile
+            //
+            [image drawInRect:preview.bounds];
+            
+            image = UIGraphicsGetImageFromCurrentImageContext();
+            
+            UIGraphicsEndImageContext();
+            
+            // update image view (adding border to fix jaggies)
+            //
+            preview.image = [image transparentBorderImage:1];
+            
+            // style shadow
+            //
+            preview.layer.shadowOpacity = 0.5;
+            preview.layer.shadowOffset  = CGSizeMake(-1, 1);
+            preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
+        }];
+        
+        [request startAsynchronous];
     }
 }
 

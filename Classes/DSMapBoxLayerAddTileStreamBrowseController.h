@@ -35,6 +35,7 @@ extern NSString *const DSMapBoxLayersAdded;
     
     UIView *animatedTileView;
     CGPoint originalTileViewCenter;
+    CGSize originalTileViewSize;
 }
 
 @property (nonatomic, retain) NSString *serverName;

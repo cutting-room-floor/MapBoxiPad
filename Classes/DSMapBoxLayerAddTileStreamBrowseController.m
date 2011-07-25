@@ -94,7 +94,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                             options:UIViewAnimationCurveEaseIn
                          animations:^(void)
                          {
-                             animatedTileView.transform = CGAffineTransformScale(animatedTileView.transform, 1 / 8.0, 1 / 8.0);
+                             animatedTileView.transform = CGAffineTransformScale(animatedTileView.transform, originalTileViewSize.width / animatedTileView.frame.size.width, originalTileViewSize.height / animatedTileView.frame.size.height);
                              animatedTileView.center    = originalTileViewCenter;
                              animatedTileView.alpha     = 1.0;
                          }
@@ -179,13 +179,15 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     // tapped on top-right "preview" corner; animate
     //
     animatedTileView       = [tileView retain];
-    originalTileViewCenter = animatedTileView.center;
+    originalTileViewCenter = tileView.center;
+    originalTileViewSize   = tileView.frame.size;
+    
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDuration:0.5];
     
-    tileView.transform = CGAffineTransformMakeScale(8.0, 8.0);
+    tileView.transform = CGAffineTransformMakeScale(originalTileViewSize.width / tileView.frame.size.width * 8.0, originalTileViewSize.height / tileView.frame.size.height * 8.0);
     tileView.center    = self.view.center;
     tileView.alpha     = 0.0;
     

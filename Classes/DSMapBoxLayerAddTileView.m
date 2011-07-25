@@ -59,12 +59,8 @@
         
         if ( ! [imageURL isEqual:[NSNull null]])
         {
-            // attach gesture
+            // attach pinch preview gesture
             //
-            UILongPressGestureRecognizer *longPress = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressGesture:)] autorelease];        
-            longPress.minimumPressDuration = 0.05;
-            [self addGestureRecognizer:longPress];
-            
             UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
             [self addGestureRecognizer:pinch];
 
@@ -106,6 +102,8 @@
             self.userInteractionEnabled = NO;
             self.alpha = 0.75;
         }
+        
+        originalSize = rect.size;
     }
     
     return self;
@@ -149,10 +147,6 @@
 {
     if (flag)
     {
-        // toggle selection
-        //
-        self.selected = ! self.selected;
-        
         // scale down
         //
         [UIView beginAnimations:nil context:nil];
@@ -160,7 +154,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformMakeScale(0.9, 0.9);
+        imageView.transform = CGAffineTransformMakeScale(originalSize.width / self.frame.size.width * 0.9, originalSize.height / self.frame.size.height * 0.9);
         
         [UIView commitAnimations];
     }
@@ -173,7 +167,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformScale(imageView.transform, 1 / 0.9, 1 / 0.9);
+        imageView.transform = CGAffineTransformScale(imageView.transform, originalSize.width / self.frame.size.width / 0.9, originalSize.height / self.frame.size.height / 0.9);
         
         [UIView commitAnimations];
     }
@@ -185,45 +179,46 @@
 
 #pragma mark -
 
-- (void)longPressGesture:(UIGestureRecognizer *)recognizer
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    switch (recognizer.state)
+    // ignore top corner preview tap
+    //
+    if ([[touches anyObject] locationInView:self].x < self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y > 50)
     {
-        case UIGestureRecognizerStateBegan:
-            
-            // top corner preview
-            //
-            if ([recognizer locationInView:self].x >= self.bounds.size.width - 50 && [recognizer locationInView:self].y <= 50)
-            {
-                // cancel gesture to avoid any animation
-                //
-                recognizer.enabled = NO;
-                recognizer.enabled = YES;
-                
-                // bring to front
-                //
-                [self.superview bringSubviewToFront:self];
-
-                // go straight to preview
-                //
-                [self.delegate tileViewWantsToShowPreview:self];
-            }
-            
-            else
-                self.touched = YES;
-
-            break;
-            
-        case UIGestureRecognizerStateEnded:
-
-            self.touched = NO;
-
-            break;
-            
-        default:
-            break;
+        self.touched  = YES;
+        self.selected = ! self.selected;
     }
 }
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    if (self.touched)
+    {
+        self.touched  = NO;
+        self.selected = ! self.selected;
+    }
+}
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // catch top corner preview tap
+    //
+    if ([[touches anyObject] locationInView:self].x >= self.bounds.size.width - 50 && [[touches anyObject] locationInView:self].y <= 50)
+    {
+        // bring to front
+        //
+        [self.superview bringSubviewToFront:self];
+        
+        // go straight to preview
+        //
+        [self.delegate tileViewWantsToShowPreview:self];
+    }
+
+    else if (self.touched)
+        self.touched = NO;
+}
+
+#pragma mark -
 
 - (void)pinchGesture:(UIGestureRecognizer *)recognizer
 {
