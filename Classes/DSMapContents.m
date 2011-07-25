@@ -11,6 +11,8 @@
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxTileSetManager.h"
 
+#import "MapBoxConstants.h"
+
 #import "RMProjection.h"
 #import "RMTileLoader.h"
 #import "RMMercatorToTileProjection.h"

@@ -15,6 +15,7 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "RMInteractiveSource.h"
 #import "DSMapBoxDataOverlayManager.h"
+#import "MapBoxConstants.h"
 
 @implementation DSMapBoxLayerAddPreviewController
 
@@ -41,7 +42,7 @@
     [[[DSMapContents alloc] initWithView:mapView 
                               tilesource:source
                             centerLatLon:center
-                               zoomLevel:[[centerParts objectAtIndex:2] floatValue]
+                               zoomLevel:([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds)
                             maxZoomLevel:[source maxZoom]
                             minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];

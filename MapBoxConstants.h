@@ -10,3 +10,7 @@
 #define kStartingLat               14.37292766571045f
 #define kStartingLon              -16.428955078125
 #define kStartingZoom               2.5f
+#define kLowerZoomBounds            2.5f
+#define kUpperZoomBounds           22.0f
+#define kUpperLatitudeBounds       85.0511f
+#define kLowerLatitudeBounds      -85.0511f
