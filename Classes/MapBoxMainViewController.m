@@ -471,7 +471,7 @@
     SimpleKML *newKML = [SimpleKML KMLWithContentsOfURL:fileURL error:&error];
 
     if (error)
-        [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL relativePath]];
+        [self dataLayerHandler:self didFailToHandleDataLayerAtURL:fileURL];
 
     else if (newKML)
     {
@@ -503,7 +503,7 @@
     }
     
     else
-        [self dataLayerHandler:self didFailToHandleDataLayerAtPath:[fileURL absoluteString]];
+        [self dataLayerHandler:self didFailToHandleDataLayerAtURL:fileURL];
 }
 
 - (void)openMBTilesFile:(NSURL *)fileURL
