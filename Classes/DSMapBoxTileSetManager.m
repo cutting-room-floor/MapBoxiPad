@@ -13,6 +13,8 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
+#import "MapBoxConstants.h"
+
 @implementation DSMapBoxTileSetManager
 
 static DSMapBoxTileSetManager *defaultManager;
@@ -65,7 +67,7 @@ static DSMapBoxTileSetManager *defaultManager;
 {
     NSFileManager *fileManager  = [NSFileManager defaultManager];
     NSString *docsPath          = [[UIApplication sharedApplication] documentsFolderPathString];
-    NSString *onlineLayersPath  = [NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]];
+    NSString *onlineLayersPath  = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
     NSMutableArray *tileSetURLs = [NSMutableArray array];
 
     // MBTiles in docs folder

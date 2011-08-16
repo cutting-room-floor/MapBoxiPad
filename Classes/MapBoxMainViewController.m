@@ -190,7 +190,7 @@
     
     // make sure online tiles folder exists
     //
-    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/Online Layers", [[UIApplication sharedApplication] preferencesFolderPathString]];
+    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
 
     [[NSFileManager defaultManager] createDirectoryAtPath:onlineLayersFolder
                               withIntermediateDirectories:YES
@@ -851,7 +851,7 @@
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
         
-        [dict writeToFile:[NSString stringWithFormat:@"%@/Online Layers/%@.plist", prefsFolder, [layer objectForKey:@"id"]] atomically:YES];
+        [dict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist", prefsFolder, kTileStreamFolderName, [layer objectForKey:@"id"]] atomically:YES];
     }
     
     // animate layers into layer UI
