@@ -15,6 +15,7 @@
 #import "UIApplication_Additions.h"
 
 #import "DSMapBoxLegacyMigrationManager.h"
+#import "DSMapBoxDownloadManager.h"
 
 @interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
 
@@ -93,6 +94,10 @@
 
         return [self openFileURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
+    
+    // kick off downloads
+    //
+    [DSMapBoxDownloadManager sharedManager];
         
 	return YES;
 }

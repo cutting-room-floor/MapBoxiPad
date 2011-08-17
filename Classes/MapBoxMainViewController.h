@@ -26,14 +26,17 @@
                                                         DSDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
-                                                        DSMapBoxLayerControllerDelegate>
+                                                        DSMapBoxLayerControllerDelegate,
+                                                        UIPopoverControllerDelegate>
 {
     IBOutlet DSMapView *mapView;
     IBOutlet UILabel *attributionLabel;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
     IBOutlet UIBarButtonItem *clusteringButton;
+    IBOutlet UIBarButtonItem *downloadsButton;
     UIPopoverController *layersPopover;
+    UIPopoverController *downloadsPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
     CLLocationCoordinate2D postRotationMapCenter;
@@ -56,6 +59,7 @@
 - (IBAction)tappedClusteringButton:(id)sender;
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedHelpButton:(id)sender;
+- (IBAction)tappedDownloadsButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openMBTilesFile:(NSURL *)fileURL;
