@@ -12,15 +12,51 @@
 
 @implementation DSMapBoxNotificationView
 
+static DSMapBoxNotificationView *notificationView;
+
 @synthesize message;
 
 + (id)notificationWithMessage:(NSString *)message
 {
-    DSMapBoxNotificationView *newView = [[[DSMapBoxNotificationView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
+    @synchronized(@"DSMapBoxNotificationView")
+    {
+        if ( ! notificationView)
+        {
+            notificationView = [[DSMapBoxNotificationView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)];
+            
+            notificationView.message = message;
+            
+            [[((UIWindow *)[[[UIApplication sharedApplication] windows] objectAtIndex:0]).subviews objectAtIndex:0] addSubview:notificationView];
+            
+            notificationView.alpha = 0.0;
+            
+            [UIView animateWithDuration:0.25
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseIn
+                             animations:^(void)
+                             {
+                                 notificationView.alpha = 1.0;
+                             }
+                             completion:^(BOOL finished)
+                             {
+                                 [UIView animateWithDuration:0.5
+                                                       delay:3.0
+                                                     options:UIViewAnimationCurveEaseOut
+                                                  animations:^(void)
+                                                  {
+                                                      notificationView.alpha = 0.0;
+                                                  }
+                                                  completion:^(BOOL finished)
+                                                  {
+                                                      [notificationView removeFromSuperview];
+                                                      [notificationView release];
+                                                      notificationView = nil;
+                                                  }];
+                             }];
+        }
+    }
     
-    newView.message = message;
-    
-    return newView;
+    return notificationView;
 }
 
 #pragma mark -
@@ -35,12 +71,14 @@
         self.userInteractionEnabled = NO;
 
         self.layer.shadowOffset     = CGSizeMake(0, 1);
-        self.layer.shadowOpacity    = 0.5;
+        self.layer.shadowOpacity    = 0.2;
         
         label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 4, 480, 20)] autorelease];
         
         label.textColor        = [UIColor whiteColor];
         label.backgroundColor  = [UIColor clearColor];
+        label.shadowColor      = [UIColor blackColor];
+        label.shadowOffset     = CGSizeMake(0, 1);
         label.font             = [UIFont systemFontOfSize:13.0];
         label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         
@@ -79,7 +117,7 @@
 {
     CGContextRef context = UIGraphicsGetCurrentContext();
     
-    [[UIColor colorWithWhite:0.0 alpha:0.8] set];
+    [[UIColor colorWithWhite:0.0 alpha:0.6] set];
 
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect
                                                byRoundingCorners:UIRectCornerBottomRight

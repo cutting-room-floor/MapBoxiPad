@@ -145,6 +145,8 @@ static DSMapBoxDownloadManager *sharedManager;
             request.shouldContinueWhenAppEntersBackground = YES;
             request.allowResumeForFileDownloads           = YES;
             
+            request.userInfo = [NSDictionary dictionaryWithObject:[downloadURL lastPathComponent] forKey:@"name"];
+            
             [activeDownloadQueue addOperation:request];
             
             [downloads addObject:request];
@@ -169,7 +171,7 @@ static DSMapBoxDownloadManager *sharedManager;
     //
     // per http://groups.google.com/group/asihttprequest/browse_thread/thread/a6f89a9fb0587874/
     //
-    NSLog(@"pausing %@ (%@)", download, [(download.originalURL ? download.originalURL : download.url) lastPathComponent]);
+    NSLog(@"pausing %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
 
     [download clearDelegatesAndCancel];
 
@@ -182,7 +184,7 @@ static DSMapBoxDownloadManager *sharedManager;
 
 - (void)resumeDownload:(ASIHTTPRequest *)download
 {
-    NSLog(@"resuming %@ (%@)", download, [(download.originalURL ? download.originalURL : download.url) lastPathComponent]);
+    NSLog(@"resuming %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
    
     [download startAsynchronous];
     
@@ -191,7 +193,7 @@ static DSMapBoxDownloadManager *sharedManager;
 
 - (void)cancelDownload:(ASIHTTPRequest *)download
 {
-    NSLog(@"cancelling %@ (%@)", download, [(download.originalURL ? download.originalURL : download.url) lastPathComponent]);
+    NSLog(@"cancelling %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
     
     [download clearDelegatesAndCancel];
     
@@ -213,8 +215,7 @@ static DSMapBoxDownloadManager *sharedManager;
 {
     NSLog(@"%f of %qu", progress, activeDownloadQueue.totalBytesToDownload);
     
-    
-//    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification object:[NSNumber numberWithFloat:progress]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification object:[NSNumber numberWithFloat:progress]];
 }
 
 #pragma mark -
@@ -223,7 +224,10 @@ static DSMapBoxDownloadManager *sharedManager;
 {
     NSLog(@"finished: %@", request);
     
+    [downloads removeObject:request];
     [activeDownloads removeObject:request];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadCompleteNotification object:request];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request

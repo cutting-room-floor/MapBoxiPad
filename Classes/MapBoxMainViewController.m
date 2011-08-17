@@ -24,6 +24,7 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadViewController.h"
+#import "DSMapBoxNotificationView.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -165,7 +166,14 @@
                                              selector:@selector(downloadProgressChanged:)
                                                  name:DSMapBoxDownloadProgressNotification
                                                object:nil];
-    
+
+    // watch for download completion
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadCompleted:)
+                                                 name:DSMapBoxDownloadCompleteNotification
+                                               object:nil];
+
     // restore app state
     //
     [self restoreState:self];
@@ -253,6 +261,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                  object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -612,27 +621,63 @@
     [self presentModalViewController:wrapper animated:YES];
 }
 
-- (void)downloadProgressChanged:(NSNotification *)notification
+- (IBAction)tappedDownloadsButton:(id)sender
 {
-    float progress = [[notification object] floatValue];
+    if (layersPopover && layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:NO];
     
-    NSLog(@"%f", progress);
-    
-//    
-//    int index = round(8 * progress);
-//    
-//    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
-//    
-//    NSLog(@"%f: should be using %@", progress, [NSString stringWithFormat:@"downloads%i.png", index]);
-//    
-//    if ( ! [[((UIButton *)downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
-//        [((UIButton *)downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+    if (downloadsPopover.popoverVisible)
+        [downloadsPopover dismissPopoverAnimated:YES];
+          
+    else
+    {
+        if ( ! downloadsPopover)
+        {
+            DSMapBoxLayerController *downloadsController = [[[DSMapBoxDownloadViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+          
+            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:downloadsController] autorelease];
+            
+            downloadsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+          
+            downloadsPopover.passthroughViews = nil;
+            downloadsPopover.delegate = self;
+        }
+
+        downloadsPopover.popoverContentSize = downloadsPopover.contentViewController.contentSizeForViewInPopover;
+
+        [downloadsPopover presentPopoverFromBarButtonItem:downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
 }
+
+- (void)setClusteringOn:(BOOL)clusteringOn
+{
+    UIButton *button;
+    
+    if ( ! clusteringButton.customView)
+    {
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        
+        [button addTarget:self action:@selector(tappedClusteringButton:) forControlEvents:UIControlEventTouchUpInside];
+        
+        clusteringButton.customView = button;
+    }
+    
+    else
+        button = ((UIButton *)clusteringButton.customView);
+    
+    UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
+    
+    button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+    
+    [button setImage:stateImage forState:UIControlStateNormal];
+}
+
+#pragma mark -
 
 - (void)downloadQueueChanged:(NSNotification *)notification
 {
     BOOL queueActive = [((NSNumber *)[notification object]) boolValue];
-
+    
     if (queueActive && ! [toolbar.items containsObject:downloadsButton])
     {
         if ( ! downloadsButton.customView)
@@ -669,55 +714,28 @@
     }
 }
 
-- (IBAction)tappedDownloadsButton:(id)sender
+- (void)downloadProgressChanged:(NSNotification *)notification
 {
-    if (layersPopover && layersPopover.popoverVisible)
-        [layersPopover dismissPopoverAnimated:NO];
+    float progress = [[notification object] floatValue];
     
-    if (downloadsPopover.popoverVisible)
-        [downloadsPopover dismissPopoverAnimated:YES];
-          
-    else
-    {
-        if ( ! downloadsPopover)
-        {
-            DSMapBoxLayerController *downloadsController = [[[DSMapBoxDownloadViewController alloc] initWithNibName:nil bundle:nil] autorelease];
-          
-            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:downloadsController] autorelease];
-            
-            downloadsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
-          
-            downloadsPopover.passthroughViews = nil;
-            downloadsPopover.delegate = self;
-        }
-
-        downloadsPopover.popoverContentSize = downloadsPopover.contentViewController.contentSizeForViewInPopover;
-
-        [downloadsPopover presentPopoverFromBarButtonItem:downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
+    NSLog(@"%f", progress);
+    
+    //    
+    //    int index = round(8 * progress);
+    //    
+    //    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
+    //    
+    //    NSLog(@"%f: should be using %@", progress, [NSString stringWithFormat:@"downloads%i.png", index]);
+    //    
+    //    if ( ! [[((UIButton *)downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
+    //        [((UIButton *)downloadsButton.customView) setImage:image forState:UIControlStateNormal];
 }
 
-- (void)setClusteringOn:(BOOL)clusteringOn
+- (void)downloadCompleted:(NSNotification *)notification
 {
-    UIButton *button;
-
-    if ( ! clusteringButton.customView)
-    {
-        button = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        [button addTarget:self action:@selector(tappedClusteringButton:) forControlEvents:UIControlEventTouchUpInside];
-        
-        clusteringButton.customView = button;
-    }
+    ASIHTTPRequest *download = (ASIHTTPRequest *)[notification object];
     
-    else
-        button = ((UIButton *)clusteringButton.customView);
-
-    UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
-
-    button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
-
-    [button setImage:stateImage forState:UIControlStateNormal];
+    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [[download userInfo] objectForKey:@"name"]]];
 }
 
 #pragma mark -
