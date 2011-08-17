@@ -1390,7 +1390,7 @@
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if ( ! [[DSMapBoxDownloadManager sharedManager] activeDownloadCount])
+    if ([popoverController isEqual:downloadsPopover] && ! [[DSMapBoxDownloadManager sharedManager] activeDownloadCount])
     {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
         {
