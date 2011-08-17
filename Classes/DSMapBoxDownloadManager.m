@@ -195,6 +195,10 @@ static DSMapBoxDownloadManager *sharedManager;
     
     [download clearDelegatesAndCancel];
     
+    [download removeTemporaryDownloadFile];
+    
+    [activeDownloads removeObject:download];
+    
     [downloads removeObject:download];
 }
 
