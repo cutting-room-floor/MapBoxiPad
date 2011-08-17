@@ -7,6 +7,8 @@
 #define kTileStreamTilesetAPIPath  @"/api/v1/Tileset"
 #define kTileStreamMapAPIPath      @"/api/v1/Map"
 #define kTileStreamFolderName      @"Online Layers"
+#define kDownloadsFolderName       @"Downloads"
+#define kMBTilesURLSchemePrefix    @"x-com-mapbox-mbtiles-"
 #define kMapBoxBlue                [UIColor colorWithRed:0.116 green:0.550 blue:0.670 alpha:1.000]
 #define kStartingLat               14.37292766571045f
 #define kStartingLon              -16.428955078125

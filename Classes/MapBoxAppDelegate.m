@@ -10,6 +10,8 @@
 
 #import "MapBoxMainViewController.h"
 
+#import "MapBoxConstants.h"
+
 #import "DSFingerTipWindow.h"
 
 #import "UIApplication_Additions.h"
@@ -17,19 +19,10 @@
 #import "DSMapBoxLegacyMigrationManager.h"
 #import "DSMapBoxDownloadManager.h"
 
-@interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
-
-- (BOOL)openFileURL:(NSURL *)fileURL;
-
-@end
-
-#pragma mark -
-
 @implementation MapBoxAppDelegate
 
 @synthesize window;
 @synthesize viewController;
-@synthesize openingExternalFile;
 
 - (void)dealloc
 {
@@ -85,20 +78,36 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
+    // handle launch files & URLs
+    //
     if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
     {
-        // Note that we are opening a file so that application:openURL:sourceApplication:annotation:
-        // doesn't also get called on 4.2+ for this file.
-        //
-        self.openingExternalFile = YES;
-
-        return [self openFileURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
+        NSURL *launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+        
+        if ([[launchURL scheme] hasPrefix:kMBTilesURLSchemePrefix])
+        {
+            // MBTiles HTTP/HTTPS remote URLs
+            //
+            return YES;
+        }
+        else if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"mbtiles", nil] containsObject:[launchURL pathExtension]])
+        {
+            // supported file types
+            //
+            return YES;
+        }
+        else
+        {
+            // unsupported launch URL
+            //
+            return NO;
+        }
     }
     
-    // kick off downloads
+    // kick off downloads (including just-passed ones)
     //
     [DSMapBoxDownloadManager sharedManager];
-        
+    
 	return YES;
 }
 
@@ -110,47 +119,46 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [viewController saveState:self];
-    
-    // For 4.2+, mark that we are no longer processing an external file.
-    //
-    self.openingExternalFile = NO;
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ( ! self.openingExternalFile)
+    if ([[url scheme] hasPrefix:kMBTilesURLSchemePrefix])
     {
-        // For 4.2+, mark that we've already got this file. This shouldn't be necessary, but why chance it.
+        // remove prefix, leaving http: or https: URL
         //
-        self.openingExternalFile = YES;
-
-        return [self openFileURL:url];
-    }
-    
-    return YES;
-}
-
-#pragma mark -
-
-- (BOOL)openFileURL:(NSURL *)fileURL
-{
-    if ([[[fileURL path] lastPathComponent] hasSuffix:@"kml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"kmz"])
-    {
-        [viewController openKMLFile:fileURL];
-
-        return YES;
-    }
-    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"xml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"rss"])
-    {
-        [viewController openRSSFile:fileURL];
+        NSString *downloadURLString = [[url absoluteString] stringByReplacingOccurrencesOfString:kMBTilesURLSchemePrefix withString:@""];
         
-        return YES;
-    }
-    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"mbtiles"])
-    {
-        [viewController openMBTilesFile:fileURL];
+        // write a unique download file
+        //
+        NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], 
+                                                                                   kDownloadsFolderName,
+                                                                                   [[NSProcessInfo processInfo] globallyUniqueString]];
         
-        return YES;
+        NSDictionary *downloadStubContents = [NSDictionary dictionaryWithObject:downloadURLString forKey:@"URL"];
+        
+        return [downloadStubContents writeToFile:downloadStubFile atomically:NO];
+    }
+    else if ([url isFileURL])
+    {
+        if ([[url pathExtension] isEqualToString:@"kml"] || [[url pathExtension] isEqualToString:@"kmz"])
+        {
+            [viewController openKMLFile:url];
+            
+            return YES;
+        }
+        else if ([[url pathExtension] isEqualToString:@"xml"] || [[url pathExtension] isEqualToString:@"rss"])
+        {
+            [viewController openRSSFile:url];
+            
+            return YES;
+        }
+        else if ([[url pathExtension] isEqualToString:@"mbtiles"])
+        {
+            [viewController openMBTilesFile:url];
+            
+            return YES;
+        }
     }
     
     return NO;

@@ -8,11 +8,11 @@
 
 #import "DSMapBoxDownloadManager.h"
 
+#import "MapBoxConstants.h"
+
 #import "ASINetworkQueue.h"
 
 #import "UIApplication_Additions.h"
-
-#define kDownloadsFolderName @"Downloads"
 
 @interface DSMapBoxDownloadManager (DSMapBoxDownloadManagerPrivate)
 
@@ -46,6 +46,20 @@ static DSMapBoxDownloadManager *sharedManager;
     {
         downloads = [[NSMutableArray array] retain];
         activeDownloads = [[NSMutableArray array] retain];
+        
+        NSString *downloadPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDownloadsFolderName];
+
+        BOOL isDir;
+        
+        if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadPath isDirectory:&isDir] || ! isDir)
+        {
+            [[NSFileManager defaultManager] removeItemAtPath:downloadPath error:NULL];
+            
+            [[NSFileManager defaultManager] createDirectoryAtPath:downloadPath 
+                                      withIntermediateDirectories:NO 
+                                                       attributes:nil
+                                                            error:NULL];
+        }
         
         [self performSelector:@selector(resumeDownloads) withObject:nil afterDelay:1.0];
     }
