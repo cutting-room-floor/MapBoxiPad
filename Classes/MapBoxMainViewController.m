@@ -680,20 +680,22 @@
     
     if (queueActive && ! [toolbar.items containsObject:downloadsButton])
     {
-        if ( ! downloadsButton.customView)
+        UIButton *button = (UIButton *)downloadsButton.customView;
+        
+        if ( ! button)
         {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
             
             [button addTarget:self action:@selector(tappedDownloadsButton:) forControlEvents:UIControlEventTouchUpInside];
             
             downloadsButton.customView = button;
-            
-            UIImage *stateImage = [UIImage imageNamed:@"downloads0.png"];
-            
-            button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
-            
-            [button setImage:stateImage forState:UIControlStateNormal];
         }
+
+        UIImage *stateImage = [UIImage imageNamed:@"downloads0.png"];
+        
+        button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+        
+        [button setImage:stateImage forState:UIControlStateNormal];
         
         NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
         
@@ -718,17 +720,12 @@
 {
     float progress = [[notification object] floatValue];
     
-    NSLog(@"%f", progress);
+    int index = round(8 * progress);
     
-    //    
-    //    int index = round(8 * progress);
-    //    
-    //    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
-    //    
-    //    NSLog(@"%f: should be using %@", progress, [NSString stringWithFormat:@"downloads%i.png", index]);
-    //    
-    //    if ( ! [[((UIButton *)downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
-    //        [((UIButton *)downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
+    
+    if ( ! [[((UIButton *)downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
+        [((UIButton *)downloadsButton.customView) setImage:image forState:UIControlStateNormal];
 }
 
 - (void)downloadCompleted:(NSNotification *)notification
