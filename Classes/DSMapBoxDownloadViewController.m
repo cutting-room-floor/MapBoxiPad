@@ -10,6 +10,7 @@
 
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadTableViewCell.h"
+#import "DSMapBoxTintedBarButtonItem.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -31,9 +32,9 @@
     
     self.navigationItem.title = @"Downloads";
     
-//    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-//                                                                                                        target:self
-//                                                                                                        action:@selector(editButtonTapped:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                            target:self
+                                                                                            action:@selector(editButtonTapped:)] autorelease];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,6 +64,46 @@
     [self.tableView reloadData];
     
     self.contentSizeForViewInPopover = CGSizeMake(self.contentSizeForViewInPopover.width, 200);
+    
+    if ([self.tableView numberOfRowsInSection:0])
+    {
+        self.tableView.editing = NO;
+        
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                                target:self
+                                                                                                action:@selector(editButtonTapped:)] autorelease];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+#pragma mark -
+
+- (void)editButtonTapped:(id)sender
+{
+    self.tableView.editing = YES;
+    
+    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
+                                                                                          target:self
+                                                                                          action:@selector(doneButtonTapped:)] autorelease];
+}
+
+- (void)doneButtonTapped:(id)sender
+{
+    self.tableView.editing = NO;
+    
+    if ([self.tableView numberOfRowsInSection:0])
+    {
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                                target:self
+                                                                                                action:@selector(editButtonTapped:)] autorelease];
+    }
+    else
+    {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark -
@@ -91,11 +132,6 @@
     request.downloadProgressDelegate = cell.pie;
     
     [request updateDownloadProgress];
-    
-//    NSLog(@"download %i (%@) paused? %i", indexPath.row, request, ! request.inProgress);
-    
-//    if ( ! request.queue)
-//        cell.isPaused = YES;
     
     cell.isPaused = ! [[DSMapBoxDownloadManager sharedManager] downloadIsActive:request];
     
