@@ -172,14 +172,10 @@ static DSMapBoxDownloadManager *sharedManager;
     NSLog(@"pausing %@ (%@)", download, [(download.originalURL ? download.originalURL : download.url) lastPathComponent]);
 
     [download clearDelegatesAndCancel];
-    
-    NSMutableArray *newDownloads = [NSMutableArray arrayWithArray:self.downloads];
-    
+
     ASIHTTPRequest *newDownload = [[download copy] autorelease];
     
-    [newDownloads replaceObjectAtIndex:[newDownloads indexOfObject:download] withObject:newDownload];
-    
-    self.downloads = newDownloads;
+    [downloads replaceObjectAtIndex:[downloads indexOfObject:download] withObject:newDownload];
     
     [activeDownloads removeObject:download];
 }
@@ -191,6 +187,15 @@ static DSMapBoxDownloadManager *sharedManager;
     [download startAsynchronous];
     
     [activeDownloads addObject:download];
+}
+
+- (void)cancelDownload:(ASIHTTPRequest *)download
+{
+    NSLog(@"cancelling %@ (%@)", download, [(download.originalURL ? download.originalURL : download.url) lastPathComponent]);
+    
+    [download clearDelegatesAndCancel];
+    
+    [downloads removeObject:download];
 }
 
 - (BOOL)downloadIsActive:(ASIHTTPRequest *)download

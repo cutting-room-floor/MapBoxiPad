@@ -30,6 +30,7 @@ static NSString *const DSMapBoxDownloadProgressNotification = @"DSMapBoxDownload
 - (void)resumeDownloads;
 - (void)pauseDownload:(ASIHTTPRequest *)download;
 - (void)resumeDownload:(ASIHTTPRequest *)download;
+- (void)cancelDownload:(ASIHTTPRequest *)download;
 - (BOOL)downloadIsActive:(ASIHTTPRequest *)download;
 
 @end

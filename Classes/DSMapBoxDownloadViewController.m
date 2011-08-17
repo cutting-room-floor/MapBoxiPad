@@ -102,35 +102,26 @@
     return (UITableViewCell *)cell;
 }
 
-/*
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: allow cancellation of downloads 
+    return YES;
 }
-*/
 
-/*
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: allow cancellation of downloads 
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[downloads objectAtIndex:indexPath.row];
+    
+    [[DSMapBoxDownloadManager sharedManager] cancelDownload:request];
+    
+    [self reloadTableView];
 }
-*/
-
-/*
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // TODO: allow reprioritization of downloads
-}
-*/
-
-/*
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-    // TODO: allow reprioritization of downloads
-}
-*/
 
 #pragma mark -
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return @"Cancel";
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
