@@ -106,7 +106,7 @@
     
     // kick off downloads (including just-passed ones)
     //
-    [DSMapBoxDownloadManager sharedManager];
+    [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:1.0];
     
 	return YES;
 }
@@ -137,7 +137,11 @@
         
         NSDictionary *downloadStubContents = [NSDictionary dictionaryWithObject:downloadURLString forKey:@"URL"];
         
-        return [downloadStubContents writeToFile:downloadStubFile atomically:NO];
+        BOOL success = [downloadStubContents writeToFile:downloadStubFile atomically:NO];
+        
+        [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
+        
+        return success;
     }
     else if ([url isFileURL])
     {

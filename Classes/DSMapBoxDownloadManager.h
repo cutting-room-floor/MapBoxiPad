@@ -27,6 +27,7 @@ static NSString *const DSMapBoxDownloadProgressNotification = @"DSMapBoxDownload
 
 + (id)sharedManager;
 
+- (void)resumeDownloads;
 - (void)pauseDownload:(ASIHTTPRequest *)download;
 - (void)resumeDownload:(ASIHTTPRequest *)download;
 - (BOOL)downloadIsActive:(ASIHTTPRequest *)download;

@@ -17,7 +17,6 @@
 @interface DSMapBoxDownloadManager (DSMapBoxDownloadManagerPrivate)
 
 - (NSArray *)pendingDownloads;
-- (void)resumeDownloads;
 
 @end
 
@@ -60,8 +59,6 @@ static DSMapBoxDownloadManager *sharedManager;
                                                        attributes:nil
                                                             error:NULL];
         }
-        
-        [self performSelector:@selector(resumeDownloads) withObject:nil afterDelay:1.0];
     }
     
     return self;
@@ -129,33 +126,39 @@ static DSMapBoxDownloadManager *sharedManager;
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:YES];
     }
     
-    NSMutableArray *newDownloads = [NSMutableArray array];
-    
     for (NSString *download in [self pendingDownloads])
     {
         NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:download];
         
         NSURL *downloadURL = [NSURL URLWithString:[info objectForKey:@"URL"]];        
         
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:downloadURL];
-                
-        request.downloadDestinationPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], [downloadURL lastPathComponent]];
-
-        request.shouldContinueWhenAppEntersBackground = YES;
-        request.allowResumeForFileDownloads           = YES;
+        NSMutableArray *allActiveURLs = [NSMutableArray arrayWithArray:[[activeDownloadQueue operations] valueForKeyPath:@"url"]];
         
-        [activeDownloadQueue addOperation:request];
+        [allActiveURLs addObjectsFromArray:[[activeDownloadQueue operations] valueForKeyPath:@"originalURL"]];
         
-        [newDownloads addObject:request];
+        if ( ! [allActiveURLs containsObject:downloadURL])
+        {
+            ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:downloadURL];
+                    
+            request.downloadDestinationPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], [downloadURL lastPathComponent]];
 
-        [activeDownloads addObject:request];
+            request.shouldContinueWhenAppEntersBackground = YES;
+            request.allowResumeForFileDownloads           = YES;
+            
+            [activeDownloadQueue addOperation:request];
+            
+            [downloads addObject:request];
+
+            [activeDownloads addObject:request];
+        }
     }
     
-    self.downloads = newDownloads;
-    
-    [activeDownloadQueue go];
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:YES]];
+    if ([activeDownloadQueue operationCount])
+    {
+        [activeDownloadQueue go];
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:YES]];
+    }
 }
 
 #pragma mark -
