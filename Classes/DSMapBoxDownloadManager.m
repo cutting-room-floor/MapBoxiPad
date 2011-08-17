@@ -202,6 +202,10 @@ static DSMapBoxDownloadManager *sharedManager;
     [activeDownloads removeObject:download];
     
     [downloads removeObject:download];
+    
+    for (NSString *path in [self pendingDownloads])
+        if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[download.originalURL absoluteString]])
+            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
 }
 
 - (BOOL)downloadIsActive:(ASIHTTPRequest *)download
