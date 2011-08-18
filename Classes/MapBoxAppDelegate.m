@@ -121,6 +121,11 @@
     [viewController saveState:self];
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     if ([[url scheme] hasPrefix:kMBTilesURLSchemePrefix] && [[url pathExtension] isEqualToString:@"mbtiles"])
