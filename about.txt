@@ -14,6 +14,8 @@ Libraries used under license:
 
  * Simple KML, (c) 2010 Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
 
+ * SSToolkit, (c) 2010 Sam Soffes https://github.com/samsoffes/sstoolkit
+
  * TouchXML, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchXML
 
  * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
