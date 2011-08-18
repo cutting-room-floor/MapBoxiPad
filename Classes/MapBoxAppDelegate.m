@@ -123,7 +123,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ([[url scheme] hasPrefix:kMBTilesURLSchemePrefix])
+    if ([[url scheme] hasPrefix:kMBTilesURLSchemePrefix] && [[url pathExtension] isEqualToString:@"mbtiles"])
     {
         // remove prefix, leaving http: or https: URL
         //
