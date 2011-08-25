@@ -10,6 +10,7 @@
 #import "DSMapBoxMarkerManager.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxTileSetManager.h"
+#import "DSMapBoxTileSourceInfiniteZoom.h"
 
 #import "MapBoxConstants.h"
 

@@ -141,11 +141,6 @@
 
 - (float)minZoom
 {
-    return kMBTilesDefaultMinTileZoom;
-}
-
-- (float)minZoomNative
-{
     FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
     
     if ([db hadError])
@@ -161,11 +156,6 @@
 }
 
 - (float)maxZoom
-{
-    return kMBTilesDefaultMaxTileZoom;
-}
-
-- (float)maxZoomNative
 {
     FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
     

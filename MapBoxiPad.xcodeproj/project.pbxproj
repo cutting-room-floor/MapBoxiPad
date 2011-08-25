@@ -171,6 +171,7 @@
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
+		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
@@ -505,6 +506,8 @@
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
+		DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSourceInfiniteZoom.m; sourceTree = "<group>"; };
+		DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSourceInfiniteZoom.h; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
@@ -1125,6 +1128,8 @@
 				DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */,
 				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
 				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
+				DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */,
+				DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */,
 				DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */,
 				DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */,
 				DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */,
@@ -1584,6 +1589,7 @@
 				DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */,
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
 				DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */,
+				DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

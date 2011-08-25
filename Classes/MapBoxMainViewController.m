@@ -22,6 +22,7 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxTileSourceInfiniteZoom.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -43,6 +44,8 @@
 
 #import "UIImage+Alpha.h"
 
+static BOOL infiniteZoomEnabled;
+
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
 - (void)offlineAlert;
@@ -63,6 +66,11 @@
 {
     [super viewDidLoad];
 
+    // infinite zoom swizzling
+    //
+    if ( ! infiniteZoomEnabled)
+        infiniteZoomEnabled = [DSMapBoxTileSourceInfiniteZoom enableInfiniteZoomForClasses:[NSArray arrayWithObjects:[RMMBTilesTileSource class], [RMTileStreamSource class], nil]];
+    
     // starting setup info
     //
     CLLocationCoordinate2D startingPoint;

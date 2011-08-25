@@ -67,9 +67,7 @@ typedef enum {
 - (id <RMMercatorToTileProjection>)mercatorToTileProjection;
 - (RMProjection *)projection;
 - (float)minZoom;
-- (float)minZoomNative;
 - (float)maxZoom;
-- (float)maxZoomNative;
 - (void)setMinZoom:(NSUInteger)aMinZoom;
 - (void)setMaxZoom:(NSUInteger)aMaxZoom;
 - (RMSphericalTrapezium)latitudeLongitudeBoundingBox;
