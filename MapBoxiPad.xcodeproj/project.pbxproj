@@ -102,7 +102,6 @@
 		DD3E66B213C5337300D09B4B /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B113C5337300D09B4B /* check.png */; };
 		DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B313C5339300D09B4B /* corner_fold.png */; };
 		DD3E66B613C53BA100D09B4B /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B513C53BA100D09B4B /* chevron.png */; };
-		DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
@@ -172,6 +171,7 @@
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
+		DDCD58A61406D4FB00F59E0D /* RMInteractiveSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
@@ -399,8 +399,6 @@
 		DD3E66B113C5337300D09B4B /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = SOURCE_ROOT; };
 		DD3E66B313C5339300D09B4B /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = SOURCE_ROOT; };
 		DD3E66B513C53BA100D09B4B /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = SOURCE_ROOT; };
-		DD41AE0113B2B33500AE338E /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
-		DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMInteractiveSource.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
@@ -508,6 +506,8 @@
 		DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSourceInfiniteZoom.m; sourceTree = "<group>"; };
 		DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSourceInfiniteZoom.h; sourceTree = "<group>"; };
+		DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
+		DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMInteractiveSource.m; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
@@ -1134,8 +1134,8 @@
 				DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */,
 				DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */,
 				DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */,
-				DD41AE0113B2B33500AE338E /* RMInteractiveSource.h */,
-				DD41AE0213B2B33500AE338E /* RMInteractiveSource.m */,
+				DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */,
+				DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
 				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
 				DDA58F6D1326CAA6000E0761 /* DSMapView.h */,
@@ -1568,7 +1568,6 @@
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
 				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
-				DD41AE0313B2B33500AE338E /* RMInteractiveSource.m in Sources */,
 				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
 				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
@@ -1590,6 +1589,7 @@
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
 				DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */,
 				DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */,
+				DDCD58A61406D4FB00F59E0D /* RMInteractiveSource.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
