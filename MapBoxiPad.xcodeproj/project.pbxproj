@@ -104,7 +104,6 @@
 		DD3E66B613C53BA100D09B4B /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B513C53BA100D09B4B /* chevron.png */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
-		DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48C2E711CBF3AB00038969 /* QuartzCore.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
 		DD48C3EE11CC026B00038969 /* RMMBTilesTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
@@ -131,6 +130,7 @@
 		DD601BAC12FA3C9A00CE7C14 /* CXHTMLDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B9B12FA3C9A00CE7C14 /* CXHTMLDocument.m */; };
 		DD601BAD12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B9F12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m */; };
 		DD601BAE12FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */; };
+		DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
@@ -401,7 +401,6 @@
 		DD3E66B513C53BA100D09B4B /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = SOURCE_ROOT; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		DD48C2E711CBF3AB00038969 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = ../../../../../../System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
 		DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesTileSource.h; sourceTree = "<group>"; };
 		DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMBTilesTileSource.m; sourceTree = "<group>"; };
@@ -446,6 +445,7 @@
 		DD601B9F12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLDocument_CreationExtensions.m; sourceTree = "<group>"; };
 		DD601BA012FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
 		DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
+		DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
@@ -552,7 +552,7 @@
 				DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */,
 				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
 				DD1ACD5E13CD1CD2001244D2 /* MobileCoreServices.framework in Frameworks */,
-				DD48C2E811CBF3AB00038969 /* QuartzCore.framework in Frameworks */,
+				DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */,
 				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */,
@@ -635,7 +635,7 @@
 				DD5678F212AEF62200B73C8A /* MediaPlayer.framework */,
 				DD92F641121C9B84008CF88F /* MessageUI.framework */,
 				DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */,
-				DD48C2E711CBF3AB00038969 /* QuartzCore.framework */,
+				DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */,
 				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */,
