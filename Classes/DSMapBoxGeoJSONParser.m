@@ -40,7 +40,9 @@
                     else
                         itemID = [NSString stringWithFormat:@"%i", ++itemCount];
                     
-                    CLLocation *location = nil;
+                    NSNumber *geometryType;
+                    
+                    NSMutableArray *geometries = [NSMutableArray array];
                     
                     if ([feature objectForKey:@"geometry"])
                     {
@@ -48,8 +50,27 @@
                         
                         if ([[geometry objectForKey:@"type"] isEqual:@"Point"] && [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]])
                         {
-                            location = [[[CLLocation alloc] initWithLatitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:1] doubleValue] 
-                                                                   longitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:0] doubleValue]] autorelease];
+                            geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypePoint];
+                            
+                            CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:1] doubleValue] 
+                                                                               longitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:0] doubleValue]] autorelease];
+                            
+                            [geometries addObject:location];
+                        }
+                        else if ([[geometry objectForKey:@"type"] isEqual:@"LineString"] && [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]])
+                        {
+                            geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypeLineString];
+                            
+                            if ([[geometry objectForKey:@"coordinates"] count] >= 2)
+                            {
+                                for (NSArray *pair in [geometry objectForKey:@"coordinates"])
+                                {
+                                    CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
+                                                                                       longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
+                                    
+                                    [geometries addObject:location];
+                                }
+                            }
                         }
                     }
                     
@@ -57,30 +78,37 @@
                     
                     if ([feature objectForKey:@"properties"])
                     {
-                        NSMutableDictionary *cleanedProperties = [NSMutableDictionary dictionary];
-                        
-                        for (NSString *key in [[feature objectForKey:@"properties"] allKeys])
+                        if ([geometryType intValue] == DSMapBoxGeoJSONGeometryTypePoint)
                         {
-                            /**
-                             * Properties are usually spelled out in a machine-oriented way, 
-                             * for example, `home_province = Afghan`. We'll just take the keys,
-                             * remove underscores, and capitalize first letters to get something
-                             * a bit more presentable from raw input.
-                             */
+                            NSMutableDictionary *cleanedProperties = [NSMutableDictionary dictionary];
                             
-                            NSString *prettyKey = [[key stringByReplacingOccurrencesOfString:@"_" withString:@" "] capitalizedString];
+                            for (NSString *key in [[feature objectForKey:@"properties"] allKeys])
+                            {
+                                /**
+                                 * Properties are usually spelled out in a machine-oriented way, 
+                                 * for example, `home_province = Afghan`. We'll just take the keys,
+                                 * remove underscores, and capitalize first letters to get something
+                                 * a bit more presentable from raw input.
+                                 */
+                                
+                                NSString *prettyKey = [[key stringByReplacingOccurrencesOfString:@"_" withString:@" "] capitalizedString];
+                                
+                                [cleanedProperties setObject:[[feature objectForKey:@"properties"] objectForKey:key] forKey:prettyKey];
+                            }
                             
-                            [cleanedProperties setObject:[[feature objectForKey:@"properties"] objectForKey:key] forKey:prettyKey];
+                            properties = [NSDictionary dictionaryWithDictionary:cleanedProperties];
                         }
                         
-                        properties = [NSDictionary dictionaryWithDictionary:cleanedProperties];
+                        else
+                            properties = [feature objectForKey:@"properties"];
                     }
                     
-                    if (location && properties)
+                    if ([geometries count] && properties)
                     {
-                        NSDictionary *featureDictionary = [NSDictionary dictionaryWithObjectsAndKeys:itemID,     @"id",
-                                                                                                     location,   @"pointLocation", 
-                                                                                                     properties, @"properties", 
+                        NSDictionary *featureDictionary = [NSDictionary dictionaryWithObjectsAndKeys:itemID,                              @"id",
+                                                                                                     geometryType,                        @"type",
+                                                                                                     [NSArray arrayWithArray:geometries], @"geometries", 
+                                                                                                     properties,                          @"properties", 
                                                                                                      nil];
                         
                         [items addObject:featureDictionary];

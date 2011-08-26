@@ -480,39 +480,69 @@
     
     for (NSDictionary *item in items)
     {
-        NSMutableString *balloonBlurb = [NSMutableString string];
-        
-        for (NSString *key in [[item objectForKey:@"properties"] allKeys])
-            [balloonBlurb appendString:[NSString stringWithFormat:@"%@: %@<br/>", key, [[item objectForKey:@"properties"] objectForKey:key]]];
-        
-        RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
-        
-        CLLocation *location = [item objectForKey:@"pointLocation"];
-        
-        CLLocationCoordinate2D coordinate = location.coordinate;
-        
-        // create a generic point with the GeoJSON item's properties plus location for clustering
-        //
-        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Point %@", [item objectForKey:@"id"]], @"title",
-                                                                 balloonBlurb,                                                       @"description",
-                                                                 location,                                                           @"location",
-                                                                 nil];
-        
-        if (coordinate.latitude < minLat)
-            minLat = coordinate.latitude;
-        
-        if (coordinate.latitude > maxLat)
-            maxLat = coordinate.latitude;
-        
-        if (coordinate.longitude < minLon)
-            minLon = coordinate.longitude;
-        
-        if (coordinate.longitude > maxLon)
-            maxLon = coordinate.longitude;
-        
-        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
-        
-        [overlay addObject:marker];
+        if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypePoint)
+        {
+            NSMutableString *balloonBlurb = [NSMutableString string];
+            
+            for (NSString *key in [[item objectForKey:@"properties"] allKeys])
+                [balloonBlurb appendString:[NSString stringWithFormat:@"%@: %@<br/>", key, [[item objectForKey:@"properties"] objectForKey:key]]];
+            
+            RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+            
+            CLLocation *location = [[item objectForKey:@"geometries"] objectAtIndex:0];
+            
+            CLLocationCoordinate2D coordinate = location.coordinate;
+            
+            // create a generic point with the GeoJSON item's properties plus location for clustering
+            //
+            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Point %@", [item objectForKey:@"id"]], @"title",
+                                                                     balloonBlurb,                                                       @"description",
+                                                                     location,                                                           @"location",
+                                                                     nil];
+            
+            if (coordinate.latitude < minLat)
+                minLat = coordinate.latitude;
+            
+            if (coordinate.latitude > maxLat)
+                maxLat = coordinate.latitude;
+            
+            if (coordinate.longitude < minLon)
+                minLon = coordinate.longitude;
+            
+            if (coordinate.longitude > maxLon)
+                maxLon = coordinate.longitude;
+            
+            [((DSMapBoxMarkerManager *)mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
+            
+            [overlay addObject:marker];
+        }
+        else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypeLineString)
+        {
+            RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
+            
+            path.lineColor = [UIColor redColor];
+            path.fillColor = [UIColor clearColor];
+            path.lineWidth = 10.0;
+            
+            BOOL hasStarted = NO;
+            
+            for (CLLocation *geometry in [item objectForKey:@"geometries"])
+            {
+                if ( ! hasStarted)
+                {
+                    [path moveToLatLong:geometry.coordinate];
+                    
+                    hasStarted = YES;
+                }
+
+                else
+                    [path addLineToLatLong:geometry.coordinate];
+            }
+            
+            [mapView.contents.overlay addSublayer:path];
+            
+            [overlay addObject:path];
+        }
     }
     
     if ([overlay count])

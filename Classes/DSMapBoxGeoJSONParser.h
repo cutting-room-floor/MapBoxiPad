@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    DSMapBoxGeoJSONGeometryTypePoint      = 0,
+    DSMapBoxGeoJSONGeometryTypeLineString = 1,
+} DSMapBoxGeoJSONGeometryType;
+
 @interface DSMapBoxGeoJSONParser : NSObject
 
 + (NSArray *)itemsForGeoJSON:(NSString *)geojson;
