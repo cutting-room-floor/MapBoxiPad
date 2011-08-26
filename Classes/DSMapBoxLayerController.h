@@ -10,6 +10,8 @@
 
 #import "RMLatLong.h"
 
+#import <MessageUI/MessageUI.h>
+
 @class DSMapBoxLayerManager;
 
 @protocol DSMapBoxLayerControllerDelegate
@@ -21,18 +23,20 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate>
+@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate, UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 {
     DSMapBoxLayerManager *layerManager;
     id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
     
     @private
-        NSUInteger baseLayerRowToDelete;
+        NSIndexPath *indexPathToDelete;
+        NSURL *layerURLToShare;
 }
 
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
 @property (nonatomic, assign) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
-@property (nonatomic, assign) NSUInteger baseLayerRowToDelete;
+@property (nonatomic, retain) NSIndexPath *indexPathToDelete;
+@property (nonatomic, retain) NSURL *layerURLToShare;
 
 - (IBAction)tappedEditButton:(id)sender;
 - (IBAction)tappedDoneButton:(id)sender;
