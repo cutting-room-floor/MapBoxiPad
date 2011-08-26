@@ -111,6 +111,8 @@
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
 		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
 		DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */; };
+		DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DD506C1B13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m */; };
+		DD506C3C13FDAC4F008EB626 /* geojson_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DD506C3B13FDAC4F008EB626 /* geojson_layer.png */; };
 		DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */ = {isa = PBXBuildFile; fileRef = DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */; };
 		DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */ = {isa = PBXBuildFile; fileRef = DD52697012C1E051002E890C /* Haiti Aid Projects.kml */; };
 		DD52697512C1E051002E890C /* USGS Earthquakes.rss in Resources */ = {isa = PBXBuildFile; fileRef = DD52697112C1E051002E890C /* USGS Earthquakes.rss */; };
@@ -410,6 +412,9 @@
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
 		DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_off.png; sourceTree = "<group>"; };
 		DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_on.png; sourceTree = "<group>"; };
+		DD506C1A13FD8F73008EB626 /* DSMapBoxGeoJSONParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxGeoJSONParser.h; sourceTree = "<group>"; };
+		DD506C1B13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxGeoJSONParser.m; sourceTree = "<group>"; };
+		DD506C3B13FDAC4F008EB626 /* geojson_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = geojson_layer.png; sourceTree = SOURCE_ROOT; };
 		DD52696F12C1E051002E890C /* Afghanistan Election Fraud by Province.kmz */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Afghanistan Election Fraud by Province.kmz"; sourceTree = "<group>"; };
 		DD52697012C1E051002E890C /* Haiti Aid Projects.kml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Haiti Aid Projects.kml"; sourceTree = "<group>"; };
 		DD52697112C1E051002E890C /* USGS Earthquakes.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "USGS Earthquakes.rss"; sourceTree = "<group>"; };
@@ -947,6 +952,15 @@
 			name = Externals;
 			sourceTree = "<group>";
 		};
+		DD506C1913FD8F44008EB626 /* GeoJSON Parsing */ = {
+			isa = PBXGroup;
+			children = (
+				DD506C1A13FD8F73008EB626 /* DSMapBoxGeoJSONParser.h */,
+				DD506C1B13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m */,
+			);
+			name = "GeoJSON Parsing";
+			sourceTree = "<group>";
+		};
 		DD52696E12C1E051002E890C /* Preloaded Data */ = {
 			isa = PBXGroup;
 			children = (
@@ -1223,6 +1237,7 @@
 				DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */,
 				DDE1C6B41342E1180049C325 /* crosshairs.png */,
 				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
+				DD506C3B13FDAC4F008EB626 /* geojson_layer.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1240,6 +1255,7 @@
 			isa = PBXGroup;
 			children = (
 				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
+				DD506C1913FD8F44008EB626 /* GeoJSON Parsing */,
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DDEEAD84136F7BEC0058BA90 /* User Notification */,
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
@@ -1430,6 +1446,7 @@
 				DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */,
 				DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */,
 				DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */,
+				DD506C3C13FDAC4F008EB626 /* geojson_layer.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1584,6 +1601,7 @@
 				DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */,
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
 				DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */,
+				DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

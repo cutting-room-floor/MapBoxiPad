@@ -22,6 +22,7 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxGeoJSONParser.h"
 
 #import "UIApplication_Additions.h"
 #import "UIAlertView_Additions.h"
@@ -492,6 +493,27 @@
                                                                                       error:NULL]];
     
     if ([feedItems count])
+    {
+        NSString *source      = [fileURL relativePath];
+        NSString *filename    = [[fileURL relativePath] lastPathComponent];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        
+        [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
+        
+        [self layerImportAlertWithName:[fileURL lastPathComponent]];
+    }
+    
+    else
+        [self dataLayerHandler:self didFailToHandleDataLayerAtURL:fileURL];
+}
+
+- (void)openGeoJSONFile:(NSURL *)fileURL
+{
+    NSArray *items = [DSMapBoxGeoJSONParser itemsForGeoJSON:[NSString stringWithContentsOfURL:fileURL
+                                                                                     encoding:NSUTF8StringEncoding
+                                                                                        error:NULL]];
+    
+    if ([items count])
     {
         NSString *source      = [fileURL relativePath];
         NSString *filename    = [[fileURL relativePath] lastPathComponent];
@@ -1216,6 +1238,22 @@
                     
                     [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
                                      mimeType:@"application/rss+xml" 
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
+                }
+                else if ([[self.badParseURL pathExtension] isEqualToString:@"geojson"] || [[self.badParseURL pathExtension] hasSuffix:@".json"])
+                {
+                    [mailer setSubject:@"Problem GeoJSON file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
+                                     mimeType:@"text/plain" 
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
+                }
+                else
+                {
+                    [mailer setSubject:@"Problem file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
+                                     mimeType:@"application/octet-stream" 
                                      fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
                 

@@ -322,7 +322,22 @@
             cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml_layer.png" : @"georss_layer.png")];
+            
+            switch ([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue])
+            {
+                case DSMapBoxLayerTypeKML:
+                case DSMapBoxLayerTypeKMZ:
+                    cell.imageView.image = [UIImage imageNamed:@"kml_layer.png"];
+                    break;
+
+                case DSMapBoxLayerTypeGeoRSS:
+                    cell.imageView.image = [UIImage imageNamed:@"georss_layer.png"];
+                    break;
+
+                case DSMapBoxLayerTypeGeoJSON:
+                    cell.imageView.image = [UIImage imageNamed:@"geojson_layer.png"];
+                    break;
+            }
             
             break;
     }

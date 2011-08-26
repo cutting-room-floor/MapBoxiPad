@@ -37,10 +37,11 @@ static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocument
 #pragma mark -
 
 typedef enum {
-    DSMapBoxLayerTypeTile   = 0,
-    DSMapBoxLayerTypeKML    = 1,
-    DSMapBoxLayerTypeKMZ    = 2,
-    DSMapBoxLayerTypeGeoRSS = 4,
+    DSMapBoxLayerTypeTile    = 0,
+    DSMapBoxLayerTypeKML     = 1,
+    DSMapBoxLayerTypeKMZ     = 2,
+    DSMapBoxLayerTypeGeoRSS  = 4,
+    DSMapBoxLayerTypeGeoJSON = 8,
 } DSMapBoxLayerType;
 
 typedef enum {

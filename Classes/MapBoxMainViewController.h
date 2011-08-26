@@ -58,6 +58,7 @@
 - (IBAction)tappedHelpButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
+- (void)openGeoJSONFile:(NSURL *)fileURL;
 - (void)openMBTilesFile:(NSURL *)fileURL;
 
 @end

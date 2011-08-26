@@ -14,6 +14,7 @@
 #import "DSMapBoxPopoverController.h"
 #import "DSMapContents.h"
 #import "DSTiledLayerMapView.h"
+#import "DSMapBoxGeoJSONParser.h"
 
 #import <CoreLocation/CoreLocation.h>
 
@@ -440,6 +441,85 @@
         [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
         
         NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:rss,     @"source", 
+                                                                               overlay, @"overlay",
+                                                                               nil];
+        
+        [overlays addObject:overlayDict];
+        
+        // calculate bounds showing all points plus a 10% border on the edges
+        //
+        RMSphericalTrapezium overlayBounds = { 
+            .northeast = {
+                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+                .longitude = maxLon + (0.1 * (maxLon - minLon))
+            },
+            .southwest = {
+                .latitude  = minLat - (0.1 * (maxLat - minLat)),
+                .longitude = minLon - (0.1 * (maxLat - minLat))
+            }
+        };
+        
+        return overlayBounds;
+    }
+    
+    return [mapView.contents latitudeLongitudeBoundingBoxForScreen];
+}
+
+- (RMSphericalTrapezium)addOverlayForGeoJSON:(NSString *)json
+{
+    NSMutableArray *overlay = [NSMutableArray array];
+    
+    CGFloat minLat =   90;
+    CGFloat maxLat =  -90;
+    CGFloat minLon =  180;
+    CGFloat maxLon = -180;
+    
+    UIImage *image = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
+    
+    NSArray *items = [DSMapBoxGeoJSONParser itemsForGeoJSON:json];
+    
+    for (NSDictionary *item in items)
+    {
+        NSMutableString *balloonBlurb = [NSMutableString string];
+        
+        for (NSString *key in [[item objectForKey:@"properties"] allKeys])
+            [balloonBlurb appendString:[NSString stringWithFormat:@"%@: %@<br/>", key, [[item objectForKey:@"properties"] objectForKey:key]]];
+        
+        RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+        
+        CLLocation *location = [item objectForKey:@"pointLocation"];
+        
+        CLLocationCoordinate2D coordinate = location.coordinate;
+        
+        // create a generic point with the GeoJSON item's properties plus location for clustering
+        //
+        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Point %@", [item objectForKey:@"id"]], @"title",
+                                                                 balloonBlurb,                                                       @"description",
+                                                                 location,                                                           @"location",
+                                                                 nil];
+        
+        if (coordinate.latitude < minLat)
+            minLat = coordinate.latitude;
+        
+        if (coordinate.latitude > maxLat)
+            maxLat = coordinate.latitude;
+        
+        if (coordinate.longitude < minLon)
+            minLon = coordinate.longitude;
+        
+        if (coordinate.longitude > maxLon)
+            maxLon = coordinate.longitude;
+        
+        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
+        
+        [overlay addObject:marker];
+    }
+    
+    if ([overlay count])
+    {
+        [((DSMapBoxMarkerManager *)mapView.contents.markerManager) recalculateClusters];
+        
+        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:json,    @"source", 
                                                                                overlay, @"overlay",
                                                                                nil];
         

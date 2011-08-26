@@ -141,6 +141,12 @@
         
         return YES;
     }
+    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"geojson"] || [[[fileURL path] lastPathComponent] hasSuffix:@"json"])
+    {
+        [viewController openGeoJSONFile:fileURL];
+        
+        return YES;
+    }
     else if ([[[fileURL path] lastPathComponent] hasSuffix:@"mbtiles"])
     {
         [viewController openMBTilesFile:fileURL];
