@@ -35,7 +35,8 @@
 
 @synthesize layerManager;
 @synthesize delegate;
-@synthesize baseLayerRowToDelete;
+@synthesize indexPathToDelete;
+@synthesize layerURLToShare;
 
 - (void)viewDidLoad
 {
@@ -68,8 +69,15 @@
 - (void)dealloc
 {
     [layerManager release];
+    [indexPathToDelete release];
+    [layerURLToShare release];
     
     [super dealloc];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return YES;
 }
 
 #pragma mark -
@@ -130,6 +138,34 @@
     }
 
     return shouldShowCrosshairs;
+}
+
+#pragma mark -
+
+- (void)handleGesture:(UIGestureRecognizer *)gesture
+{
+    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan)
+    {
+        gesture.enabled = NO;
+        gesture.enabled = YES;
+        
+        UITableViewCell *cell = (UITableViewCell *)gesture.view;
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+
+        UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:cell.textLabel.text
+                                                                  delegate:self
+                                                         cancelButtonTitle:@"Cancel"
+                                                    destructiveButtonTitle:@"Delete Layer"
+                                                         otherButtonTitles:(indexPath.section == DSMapBoxLayerSectionData ? @"Email Layer" : nil), nil] autorelease];
+        
+        self.indexPathToDelete = indexPath;
+
+        if (indexPath.section == DSMapBoxLayerSectionData)
+            self.layerURLToShare = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] objectForKey:@"URL"];
+
+        [actionSheet showFromRect:cell.frame inView:cell animated:YES];
+    }
 }
 
 #pragma mark -
@@ -342,6 +378,15 @@
             break;
     }
     
+    if ( ! cell.gestureRecognizers && [self tableView:self.tableView canEditRowAtIndexPath:indexPath])
+    {
+        UILongPressGestureRecognizer *gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        
+        gesture.minimumPressDuration = 1.0;
+        
+        [cell addGestureRecognizer:gesture];
+    }
+    
     return cell;
 }
 
@@ -403,9 +448,11 @@
         
         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
         
+        self.indexPathToDelete = nil;
+        
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
-            self.baseLayerRowToDelete = indexPath.row;
+            self.indexPathToDelete = indexPath;
             
             UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Base Layer?"
                                                              message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
@@ -565,20 +612,84 @@
 {
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
-        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:self.indexPathToDelete.row] valueForKey:@"URL"];
 
         // revert to default bundled tileset if active one was deleted
         //
         if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
         
-        [self.layerManager archiveLayerAtIndexPath:indexPath];
+        [self.layerManager archiveLayerAtIndexPath:self.indexPathToDelete];
         
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationLeft];
     }
 
     [self tappedDoneButton:self];
+}
+
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.firstOtherButtonIndex)
+    {
+        if ([MFMailComposeViewController canSendMail])
+        {
+            MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+            
+            mailer.mailComposeDelegate = self;
+            
+            [mailer setSubject:@""];
+            [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
+            
+            [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.layerURLToShare] 
+                             mimeType:@"application/octet-stream" 
+                             fileName:[self.layerURLToShare lastPathComponent]];
+            
+            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
+            
+            [self presentModalViewController:mailer animated:YES];
+        }
+        else
+        {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                             message:@"Please setup Mail first."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+        }
+    }
+
+    else if (buttonIndex == actionSheet.destructiveButtonIndex)
+        [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:self.indexPathToDelete];
+}
+
+#pragma mark -
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultFailed:
+            
+            [self dismissModalViewControllerAnimated:NO];
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
+                                                             message:@"There was a problem sending the mail."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+            
+            break;
+            
+        default:
+            
+            [self dismissModalViewControllerAnimated:YES];
+    }
 }
 
 @end
