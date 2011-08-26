@@ -40,7 +40,7 @@
                     else
                         itemID = [NSString stringWithFormat:@"%i", ++itemCount];
                     
-                    CLLocation *location;
+                    CLLocation *location = nil;
                     
                     if ([feature objectForKey:@"geometry"])
                     {
@@ -53,7 +53,7 @@
                         }
                     }
                     
-                    NSDictionary *properties;
+                    NSDictionary *properties = nil;
                     
                     if ([feature objectForKey:@"properties"])
                     {
