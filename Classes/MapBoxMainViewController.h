@@ -62,5 +62,6 @@
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openGeoJSONFile:(NSURL *)fileURL;
 - (void)openMBTilesFile:(NSURL *)fileURL;
+- (void)checkPasteboardForURL;
 
 @end

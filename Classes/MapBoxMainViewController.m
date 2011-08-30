@@ -10,6 +10,8 @@
 
 #import "MapBoxConstants.h"
 
+#import "MapBoxAppDelegate.h"
+
 #import "DSMapView.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
@@ -23,9 +25,9 @@
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxGeoJSONParser.h"
+#import "DSMapBoxAlertView.h"
 
 #import "UIApplication_Additions.h"
-#import "UIAlertView_Additions.h"
 #import "DSSound.h"
 
 #import "SimpleKML.h"
@@ -39,6 +41,8 @@
 #import "TouchXML.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <MobileCoreServices/UTType.h>
 
 #import "Reachability.h"
 
@@ -189,6 +193,9 @@
         }
     }
     
+    [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     // make sure online tiles folder exists
     //
     NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
@@ -205,9 +212,6 @@
 
     else
         [self setClusteringOn:NO];
-
-    [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -844,11 +848,11 @@
         {
             NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. %@ lets you continue to zoom, but layers that don't support the current zoom level won't always appear reliably. %@ is now out of range.", [[NSProcessInfo processInfo] processName], [[notification object] valueForKeyPath:@"tileSource.shortName"]];
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
-                                                             message:message 
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Don't Warn"
-                                                   otherButtonTitles:@"OK", nil] autorelease];
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
+                                                                         message:message 
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Don't Warn"
+                                                               otherButtonTitles:@"OK", nil] autorelease];
             
             alert.context = @"zoom warning";
             
@@ -1076,6 +1080,44 @@
     }];
 }
 
+- (void)checkPasteboardForURL
+{
+    // check clipboard for supported URL
+    //
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    NSURL *pasteboardURL     = nil;
+
+    for (NSString *type in [pasteboard pasteboardTypes])
+    {
+        if ( ! pasteboardURL)
+        {
+            if ([type isEqualToString:(NSString *)kUTTypeURL])
+                pasteboardURL = (NSURL *)[pasteboard valueForPasteboardType:(NSString *)kUTTypeURL];
+
+            else if (UTTypeConformsTo((CFStringRef)type, kUTTypeText))
+                pasteboardURL = [NSURL URLWithString:(NSString *)[pasteboard valueForPasteboardType:type]];
+        }
+    }
+            
+    if (pasteboardURL)
+    {
+        if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil] containsObject:[pasteboardURL pathExtension]])
+        {
+            NSString *message = [NSString stringWithFormat:@"You have recently copied the URL %@. Would you like to import that URL into %@?", pasteboardURL, [[NSProcessInfo processInfo] processName]];
+            
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
+                                                                         message:message  
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Don't Import"
+                                                               otherButtonTitles:@"Import", nil] autorelease];
+            
+            alert.context = pasteboardURL;
+            
+            [alert show];
+        }
+    }
+}
+
 #pragma mark -
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -1271,11 +1313,11 @@
     
     NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the layer file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
     
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
-                                                     message:message
-                                                    delegate:self
-                                           cancelButtonTitle:@"Don't Send"
-                                           otherButtonTitles:@"Send Mail", nil] autorelease];
+    DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Problem"
+                                                                 message:message
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Don't Send"
+                                                       otherButtonTitles:@"Send Mail", nil] autorelease];
     
     alert.context = @"layer problem";
     
@@ -1286,7 +1328,9 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.context && [alertView.context isEqualToString:@"layer problem"])
+    DSMapBoxAlertView *customAlertView = (DSMapBoxAlertView *)alertView;
+    
+    if ([customAlertView.context isKindOfClass:[NSString class]] && [customAlertView.context isEqualToString:@"layer problem"])
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
@@ -1356,7 +1400,7 @@
             }
         }
     }
-    else if (alertView.context && [alertView.context isEqualToString:@"zoom warning"])
+    else if ([customAlertView.context isKindOfClass:[NSString class]] && [customAlertView.context isEqualToString:@"zoom warning"])
     {
         self.lastLayerAlertDate = [NSDate date];
         
@@ -1364,6 +1408,15 @@
         {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipWarningAboutZoom"];
             [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    else if ([customAlertView.context isKindOfClass:[NSURL class]])
+    {
+        if (buttonIndex == customAlertView.firstOtherButtonIndex)
+        {
+            [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
+            
+            [(MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate] openExternalURL:(NSURL *)customAlertView.context];
         }
     }
 }

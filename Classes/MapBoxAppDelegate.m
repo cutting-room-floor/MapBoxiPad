@@ -16,14 +16,6 @@
 
 #import "DSMapBoxLegacyMigrationManager.h"
 
-@interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
-
-- (BOOL)openExternalURL:(NSURL *)externalURL;
-
-@end
-
-#pragma mark -
-
 @implementation MapBoxAppDelegate
 
 @synthesize window;
@@ -93,7 +85,7 @@
 
         return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
-        
+    
 	return YES;
 }
 
@@ -109,6 +101,11 @@
     // For 4.2+, mark that we are no longer processing an external file.
     //
     self.openingExternalFile = NO;
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    [viewController checkPasteboardForURL];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
