@@ -130,10 +130,20 @@
 - (BOOL)openExternalURL:(NSURL *)externalURL
 {
     if ([[externalURL scheme] hasPrefix:@"mbhttp"])
-        externalURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
-                                                                                                   withString:@""
-                                                                                                      options:NSAnchoredSearch
-                                                                                                        range:NSMakeRange(0, 10)]];
+    {
+        NSURL *downloadURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
+                                                                                                          withString:@""
+                                                                                                             options:NSAnchoredSearch
+                                                                                                               range:NSMakeRange(0, 10)]];
+            
+        NSData *downloadData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:downloadURL]
+                                                     returningResponse:nil
+                                                                 error:nil];
+        
+        externalURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [downloadURL lastPathComponent]]];
+        
+        [downloadData writeToURL:externalURL atomically:NO];
+    }
         
     if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
     {
