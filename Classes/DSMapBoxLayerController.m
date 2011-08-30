@@ -157,12 +157,28 @@
                                                                   delegate:self
                                                          cancelButtonTitle:@"Cancel"
                                                     destructiveButtonTitle:@"Delete Layer"
-                                                         otherButtonTitles:(indexPath.section == DSMapBoxLayerSectionData ? @"Email Layer" : nil), nil] autorelease];
+                                                         otherButtonTitles:@"Email Layer", nil] autorelease];
         
         self.indexPathToDelete = indexPath;
-
-        if (indexPath.section == DSMapBoxLayerSectionData)
-            self.layerURLToShare = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] objectForKey:@"URL"];
+        
+        NSArray *layerSet;
+        
+        switch (indexPath.section)
+        {
+            case DSMapBoxLayerSectionBase:
+                layerSet = self.layerManager.baseLayers;
+                break;
+                
+            case DSMapBoxLayerSectionTile:
+                layerSet = self.layerManager.tileLayers;
+                break;
+                
+            case DSMapBoxLayerSectionData:
+                layerSet = self.layerManager.dataLayers;
+                break;
+        }
+        
+        self.layerURLToShare   = [[layerSet objectAtIndex:indexPath.row] objectForKey:@"URL"];
 
         [actionSheet showFromRect:cell.frame inView:cell animated:YES];
     }
@@ -633,6 +649,21 @@
 {
     if (buttonIndex == actionSheet.firstOtherButtonIndex)
     {
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[self.layerURLToShare relativePath] error:NULL];
+        
+        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 20)) // 20MB+
+        {
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Too Large"
+                                                             message:@"This layer is larger than 20MB and is not ideal for sending by email."
+                                                            delegate:nil
+                                                   cancelButtonTitle:nil
+                                                   otherButtonTitles:@"OK", nil] autorelease];
+            
+            [alert show];
+            
+            return;
+        }
+        
         if ([MFMailComposeViewController canSendMail])
         {
             MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
@@ -640,11 +671,32 @@
             mailer.mailComposeDelegate = self;
             
             [mailer setSubject:@""];
-            [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
             
-            [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.layerURLToShare] 
-                             mimeType:@"application/octet-stream" 
-                             fileName:[self.layerURLToShare lastPathComponent]];
+            NSMutableString *messageBody = [NSMutableString string];
+            
+            if ([[[self.layerURLToShare relativePath] pathExtension] isEqualToString:@"plist"] && [[[self.layerURLToShare relativePath] componentsSeparatedByString:@"/"] containsObject:kTileStreamFolderName])
+            {
+                NSDictionary *layerInfo = [NSDictionary dictionaryWithContentsOfURL:self.layerURLToShare];
+                
+                NSString *layerURLString = [NSString stringWithFormat:@"%@://%@%@%@/map/%@", [layerInfo objectForKey:@"apiScheme"],
+                                                                                           [layerInfo objectForKey:@"apiHostname"],
+                                                                                           ([[layerInfo objectForKey:@"apiPort"] intValue] == 80 ? @"" : [layerInfo objectForKey:@"apiPort"]),
+                                                                                           [layerInfo objectForKey:@"apiPath"],
+                                                                                           [layerInfo objectForKey:@"id"],
+                                                                                           nil];
+
+                [messageBody appendString:[NSString stringWithFormat:@"<p>Check out my TileStream map layer:</p><p>%@</p>", layerURLString]];
+            }
+            else
+            {
+                [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.layerURLToShare] 
+                                 mimeType:@"application/octet-stream" 
+                                 fileName:[self.layerURLToShare lastPathComponent]];
+            }
+            
+            [messageBody appendString:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>"];
+            
+            [mailer setMessageBody:messageBody isHTML:YES];
             
             mailer.modalPresentationStyle = UIModalPresentationPageSheet;
             

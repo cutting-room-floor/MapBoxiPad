@@ -630,7 +630,7 @@
                                                        delegate:self
                                               cancelButtonTitle:nil
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Email Snapshot", @"Email Layer Data", nil];
+                                              otherButtonTitles:@"Email Snapshot", @"Email Layer", nil];
         
         [shareActionSheet showFromBarButtonItem:sender animated:YES];
     }
@@ -1202,8 +1202,8 @@
         {
             // email layer data; notify user to do this in layers UI
             //
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Email Layer Data" 
-                                                             message:@"To share a data layer, locate the layer in the layer list, then tap and hold it."
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Email Layer" 
+                                                             message:@"To share a layer, locate the layer in the layer list, then tap and hold it."
                                                             delegate:nil
                                                    cancelButtonTitle:nil
                                                    otherButtonTitles:@"OK", nil] autorelease];
