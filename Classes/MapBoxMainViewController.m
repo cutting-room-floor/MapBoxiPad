@@ -1082,38 +1082,41 @@
 
 - (void)checkPasteboardForURL
 {
-    // check clipboard for supported URL
-    //
-    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    NSURL *pasteboardURL     = nil;
-
-    for (NSString *type in [pasteboard pasteboardTypes])
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"skipPasteboardURLPrompt"] != YES)
     {
-        if ( ! pasteboardURL)
-        {
-            if ([type isEqualToString:(NSString *)kUTTypeURL])
-                pasteboardURL = (NSURL *)[pasteboard valueForPasteboardType:(NSString *)kUTTypeURL];
+        // check clipboard for supported URL
+        //
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        NSURL *pasteboardURL     = nil;
 
-            else if (UTTypeConformsTo((CFStringRef)type, kUTTypeText))
-                pasteboardURL = [NSURL URLWithString:(NSString *)[pasteboard valueForPasteboardType:type]];
+        for (NSString *type in [pasteboard pasteboardTypes])
+        {
+            if ( ! pasteboardURL)
+            {
+                if ([type isEqualToString:(NSString *)kUTTypeURL])
+                    pasteboardURL = (NSURL *)[pasteboard valueForPasteboardType:(NSString *)kUTTypeURL];
+
+                else if (UTTypeConformsTo((CFStringRef)type, kUTTypeText))
+                    pasteboardURL = [NSURL URLWithString:(NSString *)[pasteboard valueForPasteboardType:type]];
+            }
         }
-    }
-            
-    if (pasteboardURL)
-    {
-        if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil] containsObject:[pasteboardURL pathExtension]])
+                
+        if (pasteboardURL)
         {
-            NSString *message = [NSString stringWithFormat:@"You have recently copied the URL %@. Would you like to import that URL into %@?", pasteboardURL, [[NSProcessInfo processInfo] processName]];
-            
-            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
-                                                                         message:message  
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"Don't Import"
-                                                               otherButtonTitles:@"Import", nil] autorelease];
-            
-            alert.context = pasteboardURL;
-            
-            [alert show];
+            if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil] containsObject:[pasteboardURL pathExtension]])
+            {
+                NSString *message = [NSString stringWithFormat:@"You have recently copied the URL %@. Would you like to import the URL into %@?", pasteboardURL, [[NSProcessInfo processInfo] processName]];
+                
+                DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
+                                                                             message:message  
+                                                                            delegate:self
+                                                                   cancelButtonTitle:@"Don't Import"
+                                                                   otherButtonTitles:@"Import", @"Don't Ask Again", nil] autorelease];
+                
+                alert.context = pasteboardURL;
+                
+                [alert show];
+            }
         }
     }
 }
@@ -1417,6 +1420,11 @@
             [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
             
             [(MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate] openExternalURL:(NSURL *)customAlertView.context];
+        }
+        else if (buttonIndex == customAlertView.firstOtherButtonIndex + 1)
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipPasteboardURLPrompt"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }
 }
