@@ -139,6 +139,7 @@
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
 		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
 		DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */; };
+		DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD7E1C6A140D97DD008F52C6 /* Settings.bundle */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92F641121C9B84008CF88F /* MessageUI.framework */; };
 		DD9830A11378CEE00071D5AD /* caution.png in Resources */ = {isa = PBXBuildFile; fileRef = DD9830A01378CEE00071D5AD /* caution.png */; };
@@ -460,6 +461,7 @@
 		DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = bundled_tileset_md5sum.txt; sourceTree = "<group>"; };
 		DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlertView.h; sourceTree = "<group>"; };
 		DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlertView.m; sourceTree = "<group>"; };
+		DD7E1C6A140D97DD008F52C6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD92F641121C9B84008CF88F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -617,6 +619,7 @@
 				8D1107310486CEB800E47090 /* MapBoxiPad-Info.plist */,
 				DD48C3C111CBFA9700038969 /* routeme.plist */,
 				D7246FF01347B4D20069B3E2 /* Entitlements.plist */,
+				DD7E1C6A140D97DD008F52C6 /* Settings.bundle */,
 				DD70D91D11D188DA0002E222 /* Images */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
@@ -1447,6 +1450,7 @@
 				DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */,
 				DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */,
 				DD506C3C13FDAC4F008EB626 /* geojson_layer.png in Resources */,
+				DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

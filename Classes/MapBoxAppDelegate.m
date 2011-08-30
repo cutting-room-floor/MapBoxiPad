@@ -105,6 +105,32 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
+    // settings-based defaults resets
+    //
+    for (NSString *prefKey in [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys])
+    {
+        if ([prefKey hasPrefix:@"reset"] && [[NSUserDefaults standardUserDefaults] boolForKey:prefKey])
+        {
+            // remove 'resetFooBar' to mark it done
+            //
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:prefKey];
+            
+            // remove 'fooBar' to actually reset
+            //
+            prefKey = [prefKey stringByReplacingOccurrencesOfString:@"reset"
+                                                         withString:@""
+                                                            options:NSAnchoredSearch
+                                                              range:NSMakeRange(0, 5)];
+            
+            prefKey = [prefKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) 
+                                                       withString:[[prefKey substringWithRange:NSMakeRange(0, 1)] lowercaseString]];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:prefKey];
+        }
+    }
+    
+    // check pasteboard for supported URLs
+    //
     [viewController checkPasteboardForURL];
 }
 
