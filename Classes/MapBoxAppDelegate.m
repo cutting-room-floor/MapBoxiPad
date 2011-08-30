@@ -133,7 +133,7 @@
         externalURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
                                                                                                    withString:@""
                                                                                                       options:NSAnchoredSearch
-                                                                                                        range:NSMakeRange(0, [[externalURL absoluteString] length])]];
+                                                                                                        range:NSMakeRange(0, 10)]];
         
     if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
     {
