@@ -40,7 +40,6 @@
     DSMapBoxDocumentSaveController *saveController;
     DSMapBoxDocumentLoadController *loadController;
     UIActionSheet *documentsActionSheet;
-    UIActionSheet *shareActionSheet;
     
     @private
         NSURL *badParseURL;
@@ -57,7 +56,6 @@
 - (IBAction)tappedClusteringButton:(id)sender;
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedHelpButton:(id)sender;
-- (IBAction)tappedShareButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openMBTilesFile:(NSURL *)fileURL;
