@@ -16,14 +16,6 @@
 
 #import "DSMapBoxLegacyMigrationManager.h"
 
-@interface MapBoxAppDelegate (MapBoxAppDelegatePrivate)
-
-- (BOOL)openFileURL:(NSURL *)fileURL;
-
-@end
-
-#pragma mark -
-
 @implementation MapBoxAppDelegate
 
 @synthesize window;
@@ -91,9 +83,9 @@
         //
         self.openingExternalFile = YES;
 
-        return [self openFileURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
+        return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
-        
+    
 	return YES;
 }
 
@@ -111,6 +103,37 @@
     self.openingExternalFile = NO;
 }
 
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
+    // settings-based defaults resets
+    //
+    for (NSString *prefKey in [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys])
+    {
+        if ([prefKey hasPrefix:@"reset"] && [[NSUserDefaults standardUserDefaults] boolForKey:prefKey])
+        {
+            // remove 'resetFooBar' to mark it done
+            //
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:prefKey];
+            
+            // remove 'fooBar' to actually reset
+            //
+            prefKey = [prefKey stringByReplacingOccurrencesOfString:@"reset"
+                                                         withString:@""
+                                                            options:NSAnchoredSearch
+                                                              range:NSMakeRange(0, 5)];
+            
+            prefKey = [prefKey stringByReplacingCharactersInRange:NSMakeRange(0, 1) 
+                                                       withString:[[prefKey substringWithRange:NSMakeRange(0, 1)] lowercaseString]];
+            
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:prefKey];
+        }
+    }
+    
+    // check pasteboard for supported URLs
+    //
+    [viewController checkPasteboardForURL];
+}
+
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
     if ( ! self.openingExternalFile)
@@ -119,7 +142,7 @@
         //
         self.openingExternalFile = YES;
 
-        return [self openFileURL:url];
+        return [self openExternalURL:url];
     }
     
     return YES;
@@ -127,23 +150,45 @@
 
 #pragma mark -
 
-- (BOOL)openFileURL:(NSURL *)fileURL
+- (BOOL)openExternalURL:(NSURL *)externalURL
 {
-    if ([[[fileURL path] lastPathComponent] hasSuffix:@"kml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"kmz"])
+    if ([[externalURL scheme] hasPrefix:@"mbhttp"])
     {
-        [viewController openKMLFile:fileURL];
+        NSURL *downloadURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
+                                                                                                          withString:@""
+                                                                                                             options:NSAnchoredSearch
+                                                                                                               range:NSMakeRange(0, 10)]];
+            
+        NSData *downloadData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:downloadURL]
+                                                     returningResponse:nil
+                                                                 error:nil];
+        
+        externalURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [downloadURL lastPathComponent]]];
+        
+        [downloadData writeToURL:externalURL atomically:NO];
+    }
+        
+    if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
+    {
+        [viewController openKMLFile:externalURL];
 
         return YES;
     }
-    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"xml"] || [[[fileURL path] lastPathComponent] hasSuffix:@"rss"])
+    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"xml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"rss"])
     {
-        [viewController openRSSFile:fileURL];
+        [viewController openRSSFile:externalURL];
         
         return YES;
     }
-    else if ([[[fileURL path] lastPathComponent] hasSuffix:@"mbtiles"])
+    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"geojson"] || [[[externalURL path] lastPathComponent] hasSuffix:@"json"])
     {
-        [viewController openMBTilesFile:fileURL];
+        [viewController openGeoJSONFile:externalURL];
+        
+        return YES;
+    }
+    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"mbtiles"])
+    {
+        [viewController openMBTilesFile:externalURL];
         
         return YES;
     }

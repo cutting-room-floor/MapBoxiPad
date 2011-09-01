@@ -14,6 +14,7 @@
 #import "DSMapContents.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxTintedPlusItem.h"
+#import "DSMapBoxAlertView.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
@@ -35,7 +36,6 @@
 
 @synthesize layerManager;
 @synthesize delegate;
-@synthesize baseLayerRowToDelete;
 
 - (void)viewDidLoad
 {
@@ -322,7 +322,22 @@
             cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            cell.imageView.image      = [UIImage imageNamed:([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue] == DSMapBoxLayerTypeKML ? @"kml_layer.png" : @"georss_layer.png")];
+            
+            switch ([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue])
+            {
+                case DSMapBoxLayerTypeKML:
+                case DSMapBoxLayerTypeKMZ:
+                    cell.imageView.image = [UIImage imageNamed:@"kml_layer.png"];
+                    break;
+
+                case DSMapBoxLayerTypeGeoRSS:
+                    cell.imageView.image = [UIImage imageNamed:@"georss_layer.png"];
+                    break;
+
+                case DSMapBoxLayerTypeGeoJSON:
+                    cell.imageView.image = [UIImage imageNamed:@"geojson_layer.png"];
+                    break;
+            }
             
             break;
     }
@@ -390,13 +405,13 @@
         
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
-            self.baseLayerRowToDelete = indexPath.row;
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Delete Base Layer?"
+                                                                         message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Don't Delete"
+                                                               otherButtonTitles:@"Delete", nil] autorelease];
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Base Layer?"
-                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Don't Delete"
-                                                   otherButtonTitles:@"Delete", nil] autorelease];
+            alert.context = indexPath;
             
             [alert show];
             
@@ -550,7 +565,8 @@
 {
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.baseLayerRowToDelete inSection:DSMapBoxLayerSectionBase];
+        NSIndexPath *indexPath = (NSIndexPath *)((DSMapBoxAlertView *)alertView).context;
+        
         NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
 
         // revert to default bundled tileset if active one was deleted

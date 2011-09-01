@@ -10,6 +10,8 @@
 
 #import "MapBoxConstants.h"
 
+#import "MapBoxAppDelegate.h"
+
 #import "DSMapView.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
@@ -23,9 +25,10 @@
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
+#import "DSMapBoxGeoJSONParser.h"
+#import "DSMapBoxAlertView.h"
 
 #import "UIApplication_Additions.h"
-#import "UIAlertView_Additions.h"
 #import "DSSound.h"
 
 #import "SimpleKML.h"
@@ -39,6 +42,8 @@
 #import "TouchXML.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import <MobileCoreServices/UTCoreTypes.h>
+#import <MobileCoreServices/UTType.h>
 
 #import "Reachability.h"
 
@@ -196,6 +201,9 @@ static BOOL infiniteZoomEnabled;
         }
     }
     
+    [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     // make sure online tiles folder exists
     //
     NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
@@ -212,9 +220,6 @@ static BOOL infiniteZoomEnabled;
 
     else
         [self setClusteringOn:NO];
-
-    [[NSUserDefaults standardUserDefaults] setObject:[seenZips allObjects] forKey:@"seenZippedTiles"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -251,6 +256,7 @@ static BOOL infiniteZoomEnabled;
     [dataOverlayManager release];
     [badParseURL release];
     [documentsActionSheet release];
+    [shareActionSheet release];
     [lastLayerAlertDate release];
 
     [super dealloc];
@@ -457,6 +463,9 @@ static BOOL infiniteZoomEnabled;
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:NO];
 
+    if (shareActionSheet)
+        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
     if ( ! documentsActionSheet || ! documentsActionSheet.visible)
     {
         documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -514,6 +523,27 @@ static BOOL infiniteZoomEnabled;
         [self dataLayerHandler:self didFailToHandleDataLayerAtURL:fileURL];
 }
 
+- (void)openGeoJSONFile:(NSURL *)fileURL
+{
+    NSArray *items = [DSMapBoxGeoJSONParser itemsForGeoJSON:[NSString stringWithContentsOfURL:fileURL
+                                                                                     encoding:NSUTF8StringEncoding
+                                                                                        error:NULL]];
+    
+    if ([items count])
+    {
+        NSString *source      = [fileURL relativePath];
+        NSString *filename    = [[fileURL relativePath] lastPathComponent];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        
+        [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
+        
+        [self layerImportAlertWithName:[fileURL lastPathComponent]];
+    }
+    
+    else
+        [self dataLayerHandler:self didFailToHandleDataLayerAtURL:fileURL];
+}
+
 - (void)openMBTilesFile:(NSURL *)fileURL
 {
     NSString *source      = [fileURL relativePath];
@@ -529,6 +559,9 @@ static BOOL infiniteZoomEnabled;
 {
     if (documentsActionSheet)
         [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
+    if (shareActionSheet)
+        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
     
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:YES];
@@ -568,7 +601,10 @@ static BOOL infiniteZoomEnabled;
         [layersPopover dismissPopoverAnimated:NO];
     
     if (documentsActionSheet)
-        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];    
+        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
+    if (shareActionSheet)
+        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
     
     DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
     
@@ -590,6 +626,29 @@ static BOOL infiniteZoomEnabled;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
     
     [self presentModalViewController:wrapper animated:YES];
+}
+
+- (IBAction)tappedShareButton:(id)sender
+{
+    if (layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:NO];
+    
+    if (documentsActionSheet)
+        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    
+    if ( ! shareActionSheet || ! shareActionSheet.visible)
+    {
+        shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Email Snapshot", nil];
+        
+        [shareActionSheet showFromBarButtonItem:sender animated:YES];
+    }
+    
+    else
+        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
 - (void)setClusteringOn:(BOOL)clusteringOn
@@ -797,11 +856,11 @@ static BOOL infiniteZoomEnabled;
         {
             NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. %@ lets you continue to zoom, but layers that don't support the current zoom level won't always appear reliably. %@ is now out of range.", [[NSProcessInfo processInfo] processName], [[notification object] valueForKeyPath:@"tileSource.shortName"]];
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
-                                                             message:message 
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Don't Warn"
-                                                   otherButtonTitles:@"OK", nil] autorelease];
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
+                                                                         message:message 
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Don't Warn"
+                                                               otherButtonTitles:@"OK", nil] autorelease];
             
             alert.context = @"zoom warning";
             
@@ -1029,90 +1088,169 @@ static BOOL infiniteZoomEnabled;
     }];
 }
 
+- (void)checkPasteboardForURL
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"skipPasteboardURLPrompt"] != YES)
+    {
+        // check clipboard for supported URL
+        //
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        NSURL *pasteboardURL     = nil;
+
+        for (NSString *type in [pasteboard pasteboardTypes])
+        {
+            if ( ! pasteboardURL)
+            {
+                if ([type isEqualToString:(NSString *)kUTTypeURL])
+                    pasteboardURL = (NSURL *)[pasteboard valueForPasteboardType:(NSString *)kUTTypeURL];
+
+                else if (UTTypeConformsTo((CFStringRef)type, kUTTypeText))
+                    pasteboardURL = [NSURL URLWithString:(NSString *)[pasteboard valueForPasteboardType:type]];
+            }
+        }
+                
+        if (pasteboardURL)
+        {
+            if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil] containsObject:[pasteboardURL pathExtension]])
+            {
+                NSString *message = [NSString stringWithFormat:@"You have recently copied the URL %@. Would you like to import the URL into %@?", pasteboardURL, [[NSProcessInfo processInfo] processName]];
+                
+                DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
+                                                                             message:message  
+                                                                            delegate:self
+                                                                   cancelButtonTitle:@"Don't Import"
+                                                                   otherButtonTitles:@"Import", @"Don't Ask Again", nil] autorelease];
+                
+                alert.context = pasteboardURL;
+                
+                [alert show];
+            }
+        }
+    }
+}
+
 #pragma mark -
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == actionSheet.firstOtherButtonIndex)
+    if ([actionSheet isEqual:documentsActionSheet])
     {
-        loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
-
-        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
-        
-        wrapper.navigationBar.barStyle    = UIBarStyleBlack;
-        wrapper.navigationBar.translucent = YES;
-        
-        loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                             style:UIBarButtonItemStylePlain
-                                                                                            target:self
-                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-        
-        loadController.delegate = self;
-        
-        wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
-        wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
-
-        // put up dimmer & spinner
-        //
-        UIView *dimmer = [[[UIView alloc] initWithFrame:loadController.view.frame] autorelease];
-        
-        dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-
-        [self.view addSubview:dimmer];
-        
-        UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-        
-        [spinner startAnimating];
-        
-        spinner.center = loadController.view.center;
-        
-        [self.view addSubview:spinner];
-        
-        // start the flip
-        //
-        [self presentModalViewController:wrapper animated:YES];
-        
-        // dispose of dimmer & spinner
-        //
-        [dimmer  performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
-        [spinner performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
-    }
-    else if (buttonIndex > -1)
-    {
-        saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
-        
-        saveController.snapshot = [self mapSnapshot];
-        
-        NSUInteger i = 1;
-        
-        NSString *docName = nil;
-        
-        while ( ! docName)
+        if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
-            if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/%@%@.plist", [DSMapBoxDocumentLoadController saveFolderPath], kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])]])
-                i++;
-            
-            else
-                docName = [NSString stringWithFormat:@"%@%@", kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])];
-        }
-        
-        saveController.name = docName;
-        
-        DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
-        
-        saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                             style:UIBarButtonItemStylePlain
-                                                                                            target:self
-                                                                                            action:@selector(dismissModalViewControllerAnimated:)] autorelease];
-        
-        saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
-                                                                                                        target:self
-                                                                                                        action:@selector(saveState:)] autorelease];
-        
-        wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
-        wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
+            loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
 
-        [self presentModalViewController:wrapper animated:YES];
+            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
+            
+            wrapper.navigationBar.barStyle    = UIBarStyleBlack;
+            wrapper.navigationBar.translucent = YES;
+            
+            loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                 style:UIBarButtonItemStylePlain
+                                                                                                target:self
+                                                                                                action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+            
+            loadController.delegate = self;
+            
+            wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
+            wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
+
+            // put up dimmer & spinner
+            //
+            UIView *dimmer = [[[UIView alloc] initWithFrame:loadController.view.frame] autorelease];
+            
+            dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+
+            [self.view addSubview:dimmer];
+            
+            UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+            
+            [spinner startAnimating];
+            
+            spinner.center = loadController.view.center;
+            
+            [self.view addSubview:spinner];
+            
+            // start the flip
+            //
+            [self presentModalViewController:wrapper animated:YES];
+            
+            // dispose of dimmer & spinner
+            //
+            [dimmer  performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
+            [spinner performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
+        }
+        else if (buttonIndex > -1)
+        {
+            saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
+            
+            saveController.snapshot = [self mapSnapshot];
+            
+            NSUInteger i = 1;
+            
+            NSString *docName = nil;
+            
+            while ( ! docName)
+            {
+                if ([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"%@/%@%@.plist", [DSMapBoxDocumentLoadController saveFolderPath], kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])]])
+                    i++;
+                
+                else
+                    docName = [NSString stringWithFormat:@"%@%@", kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])];
+            }
+            
+            saveController.name = docName;
+            
+            DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
+            
+            saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                 style:UIBarButtonItemStylePlain
+                                                                                                target:self
+                                                                                                action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+            
+            saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
+                                                                                                            target:self
+                                                                                                            action:@selector(saveState:)] autorelease];
+            
+            wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
+            wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
+
+            [self presentModalViewController:wrapper animated:YES];
+        }
+    }
+    else if ([actionSheet isEqual:shareActionSheet])
+    {
+        if (buttonIndex == actionSheet.firstOtherButtonIndex)
+        {
+            // email snapshot
+            //
+            if ([MFMailComposeViewController canSendMail])
+            {
+                MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+                
+                mailer.mailComposeDelegate = self;
+                
+                [mailer setSubject:@""];
+                [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
+                
+                [mailer addAttachmentData:UIImageJPEGRepresentation([self mapSnapshot], 1.0) 
+                                 mimeType:@"image/jpeg"
+                                 fileName:@"MapBoxSnapshot.jpg"];
+                
+                mailer.modalPresentationStyle = UIModalPresentationPageSheet;
+                
+                [self presentModalViewController:mailer animated:YES];
+            }
+            else
+            {
+                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                                 message:@"Please setup Mail first."
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:@"OK", nil] autorelease];
+                
+                [alert show];
+            }
+        }
     }
 }
 
@@ -1174,11 +1312,11 @@ static BOOL infiniteZoomEnabled;
     
     NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the layer file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
     
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Problem"
-                                                     message:message
-                                                    delegate:self
-                                           cancelButtonTitle:@"Don't Send"
-                                           otherButtonTitles:@"Send Mail", nil] autorelease];
+    DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Problem"
+                                                                 message:message
+                                                                delegate:self
+                                                       cancelButtonTitle:@"Don't Send"
+                                                       otherButtonTitles:@"Send Mail", nil] autorelease];
     
     alert.context = @"layer problem";
     
@@ -1189,7 +1327,9 @@ static BOOL infiniteZoomEnabled;
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.context && [alertView.context isEqualToString:@"layer problem"])
+    DSMapBoxAlertView *customAlertView = (DSMapBoxAlertView *)alertView;
+    
+    if ([customAlertView.context isKindOfClass:[NSString class]] && [customAlertView.context isEqualToString:@"layer problem"])
     {
         if (buttonIndex == alertView.firstOtherButtonIndex)
         {
@@ -1226,6 +1366,22 @@ static BOOL infiniteZoomEnabled;
                                      mimeType:@"application/rss+xml" 
                                      fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
+                else if ([[self.badParseURL pathExtension] isEqualToString:@"geojson"] || [[self.badParseURL pathExtension] hasSuffix:@".json"])
+                {
+                    [mailer setSubject:@"Problem GeoJSON file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
+                                     mimeType:@"text/plain" 
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
+                }
+                else
+                {
+                    [mailer setSubject:@"Problem file"];
+                    
+                    [mailer addAttachmentData:[NSData dataWithContentsOfURL:self.badParseURL]                       
+                                     mimeType:@"application/octet-stream" 
+                                     fileName:[[self.badParseURL absoluteString] lastPathComponent]];
+                }
                 
                 mailer.modalPresentationStyle = UIModalPresentationPageSheet;
                 
@@ -1243,13 +1399,27 @@ static BOOL infiniteZoomEnabled;
             }
         }
     }
-    else if (alertView.context && [alertView.context isEqualToString:@"zoom warning"])
+    else if ([customAlertView.context isKindOfClass:[NSString class]] && [customAlertView.context isEqualToString:@"zoom warning"])
     {
         self.lastLayerAlertDate = [NSDate date];
         
         if (buttonIndex == alertView.cancelButtonIndex)
         {
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipWarningAboutZoom"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }
+    else if ([customAlertView.context isKindOfClass:[NSURL class]])
+    {
+        if (buttonIndex == customAlertView.firstOtherButtonIndex)
+        {
+            [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
+            
+            [(MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate] openExternalURL:(NSURL *)customAlertView.context];
+        }
+        else if (buttonIndex == customAlertView.firstOtherButtonIndex + 1)
+        {
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipPasteboardURLPrompt"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
     }

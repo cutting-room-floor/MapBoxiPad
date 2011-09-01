@@ -22,4 +22,6 @@
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
 @property (nonatomic, assign) BOOL openingExternalFile;
 
+- (BOOL)openExternalURL:(NSURL *)externalURL;
+
 @end

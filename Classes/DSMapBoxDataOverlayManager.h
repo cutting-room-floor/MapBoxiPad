@@ -40,6 +40,7 @@
 - (id)initWithMapView:(DSMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
 - (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
+- (RMSphericalTrapezium)addOverlayForGeoJSON:(NSString *)json;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
 

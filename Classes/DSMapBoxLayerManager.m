@@ -8,7 +8,7 @@
 
 #import "DSMapBoxLayerManager.h"
 
-#import "DSMapBoxDataOverlayManager.h";
+#import "DSMapBoxDataOverlayManager.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSTiledLayerMapView.h"
 #import "DSMapContents.h"
@@ -267,6 +267,32 @@
                                                                                            description,                                      @"description",
                                                                                            [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
                                                                                            [NSNumber numberWithBool:NO],                     @"selected",
+                                                                                           nil];
+            
+            [mutableDataLayers addObject:layer];
+        }
+        else if (([[[path pathExtension] lowercaseString] isEqualToString:@"geojson"] || [[[path pathExtension] lowercaseString] isEqualToString:@"json"]) && 
+                 ! [[mutableDataLayers valueForKeyPath:@"URL"] containsObject:[NSURL fileURLWithPath:path]])
+        {
+            NSString *description = @"GeoJSON";
+            
+            NSString *name = [path lastPathComponent];
+            
+            name = [name stringByReplacingOccurrencesOfString:@".geojson" 
+                                                   withString:@""
+                                                      options:NSCaseInsensitiveSearch
+                                                        range:NSMakeRange(0, [name length])];
+
+            name = [name stringByReplacingOccurrencesOfString:@".json" 
+                                                   withString:@""
+                                                      options:NSCaseInsensitiveSearch
+                                                        range:NSMakeRange(0, [name length])];
+
+            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                      @"URL", 
+                                                                                           name,                                              @"name",
+                                                                                           description,                                       @"description",
+                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeGeoJSON], @"type",
+                                                                                           [NSNumber numberWithBool:NO],                      @"selected",
                                                                                            nil];
             
             [mutableDataLayers addObject:layer];
@@ -605,6 +631,18 @@
                     }
                     
                     [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                }
+                else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
+                {
+                    if ( ! [layer objectForKey:@"source"])
+                    {
+                        NSError *error = nil;
+                        NSString *source = [NSString stringWithContentsOfURL:[layer objectForKey:@"URL"] encoding:NSUTF8StringEncoding error:&error];
+                        
+                        [layer setObject:source forKey:@"source"];
+                    }
+                    
+                    [dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
                 }
             }
 
