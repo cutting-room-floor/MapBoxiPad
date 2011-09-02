@@ -15,6 +15,7 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxTintedPlusItem.h"
 #import "DSMapBoxAlertView.h"
+#import "DSMapBoxTileSourceInfiniteZoom.h"
 
 #import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
