@@ -481,6 +481,11 @@ static BOOL infiniteZoomEnabled;
         [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
+- (void)tappedCancelDocumentsButton:(id)sender
+{
+    [self dismissModalViewControllerAnimated:YES];
+}
+
 - (void)openKMLFile:(NSURL *)fileURL
 {
     NSError *error = nil;
@@ -1147,7 +1152,7 @@ static BOOL infiniteZoomEnabled;
             loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                  style:UIBarButtonItemStylePlain
                                                                                                 target:self
-                                                                                                action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+                                                                                                action:@selector(tappedCancelDocumentsButton:)] autorelease];
             
             loadController.delegate = self;
             
