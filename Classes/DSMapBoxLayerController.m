@@ -86,7 +86,7 @@
 - (IBAction)tappedDoneButton:(id)sender
 {
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Edit" 
-                                                                               style:UIBarButtonItemStylePlain
+                                                                               style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedEditButton:)] autorelease];
     

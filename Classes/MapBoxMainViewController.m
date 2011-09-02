@@ -1150,7 +1150,7 @@ static BOOL infiniteZoomEnabled;
             wrapper.navigationBar.translucent = YES;
             
             loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                 style:UIBarButtonItemStylePlain
+                                                                                                 style:UIBarButtonItemStyleBordered
                                                                                                 target:self
                                                                                                 action:@selector(dismissModal)] autorelease];
             
@@ -1208,7 +1208,7 @@ static BOOL infiniteZoomEnabled;
             DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
             
             saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                 style:UIBarButtonItemStylePlain
+                                                                                                 style:UIBarButtonItemStyleBordered
                                                                                                 target:self
                                                                                                 action:@selector(dismissModal)] autorelease];
             
