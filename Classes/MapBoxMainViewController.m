@@ -481,7 +481,7 @@ static BOOL infiniteZoomEnabled;
         [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
-- (void)tappedCancelDocumentsButton:(id)sender
+- (void)dismissModal
 {
     [self dismissModalViewControllerAnimated:YES];
 }
@@ -1152,7 +1152,7 @@ static BOOL infiniteZoomEnabled;
             loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                  style:UIBarButtonItemStylePlain
                                                                                                 target:self
-                                                                                                action:@selector(tappedCancelDocumentsButton:)] autorelease];
+                                                                                                action:@selector(dismissModal)] autorelease];
             
             loadController.delegate = self;
             
@@ -1210,7 +1210,7 @@ static BOOL infiniteZoomEnabled;
             saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                  style:UIBarButtonItemStylePlain
                                                                                                 target:self
-                                                                                                action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+                                                                                                action:@selector(dismissModal)] autorelease];
             
             saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
                                                                                                             target:self

@@ -38,8 +38,8 @@
                                                                              action:nil] autorelease];
     
     self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                           target:self.parentViewController
-                                                                                           action:@selector(dismissModalViewControllerAnimated:)] autorelease];
+                                                                                           target:self
+                                                                                           action:@selector(dismissModal)] autorelease];
     
     self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"More Options"
                                                                                style:UIBarButtonItemStyleBordered
@@ -85,6 +85,11 @@
     DSMapBoxLayerAddCustomServerController *customController = [[[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil] autorelease];
     
     [(UINavigationController *)self.parentViewController pushViewController:customController animated:YES];
+}
+
+- (void)dismissModal
+{
+    [self.parentViewController dismissModalViewControllerAnimated:YES];
 }
 
 #pragma mark -
