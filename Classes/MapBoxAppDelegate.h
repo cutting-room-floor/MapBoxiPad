@@ -11,7 +11,7 @@
 @class DSFingerTipWindow;
 @class MapBoxMainViewController;
 
-@interface MapBoxAppDelegate : NSObject <UIApplicationDelegate>
+@interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate>
 {
     DSFingerTipWindow *window;
     MapBoxMainViewController *viewController;

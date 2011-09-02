@@ -15,6 +15,9 @@
 #import "UIApplication_Additions.h"
 
 #import "DSMapBoxLegacyMigrationManager.h"
+#import "DSMapBoxAlertView.h"
+
+#import "ASIHTTPRequest.h"
 
 @implementation MapBoxAppDelegate
 
@@ -150,24 +153,71 @@
 
 #pragma mark -
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == alertView.firstOtherButtonIndex)
+    {
+        NSURL *externalURL = (NSURL *)((DSMapBoxAlertView *)alertView).context;
+        
+        [self openExternalURL:externalURL];
+    }
+}
+
+#pragma mark -
+
 - (BOOL)openExternalURL:(NSURL *)externalURL
 {
+    // convert mbhttp/mbhttps as necessary
+    //
     if ([[externalURL scheme] hasPrefix:@"mbhttp"])
     {
-        NSURL *downloadURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
-                                                                                                          withString:@""
-                                                                                                             options:NSAnchoredSearch
-                                                                                                               range:NSMakeRange(0, 10)]];
+        externalURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
+                                                                                                   withString:@""
+                                                                                                      options:NSAnchoredSearch
+                                                                                                        range:NSMakeRange(0, 10)]];
+    }    
+    
+    // download external sources first to prepare for opening locally
+    //
+    if ( ! [externalURL isFileURL])
+    {
+        // we'll do this in the background to avoid blocking
+        //
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:externalURL];
+        
+        // download to disk
+        //
+        [request setDownloadDestinationPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [externalURL lastPathComponent]]];
+        
+        // retry as local file when complete
+        //
+        [request setCompletionBlock:^(void)
+        {
+            [self openExternalURL:[NSURL fileURLWithPath:request.downloadDestinationPath]];
+        }];
+        
+        // re-prompt on failure
+        //
+        [request setFailedBlock:^(void)
+        {
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Download Problem"
+                                                                         message:[NSString stringWithFormat:@"There was a problem downloading %@. Would you like to try again?", externalURL]
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Cancel"
+                                                               otherButtonTitles:@"Retry", nil] autorelease];
             
-        NSData *downloadData = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:downloadURL]
-                                                     returningResponse:nil
-                                                                 error:nil];
+            alert.context = externalURL;
+            
+            [alert show];
+        }];
         
-        externalURL = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [downloadURL lastPathComponent]]];
+        [request startAsynchronous];
         
-        [downloadData writeToURL:externalURL atomically:NO];
+        return YES;
     }
-        
+    
+    // open the local file
+    //
     if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
     {
         [viewController openKMLFile:externalURL];
