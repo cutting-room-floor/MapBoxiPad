@@ -23,6 +23,8 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "TestFlight.h"
+
 NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
@@ -81,6 +83,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     layersRequest.delegate = self;
     
     [layersRequest startAsynchronous];
+    
+    [TestFlight passCheckpoint:@"browsed TileStream server"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

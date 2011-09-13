@@ -8,6 +8,7 @@
 
 #import "MapBoxAppDelegate.h"
 
+#import "MapBoxConstants.h"
 #import "MapBoxMainViewController.h"
 
 #import "DSFingerTipWindow.h"
@@ -18,6 +19,8 @@
 #import "DSMapBoxAlertView.h"
 
 #import "ASIHTTPRequest.h"
+
+#import "TestFlight.h"
 
 @implementation MapBoxAppDelegate
 
@@ -37,6 +40,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // begin TestFlight tracking
+    //
+    [TestFlight takeOff:kTestFlightTeamToken];
+    
+    // identify testers
+    //
+    [TestFlight addCustomEnvironmentInformation:[UIDevice currentDevice].name forKey:@"device name"];
+    
     // legacy data migration
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];

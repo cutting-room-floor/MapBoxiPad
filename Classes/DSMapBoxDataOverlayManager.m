@@ -43,6 +43,8 @@
 
 #import "UIImage-Extensions.h"
 
+#import "TestFlight.h"
+
 #define kDSPlacemarkAlpha 0.9f
 
 @implementation DSMapBoxDataOverlayManager
@@ -738,6 +740,8 @@
                                      inView:aMapView 
                    permittedArrowDirections:UIPopoverArrowDirectionAny
                                    animated:YES];
+            
+            [TestFlight passCheckpoint:@"tapped interactive layer"];
         }
 
         else if (balloon)
@@ -815,6 +819,8 @@
                              inView:mapView 
            permittedArrowDirections:UIPopoverArrowDirectionAny
                            animated:YES];
+    
+    [TestFlight passCheckpoint:@"tapped on marker"];
 }
 
 - (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map

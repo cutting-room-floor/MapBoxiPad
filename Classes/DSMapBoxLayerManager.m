@@ -23,6 +23,8 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
+#import "TestFlight.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
@@ -59,6 +61,10 @@
         dataLayers = [[NSArray array] retain];
         
         [self reloadLayersFromDisk];
+        
+        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [baseLayers count]] forKey:@"base layer count"];
+        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"overlay layer count"];
+        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadLayersFromDisk)
@@ -492,6 +498,8 @@
             
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"] animated:YES];
             
+            [TestFlight passCheckpoint:@"changed base layer"];
+            
             return;
             
         case DSMapBoxLayerSectionTile: // tile layers
@@ -589,6 +597,8 @@
                 //
                 layerMapView.delegate = dataOverlayManager;
                 dataOverlayManager.mapView = layerMapView;
+                
+                [TestFlight passCheckpoint:@"enabled overlay layer"];
             }
 
             break;
@@ -619,6 +629,8 @@
                     
                     if ( ! [layer objectForKey:@"source"])
                         [layer setObject:[kml source] forKey:@"source"];
+                    
+                    [TestFlight passCheckpoint:@"enabled KML layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
@@ -631,6 +643,8 @@
                     }
                     
                     [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                    
+                    [TestFlight passCheckpoint:@"enabled GeoRSS layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
                 {
@@ -643,6 +657,8 @@
                     }
                     
                     [dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
+                    
+                    [TestFlight passCheckpoint:@"enabled GeoJSON layer"];
                 }
             }
 

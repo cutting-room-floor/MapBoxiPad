@@ -10,6 +10,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
+
 @implementation DSMapBoxDocumentSaveController
 
 @synthesize snapshot;
@@ -34,6 +36,8 @@
                                              selector:@selector(updateName:)
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nameTextField];
+    
+    [TestFlight passCheckpoint:@"prompted to save document"];
 }
 
 - (void)viewDidAppear:(BOOL)animated

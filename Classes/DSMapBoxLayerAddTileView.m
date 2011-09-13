@@ -14,6 +14,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
+
 @implementation DSMapBoxLayerAddTileView
 
 @synthesize delegate;
@@ -212,6 +214,8 @@
         // go straight to preview
         //
         [self.delegate tileViewWantsToShowPreview:self];
+        
+        [TestFlight passCheckpoint:@"tapped TileStream layer corner to preview"];
     }
 
     else if (self.touched)
@@ -238,6 +242,8 @@
         // go straight to preview
         //
         [self.delegate tileViewWantsToShowPreview:self];
+        
+        [TestFlight passCheckpoint:@"used pinch gesture to preview TileStream layer"];
     }
 }
 

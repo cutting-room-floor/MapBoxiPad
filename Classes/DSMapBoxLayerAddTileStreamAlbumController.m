@@ -18,6 +18,8 @@
 
 #import "JSONKit.h"
 
+#import "TestFlight.h"
+
 @implementation DSMapBoxLayerAddTileStreamAlbumController
 
 - (void)viewDidLoad
@@ -66,6 +68,8 @@
     albumRequest.delegate = self;
 
     [albumRequest startAsynchronous];
+    
+    [TestFlight passCheckpoint:@"browsed TileStream accounts"];
 }
 
 - (void)dealloc

@@ -10,6 +10,8 @@
 
 #import "UIApplication_Additions.h"
 
+#import "TestFlight.h"
+
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
 
 - (void)reload;
@@ -33,6 +35,8 @@
     saveFiles = [[NSArray array] retain];
     
     [self reload];
+    
+    [TestFlight passCheckpoint:@"viewed document loader"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -74,6 +78,8 @@
     scroller.contentSize = CGSizeMake(kDSDocumentWidth * [scroller.subviews count], kDSDocumentHeight);
     
     [self scrollViewDidScroll:scroller];
+    
+    [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [scroller.subviews count]] forKey:@"saved document count"];
 }
 
 + (NSString *)saveFolderPath
@@ -179,6 +185,8 @@
         [self.delegate documentLoadController:self wantsToSaveDocumentWithName:kDSSaveFileName];
 
         [self reload];
+        
+        [TestFlight passCheckpoint:@"saved document from document load view"];
     }
 }
 
@@ -283,6 +291,8 @@
 {
     if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
         [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
+    
+    [TestFlight passCheckpoint:@"loaded saved document"];
 }
 
 #pragma mark -
@@ -308,6 +318,8 @@
         default:
             
             [self dismissModalViewControllerAnimated:YES];
+            
+            [TestFlight passCheckpoint:@"shared snapshot from document loader"];
     }
 }
 

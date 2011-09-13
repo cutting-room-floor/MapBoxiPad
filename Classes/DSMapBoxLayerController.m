@@ -24,6 +24,8 @@
 
 #import "Reachability.h"
 
+#import "TestFlight.h"
+
 @interface DSMapBoxLayerController (DSMapBoxLayerControllerPrivate)
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
@@ -267,7 +269,11 @@
                 cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
             
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+            {
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
+
+                [TestFlight passCheckpoint:@"has TileStream base layer"];
+            }
                 
             else
                 cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
@@ -291,7 +297,9 @@
                     
                     [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
                     
-                    cell.accessoryView = button;                
+                    cell.accessoryView = button;
+                    
+                    [TestFlight passCheckpoint:@"has layer supporting bounds"];
                 }
                 else
                 {
@@ -309,10 +317,16 @@
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+            {
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
+                [TestFlight passCheckpoint:@"has TileStream overlay layer"];
+            }
             
             else
+            {
                 cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
+                [TestFlight passCheckpoint:@"has MBTiles overlay layer"];
+            }
             
             break;
             
@@ -328,14 +342,17 @@
                 case DSMapBoxLayerTypeKML:
                 case DSMapBoxLayerTypeKMZ:
                     cell.imageView.image = [UIImage imageNamed:@"kml_layer.png"];
+                    [TestFlight passCheckpoint:@"has KML layer"];
                     break;
 
                 case DSMapBoxLayerTypeGeoRSS:
                     cell.imageView.image = [UIImage imageNamed:@"georss_layer.png"];
+                    [TestFlight passCheckpoint:@"has GeoRSS layer"];
                     break;
 
                 case DSMapBoxLayerTypeGeoJSON:
                     cell.imageView.image = [UIImage imageNamed:@"geojson_layer.png"];
+                    [TestFlight passCheckpoint:@"has GeoJSON layer"];
                     break;
             }
             
@@ -389,6 +406,8 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     [self.layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
+    
+    [TestFlight passCheckpoint:@"reordered layers"];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -557,6 +576,8 @@
     if (indexPath.section == DSMapBoxLayerSectionTile)
         if (self.delegate && [self.delegate respondsToSelector:@selector(zoomToLayer:)])
             [self.delegate zoomToLayer:layer];
+    
+    [TestFlight passCheckpoint:@"tapped layer crosshairs to zoom"];
 }
 
 #pragma mark -

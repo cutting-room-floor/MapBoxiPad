@@ -17,6 +17,8 @@
 #import "DSMapBoxDataOverlayManager.h"
 #import "MapBoxConstants.h"
 
+#import "TestFlight.h"
+
 @implementation DSMapBoxLayerAddPreviewController
 
 @synthesize info;
@@ -79,6 +81,8 @@
         [metadata appendString:@", full-world coverage"];
     
     metadataLabel.text = metadata;
+    
+    [TestFlight passCheckpoint:@"previewed TileStream layer"];
 }
 
 - (void)dealloc
