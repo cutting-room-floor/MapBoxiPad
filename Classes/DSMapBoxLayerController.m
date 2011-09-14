@@ -269,11 +269,7 @@
                 cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
             
             else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
-            {
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
-
-                 [TestFlight passCheckpoint:@"has TileStream base layer"];
-            }
                 
             else
                 cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
@@ -298,8 +294,6 @@
                     [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
                     
                     cell.accessoryView = button;
-                    
-                    [TestFlight passCheckpoint:@"has layer supporting bounds"];
                 }
                 else
                 {
@@ -317,16 +311,10 @@
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
-            {
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
-                [TestFlight passCheckpoint:@"has TileStream overlay layer"];
-            }
             
             else
-            {
                 cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
-                [TestFlight passCheckpoint:@"has MBTiles overlay layer"];
-            }
             
             break;
             
@@ -342,17 +330,14 @@
                 case DSMapBoxLayerTypeKML:
                 case DSMapBoxLayerTypeKMZ:
                     cell.imageView.image = [UIImage imageNamed:@"kml_layer.png"];
-                    [TestFlight passCheckpoint:@"has KML layer"];
                     break;
 
                 case DSMapBoxLayerTypeGeoRSS:
                     cell.imageView.image = [UIImage imageNamed:@"georss_layer.png"];
-                    [TestFlight passCheckpoint:@"has GeoRSS layer"];
                     break;
 
                 case DSMapBoxLayerTypeGeoJSON:
                     cell.imageView.image = [UIImage imageNamed:@"geojson_layer.png"];
-                    [TestFlight passCheckpoint:@"has GeoJSON layer"];
                     break;
             }
             

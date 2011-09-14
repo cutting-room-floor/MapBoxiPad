@@ -62,6 +62,36 @@
         
         [self reloadLayersFromDisk];
         
+        if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"]) // bundled set doesn't have a URL
+            [TestFlight passCheckpoint:@"has MBTiles base layer"];
+        
+        if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
+            [TestFlight passCheckpoint:@"has TileStream base layer"];
+        
+        if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"])
+            [TestFlight passCheckpoint:@"has MBTiles overlay layer"];
+        
+        if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
+            [TestFlight passCheckpoint:@"has TileStream overlay layer"];
+            
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kml"])
+            [TestFlight passCheckpoint:@"has KML layer (.kml)"];
+        
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kmz"])
+            [TestFlight passCheckpoint:@"has KML layer (.kmz)"];
+        
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"rss"])            
+            [TestFlight passCheckpoint:@"has GeoRSS layer (.rss)"];
+            
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"xml"])
+            [TestFlight passCheckpoint:@"has GeoRSS layer (.xml)"];
+        
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"json"])
+            [TestFlight passCheckpoint:@"has GeoJSON layer (.json)"];
+            
+        if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"geojson"])
+            [TestFlight passCheckpoint:@"has GeoJSON layer (.geojson)"];
+        
         [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [baseLayers count]] forKey:@"base layer count"];
         [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"overlay layer count"];
         [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
