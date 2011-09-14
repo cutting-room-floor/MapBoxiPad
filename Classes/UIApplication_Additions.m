@@ -8,6 +8,11 @@
 
 #import "UIApplication_Additions.h"
 
+void dispatch_delayed_ui_action(NSTimeInterval delaySeconds, dispatch_block_t block)
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delaySeconds * NSEC_PER_SEC), dispatch_get_main_queue(), block);
+}
+
 @implementation UIApplication (UIApplication_Additions)
 
 - (NSString *)documentsFolderPathString

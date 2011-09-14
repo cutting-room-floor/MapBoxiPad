@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+void dispatch_delayed_ui_action(NSTimeInterval, dispatch_block_t block);
+
 @interface UIApplication (UIApplication_Additions)
 
 - (NSString *)documentsFolderPathString;

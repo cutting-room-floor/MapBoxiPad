@@ -1012,7 +1012,7 @@ static BOOL infiniteZoomEnabled;
                                               {
                                                   // play scrunching-together sound for multiple tiles
                                                   //
-                                                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.6 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                                  dispatch_delayed_ui_action(0.6, ^(void)
                                                   {
                                                       [DSSound playSoundNamed:@"paper_throw_start.wav"];
                                                   });
@@ -1097,7 +1097,7 @@ static BOOL infiniteZoomEnabled;
                                                   [CATransaction commit];
                                               }
                                               
-                                              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                              dispatch_delayed_ui_action(1.25, ^(void)
                                               {
                                                   // play landing sound
                                                   //

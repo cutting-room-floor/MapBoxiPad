@@ -18,6 +18,8 @@
 
 #import "TestFlight.h"
 
+#import "UIApplication_Additions.h"
+
 @implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
@@ -347,7 +349,7 @@
             {
                 // invisibly on a delay for cleaning up after flicks
                 //
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                dispatch_delayed_ui_action(1.0, ^(void)
                 {
                     self.center = originalCenter;
 

@@ -272,7 +272,7 @@
             {
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
 
-                [TestFlight passCheckpoint:@"has TileStream base layer"];
+                 [TestFlight passCheckpoint:@"has TileStream base layer"];
             }
                 
             else
