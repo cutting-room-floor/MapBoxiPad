@@ -188,6 +188,8 @@
                                                                                                    withString:@""
                                                                                                       options:NSAnchoredSearch
                                                                                                         range:NSMakeRange(0, 10)]];
+        
+        [TestFlight passCheckpoint:@"opened mbhttp: URL"];
     }    
     
     // download external sources first to prepare for opening locally
@@ -225,6 +227,8 @@
         }];
         
         [request startAsynchronous];
+        
+        [TestFlight passCheckpoint:@"opened network URL"];
         
         return YES;
     }
