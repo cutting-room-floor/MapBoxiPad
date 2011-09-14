@@ -42,7 +42,9 @@
 {
     // begin TestFlight tracking
     //
+#ifndef DEBUG
     [TestFlight takeOff:kTestFlightTeamToken];
+#endif
     
     // identify testers
     //
