@@ -8,6 +8,8 @@
 
 #import "DSMapBoxAlphaModalNavigationController.h"
 
+#import "MapBoxConstants.h"
+
 #import <QuartzCore/QuartzCore.h>
 
 @implementation DSMapBoxAlphaModalNavigationController
@@ -114,7 +116,11 @@
         CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
         
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.3];
+        
+        if (SYSTEM_VERSION_LESS_THAN(@"5.0"))
+            [UIView setAnimationDuration:0.3];
+        else 
+            [UIView setAnimationDuration:0.25];
         
         backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y + delta);
         
@@ -129,8 +135,12 @@
         CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
         
         [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationDuration:0.3];
-        
+
+        if (SYSTEM_VERSION_LESS_THAN(@"5.0"))
+            [UIView setAnimationDuration:0.3];
+        else 
+            [UIView setAnimationDuration:0.25];
+
         backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y - delta);
         
         [UIView commitAnimations];
