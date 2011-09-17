@@ -25,6 +25,8 @@
 
 #import "Reachability.h"
 
+#import "TestFlight.h"
+
 @interface DSMapBoxLayerController (DSMapBoxLayerControllerPrivate)
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
@@ -292,7 +294,7 @@
                     
                     [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
                     
-                    cell.accessoryView = button;                
+                    cell.accessoryView = button;
                 }
                 else
                 {
@@ -390,6 +392,8 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
     [self.layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
+    
+    [TestFlight passCheckpoint:@"reordered layers"];
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -558,6 +562,8 @@
     if (indexPath.section == DSMapBoxLayerSectionTile)
         if (self.delegate && [self.delegate respondsToSelector:@selector(zoomToLayer:)])
             [self.delegate zoomToLayer:layer];
+    
+    [TestFlight passCheckpoint:@"tapped layer crosshairs to zoom"];
 }
 
 #pragma mark -

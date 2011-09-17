@@ -47,6 +47,8 @@
 
 #import "Reachability.h"
 
+#import "TestFlight.h"
+
 #import "UIImage+Alpha.h"
 
 static BOOL infiniteZoomEnabled;
@@ -515,6 +517,8 @@ static BOOL infiniteZoomEnabled;
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
+        
+        [TestFlight passCheckpoint:@"imported KML"];
     }
 }
 
@@ -533,6 +537,8 @@ static BOOL infiniteZoomEnabled;
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
+        
+        [TestFlight passCheckpoint:@"imported GeoRSS"];
     }
     
     else
@@ -554,6 +560,8 @@ static BOOL infiniteZoomEnabled;
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
+        
+        [TestFlight passCheckpoint:@"imported GeoJSON"];
     }
     
     else
@@ -569,6 +577,8 @@ static BOOL infiniteZoomEnabled;
     [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
     
     [self layerImportAlertWithName:[fileURL lastPathComponent]];
+    
+    [TestFlight passCheckpoint:@"imported MBTiles"];
 }
 
 - (IBAction)tappedLayersButton:(id)sender
@@ -604,6 +614,8 @@ static BOOL infiniteZoomEnabled;
 
 - (IBAction)tappedClusteringButton:(id)sender
 {
+    [TestFlight passCheckpoint:@"toggled clustering"];
+    
     DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager;
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
@@ -613,6 +625,8 @@ static BOOL infiniteZoomEnabled;
 
 - (IBAction)tappedHelpButton:(id)sender
 {
+    [TestFlight passCheckpoint:@"viewed help"];
+    
     if (layersPopover && layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:NO];
     
@@ -1061,7 +1075,7 @@ static BOOL infiniteZoomEnabled;
                                               {
                                                   // play scrunching-together sound for multiple tiles
                                                   //
-                                                  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.6 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                                  dispatch_delayed_ui_action(0.6, ^(void)
                                                   {
                                                       [DSSound playSoundNamed:@"paper_throw_start.wav"];
                                                   });
@@ -1146,7 +1160,7 @@ static BOOL infiniteZoomEnabled;
                                                   [CATransaction commit];
                                               }
                                               
-                                              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                                              dispatch_delayed_ui_action(1.25, ^(void)
                                               {
                                                   // play landing sound
                                                   //
@@ -1192,6 +1206,8 @@ static BOOL infiniteZoomEnabled;
                 alert.context = pasteboardURL;
                 
                 [alert show];
+                
+                [TestFlight passCheckpoint:@"prompted to import clipboard URL"];
             }
         }
     }
@@ -1289,6 +1305,8 @@ static BOOL infiniteZoomEnabled;
     {
         if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
+            [TestFlight passCheckpoint:@"composed snapshot from main view"];
+            
             // email snapshot
             //
             if ([MFMailComposeViewController canSendMail])
@@ -1350,6 +1368,8 @@ static BOOL infiniteZoomEnabled;
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller wantsToSaveDocumentWithName:(NSString *)name
 {
     [self saveState:name];
+    
+    [TestFlight passCheckpoint:@"saved document from main view"];
 }
 
 #pragma mark -
@@ -1454,6 +1474,8 @@ static BOOL infiniteZoomEnabled;
                 mailer.modalPresentationStyle = UIModalPresentationPageSheet;
                 
                 [self presentModalViewController:mailer animated:YES];
+                
+                [TestFlight passCheckpoint:@"prompted to report layer problem"];
             }
             else
             {
@@ -1481,6 +1503,8 @@ static BOOL infiniteZoomEnabled;
     {
         if (buttonIndex == customAlertView.firstOtherButtonIndex)
         {
+            [TestFlight passCheckpoint:@"imported clipboard URL"];
+
             [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
             
             [(MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate] openExternalURL:(NSURL *)customAlertView.context];

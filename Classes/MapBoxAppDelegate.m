@@ -8,6 +8,7 @@
 
 #import "MapBoxAppDelegate.h"
 
+#import "MapBoxConstants.h"
 #import "MapBoxMainViewController.h"
 
 #import "DSFingerTipWindow.h"
@@ -18,6 +19,8 @@
 #import "DSMapBoxAlertView.h"
 
 #import "ASIHTTPRequest.h"
+
+#import "TestFlight.h"
 
 @implementation MapBoxAppDelegate
 
@@ -37,6 +40,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // begin TestFlight tracking
+    //
+#ifndef DEBUG
+    [TestFlight takeOff:kTestFlightTeamToken];
+#endif
+    
+    // identify testers
+    //
+    [TestFlight addCustomEnvironmentInformation:[UIDevice currentDevice].name forKey:@"device name"];
+    
     // legacy data migration
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
@@ -175,6 +188,8 @@
                                                                                                    withString:@""
                                                                                                       options:NSAnchoredSearch
                                                                                                         range:NSMakeRange(0, 10)]];
+        
+        [TestFlight passCheckpoint:@"opened mbhttp: URL"];
     }    
     
     // download external sources first to prepare for opening locally
@@ -212,6 +227,8 @@
         }];
         
         [request startAsynchronous];
+        
+        [TestFlight passCheckpoint:@"opened network URL"];
         
         return YES;
     }

@@ -12,6 +12,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
+
 @implementation DSMapBoxHelpController
 
 @synthesize moviePlayButton;
@@ -74,6 +76,8 @@
     }
 
     [self.moviePlayer play];
+
+    [TestFlight passCheckpoint:@"started watching help video"];
 }
 
 - (void)tappedHelpDoneButton:(id)sender
@@ -87,6 +91,8 @@
 {
     if (self.moviePlayer.fullscreen)
         [self.moviePlayer setFullscreen:NO animated:YES];
+    
+    [TestFlight passCheckpoint:@"finished watching help video"];
 }
 
 #pragma mark -

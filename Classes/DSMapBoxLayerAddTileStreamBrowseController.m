@@ -23,6 +23,10 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "TestFlight.h"
+
+#import "UIApplication_Additions.h"
+
 NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @implementation DSMapBoxLayerAddTileStreamBrowseController
@@ -81,6 +85,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     layersRequest.delegate = self;
     
     [layersRequest startAsynchronous];
+    
+    [TestFlight passCheckpoint:@"browsed TileStream server"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -195,7 +201,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // display preview partway through
     //
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.25 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+    dispatch_delayed_ui_action(0.25, ^(void)
     {
         DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];                         
         

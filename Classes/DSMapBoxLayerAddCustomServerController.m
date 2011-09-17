@@ -18,6 +18,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
+
 @interface DSMapBoxLayerAddCustomServerController (DSMapBoxLayerAddTypeControllerPrivate)
 
 - (void)setRecentServersHidden:(BOOL)flag;
@@ -58,6 +60,8 @@
     recentServersTableView.layer.cornerRadius = 10.0;
     recentServersTableView.clipsToBounds      = YES;
     recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
+    
+    [TestFlight passCheckpoint:@"viewed custom TileStream servers"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -226,6 +230,8 @@
     controller.serverURL  = self.finalURL;
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
+    
+    [TestFlight passCheckpoint:@"added custom TileStream server"];
 }
 
 #pragma mark -
@@ -294,6 +300,8 @@
     self.finalURL = [NSURL URLWithString:[[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] objectAtIndex:indexPath.row]];
     
     [self tappedNextButton:self];
+    
+    [TestFlight passCheckpoint:@"tapped custom TileStream server in history"];
 }
 
 #pragma mark -

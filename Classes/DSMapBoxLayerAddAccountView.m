@@ -16,6 +16,10 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
+
+#import "UIApplication_Additions.h"
+
 @implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
@@ -239,6 +243,8 @@
             frontView.transform = CGAffineTransformMakeRotation(2 * M_PI * rotation / 360);
             
             [UIView commitAnimations];
+            
+            [TestFlight passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
         }
         else
         {
@@ -292,6 +298,8 @@
                                      //
                                      [self.delegate accountViewWasSelected:self];
                                  }];
+                
+                [TestFlight passCheckpoint:@"used flick gesture on TileStream account to browse"];
             }
             else
             {
@@ -312,6 +320,8 @@
                 ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + distance, myCenter.y + distance);
 
                 [UIView commitAnimations];
+                
+                [TestFlight passCheckpoint:@"used pinch gesture on TileStream account to peek"];
             }
         }
     }
@@ -339,7 +349,7 @@
             {
                 // invisibly on a delay for cleaning up after flicks
                 //
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^(void)
+                dispatch_delayed_ui_action(1.0, ^(void)
                 {
                     self.center = originalCenter;
 

@@ -156,6 +156,7 @@
 		DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA58F6E1326CAA6000E0761 /* DSMapView.m */; };
 		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
+		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
 		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
@@ -482,6 +483,8 @@
 		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
+		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
+		DDACBCA0141FC6F4002704B7 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = "Externals/TestFlight SDK/TestFlight.h"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
 		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
@@ -558,6 +561,7 @@
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */,
 				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
+				DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */,
 				DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -947,6 +951,7 @@
 				DD28C07F13B26381008BED70 /* JSONKit */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
+				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
@@ -1176,6 +1181,15 @@
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
 			name = Classes;
+			sourceTree = "<group>";
+		};
+		DDACBC9E141FC655002704B7 /* TestFlight SDK */ = {
+			isa = PBXGroup;
+			children = (
+				DDACBCA0141FC6F4002704B7 /* TestFlight.h */,
+				DDACBC9F141FC6F4002704B7 /* libTestFlight.a */,
+			);
+			name = "TestFlight SDK";
 			sourceTree = "<group>";
 		};
 		DDB7BEDD13CE192000280095 /* Resources */ = {
@@ -1623,12 +1637,16 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "DEBUG=1";
 				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
 					/usr/include/libxml2,
-					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
+				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
@@ -1639,7 +1657,6 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
-				SDKROOT = iphoneos;
 			};
 			name = Debug;
 		};
@@ -1651,11 +1668,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
 					/usr/include/libxml2,
-					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
+				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
@@ -1666,7 +1686,6 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
-				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -1729,15 +1748,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = YES;
+				COPY_PHASE_STRIP = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
 				HEADER_SEARCH_PATHS = (
+					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
 					/usr/include/libxml2,
-					"Externals/route-me/MapView/**",
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
+				);
 				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
@@ -1748,7 +1770,6 @@
 				);
 				OTHER_LDFLAGS = "-lxml2";
 				PRODUCT_NAME = MapBox;
-				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = "Ad Hoc";
