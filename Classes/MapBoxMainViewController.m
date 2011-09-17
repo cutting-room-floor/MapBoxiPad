@@ -687,6 +687,8 @@ static BOOL infiniteZoomEnabled;
     {
         if ([sender isKindOfClass:[UIButton class]])
         {
+            [TestFlight passCheckpoint:@"legend button tapped"];
+            
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [UIView setAnimationDuration:0.15];
@@ -853,6 +855,8 @@ static BOOL infiniteZoomEnabled;
                              
                              [UIView commitAnimations];
                          }];
+        
+        [TestFlight passCheckpoint:@"legend watermark animated"];
     }
 
     // update attribution
@@ -1556,6 +1560,8 @@ static BOOL infiniteZoomEnabled;
     webView.alpha = 1.0;
     
     [UIView commitAnimations];
+    
+    [TestFlight passCheckpoint:@"MBTiles legend loaded"];
 }
 
 #pragma mark -
