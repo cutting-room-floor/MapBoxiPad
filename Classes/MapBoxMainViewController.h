@@ -26,13 +26,16 @@
                                                         DSDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
-                                                        DSMapBoxLayerControllerDelegate>
+                                                        DSMapBoxLayerControllerDelegate,
+                                                        UIWebViewDelegate>
 {
     IBOutlet DSMapView *mapView;
     IBOutlet UILabel *attributionLabel;
     IBOutlet UIToolbar *toolbar;
     IBOutlet UIBarButtonItem *layersButton;
     IBOutlet UIBarButtonItem *clusteringButton;
+    IBOutlet UIWebView *legendView;
+    IBOutlet UIButton *watermarkButton;
     UIPopoverController *layersPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
@@ -58,6 +61,7 @@
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedHelpButton:(id)sender;
 - (IBAction)tappedShareButton:(id)sender;
+- (IBAction)tappedLegendButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openGeoJSONFile:(NSURL *)fileURL;

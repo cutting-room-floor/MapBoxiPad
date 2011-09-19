@@ -131,6 +131,17 @@ static BOOL infiniteZoomEnabled;
     layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     layerManager.delegate = self;
     
+    // setup legend view
+    //
+    legendView.userInteractionEnabled = NO;
+    legendView.opaque = NO;
+    legendView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
+    legendView.layer.borderColor = [[UIColor colorWithWhite:0.0 alpha:0.25] CGColor];
+    legendView.layer.borderWidth = 1.0;
+    legendView.alpha = 0.0;
+
+    [self tappedLegendButton:self];
+    
     // watch for tile changes
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -271,6 +282,8 @@ static BOOL infiniteZoomEnabled;
     NSDictionary *baseMapState;
     NSArray *tileOverlayState;
     NSArray *dataOverlayState;
+    
+    legendView.alpha = 0.0;
     
     // determine if document or global restore
     //
@@ -670,6 +683,26 @@ static BOOL infiniteZoomEnabled;
         [shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
+- (IBAction)tappedLegendButton:(id)sender
+{
+    if (legendView.alpha)
+    {
+        if ([sender isKindOfClass:[UIButton class]])
+        {
+            [TestFlight passCheckpoint:@"legend button tapped"];
+            
+            [UIView beginAnimations:nil context:nil];
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+            [UIView setAnimationDuration:0.15];
+        }
+        
+        legendView.center = CGPointMake(-1.0 * legendView.center.x, legendView.center.y);
+        
+        if ([sender isKindOfClass:[UIButton class]])
+            [UIView commitAnimations];
+    }
+}
+
 - (void)setClusteringOn:(BOOL)clusteringOn
 {
     UIButton *button;
@@ -723,6 +756,10 @@ static BOOL infiniteZoomEnabled;
         [mapView removeFromSuperview];
     }
     
+    // hide legend to start
+    //
+    legendView.alpha = 0.0;
+
     // force switch to new tile source to update tiles
     //
     NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
@@ -753,7 +790,14 @@ static BOOL infiniteZoomEnabled;
             source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
         
         else
+        {
             source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
+            
+            NSString *legendHTML = [(RMMBTilesTileSource *)source legendHTML];
+            
+            if (legendHTML)
+                [legendView loadHTMLString:legendHTML baseURL:nil];
+        }
         
         mapView.contents.tileSource = source;
         mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
@@ -792,6 +836,31 @@ static BOOL infiniteZoomEnabled;
         [UIView commitAnimations];
     }
     
+    // animate watermark if legend updated but hidden
+    //
+    if (legendView.center.x < 0)
+    {
+        [UIView animateWithDuration:0.25
+                              delay:0.8
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^(void)
+                         {
+                             watermarkButton.center = CGPointMake(watermarkButton.center.x + 10, watermarkButton.center.y);
+                         }
+                         completion:^(BOOL finished)
+                         {
+                             [UIView beginAnimations:nil context:nil];
+                             [UIView setAnimationDuration:0.2];
+                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                             
+                             watermarkButton.center = CGPointMake(watermarkButton.center.x - 10, watermarkButton.center.y);
+                             
+                             [UIView commitAnimations];
+                         }];
+        
+        [TestFlight passCheckpoint:@"legend watermark animated"];
+    }
+
     // update attribution
     //
     if ([[DSMapBoxTileSetManager defaultManager] activeTileSetAttribution])
@@ -1478,6 +1547,23 @@ static BOOL infiniteZoomEnabled;
             
             [self dismissModalViewControllerAnimated:YES];
     }
+}
+
+#pragma mark -
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    // fade in updated legend
+    //
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:1.0];
+    [UIView setAnimationDelay:0.5];
+    
+    webView.alpha = 1.0;
+    
+    [UIView commitAnimations];
+    
+    [TestFlight passCheckpoint:@"MBTiles legend loaded"];
 }
 
 #pragma mark -
