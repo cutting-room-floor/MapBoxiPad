@@ -46,10 +46,6 @@
     [TestFlight takeOff:kTestFlightTeamToken];
 #endif
     
-    // identify testers
-    //
-    [TestFlight addCustomEnvironmentInformation:[UIDevice currentDevice].name forKey:@"device name"];
-    
     // legacy data migration
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
