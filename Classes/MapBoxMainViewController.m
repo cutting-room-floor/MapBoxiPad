@@ -283,6 +283,8 @@ static BOOL infiniteZoomEnabled;
     NSArray *tileOverlayState;
     NSArray *dataOverlayState;
     
+    legendView.alpha = 0.0;
+    
     // determine if document or global restore
     //
     if ([sender isKindOfClass:[NSString class]])
