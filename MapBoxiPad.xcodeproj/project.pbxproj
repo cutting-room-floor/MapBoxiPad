@@ -105,7 +105,6 @@
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
-		DD48C3EE11CC026B00038969 /* RMMBTilesTileSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
 		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
 		DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */; };
@@ -189,7 +188,6 @@
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
-		DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */; };
 		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
 		DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */; };
 		DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */; };
@@ -406,8 +404,6 @@
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
-		DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMMBTilesTileSource.h; sourceTree = "<group>"; };
-		DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMMBTilesTileSource.m; sourceTree = "<group>"; };
 		DD4BABF613BE62C50043FA21 /* DSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSSound.h; sourceTree = "<group>"; };
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
 		DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_off.png; sourceTree = "<group>"; };
@@ -533,8 +529,6 @@
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
 		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationView.m; sourceTree = "<group>"; };
-		DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMTileStreamSource.h; sourceTree = "<group>"; };
-		DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMTileStreamSource.m; sourceTree = "<group>"; };
 		DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalNavigationController.h; sourceTree = "<group>"; };
 		DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalNavigationController.m; sourceTree = "<group>"; };
 		DDEF901013831DA800FF148C /* DSMapBoxLayerAddCustomServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddCustomServerController.h; sourceTree = "<group>"; };
@@ -1152,10 +1146,6 @@
 				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
 				DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */,
 				DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */,
-				DD48C3EC11CC026B00038969 /* RMMBTilesTileSource.h */,
-				DD48C3ED11CC026B00038969 /* RMMBTilesTileSource.m */,
-				DDEF8E3E1382DC7D00FF148C /* RMTileStreamSource.h */,
-				DDEF8E3F1382DC7D00FF148C /* RMTileStreamSource.m */,
 				DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */,
 				DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */,
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
@@ -1514,7 +1504,6 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* MapBoxAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */,
-				DD48C3EE11CC026B00038969 /* RMMBTilesTileSource.m in Sources */,
 				DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */,
 				DDA1073811E442B6008D00A7 /* DSMapBoxBalloonController.m in Sources */,
 				DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */,
@@ -1595,7 +1584,6 @@
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
-				DDEF8E401382DC7D00FF148C /* RMTileStreamSource.m in Sources */,
 				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
 				DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,

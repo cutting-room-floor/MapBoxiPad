@@ -11,7 +11,7 @@
 
 @interface DSMapBoxTileSourceInfiniteZoom : NSObject
 
-+ (BOOL)enableInfiniteZoomForClasses:(NSArray *)tileSourceClasses;
++ (BOOL)enableInfiniteZoomForClasses:(NSArray *)classes;
 
 @end
 
