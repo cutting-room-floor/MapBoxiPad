@@ -595,7 +595,7 @@
 
 - (void)removeOverlayWithSource:(NSString *)source
 {
-    NSDictionary *overlayToRemove;
+    NSDictionary *overlayToRemove = nil;
     
     for (NSDictionary *overlayDict in overlays)
     {
@@ -618,7 +618,8 @@
         }
     }
     
-    [overlays removeObject:overlayToRemove];
+    if (overlayToRemove)
+        [overlays removeObject:overlayToRemove];
     
     if (balloon)
     {
