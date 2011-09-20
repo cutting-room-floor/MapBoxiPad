@@ -196,6 +196,8 @@
 
             [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
 
+            [TestFlight passCheckpoint:@"opened remote MBTiles download"];
+            
             return success;
         }
         
@@ -231,7 +233,7 @@
         
         [request startAsynchronous];
         
-        [TestFlight passCheckpoint:@"opened network URL"];
+        [TestFlight passCheckpoint:@"opened remote URL"];
         
         return YES;
     }

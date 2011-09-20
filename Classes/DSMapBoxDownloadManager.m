@@ -14,6 +14,8 @@
 
 #import "UIApplication_Additions.h"
 
+#import "TestFlight.h"
+
 @interface DSMapBoxDownloadManager (DSMapBoxDownloadManagerPrivate)
 
 - (NSArray *)pendingDownloads;
@@ -180,6 +182,8 @@ static DSMapBoxDownloadManager *sharedManager;
     [downloads replaceObjectAtIndex:[downloads indexOfObject:download] withObject:newDownload];
     
     [activeDownloads removeObject:download];
+    
+    [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
 
 - (void)resumeDownload:(ASIHTTPRequest *)download
@@ -189,6 +193,8 @@ static DSMapBoxDownloadManager *sharedManager;
     [download startAsynchronous];
     
     [activeDownloads addObject:download];
+    
+    [TestFlight passCheckpoint:@"resumed MBTiles download"];
 }
 
 - (void)cancelDownload:(ASIHTTPRequest *)download
@@ -206,6 +212,8 @@ static DSMapBoxDownloadManager *sharedManager;
     for (NSString *path in [self pendingDownloads])
         if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[download.originalURL absoluteString]])
             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+    
+    [TestFlight passCheckpoint:@"cancelled MBTiles download"];
 }
 
 - (BOOL)downloadIsActive:(ASIHTTPRequest *)download
@@ -235,12 +243,16 @@ static DSMapBoxDownloadManager *sharedManager;
     [downloads removeObject:request];
     [activeDownloads removeObject:request];
     
+    [TestFlight passCheckpoint:@"completed MBTiles download"];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadCompleteNotification object:request];
 }
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"failed: %@", request.error);
+    
+    [TestFlight passCheckpoint:@"failed MBTiles download"];
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue
