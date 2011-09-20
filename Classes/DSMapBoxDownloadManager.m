@@ -16,7 +16,10 @@
 
 #import "TestFlight.h"
 
-@interface DSMapBoxDownloadManager (DSMapBoxDownloadManagerPrivate)
+@interface DSMapBoxDownloadManager ()
+
+@property (nonatomic, retain) ASINetworkQueue *activeDownloadQueue;
+@property (nonatomic, retain) NSMutableArray *downloads;
 
 - (NSArray *)pendingDownloads;
 
@@ -27,6 +30,9 @@
 @implementation DSMapBoxDownloadManager
 
 static DSMapBoxDownloadManager *sharedManager;
+
+@synthesize activeDownloadQueue;
+@synthesize downloads;
 
 + (DSMapBoxDownloadManager *)sharedManager
 {
@@ -46,7 +52,6 @@ static DSMapBoxDownloadManager *sharedManager;
     if (self)
     {
         downloads = [[NSMutableArray array] retain];
-        activeDownloads = [[NSMutableArray array] retain];
         
         NSString *downloadPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDownloadsFolderName];
 
@@ -70,26 +75,8 @@ static DSMapBoxDownloadManager *sharedManager;
 {
     [activeDownloadQueue release];
     [downloads release];
-    [activeDownloads release];
     
     [super dealloc];
-}
-
-#pragma mark -
-
-- (NSArray *)downloads
-{
-    return [NSArray arrayWithArray:downloads];
-}
-
-- (void)setDownloads:(NSArray *)inDownloads
-{
-    [downloads setArray:inDownloads];
-}
-
-- (NSInteger)activeDownloadCount
-{
-    return [activeDownloads count];
 }
 
 #pragma mark -
@@ -111,19 +98,19 @@ static DSMapBoxDownloadManager *sharedManager;
 
 - (void)resumeDownloads
 {
-    if ( ! activeDownloadQueue)
+    if ( ! self.activeDownloadQueue)
     {
-        activeDownloadQueue = [[ASINetworkQueue queue] retain];
+        self.activeDownloadQueue = [ASINetworkQueue queue];
         
-        activeDownloadQueue.delegate                 = self;
-        activeDownloadQueue.downloadProgressDelegate = self;
+        self.activeDownloadQueue.delegate                 = self;
+        self.activeDownloadQueue.downloadProgressDelegate = self;
         
-        activeDownloadQueue.requestDidFinishSelector = @selector(requestFinished:);
-        activeDownloadQueue.requestDidFailSelector   = @selector(requestFailed:);
-        activeDownloadQueue.queueDidFinishSelector   = @selector(queueFinished:);
+        self.activeDownloadQueue.requestDidFinishSelector = @selector(requestFinished:);
+        self.activeDownloadQueue.requestDidFailSelector   = @selector(requestFailed:);
+        self.activeDownloadQueue.queueDidFinishSelector   = @selector(queueFinished:);
 
-        activeDownloadQueue.shouldCancelAllRequestsOnFailure = NO;
-        activeDownloadQueue.showAccurateProgress             = YES;
+        self.activeDownloadQueue.shouldCancelAllRequestsOnFailure = NO;
+        self.activeDownloadQueue.showAccurateProgress             = YES;
 
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:YES];
     }
@@ -134,9 +121,9 @@ static DSMapBoxDownloadManager *sharedManager;
         
         NSURL *downloadURL = [NSURL URLWithString:[info objectForKey:@"URL"]];        
         
-        NSMutableArray *allActiveURLs = [NSMutableArray arrayWithArray:[[activeDownloadQueue operations] valueForKeyPath:@"url"]];
+        NSMutableArray *allActiveURLs = [NSMutableArray arrayWithArray:[self.downloads valueForKeyPath:@"url"]];
         
-        [allActiveURLs addObjectsFromArray:[[activeDownloadQueue operations] valueForKeyPath:@"originalURL"]];
+        [allActiveURLs addObjectsFromArray:[self.downloads valueForKeyPath:@"originalURL"]];
         
         if ( ! [allActiveURLs containsObject:downloadURL])
         {
@@ -149,17 +136,15 @@ static DSMapBoxDownloadManager *sharedManager;
             
             request.userInfo = [NSDictionary dictionaryWithObject:[downloadURL lastPathComponent] forKey:@"name"];
             
-            [activeDownloadQueue addOperation:request];
+            [self.activeDownloadQueue addOperation:request];
             
-            [downloads addObject:request];
-
-            [activeDownloads addObject:request];
+            [self.downloads addObject:request];
         }
     }
     
-    if ([activeDownloadQueue operationCount])
+    if ([self.activeDownloadQueue operationCount])
     {
-        [activeDownloadQueue go];
+        [self.activeDownloadQueue go];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:YES]];
     }
@@ -175,13 +160,11 @@ static DSMapBoxDownloadManager *sharedManager;
     //
     NSLog(@"pausing %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
 
+    ASIHTTPRequest *newDownload = [[download copy] autorelease];
+
     [download clearDelegatesAndCancel];
 
-    ASIHTTPRequest *newDownload = [[download copy] autorelease];
-    
-    [downloads replaceObjectAtIndex:[downloads indexOfObject:download] withObject:newDownload];
-    
-    [activeDownloads removeObject:download];
+    [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:download] withObject:newDownload];
     
     [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
@@ -190,9 +173,8 @@ static DSMapBoxDownloadManager *sharedManager;
 {
     NSLog(@"resuming %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
    
-    [download startAsynchronous];
-    
-    [activeDownloads addObject:download];
+    if ( ! [self.activeDownloadQueue.operations containsObject:download])
+        [download startAsynchronous];
     
     [TestFlight passCheckpoint:@"resumed MBTiles download"];
 }
@@ -205,9 +187,7 @@ static DSMapBoxDownloadManager *sharedManager;
     
     [download removeTemporaryDownloadFile];
     
-    [activeDownloads removeObject:download];
-    
-    [downloads removeObject:download];
+    [self.downloads removeObject:download];
     
     for (NSString *path in [self pendingDownloads])
         if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[download.originalURL absoluteString]])
@@ -216,16 +196,11 @@ static DSMapBoxDownloadManager *sharedManager;
     [TestFlight passCheckpoint:@"cancelled MBTiles download"];
 }
 
-- (BOOL)downloadIsActive:(ASIHTTPRequest *)download
-{
-    return [activeDownloads containsObject:download];
-}
-
 #pragma mark -
 
 - (void)setProgress:(float)progress
 {
-    NSLog(@"%f of %qu", progress, activeDownloadQueue.totalBytesToDownload);
+    NSLog(@"%f of %qu", progress, self.activeDownloadQueue.totalBytesToDownload);
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification object:[NSNumber numberWithFloat:progress]];
 }
@@ -240,8 +215,7 @@ static DSMapBoxDownloadManager *sharedManager;
         if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[request.originalURL absoluteString]])
             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
 
-    [downloads removeObject:request];
-    [activeDownloads removeObject:request];
+    [self.downloads removeObject:request];
     
     [TestFlight passCheckpoint:@"completed MBTiles download"];
     
@@ -251,18 +225,20 @@ static DSMapBoxDownloadManager *sharedManager;
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
     NSLog(@"failed: %@", request.error);
-    
+
     [TestFlight passCheckpoint:@"failed MBTiles download"];
+
+    [self pauseDownload:request];    
 }
 
 - (void)queueFinished:(ASINetworkQueue *)queue
 {
-    NSLog(@"queue finished: %@", activeDownloadQueue);
+    NSLog(@"queue finished: %@", self.activeDownloadQueue);
     
-    [activeDownloadQueue release];
-    activeDownloadQueue = nil;
+    self.activeDownloadQueue = nil;
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
+    if ( ! [[self pendingDownloads] count])
+        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
 }
 
 @end

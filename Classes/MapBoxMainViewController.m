@@ -1702,7 +1702,7 @@ static BOOL infiniteZoomEnabled;
 
 - (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
 {
-    if ([popoverController isEqual:downloadsPopover] && ! [[DSMapBoxDownloadManager sharedManager] activeDownloadCount])
+    if ([popoverController isEqual:downloadsPopover] && ! [[[DSMapBoxDownloadManager sharedManager] downloads] count])
     {
         dispatch_delayed_ui_action(1.0, ^(void)
         {

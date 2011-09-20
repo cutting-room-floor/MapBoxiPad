@@ -18,13 +18,9 @@ static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownload
 
 @interface DSMapBoxDownloadManager : NSObject
 {
-    ASINetworkQueue *activeDownloadQueue;
-    NSMutableArray *downloads;
-    NSMutableArray *activeDownloads;
 }
 
-@property (nonatomic, readonly, retain) NSArray *downloads;
-@property (nonatomic, readonly, assign) NSInteger activeDownloadCount;
+@property (nonatomic, readonly, retain) NSMutableArray *downloads;
 
 + (id)sharedManager;
 
@@ -32,6 +28,5 @@ static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownload
 - (void)pauseDownload:(ASIHTTPRequest *)download;
 - (void)resumeDownload:(ASIHTTPRequest *)download;
 - (void)cancelDownload:(ASIHTTPRequest *)download;
-- (BOOL)downloadIsActive:(ASIHTTPRequest *)download;
 
 @end

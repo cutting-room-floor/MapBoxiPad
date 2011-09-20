@@ -10,7 +10,6 @@
 
 @interface DSMapBoxDownloadViewController : UITableViewController
 {
-    NSArray *downloads;
 }
 
 @end

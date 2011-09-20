@@ -47,8 +47,6 @@
     for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++)
         [[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]] release];
     
-    [downloads release];
-    
     [super dealloc];
 }
 
@@ -56,11 +54,6 @@
 
 - (void)reloadTableView
 {
-    // grab this internally so we're consistent across all methods
-    //
-    [downloads release];
-    downloads = [[NSArray arrayWithArray:((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads] retain];
-    
     [self.tableView reloadData];
     
     self.contentSizeForViewInPopover = CGSizeMake(self.contentSizeForViewInPopover.width, 200);
@@ -110,12 +103,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [downloads count];
+    return [((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[downloads objectAtIndex:indexPath.row];
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads objectAtIndex:indexPath.row];
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxDownloadTableViewCell" owner:self options:nil];
     
@@ -133,7 +126,7 @@
     
     [request updateDownloadProgress];
     
-    cell.isPaused = ! [[DSMapBoxDownloadManager sharedManager] downloadIsActive:request];
+    cell.isPaused = ! request.inProgress;
     
     return (UITableViewCell *)cell;
 }
@@ -145,9 +138,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[downloads objectAtIndex:indexPath.row];
+    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
     
-    [[DSMapBoxDownloadManager sharedManager] cancelDownload:request];
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[manager.downloads objectAtIndex:indexPath.row];
+    
+    [manager cancelDownload:request];
     
     [self reloadTableView];
 }
@@ -161,15 +156,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
+    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[downloads objectAtIndex:indexPath.row];
+    ASIHTTPRequest *request = (ASIHTTPRequest *)[manager.downloads objectAtIndex:indexPath.row];
 
     if (request.inProgress)
-        [[DSMapBoxDownloadManager sharedManager] pauseDownload:request];
+        [manager pauseDownload:request];
 
     else
-        [[DSMapBoxDownloadManager sharedManager] resumeDownload:request];
+        [manager resumeDownload:request];
     
     [self reloadTableView];
 }
