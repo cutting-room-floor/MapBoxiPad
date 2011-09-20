@@ -27,7 +27,8 @@
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate,
-                                                        UIWebViewDelegate>
+                                                        UIWebViewDelegate,
+                                                        UIPopoverControllerDelegate>
 {
     IBOutlet DSMapView *mapView;
     IBOutlet UILabel *attributionLabel;
@@ -36,7 +37,9 @@
     IBOutlet UIBarButtonItem *clusteringButton;
     IBOutlet UIWebView *legendView;
     IBOutlet UIButton *watermarkButton;
+    IBOutlet UIBarButtonItem *downloadsButton;
     UIPopoverController *layersPopover;
+    UIPopoverController *downloadsPopover;
     DSMapBoxDataOverlayManager *dataOverlayManager;
     DSMapBoxLayerManager *layerManager;
     CLLocationCoordinate2D postRotationMapCenter;
@@ -62,6 +65,7 @@
 - (IBAction)tappedHelpButton:(id)sender;
 - (IBAction)tappedShareButton:(id)sender;
 - (IBAction)tappedLegendButton:(id)sender;
+- (IBAction)tappedDownloadsButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openGeoJSONFile:(NSURL *)fileURL;

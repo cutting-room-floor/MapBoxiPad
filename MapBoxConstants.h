@@ -8,6 +8,8 @@
 #define kTileStreamMapAPIPath      @"/api/v1/Map"
 #define kTileStreamFolderName      @"Online Layers"
 #define kTestFlightTeamToken       @"e801c1913c6812d34c0c7764f6bf406a_OTIwOA"
+#define kDownloadsFolderName       @"Downloads"
+#define kSupportedFileExtensions   [NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil]
 #define kMapBoxBlue                [UIColor colorWithRed:0.116 green:0.550 blue:0.670 alpha:1.000]
 #define kStartingLat               14.37292766571045f
 #define kStartingLon              -16.428955078125

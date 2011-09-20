@@ -17,6 +17,7 @@
 
 #import "DSMapBoxLegacyMigrationManager.h"
 #import "DSMapBoxAlertView.h"
+#import "DSMapBoxDownloadManager.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -26,7 +27,6 @@
 
 @synthesize window;
 @synthesize viewController;
-@synthesize openingExternalFile;
 
 - (void)dealloc
 {
@@ -87,18 +87,17 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunDataPreloaded"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    
-    if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
-    {
-        // Note that we are opening a file so that application:openURL:sourceApplication:annotation:
-        // doesn't also get called on 4.2+ for this file.
-        //
-        self.openingExternalFile = YES;
 
-        return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
-    }
-    
-	return YES;
+    // if launched via URL, make sure we support it
+    //
+    if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] && ! [kSupportedFileExtensions containsObject:[[[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey] pathExtension] lowercaseString]])
+        return NO;
+
+    // kick off old downloads
+    //
+    [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
+
+    return YES;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -109,10 +108,6 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [viewController saveState:self];
-    
-    // For 4.2+, mark that we are no longer processing an external file.
-    //
-    self.openingExternalFile = NO;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -144,20 +139,15 @@
     // check pasteboard for supported URLs
     //
     [viewController checkPasteboardForURL];
+    
+    // resume downloads
+    //
+    [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ( ! self.openingExternalFile)
-    {
-        // For 4.2+, mark that we've already got this file. This shouldn't be necessary, but why chance it.
-        //
-        self.openingExternalFile = YES;
-
-        return [self openExternalURL:url];
-    }
-    
-    return YES;
+    return [self openExternalURL:url];
 }
 
 #pragma mark -
@@ -186,13 +176,30 @@
                                                                                                         range:NSMakeRange(0, 10)]];
         
         [TestFlight passCheckpoint:@"opened mbhttp: URL"];
-    }    
+    }
     
     // download external sources first to prepare for opening locally
     //
     if ( ! [externalURL isFileURL])
     {
-        // we'll do this in the background to avoid blocking
+        // handle MBTiles files in download queue
+        //
+        if ([[[externalURL pathExtension] lowercaseString] isEqualToString:@"mbtiles"])
+        {
+            NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], 
+                                                                                       kDownloadsFolderName,
+                                                                                       [[NSProcessInfo processInfo] globallyUniqueString]];
+
+            NSDictionary *downloadStubContents = [NSDictionary dictionaryWithObject:[externalURL absoluteString] forKey:@"URL"];
+
+            BOOL success = [downloadStubContents writeToFile:downloadStubFile atomically:NO];
+
+            [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
+
+            return success;
+        }
+        
+        // otherwise, download ourselves in the background to avoid blocking
         //
         __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:externalURL];
         

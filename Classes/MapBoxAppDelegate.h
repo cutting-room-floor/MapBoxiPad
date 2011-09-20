@@ -15,12 +15,10 @@
 {
     DSFingerTipWindow *window;
     MapBoxMainViewController *viewController;
-    BOOL openingExternalFile;
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
-@property (nonatomic, assign) BOOL openingExternalFile;
 
 - (BOOL)openExternalURL:(NSURL *)externalURL;
 

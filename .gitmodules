@@ -19,3 +19,6 @@
 [submodule "Externals/ASIHTTPRequest"]
 	path = Externals/ASIHTTPRequest
 	url = https://github.com/pokeb/asi-http-request.git
+[submodule "Externals/SSToolkit"]
+	path = Externals/SSToolkit
+	url = https://github.com/samsoffes/sstoolkit.git

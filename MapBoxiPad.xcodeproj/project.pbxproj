@@ -138,6 +138,12 @@
 		DD75BB0312E0E1BE0058258E /* bundled_tileset_md5sum.txt in Resources */ = {isa = PBXBuildFile; fileRef = DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */; };
 		DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */; };
 		DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD7E1C6A140D97DD008F52C6 /* Settings.bundle */; };
+		DD820DC313FAA2DF00685B10 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD820DC213FAA2DF00685B10 /* DSMapBoxDownloadManager.m */; };
+		DD820DC613FAC03C00685B10 /* DSMapBoxDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD820DC513FAC03C00685B10 /* DSMapBoxDownloadViewController.m */; };
+		DD820DF813FAEFC000685B10 /* SSDrawingUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DD820DF513FAEFC000685B10 /* SSDrawingUtilities.m */; };
+		DD820DF913FAEFC000685B10 /* SSPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD820DF713FAEFC000685B10 /* SSPieProgressView.m */; };
+		DD820DFB13FAF05600685B10 /* DSMapBoxDownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD820DFA13FAF05600685B10 /* DSMapBoxDownloadTableViewCell.xib */; };
+		DD820DFE13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD820DFD13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.m */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92F641121C9B84008CF88F /* MessageUI.framework */; };
 		DD9830A11378CEE00071D5AD /* caution.png in Resources */ = {isa = PBXBuildFile; fileRef = DD9830A01378CEE00071D5AD /* caution.png */; };
@@ -171,6 +177,15 @@
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
+		DDC158EC13FB3A380034AC8A /* downloads0.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E313FB3A380034AC8A /* downloads0.png */; };
+		DDC158ED13FB3A380034AC8A /* downloads1.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E413FB3A380034AC8A /* downloads1.png */; };
+		DDC158EE13FB3A380034AC8A /* downloads2.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E513FB3A380034AC8A /* downloads2.png */; };
+		DDC158EF13FB3A380034AC8A /* downloads3.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E613FB3A380034AC8A /* downloads3.png */; };
+		DDC158F013FB3A380034AC8A /* downloads4.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E713FB3A380034AC8A /* downloads4.png */; };
+		DDC158F113FB3A380034AC8A /* downloads5.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E813FB3A380034AC8A /* downloads5.png */; };
+		DDC158F213FB3A380034AC8A /* downloads6.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158E913FB3A380034AC8A /* downloads6.png */; };
+		DDC158F313FB3A380034AC8A /* downloads7.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158EA13FB3A380034AC8A /* downloads7.png */; };
+		DDC158F413FB3A380034AC8A /* downloads8.png in Resources */ = {isa = PBXBuildFile; fileRef = DDC158EB13FB3A380034AC8A /* downloads8.png */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSTiledLayerMapView.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
@@ -459,6 +474,17 @@
 		DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlertView.h; sourceTree = "<group>"; };
 		DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlertView.m; sourceTree = "<group>"; };
 		DD7E1C6A140D97DD008F52C6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		DD820DC113FAA2DF00685B10 /* DSMapBoxDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadManager.h; sourceTree = "<group>"; };
+		DD820DC213FAA2DF00685B10 /* DSMapBoxDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadManager.m; sourceTree = "<group>"; };
+		DD820DC413FAC03C00685B10 /* DSMapBoxDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadViewController.h; sourceTree = "<group>"; };
+		DD820DC513FAC03C00685B10 /* DSMapBoxDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadViewController.m; sourceTree = "<group>"; };
+		DD820DF413FAEFC000685B10 /* SSDrawingUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSDrawingUtilities.h; path = Externals/SSToolkit/SSToolkit/SSDrawingUtilities.h; sourceTree = "<group>"; };
+		DD820DF513FAEFC000685B10 /* SSDrawingUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSDrawingUtilities.m; path = Externals/SSToolkit/SSToolkit/SSDrawingUtilities.m; sourceTree = "<group>"; };
+		DD820DF613FAEFC000685B10 /* SSPieProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSPieProgressView.h; path = Externals/SSToolkit/SSToolkit/SSPieProgressView.h; sourceTree = "<group>"; };
+		DD820DF713FAEFC000685B10 /* SSPieProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSPieProgressView.m; path = Externals/SSToolkit/SSToolkit/SSPieProgressView.m; sourceTree = "<group>"; };
+		DD820DFA13FAF05600685B10 /* DSMapBoxDownloadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxDownloadTableViewCell.xib; sourceTree = "<group>"; };
+		DD820DFC13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadTableViewCell.h; sourceTree = "<group>"; };
+		DD820DFD13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadTableViewCell.m; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD92F641121C9B84008CF88F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -507,6 +533,15 @@
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
 		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
+		DDC158E313FB3A380034AC8A /* downloads0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads0.png; sourceTree = "<group>"; };
+		DDC158E413FB3A380034AC8A /* downloads1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads1.png; sourceTree = "<group>"; };
+		DDC158E513FB3A380034AC8A /* downloads2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads2.png; sourceTree = "<group>"; };
+		DDC158E613FB3A380034AC8A /* downloads3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads3.png; sourceTree = "<group>"; };
+		DDC158E713FB3A380034AC8A /* downloads4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads4.png; sourceTree = "<group>"; };
+		DDC158E813FB3A380034AC8A /* downloads5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads5.png; sourceTree = "<group>"; };
+		DDC158E913FB3A380034AC8A /* downloads6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads6.png; sourceTree = "<group>"; };
+		DDC158EA13FB3A380034AC8A /* downloads7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads7.png; sourceTree = "<group>"; };
+		DDC158EB13FB3A380034AC8A /* downloads8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads8.png; sourceTree = "<group>"; };
 		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSTiledLayerMapView.h; sourceTree = "<group>"; };
@@ -955,6 +990,7 @@
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
+				DD820DE813FAEE6200685B10 /* SSToolkit */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
@@ -1048,6 +1084,15 @@
 				DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */,
 				DDDA3C6313D75EEC00DDEA58 /* help.png */,
 				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
+				DDC158E313FB3A380034AC8A /* downloads0.png */,
+				DDC158E413FB3A380034AC8A /* downloads1.png */,
+				DDC158E513FB3A380034AC8A /* downloads2.png */,
+				DDC158E613FB3A380034AC8A /* downloads3.png */,
+				DDC158E713FB3A380034AC8A /* downloads4.png */,
+				DDC158E813FB3A380034AC8A /* downloads5.png */,
+				DDC158E913FB3A380034AC8A /* downloads6.png */,
+				DDC158EA13FB3A380034AC8A /* downloads7.png */,
+				DDC158EB13FB3A380034AC8A /* downloads8.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1093,6 +1138,32 @@
 				DD0F616311ED5ABC0050174D /* FMResultSet.m */,
 			);
 			name = FMDB;
+			sourceTree = "<group>";
+		};
+		DD820DBF13F9E47E00685B10 /* Layer Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				DD820DC113FAA2DF00685B10 /* DSMapBoxDownloadManager.h */,
+				DD820DC213FAA2DF00685B10 /* DSMapBoxDownloadManager.m */,
+				DD820DC413FAC03C00685B10 /* DSMapBoxDownloadViewController.h */,
+				DD820DC513FAC03C00685B10 /* DSMapBoxDownloadViewController.m */,
+				DD820DFC13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.h */,
+				DD820DFD13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.m */,
+				DD820DFA13FAF05600685B10 /* DSMapBoxDownloadTableViewCell.xib */,
+			);
+			name = "Layer Downloads";
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DD820DE813FAEE6200685B10 /* SSToolkit */ = {
+			isa = PBXGroup;
+			children = (
+				DD820DF413FAEFC000685B10 /* SSDrawingUtilities.h */,
+				DD820DF513FAEFC000685B10 /* SSDrawingUtilities.m */,
+				DD820DF613FAEFC000685B10 /* SSPieProgressView.h */,
+				DD820DF713FAEFC000685B10 /* SSPieProgressView.m */,
+			);
+			name = SSToolkit;
 			sourceTree = "<group>";
 		};
 		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
@@ -1177,6 +1248,7 @@
 				080E96DDFE201D6D7F000001 /* Main */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDEF900F13831D7A00FF148C /* Layer Addition */,
+				DD820DBF13F9E47E00685B10 /* Layer Downloads */,
 				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
 				DDBA88E21210E71000E5B572 /* Document Management */,
@@ -1464,6 +1536,16 @@
 				DD506C3C13FDAC4F008EB626 /* geojson_layer.png in Resources */,
 				DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */,
 				DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */,
+				DD820DFB13FAF05600685B10 /* DSMapBoxDownloadTableViewCell.xib in Resources */,
+				DDC158EC13FB3A380034AC8A /* downloads0.png in Resources */,
+				DDC158ED13FB3A380034AC8A /* downloads1.png in Resources */,
+				DDC158EE13FB3A380034AC8A /* downloads2.png in Resources */,
+				DDC158EF13FB3A380034AC8A /* downloads3.png in Resources */,
+				DDC158F013FB3A380034AC8A /* downloads4.png in Resources */,
+				DDC158F113FB3A380034AC8A /* downloads5.png in Resources */,
+				DDC158F213FB3A380034AC8A /* downloads6.png in Resources */,
+				DDC158F313FB3A380034AC8A /* downloads7.png in Resources */,
+				DDC158F413FB3A380034AC8A /* downloads8.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1618,6 +1700,11 @@
 				DDCD58A61406D4FB00F59E0D /* RMInteractiveSource.m in Sources */,
 				DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */,
 				DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */,
+				DD820DC313FAA2DF00685B10 /* DSMapBoxDownloadManager.m in Sources */,
+				DD820DC613FAC03C00685B10 /* DSMapBoxDownloadViewController.m in Sources */,
+				DD820DF813FAEFC000685B10 /* SSDrawingUtilities.m in Sources */,
+				DD820DF913FAEFC000685B10 /* SSPieProgressView.m in Sources */,
+				DD820DFE13FAF1F100685B10 /* DSMapBoxDownloadTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

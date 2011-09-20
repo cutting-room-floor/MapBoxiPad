@@ -27,6 +27,9 @@
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
+#import "DSMapBoxDownloadManager.h"
+#import "DSMapBoxDownloadViewController.h"
+#import "DSMapBoxNotificationView.h"
 
 #import "UIApplication_Additions.h"
 #import "DSSound.h"
@@ -118,10 +121,11 @@ static BOOL infiniteZoomEnabled;
 
     mapView.contents.zoom = kStartingZoom;
 
-    // hide cluster button to start
+    // hide cluster & download buttons to start
     //
     [toolbar setItems:[[NSMutableArray arrayWithArray:toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", clusteringButton]] animated:NO];
-
+    [toolbar setItems:[[NSMutableArray arrayWithArray:toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", downloadsButton]]  animated:NO];
+    
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
@@ -175,6 +179,27 @@ static BOOL infiniteZoomEnabled;
                                                  name:DSMapBoxLayersAdded
                                                object:nil];
     
+    // watch for download queue
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadQueueChanged:)
+                                                 name:DSMapBoxDownloadQueueNotification
+                                               object:nil];
+    
+    // watch for download progress
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadProgressChanged:)
+                                                 name:DSMapBoxDownloadProgressNotification
+                                               object:nil];
+
+    // watch for download completion
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadCompleted:)
+                                                 name:DSMapBoxDownloadCompleteNotification
+                                               object:nil];
+
     // restore app state
     //
     [self restoreState:self];
@@ -256,10 +281,13 @@ static BOOL infiniteZoomEnabled;
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached       object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -481,6 +509,9 @@ static BOOL infiniteZoomEnabled;
     if (shareActionSheet)
         [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
     
+    if (downloadsPopover && downloadsPopover.popoverVisible)
+        [downloadsPopover dismissPopoverAnimated:NO];
+
     if ( ! documentsActionSheet || ! documentsActionSheet.visible)
     {
         documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -591,6 +622,9 @@ static BOOL infiniteZoomEnabled;
     if (shareActionSheet)
         [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
     
+    if (downloadsPopover && downloadsPopover.popoverVisible)
+        [downloadsPopover dismissPopoverAnimated:NO];
+
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:YES];
     
@@ -631,6 +665,9 @@ static BOOL infiniteZoomEnabled;
     
     if (layersPopover && layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:NO];
+    
+    if (downloadsPopover && downloadsPopover.popoverVisible)
+        [downloadsPopover dismissPopoverAnimated:NO];
     
     if (documentsActionSheet)
         [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
@@ -703,10 +740,38 @@ static BOOL infiniteZoomEnabled;
     }
 }
 
+- (IBAction)tappedDownloadsButton:(id)sender
+{
+    if (layersPopover && layersPopover.popoverVisible)
+        [layersPopover dismissPopoverAnimated:NO];
+    
+    if (downloadsPopover.popoverVisible)
+        [downloadsPopover dismissPopoverAnimated:YES];
+          
+    else
+    {
+        if ( ! downloadsPopover)
+        {
+            DSMapBoxLayerController *downloadsController = [[[DSMapBoxDownloadViewController alloc] initWithNibName:nil bundle:nil] autorelease];
+          
+            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:downloadsController] autorelease];
+            
+            downloadsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+          
+            downloadsPopover.passthroughViews = nil;
+            downloadsPopover.delegate = self;
+        }
+
+        downloadsPopover.popoverContentSize = downloadsPopover.contentViewController.contentSizeForViewInPopover;
+
+        [downloadsPopover presentPopoverFromBarButtonItem:downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    }
+}
+
 - (void)setClusteringOn:(BOOL)clusteringOn
 {
     UIButton *button;
-
+    
     if ( ! clusteringButton.customView)
     {
         button = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -718,12 +783,79 @@ static BOOL infiniteZoomEnabled;
     
     else
         button = ((UIButton *)clusteringButton.customView);
-
+    
     UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
-
+    
     button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
-
+    
     [button setImage:stateImage forState:UIControlStateNormal];
+}
+
+#pragma mark -
+
+- (void)downloadQueueChanged:(NSNotification *)notification
+{
+    BOOL queueActive = [((NSNumber *)[notification object]) boolValue];
+    
+    if (queueActive && ! [toolbar.items containsObject:downloadsButton])
+    {
+        UIButton *button = (UIButton *)downloadsButton.customView;
+        
+        if ( ! button)
+        {
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [button addTarget:self action:@selector(tappedDownloadsButton:) forControlEvents:UIControlEventTouchUpInside];
+            
+            downloadsButton.customView = button;
+        }
+
+        UIImage *stateImage = [UIImage imageNamed:@"downloads0.png"];
+        
+        button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+        
+        [button setImage:stateImage forState:UIControlStateNormal];
+        
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+        
+        if ([newItems containsObject:clusteringButton])
+            [newItems insertObject:downloadsButton atIndex:[newItems indexOfObject:clusteringButton]];
+        
+        else
+            [newItems insertObject:downloadsButton atIndex:[newItems indexOfObject:layersButton]];
+            
+        [toolbar setItems:newItems animated:YES];
+    }
+    else if ( ! queueActive && [toolbar.items containsObject:downloadsButton] && ! downloadsPopover.popoverVisible)
+    {
+        // Don't remove the downloads button when the popover is attached.
+        // That's taken care of by the popover delegate call when it closes.
+        //
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+        
+        [newItems removeObject:downloadsButton];
+        
+        [toolbar setItems:newItems animated:YES];
+    }
+}
+
+- (void)downloadProgressChanged:(NSNotification *)notification
+{
+    float progress = [[notification object] floatValue];
+    
+    int index = round(8 * progress);
+    
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
+    
+    if ( ! [[((UIButton *)downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
+        [((UIButton *)downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+}
+
+- (void)downloadCompleted:(NSNotification *)notification
+{
+    ASIHTTPRequest *download = (ASIHTTPRequest *)[notification object];
+    
+    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [[download userInfo] objectForKey:@"name"]]];
 }
 
 #pragma mark -
@@ -1564,6 +1696,23 @@ static BOOL infiniteZoomEnabled;
     [UIView commitAnimations];
     
     [TestFlight passCheckpoint:@"MBTiles legend loaded"];
+}
+
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if ([popoverController isEqual:downloadsPopover] && ! [[DSMapBoxDownloadManager sharedManager] activeDownloadCount])
+    {
+        dispatch_delayed_ui_action(1.0, ^(void)
+        {
+            NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+            
+            [newItems removeObject:downloadsButton];
+            
+            [toolbar setItems:newItems animated:YES];
+        });
+    }
 }
 
 #pragma mark -
