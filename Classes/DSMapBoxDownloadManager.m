@@ -228,6 +228,10 @@ static DSMapBoxDownloadManager *sharedManager;
 {
     NSLog(@"finished: %@", request);
     
+    for (NSString *path in [self pendingDownloads])
+        if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[request.originalURL absoluteString]])
+            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+
     [downloads removeObject:request];
     [activeDownloads removeObject:request];
     
