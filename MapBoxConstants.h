@@ -7,7 +7,7 @@
 //
 #define KSupportEmail              @"ipad@mapbox.com"
 #define kSupportURL                @"http://support.mapbox.com/discussions/mapbox-for-ipad#new_topic_form"
-#define kReleaseNotesURL           @"http://mapbox.com/ipad#notes"
+#define kReleaseNotesURL           @"http://mapbox.com/ipad/release-notes/"
 #define kTileStreamHostingURL      @"http://tiles.mapbox.com"
 #define kTileStreamDefaultAccount  @"mapbox"
 #define kTileStreamAlbumAPIPath    @"/api/v1/Album"
