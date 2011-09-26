@@ -243,8 +243,6 @@
             frontView.transform = CGAffineTransformMakeRotation(2 * M_PI * rotation / 360);
             
             [UIView commitAnimations];
-            
-            [TestFlight passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
         }
         else
         {
@@ -320,8 +318,6 @@
                 ((UIView *)[self.subviews objectAtIndex:3]).center = CGPointMake(myCenter.x + distance, myCenter.y + distance);
 
                 [UIView commitAnimations];
-                
-                [TestFlight passCheckpoint:@"used pinch gesture on TileStream account to peek"];
             }
         }
     }
@@ -340,6 +336,8 @@
             frontView.transform = CGAffineTransformMakeRotation(0);
             
             [UIView commitAnimations];
+            
+            [TestFlight passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
         }
         else
         {
@@ -387,6 +385,8 @@
                 label.alpha = 1.0;
 
                 [UIView commitAnimations];
+                
+                [TestFlight passCheckpoint:@"used pinch gesture on TileStream account to peek"];
             }
         }
     }
