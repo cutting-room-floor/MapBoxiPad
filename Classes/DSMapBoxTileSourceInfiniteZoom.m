@@ -169,6 +169,9 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
             return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
     }
     
+    if ( ! [self.infoDictionary objectForKey:@"tileURL"])
+        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+        
     return [self tileImageOriginal:tile];
 }
 
