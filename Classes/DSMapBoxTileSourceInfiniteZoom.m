@@ -91,8 +91,14 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
 {
     // if out of zoom bounds, return a default image
     //
-    if ([self layerType] == RMMBTilesLayerTypeBaselayer && (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative]))
-        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+    if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
+    {
+        if ([self layerType] == RMMBTilesLayerTypeBaselayer)
+            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+
+        else
+            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
+    }
     
     // else return the real image
     //
@@ -147,13 +153,21 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
 
 - (RMTileImage *)tileImageOriginal:(RMTile)tile
 {
+    // dummy method that gets pointed at native (super) tileImage:
+    //
     return nil;
 }
 
 - (RMTileImage *)tileImageInfinite:(RMTile)tile
 {
-    if ([self layerType] == RMTileStreamLayerTypeBaselayer && (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative]))
-        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+    if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
+    {
+        if ([self layerType] == RMTileStreamLayerTypeBaselayer)
+            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
+
+        else
+            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
+    }
     
     return [self tileImageOriginal:tile];
 }
