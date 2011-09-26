@@ -16,8 +16,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
-
 #import "UIApplication_Additions.h"
 
 @implementation DSMapBoxLayerAddAccountView

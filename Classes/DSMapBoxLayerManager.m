@@ -23,8 +23,6 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
-#import "TestFlight.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)

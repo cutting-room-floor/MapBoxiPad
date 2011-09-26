@@ -12,8 +12,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
-
 @implementation DSMapBoxHelpController
 
 @synthesize moviePlayButton;

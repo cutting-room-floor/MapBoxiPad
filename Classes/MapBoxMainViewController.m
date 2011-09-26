@@ -47,8 +47,6 @@
 
 #import "Reachability.h"
 
-#import "TestFlight.h"
-
 #import "UIImage+Alpha.h"
 
 static BOOL infiniteZoomEnabled;

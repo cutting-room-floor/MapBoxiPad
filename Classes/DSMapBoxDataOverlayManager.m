@@ -45,8 +45,6 @@
 
 #import "UIImage-Extensions.h"
 
-#import "TestFlight.h"
-
 #define kDSPlacemarkAlpha 0.9f
 
 @implementation DSMapBoxDataOverlayManager

@@ -18,8 +18,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
-
 @interface DSMapBoxLayerAddCustomServerController (DSMapBoxLayerAddTypeControllerPrivate)
 
 - (void)setRecentServersHidden:(BOOL)flag;

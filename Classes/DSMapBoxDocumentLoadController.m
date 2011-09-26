@@ -10,8 +10,6 @@
 
 #import "UIApplication_Additions.h"
 
-#import "TestFlight.h"
-
 @interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
 
 - (void)reload;

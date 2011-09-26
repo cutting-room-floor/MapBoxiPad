@@ -17,8 +17,6 @@
 #import "DSMapBoxDataOverlayManager.h"
 #import "MapBoxConstants.h"
 
-#import "TestFlight.h"
-
 @implementation DSMapBoxLayerAddPreviewController
 
 @synthesize info;

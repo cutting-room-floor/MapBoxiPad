@@ -25,8 +25,6 @@
 
 #import "Reachability.h"
 
-#import "TestFlight.h"
-
 @interface DSMapBoxLayerController (DSMapBoxLayerControllerPrivate)
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;

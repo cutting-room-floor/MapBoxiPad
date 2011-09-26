@@ -20,8 +20,6 @@
 
 #import "ASIHTTPRequest.h"
 
-#import "TestFlight.h"
-
 @implementation MapBoxAppDelegate
 
 @synthesize window;
@@ -42,9 +40,7 @@
 {
     // begin TestFlight tracking
     //
-#ifndef DEBUG
     [TestFlight takeOff:kTestFlightTeamToken];
-#endif
     
     // legacy data migration
     //

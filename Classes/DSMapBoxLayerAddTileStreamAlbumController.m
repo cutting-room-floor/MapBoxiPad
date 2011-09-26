@@ -18,8 +18,6 @@
 
 #import "JSONKit.h"
 
-#import "TestFlight.h"
-
 @implementation DSMapBoxLayerAddTileStreamAlbumController
 
 - (void)viewDidLoad

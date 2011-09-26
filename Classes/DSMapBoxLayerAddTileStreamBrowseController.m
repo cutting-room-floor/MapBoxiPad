@@ -23,8 +23,6 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "TestFlight.h"
-
 #import "UIApplication_Additions.h"
 
 NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";

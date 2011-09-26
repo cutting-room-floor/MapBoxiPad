@@ -10,8 +10,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
-
 @implementation DSMapBoxDocumentSaveController
 
 @synthesize snapshot;

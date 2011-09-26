@@ -14,8 +14,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
-
 @implementation DSMapBoxLayerAddTileView
 
 @synthesize delegate;
