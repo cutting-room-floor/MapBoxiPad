@@ -12,7 +12,21 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxAlphaModalNavigationController ()
+
+@property (nonatomic, retain) UIView *baseView;
+@property (nonatomic, retain) UIImageView *backgroundImageView;
+@property (nonatomic, retain) UITapGestureRecognizer *outsideTapRecognizer;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxAlphaModalNavigationController
+
+@synthesize baseView;
+@synthesize backgroundImageView;
+@synthesize outsideTapRecognizer;
 
 - (void)viewDidLoad
 {
@@ -23,15 +37,15 @@
 
     // image background with poor man's blur
     //
-    backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)] autorelease];
+    self.backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)] autorelease];
     
-    backgroundImageView.contentMode = UIViewContentModeBottom;
-    backgroundImageView.alpha       = 0.5;
+    self.backgroundImageView.contentMode = UIViewContentModeBottom;
+    self.backgroundImageView.alpha       = 0.5;
     
-    [[backgroundImageView layer] setRasterizationScale:0.5];
-    [[backgroundImageView layer] setShouldRasterize:YES];
+    [[self.backgroundImageView layer] setRasterizationScale:0.5];
+    [[self.backgroundImageView layer] setShouldRasterize:YES];
     
-    [self.view insertSubview:backgroundImageView atIndex:0];
+    [self.view insertSubview:self.backgroundImageView atIndex:0];
     
     // watch for keyboard show/hide to adjust background image in landscape
     //
@@ -50,17 +64,17 @@
 {
     [super viewWillAppear:animated];
     
-    if ( ! backgroundImageView.image && self.modalPresentationStyle == UIModalPresentationFormSheet)
+    if ( ! self.backgroundImageView.image && self.modalPresentationStyle == UIModalPresentationFormSheet)
     {
         // Not totally in love with manually accessing the main app view,
         // but how else could we do this? Also note that we don't retain
         // the view, since, assuming we are modal, it is below us and 
         // isn't going anywhere.
         //
-        baseView = [[UIApplication sharedApplication].keyWindow.subviews objectAtIndex:0];
+        self.baseView = [[UIApplication sharedApplication].keyWindow.subviews objectAtIndex:0];
             
-        BOOL viewIsFullscreen = ((baseView.bounds.size.width >= 748 && baseView.bounds.size.width <= 768 && baseView.bounds.size.height >= 1004 && baseView.bounds.size.height <= 1024) ||
-                                 (baseView.bounds.size.height >= 748 && baseView.bounds.size.height <= 768 && baseView.bounds.size.width >= 1004 && baseView.bounds.size.height <= 1024));
+        BOOL viewIsFullscreen = ((self.baseView.bounds.size.width >= 748 && self.baseView.bounds.size.width <= 768 && self.baseView.bounds.size.height >= 1004 && self.baseView.bounds.size.height <= 1024) ||
+                                 (self.baseView.bounds.size.height >= 748 && self.baseView.bounds.size.height <= 768 && self.baseView.bounds.size.width >= 1004 && self.baseView.bounds.size.height <= 1024));
         
         NSAssert(viewIsFullscreen, @"main app view must be full screen for iPad");
         
@@ -68,20 +82,20 @@
        //
        // start with a vertical slice of the middle, slightly taller than modal
        //
-       UIGraphicsBeginImageContext(CGSizeMake(540, baseView.bounds.size.height - ((baseView.bounds.size.height - 620) / 2)));
+       UIGraphicsBeginImageContext(CGSizeMake(540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
        
        // translate & clip layer before rendering for performance
        //
-       CGContextTranslateCTM(UIGraphicsGetCurrentContext(), (baseView.bounds.size.width - 540) / -2, 0);
-       CGContextClipToRect(UIGraphicsGetCurrentContext(), CGRectMake((baseView.bounds.size.width - 540) / 2, 0, 540, baseView.bounds.size.height - ((baseView.bounds.size.height - 620) / 2)));
+       CGContextTranslateCTM(UIGraphicsGetCurrentContext(), (self.baseView.bounds.size.width - 540) / -2, 0);
+       CGContextClipToRect(UIGraphicsGetCurrentContext(), CGRectMake((self.baseView.bounds.size.width - 540) / 2, 0, 540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
        
        // render to context
        //
-       [baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
+       [self.baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
        
        // set image from it
        //
-       backgroundImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+       self.backgroundImageView.image = UIGraphicsGetImageFromCurrentImageContext();
 
        // clean up
        //
@@ -89,8 +103,40 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.modalPresentationStyle == UIModalPresentationFormSheet)
+    {
+        self.outsideTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        
+        [self.outsideTapRecognizer setNumberOfTapsRequired:1];
+        
+        self.outsideTapRecognizer.cancelsTouchesInView = NO;
+        
+        [self.view.window addGestureRecognizer:self.outsideTapRecognizer];
+    }
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+    if (self.outsideTapRecognizer)
+    {
+        [self.view.window removeGestureRecognizer:self.outsideTapRecognizer];
+    
+        [self.outsideTapRecognizer removeTarget:self action:@selector(handleGesture:)];
+    }
+}
+
 - (void)dealloc
 {
+    [baseView release];
+    [backgroundImageView release];
+    [outsideTapRecognizer release];
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:self.view.window];
     
@@ -109,11 +155,24 @@
 
 #pragma mark -
 
+- (void)handleGesture:(UITapGestureRecognizer *)recognizer
+{
+    if (recognizer.state == UIGestureRecognizerStateEnded)
+    {
+        CGPoint location = [recognizer locationInView:nil];
+        
+        if ( ! [self.view pointInside:[self.view convertPoint:location fromView:self.view.window] withEvent:nil]) 
+            [self dismissModalViewControllerAnimated:YES];
+    }
+}
+
+#pragma mark -
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
-        CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
+        CGFloat delta = (self.baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
         
         [UIView beginAnimations:nil context:nil];
         
@@ -122,7 +181,7 @@
         else 
             [UIView setAnimationDuration:0.25];
         
-        backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y + delta);
+        self.backgroundImageView.center = CGPointMake(self.backgroundImageView.center.x, self.backgroundImageView.center.y + delta);
         
         [UIView commitAnimations];
     }
@@ -132,7 +191,7 @@
 {
     if (UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation))
     {
-        CGFloat delta = (baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
+        CGFloat delta = (self.baseView.bounds.size.height / 2) - (self.view.bounds.size.height / 2);
         
         [UIView beginAnimations:nil context:nil];
 
@@ -141,7 +200,7 @@
         else 
             [UIView setAnimationDuration:0.25];
 
-        backgroundImageView.center = CGPointMake(backgroundImageView.center.x, backgroundImageView.center.y - delta);
+        self.backgroundImageView.center = CGPointMake(self.backgroundImageView.center.x, self.backgroundImageView.center.y - delta);
         
         [UIView commitAnimations];
     }
