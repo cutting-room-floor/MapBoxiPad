@@ -26,7 +26,93 @@
         
         if ([[json objectForKey:@"type"] isEqual:@"FeatureCollection"] && [json objectForKey:@"features"])
         {
+            // first expand out GeometryCollection items, which could be e.g. Point or MultiPoint
+            //
+            NSMutableArray *expandedGeometries = [NSMutableArray array];
+            
             for (NSDictionary *feature in [json objectForKey:@"features"])
+            {
+                if ([[feature objectForKey:@"type"] isEqual:@"GeometryCollection"])
+                {
+                    for (NSDictionary *geometry in [feature objectForKey:@"geometries"])
+                    {
+                        NSMutableDictionary *expandedGeometry = [NSMutableDictionary dictionaryWithObject:@"Feature" forKey:@"type"];
+                        
+                        // copy id & properties into instances
+                        //
+                        if ([feature objectForKey:@"id"])
+                            [expandedGeometry setObject:[feature objectForKey:@"id"] forKey:@"id"];
+                        
+                        if ([feature objectForKey:@"properties"])
+                            [expandedGeometry setObject:[feature objectForKey:@"properties"] forKey:@"properties"];
+                        
+                        // add in individual geometry
+                        //
+                        [expandedGeometry setObject:geometry forKey:@"geometry"];
+                        
+                        // save for single/multi iteration
+                        //
+                        [expandedGeometries addObject:expandedGeometry];
+                    }
+                }
+
+                // just add in regular features
+                //
+                else
+                    [expandedGeometries addObject:feature];
+            }
+            
+            // then iterate all of these geometry features, single or multi
+            //
+            NSMutableArray *expandedFeatures = [NSMutableArray array];
+            
+            for (NSDictionary *feature in expandedGeometries)
+            {
+                // keep normal Point/LineString/etc. features
+                //
+                if ([[feature objectForKey:@"type"] isEqual:@"Feature"] && ! [[feature valueForKeyPath:@"geometry.type"] hasPrefix:@"Multi"])
+                    [expandedFeatures addObject:feature];
+                
+                // expand MultiPoint/MultiLineString/etc. into multiple instances of base types
+                //
+                else
+                {
+                    for (NSArray *subfeatureCoordinates in [feature valueForKeyPath:@"geometry.coordinates"])
+                    {
+                        NSString *subfeatureGeometryType = [[feature valueForKeyPath:@"geometry.type"] stringByReplacingOccurrencesOfString:@"Multi" withString:@""];
+
+                        NSMutableDictionary *expandedFeature = [NSMutableDictionary dictionaryWithObject:[feature objectForKey:@"type"] 
+                                                                                                  forKey:@"type"];
+                    
+                        NSMutableDictionary *subfeatureGeometry = [NSMutableDictionary dictionaryWithObject:subfeatureGeometryType
+                                                                                                     forKey:@"type"];
+                    
+                        [expandedFeature setObject:subfeatureGeometry 
+                                            forKey:@"geometry"];
+                        
+                        // copy id & properties into instances
+                        //
+                        if ([feature objectForKey:@"id"])
+                            [expandedFeature setObject:[feature objectForKey:@"id"] forKey:@"id"];
+
+                        if ([feature objectForKey:@"properties"])
+                            [expandedFeature setObject:[feature objectForKey:@"properties"] forKey:@"properties"];
+                        
+                        // adapt geometry into instance
+                        //
+                        [subfeatureGeometry setObject:subfeatureCoordinates 
+                                               forKey:@"coordinates"];
+                        
+                        // add to expanded features for further parsing
+                        //
+                        [expandedFeatures addObject:expandedFeature];
+                    }
+                }
+            }
+
+            // iterate all individual features
+            //
+            for (NSDictionary *feature in expandedFeatures)
             {
                 int itemCount;
                 
@@ -48,7 +134,11 @@
                     {
                         NSDictionary *geometry = [feature objectForKey:@"geometry"];
                         
-                        if ([[geometry objectForKey:@"type"] isEqual:@"Point"] && [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]])
+                        // Points should have a single set of coordinates in an array
+                        //
+                        if ([[geometry objectForKey:@"type"] isEqual:@"Point"] && 
+                            [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]] &&
+                            [[geometry objectForKey:@"coordinates"] count] >= 2)
                         {
                             geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypePoint];
                             
@@ -57,18 +147,60 @@
                             
                             [geometries addObject:location];
                         }
-                        else if ([[geometry objectForKey:@"type"] isEqual:@"LineString"] && [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]])
+                        
+                        // LineStrings should have an array of two or more coordinates, which are arrays themselves of 2+ members
+                        //
+                        else if ([[geometry objectForKey:@"type"] isEqual:@"LineString"] && 
+                                 [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]] &&
+                                 [[geometry objectForKey:@"coordinates"] count] >= 2 &&
+                                 [[[geometry objectForKey:@"coordinates"] filteredArrayUsingPredicate:
+                                     [NSPredicate predicateWithFormat:@"NOT SELF isKindOfClass:%@ OR @count < 2", [NSArray class]]] count] == 0)
                         {
                             geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypeLineString];
                             
-                            if ([[geometry objectForKey:@"coordinates"] count] >= 2)
+                            for (NSArray *pair in [geometry objectForKey:@"coordinates"])
                             {
-                                for (NSArray *pair in [geometry objectForKey:@"coordinates"])
+                                CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
+                                                                                   longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
+                                
+                                [geometries addObject:location];
+                            }
+                        }
+                        
+                        // Polygons should have an array of one or more coordinates, which are LinearRings (closed LineStrings)
+                        //
+                        else if ([[geometry objectForKey:@"type"] isEqual:@"Polygon"] && 
+                                 [[geometry objectForKey:@"coordinates"] isKindOfClass:[NSArray class]] &&
+                                 [[geometry objectForKey:@"coordinates"] count])
+                        {
+                            geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypePolygon];
+                            
+                            for (id linearRing in [geometry objectForKey:@"coordinates"])
+                            {
+                                // LinearRing geometries should have four or more coordinates
+                                //
+                                if ([linearRing isKindOfClass:[NSArray class]] && 
+                                    [linearRing count] >= 4)
                                 {
-                                    CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
-                                                                                       longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
-                                    
-                                    [geometries addObject:location];
+                                    // coordinates should be arrays & first/last lat & long should be identical
+                                    //
+                                    if ([[linearRing filteredArrayUsingPredicate:
+                                            [NSPredicate predicateWithFormat:@"NOT SELF isKindOfClass:%@ OR @count < 2", [NSArray class]]] count] == 0 &&
+                                        [[[linearRing objectAtIndex:0] objectAtIndex:0] isEqual:[[linearRing lastObject] objectAtIndex:0]] && 
+                                        [[[linearRing objectAtIndex:0] objectAtIndex:1] isEqual:[[linearRing lastObject] objectAtIndex:1]])
+                                    {
+                                        NSMutableArray *geometry = [NSMutableArray array];
+                                        
+                                        for (NSArray *pair in linearRing)
+                                        {
+                                            CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
+                                                                                               longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
+
+                                            [geometry addObject:location];
+                                        }
+                                        
+                                        [geometries addObject:geometry];
+                                    }
                                 }
                             }
                         }
@@ -103,7 +235,9 @@
                             properties = [feature objectForKey:@"properties"];
                     }
                     
-                    if ([geometries count] && properties)
+                    // include any features with geometries, but for points, only if they have properties to display
+                    //
+                    if ([geometries count] && (properties || geometryType != DSMapBoxGeoJSONGeometryTypePoint))
                     {
                         NSDictionary *featureDictionary = [NSDictionary dictionaryWithObjectsAndKeys:itemID,                              @"id",
                                                                                                      geometryType,                        @"type",

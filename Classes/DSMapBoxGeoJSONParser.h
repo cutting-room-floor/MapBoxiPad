@@ -11,6 +11,7 @@
 typedef enum {
     DSMapBoxGeoJSONGeometryTypePoint      = 0,
     DSMapBoxGeoJSONGeometryTypeLineString = 1,
+    DSMapBoxGeoJSONGeometryTypePolygon    = 2,
 } DSMapBoxGeoJSONGeometryType;
 
 @interface DSMapBoxGeoJSONParser : NSObject

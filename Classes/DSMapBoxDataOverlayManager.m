@@ -16,6 +16,8 @@
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxGeoJSONParser.h"
 
+#import "MapBoxConstants.h"
+
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMMapView.h"
@@ -522,7 +524,7 @@
         {
             RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
             
-            path.lineColor = [UIColor redColor];
+            path.lineColor = kMapBoxBlue;
             path.fillColor = [UIColor clearColor];
             path.lineWidth = 10.0;
             
@@ -544,6 +546,38 @@
             [mapView.contents.overlay addSublayer:path];
             
             [overlay addObject:path];
+        }
+        else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypePolygon)
+        {
+            for (NSArray *linearRing in [item objectForKey:@"geometries"])
+            {
+                RMPath *path = [[[RMPath alloc] initWithContents:mapView.contents] autorelease];
+                
+                path.lineColor = kMapBoxBlue;
+                path.fillColor = [UIColor clearColor];
+                path.lineWidth = 10.0;
+                
+                BOOL hasStarted = NO;
+                
+                for (CLLocation *point in [linearRing subarrayWithRange:NSMakeRange(0, [linearRing count] - 1)])
+                {
+                    if ( ! hasStarted)
+                    {
+                        [path moveToLatLong:point.coordinate];
+                        
+                        hasStarted = YES;
+                    }
+                    
+                    else
+                        [path addLineToLatLong:point.coordinate];
+                }
+                
+                [path closePath];
+                
+                [mapView.contents.overlay addSublayer:path];
+                
+                [overlay addObject:path];
+            }
         }
     }
     
