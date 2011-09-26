@@ -147,14 +147,6 @@
         //
         [newServers insertObject:defaultAccount atIndex:0];
         
-        // make things visible
-        //
-        helpLabel.hidden         = NO;
-        accountScrollView.hidden = NO;
-        
-        if ([newServers count] > 9)
-            accountPageControl.hidden = NO;
-
         // queue up images
         //
         NSMutableArray *imagesToDownload = [NSMutableArray array];
@@ -165,12 +157,33 @@
 
             NSMutableArray *thumbURLs = [NSMutableArray array];
             
-            for (NSString *thumbURLString in [server objectForKey:@"thumbs"])
-                [thumbURLs addObject:[NSURL URLWithString:thumbURLString]];
+            // don't queue up null thumbs
+            //
+            for (id thumbURLString in [server objectForKey:@"thumbs"])
+                if ([thumbURLString isKindOfClass:[NSString class]] && [(NSString *)thumbURLString length])
+                    [thumbURLs addObject:[NSURL URLWithString:thumbURLString]];
             
             [imagesToDownload addObject:thumbURLs];
         }
         
+        // filter out servers with all null thumbs
+        //
+        for (NSMutableDictionary *newServer in [NSArray arrayWithArray:newServers])
+        {
+            [[newServer objectForKey:@"thumbs"] filterUsingPredicate:[NSPredicate predicateWithFormat:@"SELF isKindOfClass:%@ AND SELF.length > 0", [NSString class]]];
+            
+            if ( ! [[newServer objectForKey:@"thumbs"] count])
+                [newServers removeObject:newServer];
+        }
+        
+        // make things visible
+        //
+        helpLabel.hidden         = NO;
+        accountScrollView.hidden = NO;
+        
+        if ([newServers count] > 9)
+            accountPageControl.hidden = NO;
+
         // update content
         //
         [servers release];
