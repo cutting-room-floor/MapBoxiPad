@@ -32,7 +32,7 @@
     
     // setup nav bar
     //
-    self.navigationItem.title = @"Choose TileStream Account";
+    self.navigationItem.title = @"Choose Hosting Account";
     
     self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Choose Account"
                                                                               style:UIBarButtonItemStyleBordered
@@ -118,7 +118,7 @@
 {
     [spinner stopAnimating];
     
-    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to download TileStreams"];
+    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to connect"];
     
     [self.view addSubview:errorView];
     

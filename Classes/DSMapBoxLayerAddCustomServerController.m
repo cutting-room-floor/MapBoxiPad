@@ -37,9 +37,9 @@
 {
     [super viewDidLoad];
     
-    self.navigationItem.title = @"Custom TileStream Account";
+    self.navigationItem.title = @"Custom Source";
 
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Custom Account"
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Custom Source"
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:nil 
                                                                              action:nil] autorelease];

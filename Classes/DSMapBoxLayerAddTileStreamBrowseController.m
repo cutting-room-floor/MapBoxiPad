@@ -237,7 +237,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     [spinner stopAnimating];
     
-    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse TileStream"];
+    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
     
     [self.view addSubview:errorView];
     
@@ -387,7 +387,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         }
         else
         {
-            DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"TileStream has no layers"];
+            DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"No layers available"];
             
             [self.view addSubview:errorView];
             
@@ -396,7 +396,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     }
     else
     {
-        DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse TileStream"];
+        DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
         
         [self.view addSubview:errorView];
         
