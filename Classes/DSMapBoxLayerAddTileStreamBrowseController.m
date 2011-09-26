@@ -51,7 +51,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         self.navigationItem.title = self.serverName;
     
     else
-        self.navigationItem.title = [NSString stringWithFormat:@"Browse %@%@ Tiles", self.serverName, ([self.serverName hasSuffix:@"s"] ? @"'" : @"'s")];
+        self.navigationItem.title = [NSString stringWithFormat:@"Browse %@%@ Maps", self.serverName, ([self.serverName hasSuffix:@"s"] ? @"'" : @"'s")];
     
     self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
                                                                                           target:self 
