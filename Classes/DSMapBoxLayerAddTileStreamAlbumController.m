@@ -102,7 +102,7 @@
     
     DSMapBoxLayerAddTileStreamBrowseController *browseController = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
     
-    browseController.serverName = [account valueForKey:@"id"];
+    browseController.serverName = ([account objectForKey:@"name"] ? [account objectForKey:@"name"] : [account objectForKey:@"id"]);
     browseController.serverURL  = [NSURL URLWithString:serverURLString];
     
     [(UINavigationController *)self.parentViewController pushViewController:browseController animated:YES];
@@ -222,8 +222,9 @@
                     
                     // get label bits
                     //
-                    NSString *accountName = [[servers objectAtIndex:index] valueForKey:@"id"];
-                    NSString *layerCount  = [[[servers objectAtIndex:index] valueForKey:@"quota"] valueForKey:@"count"];
+                    NSDictionary *server  = [servers objectAtIndex:index];
+                    NSString *accountName = ([server objectForKey:@"name"] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
+                    NSString *layerCount  = [server valueForKey:@"mapCount"];
 
                     DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
                                                                                                          imageURLs:[imagesToDownload objectAtIndex:index]
