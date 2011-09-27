@@ -9,12 +9,6 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
-@interface DSMapBoxTileSourceInfiniteZoom : NSObject
-
-+ (BOOL)enableInfiniteZoomForClasses:(NSArray *)classes;
-
-@end
-
 @interface RMMBTilesTileSource (DSMapBoxTileSourceInfiniteZoom)
 
 - (float)minZoomNative;

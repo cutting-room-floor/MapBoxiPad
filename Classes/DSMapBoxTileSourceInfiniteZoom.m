@@ -22,9 +22,10 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#pragma mark Min/Max Zoom Swizzling
+#pragma mark Swizzling
 
 // Taken from Mike Ash's 'Swizzle' at http://www.cocoadev.com/index.pl?MethodSwizzling
+// Other tips from http://stackoverflow.com/questions/5371601/how-do-i-implement-method-swizzling
 //
 void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelector, SEL alternateSelector);
 
@@ -43,54 +44,26 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
         method_exchangeImplementations(originalMethod, alternateMethod);
 }
 
-#pragma mark Public Implementation
+void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass);
 
-@implementation DSMapBoxTileSourceInfiniteZoom
-
-+ (BOOL)enableInfiniteZoomForClasses:(NSArray *)classes
+void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 {
-    for (Class aClass in classes)
-    {
-        if ([aClass conformsToProtocol:@protocol(RMTileSource)])
-        {
-            // swap in min/max zoom methods to answer all calls
-            //
-            if ([aClass instancesRespondToSelector:@selector(minZoomInfinite)] && [aClass instancesRespondToSelector:@selector(maxZoomInfinite)])
-            {
-                DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(minZoom), @selector(minZoomInfinite));
-                DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(maxZoom), @selector(maxZoomInfinite));
-            }
-            
-            // swap in tile image method to provide out-of-bounds image
-            //
-            if ([aClass instancesRespondToSelector:@selector(tileImageOriginal:)] && [aClass instancesRespondToSelector:@selector(tileImageInfinite:)])
-            {
-                DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(tileImageOriginal:), @selector(tileImage:));
-                DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(tileImage:),         @selector(tileImageInfinite:));
-            }
-        }
-    }
-    
-    return YES;
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(minZoom),    @selector(minZoomInfinite));
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(maxZoom),    @selector(maxZoomInfinite));    
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(tileImage:), @selector(tileImageInfinite:));
 }
 
-@end
-
-#pragma mark Category Implementations
+#pragma mark Categories
 
 @implementation RMMBTilesTileSource (DSMapBoxTileSourceInfiniteZoom)
 
-- (RMTileImage *)tileImageOriginal:(RMTile)tile
++ (void)load
 {
-    // dummy method that gets pointed at native tileImage:
-    //
-    return nil;
+    DSMapBoxTileSourceInfiniteZoomEnable(self);
 }
 
 - (RMTileImage *)tileImageInfinite:(RMTile)tile
 {
-    // if out of zoom bounds, return a default image
-    //
     if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
     {
         if ([self layerType] == RMMBTilesLayerTypeBaselayer)
@@ -100,9 +73,7 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
             return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
     }
     
-    // else return the real image
-    //
-    return [self tileImageOriginal:tile];
+    return [self tileImageInfinite:tile];
 }
 
 - (float)minZoomInfinite
@@ -151,11 +122,9 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
 
 @implementation RMTileStreamSource (DSMapBoxTileSourceInfiniteZoom)
 
-- (RMTileImage *)tileImageOriginal:(RMTile)tile
++ (void)load
 {
-    // dummy method that gets pointed at native (super) tileImage:
-    //
-    return nil;
+    DSMapBoxTileSourceInfiniteZoomEnable(self);
 }
 
 - (RMTileImage *)tileImageInfinite:(RMTile)tile
@@ -172,7 +141,7 @@ void DSMapBoxTileSourceInfiniteZoomMethodSwizzle(Class aClass, SEL originalSelec
     if ( ! [self.infoDictionary objectForKey:@"tileURL"])
         return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
         
-    return [self tileImageOriginal:tile];
+    return [self tileImageInfinite:tile];
 }
 
 - (float)minZoomInfinite
