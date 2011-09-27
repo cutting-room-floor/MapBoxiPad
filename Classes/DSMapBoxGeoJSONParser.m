@@ -12,7 +12,40 @@
 
 #import <CoreLocation/CoreLocation.h>
 
+#import "RMProjection.h"
+
+@interface DSMapBoxGeoJSONParser ()
+
++ (CLLocation *)locationFromCoordinates:(NSArray *)coordinates;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxGeoJSONParser
+
++ (CLLocation *)locationFromCoordinates:(NSArray *)coordinates
+{
+    double a = [[coordinates objectAtIndex:0] doubleValue];
+    double b = [[coordinates objectAtIndex:1] doubleValue];
+    
+    if (a < -180 || a > 180 || b < -90 || b > 90)
+    {
+        RMProjectedPoint point = {
+            .easting  = a,
+            .northing = b,
+        };
+        
+        RMLatLong latLong = [[RMProjection googleProjection] pointToLatLong:point];
+        
+        return [[[CLLocation alloc] initWithLatitude:latLong.latitude longitude:latLong.longitude] autorelease];
+    }
+    
+    else
+        return [[[CLLocation alloc] initWithLatitude:b longitude:a] autorelease];
+
+    return [[[CLLocation alloc] initWithLatitude:0 longitude:0] autorelease];
+}
 
 + (NSArray *)itemsForGeoJSON:(NSString *)geojson
 {
@@ -142,10 +175,7 @@
                         {
                             geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypePoint];
                             
-                            CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:1] doubleValue] 
-                                                                               longitude:[[[geometry objectForKey:@"coordinates"] objectAtIndex:0] doubleValue]] autorelease];
-                            
-                            [geometries addObject:location];
+                            [geometries addObject:[DSMapBoxGeoJSONParser locationFromCoordinates:[geometry objectForKey:@"coordinates"]]];
                         }
                         
                         // LineStrings should have an array of two or more coordinates, which are arrays themselves of 2+ members
@@ -159,12 +189,7 @@
                             geometryType = [NSNumber numberWithInt:DSMapBoxGeoJSONGeometryTypeLineString];
                             
                             for (NSArray *pair in [geometry objectForKey:@"coordinates"])
-                            {
-                                CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
-                                                                                   longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
-                                
-                                [geometries addObject:location];
-                            }
+                                [geometries addObject:[DSMapBoxGeoJSONParser locationFromCoordinates:pair]];
                         }
                         
                         // Polygons should have an array of one or more coordinates, which are LinearRings (closed LineStrings)
@@ -192,12 +217,7 @@
                                         NSMutableArray *geometry = [NSMutableArray array];
                                         
                                         for (NSArray *pair in linearRing)
-                                        {
-                                            CLLocation *location = [[[CLLocation alloc] initWithLatitude:[[pair objectAtIndex:1] doubleValue] 
-                                                                                               longitude:[[pair objectAtIndex:0] doubleValue]] autorelease];
-
-                                            [geometry addObject:location];
-                                        }
+                                            [geometry addObject:[DSMapBoxGeoJSONParser locationFromCoordinates:pair]];
                                         
                                         [geometries addObject:geometry];
                                     }
