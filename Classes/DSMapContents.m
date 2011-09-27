@@ -12,8 +12,6 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 
-#import "MapBoxConstants.h"
-
 #import "RMProjection.h"
 #import "RMTileLoader.h"
 #import "RMMercatorToTileProjection.h"

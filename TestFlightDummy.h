@@ -6,7 +6,7 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-@interface TestFlight : NSObject
+@interface TestFlightDummy : NSObject
 {    
 }
 

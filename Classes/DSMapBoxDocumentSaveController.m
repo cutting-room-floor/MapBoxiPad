@@ -35,7 +35,7 @@
                                                  name:UITextFieldTextDidChangeNotification
                                                object:nameTextField];
     
-    [TestFlight passCheckpoint:@"prompted to save document"];
+    [TESTFLIGHT passCheckpoint:@"prompted to save document"];
 }
 
 - (void)viewDidAppear:(BOOL)animated

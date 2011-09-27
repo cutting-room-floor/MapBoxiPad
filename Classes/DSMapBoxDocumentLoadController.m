@@ -34,7 +34,7 @@
     
     [self reload];
     
-    [TestFlight passCheckpoint:@"viewed document loader"];
+    [TESTFLIGHT passCheckpoint:@"viewed document loader"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -77,7 +77,7 @@
     
     [self scrollViewDidScroll:scroller];
     
-    [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [scroller.subviews count]] forKey:@"saved document count"];
+    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [scroller.subviews count]] forKey:@"saved document count"];
 }
 
 + (NSString *)saveFolderPath
@@ -184,7 +184,7 @@
 
         [self reload];
         
-        [TestFlight passCheckpoint:@"saved document from document load view"];
+        [TESTFLIGHT passCheckpoint:@"saved document from document load view"];
     }
 }
 
@@ -290,7 +290,7 @@
     if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
         [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
     
-    [TestFlight passCheckpoint:@"loaded saved document"];
+    [TESTFLIGHT passCheckpoint:@"loaded saved document"];
 }
 
 #pragma mark -
@@ -317,7 +317,7 @@
             
             [self dismissModalViewControllerAnimated:YES];
             
-            [TestFlight passCheckpoint:@"shared snapshot from document loader"];
+            [TESTFLIGHT passCheckpoint:@"shared snapshot from document loader"];
     }
 }
 

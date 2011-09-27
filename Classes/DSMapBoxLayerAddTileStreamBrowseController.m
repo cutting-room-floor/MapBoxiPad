@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
-#import "MapBoxConstants.h"
-
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
@@ -84,7 +82,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [layersRequest startAsynchronous];
     
-    [TestFlight passCheckpoint:@"browsed TileStream server"];
+    [TESTFLIGHT passCheckpoint:@"browsed TileStream server"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

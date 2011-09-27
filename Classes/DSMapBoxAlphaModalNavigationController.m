@@ -8,8 +8,6 @@
 
 #import "DSMapBoxAlphaModalNavigationController.h"
 
-#import "MapBoxConstants.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxAlphaModalNavigationController ()

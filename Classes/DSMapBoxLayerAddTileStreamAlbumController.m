@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddTileStreamAlbumController.h"
 
-#import "MapBoxConstants.h"
-
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxLayerAddCustomServerController.h"
 #import "DSMapBoxErrorView.h"
@@ -67,7 +65,7 @@
 
     [albumRequest startAsynchronous];
     
-    [TestFlight passCheckpoint:@"browsed TileStream accounts"];
+    [TESTFLIGHT passCheckpoint:@"browsed TileStream accounts"];
 }
 
 - (void)dealloc

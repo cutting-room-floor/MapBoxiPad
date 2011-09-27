@@ -16,8 +16,6 @@
 #import "DSTiledLayerMapView.h"
 #import "DSMapBoxGeoJSONParser.h"
 
-#import "MapBoxConstants.h"
-
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMMapView.h"
@@ -774,7 +772,7 @@
                    permittedArrowDirections:UIPopoverArrowDirectionAny
                                    animated:YES];
             
-            [TestFlight passCheckpoint:@"tapped interactive layer"];
+            [TESTFLIGHT passCheckpoint:@"tapped interactive layer"];
         }
 
         else if (balloon)
@@ -853,7 +851,7 @@
            permittedArrowDirections:UIPopoverArrowDirectionAny
                            animated:YES];
     
-    [TestFlight passCheckpoint:@"tapped on marker"];
+    [TESTFLIGHT passCheckpoint:@"tapped on marker"];
 }
 
 - (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map

@@ -61,38 +61,38 @@
         [self reloadLayersFromDisk];
         
         if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"]) // bundled set doesn't have a URL
-            [TestFlight passCheckpoint:@"has MBTiles base layer"];
+            [TESTFLIGHT passCheckpoint:@"has MBTiles base layer"];
         
         if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
-            [TestFlight passCheckpoint:@"has TileStream base layer"];
+            [TESTFLIGHT passCheckpoint:@"has TileStream base layer"];
         
         if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"])
-            [TestFlight passCheckpoint:@"has MBTiles overlay layer"];
+            [TESTFLIGHT passCheckpoint:@"has MBTiles overlay layer"];
         
         if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
-            [TestFlight passCheckpoint:@"has TileStream overlay layer"];
+            [TESTFLIGHT passCheckpoint:@"has TileStream overlay layer"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kml"])
-            [TestFlight passCheckpoint:@"has KML layer (.kml)"];
+            [TESTFLIGHT passCheckpoint:@"has KML layer (.kml)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kmz"])
-            [TestFlight passCheckpoint:@"has KML layer (.kmz)"];
+            [TESTFLIGHT passCheckpoint:@"has KML layer (.kmz)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"rss"])            
-            [TestFlight passCheckpoint:@"has GeoRSS layer (.rss)"];
+            [TESTFLIGHT passCheckpoint:@"has GeoRSS layer (.rss)"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"xml"])
-            [TestFlight passCheckpoint:@"has GeoRSS layer (.xml)"];
+            [TESTFLIGHT passCheckpoint:@"has GeoRSS layer (.xml)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"json"])
-            [TestFlight passCheckpoint:@"has GeoJSON layer (.json)"];
+            [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.json)"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"geojson"])
-            [TestFlight passCheckpoint:@"has GeoJSON layer (.geojson)"];
+            [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.geojson)"];
         
-        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [baseLayers count]] forKey:@"base layer count"];
-        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"overlay layer count"];
-        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [baseLayers count]] forKey:@"base layer count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"overlay layer count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadLayersFromDisk)
@@ -526,7 +526,7 @@
             
             [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"] animated:YES];
             
-            [TestFlight passCheckpoint:@"changed base layer"];
+            [TESTFLIGHT passCheckpoint:@"changed base layer"];
             
             return;
             
@@ -626,7 +626,7 @@
                 layerMapView.delegate = dataOverlayManager;
                 dataOverlayManager.mapView = layerMapView;
                 
-                [TestFlight passCheckpoint:@"enabled overlay layer"];
+                [TESTFLIGHT passCheckpoint:@"enabled overlay layer"];
             }
 
             break;
@@ -658,7 +658,7 @@
                     if ( ! [layer objectForKey:@"source"])
                         [layer setObject:[kml source] forKey:@"source"];
                     
-                    [TestFlight passCheckpoint:@"enabled KML layer"];
+                    [TESTFLIGHT passCheckpoint:@"enabled KML layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
@@ -672,7 +672,7 @@
                     
                     [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
                     
-                    [TestFlight passCheckpoint:@"enabled GeoRSS layer"];
+                    [TESTFLIGHT passCheckpoint:@"enabled GeoRSS layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
                 {
@@ -686,7 +686,7 @@
                     
                     [dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
                     
-                    [TestFlight passCheckpoint:@"enabled GeoJSON layer"];
+                    [TESTFLIGHT passCheckpoint:@"enabled GeoJSON layer"];
                 }
             }
 

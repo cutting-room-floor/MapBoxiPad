@@ -8,8 +8,6 @@
 
 #import "DSMapBoxHelpController.h"
 
-#import "MapBoxConstants.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @implementation DSMapBoxHelpController
@@ -75,7 +73,7 @@
 
     [self.moviePlayer play];
 
-    [TestFlight passCheckpoint:@"started watching help video"];
+    [TESTFLIGHT passCheckpoint:@"started watching help video"];
 }
 
 - (void)tappedHelpDoneButton:(id)sender
@@ -90,7 +88,7 @@
     if (self.moviePlayer.fullscreen)
         [self.moviePlayer setFullscreen:NO animated:YES];
     
-    [TestFlight passCheckpoint:@"finished watching help video"];
+    [TESTFLIGHT passCheckpoint:@"finished watching help video"];
 }
 
 #pragma mark -

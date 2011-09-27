@@ -10,8 +10,6 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
-#import "MapBoxConstants.h"
-
 #import "ASIHTTPRequest.h"
 
 #import "JSONKit.h"
@@ -59,7 +57,7 @@
     recentServersTableView.clipsToBounds      = YES;
     recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
     
-    [TestFlight passCheckpoint:@"viewed custom TileStream servers"];
+    [TESTFLIGHT passCheckpoint:@"viewed custom TileStream servers"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -229,7 +227,7 @@
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
     
-    [TestFlight passCheckpoint:@"added custom TileStream server"];
+    [TESTFLIGHT passCheckpoint:@"added custom TileStream server"];
 }
 
 #pragma mark -
@@ -299,7 +297,7 @@
     
     [self tappedNextButton:self];
     
-    [TestFlight passCheckpoint:@"tapped custom TileStream server in history"];
+    [TESTFLIGHT passCheckpoint:@"tapped custom TileStream server in history"];
 }
 
 #pragma mark -

@@ -13,8 +13,6 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
-#import "MapBoxConstants.h"
-
 @implementation DSMapBoxTileSetManager
 
 static DSMapBoxTileSetManager *defaultManager;

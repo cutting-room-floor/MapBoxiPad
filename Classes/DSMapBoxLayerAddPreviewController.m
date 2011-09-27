@@ -15,7 +15,6 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "RMInteractiveSource.h"
 #import "DSMapBoxDataOverlayManager.h"
-#import "MapBoxConstants.h"
 
 @implementation DSMapBoxLayerAddPreviewController
 
@@ -80,7 +79,7 @@
     
     metadataLabel.text = metadata;
     
-    [TestFlight passCheckpoint:@"previewed TileStream layer"];
+    [TESTFLIGHT passCheckpoint:@"previewed TileStream layer"];
 }
 
 - (void)dealloc

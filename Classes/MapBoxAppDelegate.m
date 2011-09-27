@@ -8,7 +8,6 @@
 
 #import "MapBoxAppDelegate.h"
 
-#import "MapBoxConstants.h"
 #import "MapBoxMainViewController.h"
 
 #import "DSFingerTipWindow.h"
@@ -40,7 +39,7 @@
 {
     // begin TestFlight tracking
     //
-    [TestFlight takeOff:kTestFlightTeamToken];
+    [TESTFLIGHT takeOff:kTestFlightTeamToken];
     
     // legacy data migration
     //
@@ -181,7 +180,7 @@
                                                                                                       options:NSAnchoredSearch
                                                                                                         range:NSMakeRange(0, 10)]];
         
-        [TestFlight passCheckpoint:@"opened mbhttp: URL"];
+        [TESTFLIGHT passCheckpoint:@"opened mbhttp: URL"];
     }    
     
     // download external sources first to prepare for opening locally
@@ -220,7 +219,7 @@
         
         [request startAsynchronous];
         
-        [TestFlight passCheckpoint:@"opened network URL"];
+        [TESTFLIGHT passCheckpoint:@"opened network URL"];
         
         return YES;
     }

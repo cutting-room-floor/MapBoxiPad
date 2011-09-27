@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
-#import "MapBoxConstants.h"
-
 #import "ASIHTTPRequest.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -213,7 +211,7 @@
         //
         [self.delegate tileViewWantsToShowPreview:self];
         
-        [TestFlight passCheckpoint:@"tapped TileStream layer corner to preview"];
+        [TESTFLIGHT passCheckpoint:@"tapped TileStream layer corner to preview"];
     }
 
     else if (self.touched)
@@ -241,7 +239,7 @@
         //
         [self.delegate tileViewWantsToShowPreview:self];
         
-        [TestFlight passCheckpoint:@"used pinch gesture to preview TileStream layer"];
+        [TESTFLIGHT passCheckpoint:@"used pinch gesture to preview TileStream layer"];
     }
 }
 

@@ -8,7 +8,7 @@
 
 #import "TestFlightDummy.h"
 
-@implementation TestFlight
+@implementation TestFlightDummy
 
 + (void)addCustomEnvironmentInformation:(NSString *)information forKey:(NSString*)key {}
 + (void)takeOff:(NSString *)teamToken {}

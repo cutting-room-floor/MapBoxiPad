@@ -8,8 +8,6 @@
 
 #import "MapBoxMainViewController.h"
 
-#import "MapBoxConstants.h"
-
 #import "MapBoxAppDelegate.h"
 
 #import "DSMapView.h"
@@ -505,7 +503,7 @@ static BOOL infiniteZoomEnabled;
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TestFlight passCheckpoint:@"imported KML"];
+        [TESTFLIGHT passCheckpoint:@"imported KML"];
     }
 }
 
@@ -525,7 +523,7 @@ static BOOL infiniteZoomEnabled;
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TestFlight passCheckpoint:@"imported GeoRSS"];
+        [TESTFLIGHT passCheckpoint:@"imported GeoRSS"];
     }
     
     else
@@ -548,7 +546,7 @@ static BOOL infiniteZoomEnabled;
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TestFlight passCheckpoint:@"imported GeoJSON"];
+        [TESTFLIGHT passCheckpoint:@"imported GeoJSON"];
     }
     
     else
@@ -565,7 +563,7 @@ static BOOL infiniteZoomEnabled;
     
     [self layerImportAlertWithName:[fileURL lastPathComponent]];
     
-    [TestFlight passCheckpoint:@"imported MBTiles"];
+    [TESTFLIGHT passCheckpoint:@"imported MBTiles"];
 }
 
 - (IBAction)tappedLayersButton:(id)sender
@@ -601,7 +599,7 @@ static BOOL infiniteZoomEnabled;
 
 - (IBAction)tappedClusteringButton:(id)sender
 {
-    [TestFlight passCheckpoint:@"toggled clustering"];
+    [TESTFLIGHT passCheckpoint:@"toggled clustering"];
     
     DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager;
     
@@ -612,7 +610,7 @@ static BOOL infiniteZoomEnabled;
 
 - (IBAction)tappedHelpButton:(id)sender
 {
-    [TestFlight passCheckpoint:@"viewed help"];
+    [TESTFLIGHT passCheckpoint:@"viewed help"];
     
     if (layersPopover && layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:NO];
@@ -1142,7 +1140,7 @@ static BOOL infiniteZoomEnabled;
                 
                 [alert show];
                 
-                [TestFlight passCheckpoint:@"prompted to import clipboard URL"];
+                [TESTFLIGHT passCheckpoint:@"prompted to import clipboard URL"];
             }
         }
     }
@@ -1240,7 +1238,7 @@ static BOOL infiniteZoomEnabled;
     {
         if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
-            [TestFlight passCheckpoint:@"composed snapshot from main view"];
+            [TESTFLIGHT passCheckpoint:@"composed snapshot from main view"];
             
             // email snapshot
             //
@@ -1304,7 +1302,7 @@ static BOOL infiniteZoomEnabled;
 {
     [self saveState:name];
     
-    [TestFlight passCheckpoint:@"saved document from main view"];
+    [TESTFLIGHT passCheckpoint:@"saved document from main view"];
 }
 
 #pragma mark -
@@ -1410,7 +1408,7 @@ static BOOL infiniteZoomEnabled;
                 
                 [self presentModalViewController:mailer animated:YES];
                 
-                [TestFlight passCheckpoint:@"prompted to report layer problem"];
+                [TESTFLIGHT passCheckpoint:@"prompted to report layer problem"];
             }
             else
             {
@@ -1438,7 +1436,7 @@ static BOOL infiniteZoomEnabled;
     {
         if (buttonIndex == customAlertView.firstOtherButtonIndex)
         {
-            [TestFlight passCheckpoint:@"imported clipboard URL"];
+            [TESTFLIGHT passCheckpoint:@"imported clipboard URL"];
 
             [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
             

@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-#import "MapBoxConstants.h"
-
 #import "ASIHTTPRequest.h"
 
 #import "UIImage+Alpha.h"
@@ -295,7 +293,7 @@
                                      [self.delegate accountViewWasSelected:self];
                                  }];
                 
-                [TestFlight passCheckpoint:@"used flick gesture on TileStream account to browse"];
+                [TESTFLIGHT passCheckpoint:@"used flick gesture on TileStream account to browse"];
             }
             else
             {
@@ -335,7 +333,7 @@
             
             [UIView commitAnimations];
             
-            [TestFlight passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
+            [TESTFLIGHT passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
         }
         else
         {
@@ -384,7 +382,7 @@
 
                 [UIView commitAnimations];
                 
-                [TestFlight passCheckpoint:@"used pinch gesture on TileStream account to peek"];
+                [TESTFLIGHT passCheckpoint:@"used pinch gesture on TileStream account to peek"];
             }
         }
     }

@@ -8,8 +8,6 @@
 
 #import "DSMapView.h"
 
-#import "MapBoxConstants.h"
-
 #import "RMMarker.h"
 
 @implementation DSMapView

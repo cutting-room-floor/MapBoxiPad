@@ -1,5 +1,5 @@
 //
-// Global constants and macros.
+// Global constants, macros, and preprocessor directives.
 //
 
 //
@@ -32,3 +32,14 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)    ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+
+//
+// Preprocessor directives
+//
+#ifndef DEBUG
+    #import "TestFlight.h"
+    #define TESTFLIGHT TestFlight
+#else
+    #import "TestFlightDummy.h"
+    #define TESTFLIGHT TestFlightDummy
+#endif
