@@ -1677,6 +1677,7 @@
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
 					/usr/include/libxml2,
@@ -1722,7 +1723,7 @@
 			buildSettings = {
 				ALTERNATE_MODE = "";
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

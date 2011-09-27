@@ -36,10 +36,10 @@
 //
 // Preprocessor directives
 //
-#ifndef DEBUG
-    #import "TestFlight.h"
-    #define TESTFLIGHT TestFlight
-#else
+#if defined(DEBUG) || defined(RELEASE)
     #import "TestFlightDummy.h"
     #define TESTFLIGHT TestFlightDummy
+#else
+    #import "TestFlight.h"
+    #define TESTFLIGHT TestFlight
 #endif

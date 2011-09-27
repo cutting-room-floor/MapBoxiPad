@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   version = "1.8">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "NO"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+               BuildableName = "MapBox.app"
+               BlueprintName = "MapBoxiPad"
+               ReferencedContainer = "container:MapBoxiPad.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Debug">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "DDE63D6D13E1E4EB00B8A4BD"
+               BuildableName = "MapBoxiPadTests.octest"
+               BlueprintName = "MapBoxiPadTests"
+               ReferencedContainer = "container:MapBoxiPad.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.GDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.GDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Debug"
+      debugDocumentVersioning = "YES"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "MapBox.app"
+            BlueprintName = "MapBoxiPad"
+            ReferencedContainer = "container:MapBoxiPad.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <AdditionalOptions>
+         <AdditionalOption
+            key = "NSZombieEnabled"
+            value = "YES"
+            isEnabled = "YES">
+         </AdditionalOption>
+      </AdditionalOptions>
+      <LocationScenarioReference
+         identifier = "com.apple.dt.IDEFoundation.CurrentLocationScenarioIdentifier"
+         referenceType = "1">
+      </LocationScenarioReference>
+   </LaunchAction>
+   <ProfileAction
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      buildConfiguration = "Release"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+            BuildableName = "MapBox.app"
+            BlueprintName = "MapBoxiPad"
+            ReferencedContainer = "container:MapBoxiPad.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Ad Hoc"
+      customArchiveName = "MapBox"
+      revealArchiveInOrganizer = "NO">
+      <PostActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "API_TOKEN=hOsD5uaC0YRcz0aj9G3EsZ2IbP0vFhpm2DJPlIXfcVM&#10;TEAM_TOKEN=e801c1913c6812d34c0c7764f6bf406a_OTIwOA&#10;SIGNING_IDENTITY=&quot;iPhone Distribution: Development Seed&quot;&#10;PROVISIONING_PROFILE=&quot;${HOME}/Library/MobileDevice/Provisioning Profiles/MapBox Ad Hoc.mobileprovision&quot;&#10;LOG=&quot;/tmp/testflight.log&quot;&#10;GROWL=&quot;${HOME}/bin/growlnotify -a Xcode -w&quot;&#10;&#10;DATE=$( /bin/date +&quot;%Y-%m-%d&quot; )&#10;ARCHIVE=$( /bin/ls -t &quot;${HOME}/Library/Developer/Xcode/Archives/${DATE}&quot; | /usr/bin/grep xcarchive | /usr/bin/sed -n 1p )&#10;APP=&quot;${HOME}/Library/Developer/Xcode/Archives/${DATE}/${ARCHIVE}/Products/Applications/${PRODUCT_NAME}.app&quot;&#10;&#10;#/usr/bin/open -a /Applications/Utilities/Console.app $LOG&#10;&#10;echo -n &quot;Creating .ipa for ${PRODUCT_NAME}... &quot; &gt; $LOG&#10;echo &quot;Creating .ipa for ${PRODUCT_NAME}&quot; | ${GROWL}&#10;&#10;/usr/bin/xcrun -sdk iphoneos PackageApplication -v &quot;${APP}&quot; -o &quot;/tmp/${PRODUCT_NAME}.ipa&quot; --sign &quot;${SIGNING_IDENTITY}&quot; --embed &quot;${PROVISIONING_PROFILE}&quot;&#10;&#10;echo &quot;done.&quot; &gt;&gt; $LOG&#10;echo &quot;Created .ipa for ${PRODUCT_NAME}&quot; | ${GROWL}&#10;&#10;echo -n &quot;Uploading to TestFlight... &quot; &gt;&gt; $LOG&#10;echo &quot;Uploading to TestFlight&quot; | ${GROWL}&#10;&#10;/usr/bin/curl &quot;http://testflightapp.com/api/builds.json&quot; \&#10;  -F file=@&quot;/tmp/${PRODUCT_NAME}.ipa&quot; \&#10;  -F api_token=&quot;${API_TOKEN}&quot; \&#10;  -F team_token=&quot;${TEAM_TOKEN}&quot; \&#10;  -F notes=&quot;Build uploaded automatically from Xcode.&quot;&#10;&#10;echo &quot;done.&quot; &gt;&gt; $LOG&#10;echo &quot;Uploaded to TestFlight&quot; | ${GROWL} -s &amp;&amp; /usr/bin/open &quot;https://testflightapp.com/dashboard/builds/&quot;"
+               shellToInvoke = "/bin/bash">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+                     BuildableName = "MapBox.app"
+                     BlueprintName = "MapBoxiPad"
+                     ReferencedContainer = "container:MapBoxiPad.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
+            </ActionContent>
+         </ExecutionAction>
+      </PostActions>
+   </ArchiveAction>
+</Scheme>
