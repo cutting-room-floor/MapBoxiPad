@@ -47,8 +47,6 @@
 
 #import "UIImage+Alpha.h"
 
-static BOOL infiniteZoomEnabled;
-
 @interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
 
 - (void)offlineAlert;
@@ -69,11 +67,6 @@ static BOOL infiniteZoomEnabled;
 {
     [super viewDidLoad];
 
-    // infinite zoom swizzling
-    //
-    if ( ! infiniteZoomEnabled)
-        infiniteZoomEnabled = [DSMapBoxTileSourceInfiniteZoom enableInfiniteZoomForClasses:[NSArray arrayWithObjects:[RMMBTilesTileSource class], [RMTileStreamSource class], nil]];
-    
     // starting setup info
     //
     CLLocationCoordinate2D startingPoint;
