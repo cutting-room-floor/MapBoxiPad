@@ -408,7 +408,7 @@
     
     if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
     {        
-        if ([[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
+        if ( ! [[layer valueForKey:@"selected"] boolValue] && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
@@ -423,7 +423,8 @@
             return;
         }
     }
-    else if (indexPath.section == DSMapBoxLayerSectionTile)
+    
+    if (indexPath.section == DSMapBoxLayerSectionTile)
     {
         NSArray *layers;
         

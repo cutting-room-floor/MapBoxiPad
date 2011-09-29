@@ -645,16 +645,24 @@
 
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
-    // FIXME: compare active layers + [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable
-    // then [self offlineAlert]
+    if ([(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
+    {
+        for (NSURL *layerURL in [[layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.selected = 1"]] valueForKey:@"URL"])
+        {
+            if ([layerURL isEqual:kDSOpenStreetMapURL] || [layerURL isEqual:kDSMapQuestOSMURL] || [layerURL isTileStreamURL])
+            {
+                [self offlineAlert];
+                
+                return;
+            }
+        }
+    }
 }
 
 - (void)offlineAlert
 {
-    NSString *tileSetName = @"FIXME";
-    
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", tileSetName, tileSetName]
+                                                     message:@"You are now offline. At least one active layer requires an internet connection, so it may not appear reliably."
                                                     delegate:nil
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK", nil] autorelease];
