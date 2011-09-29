@@ -288,15 +288,37 @@
         
         // toggle new ones
         //
+        BOOL warnedOffline = NO;
+        
         for (NSString *tileOverlayURLString in tileOverlayState)
         {
             NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
             
             for (NSDictionary *tileLayer in layerManager.tileLayers)
                 if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
-                    [[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]])
+                    ([[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]] ||
+                     [tileOverlayURL isEqual:kDSOpenStreetMapURL] || [tileOverlayURL isEqual:kDSMapQuestOSMURL]))
                     [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
                                                                             inSection:DSMapBoxLayerSectionTile]];
+        
+            // notify if any require net & we're offline if loading doc
+            //
+            if ([sender isKindOfClass:[NSString class]] &&
+                ! warnedOffline && 
+                ([[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSOpenStreetMapURL] || 
+                 [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSMapQuestOSMURL]   || 
+                 [[NSURL fileURLWithPath:tileOverlayURLString] isTileStreamURL]))
+            {
+                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                                 message:@"At least one layer requires an internet connection, so it may not appear reliably."
+                                                                delegate:nil
+                                                       cancelButtonTitle:nil
+                                                       otherButtonTitles:@"OK", nil] autorelease];
+                
+                [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
+                
+                warnedOffline = YES;
+            }
         }
     }
     
