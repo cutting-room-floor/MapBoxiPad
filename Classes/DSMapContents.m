@@ -303,9 +303,8 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     {
         RMCachedTileSource *newCachedTileSource = [RMCachedTileSource cachedTileSourceWithSource:newTileSource];
         
-        newCachedTileSource = [newCachedTileSource retain];
         [tileSource release];
-        tileSource = newCachedTileSource;
+        tileSource = [newCachedTileSource retain];
     }
 
     [self setMinZoom:[newTileSource minZoom]];
