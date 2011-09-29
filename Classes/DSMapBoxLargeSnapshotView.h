@@ -6,8 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #define kDSDocumentWidth  800.0f
 #define kDSDocumentHeight 600.0f
 

@@ -6,8 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @interface DSMapBoxDocumentSaveController : UIViewController <UITextFieldDelegate>
 {
     IBOutlet UIImageView *snapshotView;

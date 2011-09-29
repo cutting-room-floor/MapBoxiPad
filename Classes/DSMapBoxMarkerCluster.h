@@ -6,7 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
 @class RMMarker;

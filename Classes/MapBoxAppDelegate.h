@@ -6,8 +6,6 @@
 //  Copyright Development Seed 2010. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @class DSFingerTipWindow;
 @class MapBoxMainViewController;
 

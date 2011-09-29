@@ -6,8 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #import <MessageUI/MessageUI.h>
 #import <MediaPlayer/MediaPlayer.h>
 

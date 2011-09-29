@@ -6,8 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface DSMapBoxFeedParser : NSObject
 {
 }

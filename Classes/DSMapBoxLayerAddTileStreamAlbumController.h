@@ -6,8 +6,6 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #import "DSMapBoxLayerAddAccountView.h"
 
 #import "ASIHTTPRequestDelegate.h"
