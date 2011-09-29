@@ -147,7 +147,7 @@
             //
             for (NSDictionary *feature in expandedFeatures)
             {
-                int itemCount;
+                int itemCount = 0;
                 
                 if ([[feature objectForKey:@"type"] isEqual:@"Feature"])
                 {
