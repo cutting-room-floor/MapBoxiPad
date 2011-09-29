@@ -344,7 +344,7 @@
 {
     if (indexPath.section == DSMapBoxLayerSectionTile)
     {
-        // we want to warn the user if they are deleting a base layer, which is possibly quite large
+        // we want to warn the user if they are deleting a large tile layer
         //
         NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
         
@@ -352,7 +352,7 @@
         
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
-            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Delete Base Layer?"
+            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Delete Layer?"
                                                                          message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
                                                                         delegate:self
                                                                cancelButtonTitle:@"Don't Delete"
@@ -364,11 +364,6 @@
             
             return;
         }
-        // FIXME
-        // revert to default bundled tileset if active one was deleted
-        //
-//        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
-//            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     }
     
     [self.layerManager deleteLayerAtIndexPath:indexPath];
