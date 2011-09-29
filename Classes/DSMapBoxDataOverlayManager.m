@@ -667,73 +667,19 @@
     DSMapView *aMapView         = nil;
     id <RMTileSource>tileSource = nil;
     
-    NSArray *layerMapViews = ((DSMapContents *)self.mapView.contents).layerMapViews;
-    
-    if (layerMapViews && [layerMapViews count])
+    // grab top-most tile layer and see if it's interactive
+    //
+    if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
     {
-        // We're touching a baselayer. Get the first overlay with interactivity, which was the last-enabled.
-        //
-        // TODO: Perhaps maintain actual stacking order? 
-        //
-        for (DSMapView *aMapView in layerMapViews)
-        {
-            tileSource = aMapView.contents.tileSource;
-            
-            if ([tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)tileSource supportsInteractivity])
-                break;
-        }
-    }
-    
-    if ( ! tileSource)
-    {
-        if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
-        {
-            id <RMTileSource>aTileSource = self.mapView.contents.tileSource;
-            
-            if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
-            {
-                // We are touching an interactive overlay. Pass to it. 
-                //
-                aMapView   = self.mapView;
-                tileSource = aTileSource;
-            }
-        }
+        id <RMTileSource>aTileSource = self.mapView.contents.tileSource;
         
-        if ( ! tileSource)
+        if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
         {
-            // Still no luck. If we're an overlay, pass to the base layer.
-            //
-            if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
-            {
-                for (UIView *peerView in self.mapView.superview.subviews)
-                {
-                    if ([peerView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
-                        continue;
-                    
-                    if ([peerView isKindOfClass:[DSMapView class]])
-                    {
-                        id <RMTileSource>aTileSource = ((DSMapView *)peerView).contents.tileSource;
-                        
-                        if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
-                        {                        
-                            aMapView   = (DSMapView *)peerView;
-                            tileSource = aTileSource;
-                            
-                            break;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // Last chance. Pass to the base layer.
-                //
-                aMapView   = self.mapView;
-                tileSource = aMapView.contents.tileSource;
-            }
+            aMapView   = self.mapView;
+            tileSource = aTileSource;
         }
     }
-
+    
     NSLog(@"querying for interactivity: %@", tileSource);    
     
     if ([tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)tileSource supportsInteractivity])
