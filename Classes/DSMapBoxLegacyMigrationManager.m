@@ -72,8 +72,17 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
         //
         NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
         
-        for (NSString *saveFile in [[NSFileManager defaultManager] contentsOfDirectoryAtPath:saveFolder error:NULL])
+        NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:saveFolder]
+                                                           includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLCreationDateKey, nil]
+                                                                              options:0
+                                                                                error:NULL];
+        
+        for (NSURL *saveFile in saveFiles)
         {
+            // preserve timestamp because of doc ordering
+            //
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[saveFile path] error:NULL];
+            
             NSString *path = [NSString stringWithFormat:@"%@/%@", saveFolder, saveFile];
             
             NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
@@ -101,11 +110,88 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             // write it back out
             //
             [dict writeToFile:path atomically:YES];
+            [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:[saveFile path] error:NULL];
         }
         
         // mark as done
         //
         [defaults setBool:YES forKey:@"legacyMigration1.3.x"];
+        [defaults synchronize];
+    }
+    
+    if ( ! [defaults objectForKey:@"legacyMigration1.5.x"])
+    {
+        // Routines to migration saved state & document files referencing base layers.
+        //
+        // Existent in versions through 1.5.x.
+        //
+        
+        NSLog(@"Migrating user data for <= 1.5.1 versions...");
+        
+        NSMutableDictionary *baseMapState;
+        NSMutableArray *tileOverlayState;
+
+        // app-wide saved state
+        //
+        if ([defaults objectForKey:@"baseMapState"])
+        {
+            // move base to tile layers
+            //
+            baseMapState     = [NSMutableDictionary dictionaryWithDictionary:[defaults dictionaryForKey:@"baseMapState"]];
+            tileOverlayState = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"tileOverlayState"]];
+
+            if ([baseMapState objectForKey:@"tileSetURL"])
+            {
+                [tileOverlayState addObject:[baseMapState objectForKey:@"tileSetURL"]];
+                [baseMapState removeObjectForKey:@"tileSetURL"];
+            
+                [defaults setObject:baseMapState     forKey:@"baseMapState"];
+                [defaults setObject:tileOverlayState forKey:@"tileOverlayState"];
+            }
+        }
+        
+        // saved docs
+        //
+        NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+        
+        NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:saveFolder]
+                                                           includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLCreationDateKey, nil]
+                                                                              options:0
+                                                                                error:NULL];
+        
+        for (NSURL *saveFile in saveFiles)
+        {
+            // preserve timestamp because of doc ordering
+            //
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[saveFile path] error:NULL];
+            
+            NSString *path = [NSString stringWithFormat:@"%@/%@", saveFolder, [saveFile path]];
+            
+            NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
+            
+            baseMapState      = [NSMutableDictionary dictionaryWithDictionary:[dict objectForKey:@"baseMapState"]];
+            tileOverlayState  = [NSMutableArray arrayWithArray:[dict objectForKey:@"tileOverlayState"]];
+            
+            // move base to tile layers
+            //
+            if ([baseMapState objectForKey:@"tileSetURL"])
+            {
+                [tileOverlayState addObject:[baseMapState objectForKey:@"tileSetURL"]];
+                [baseMapState removeObjectForKey:@"tileSetURL"];
+                
+                [dict setObject:baseMapState     forKey:@"baseMapState"];
+                [dict setObject:tileOverlayState forKey:@"tileOverlayState"];
+                
+                // write it back out
+                //
+                [dict writeToFile:path atomically:YES];
+                [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:[saveFile path] error:NULL];
+            }
+        }
+        
+        // mark as done
+        //
+        [defaults setBool:YES forKey:@"legacyMigration1.5.x"];
         [defaults synchronize];
     }
 }
