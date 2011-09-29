@@ -17,8 +17,8 @@
 
 static DSMapBoxTileSetManager *defaultManager;
 
-@synthesize activeTileSetURL;
 @synthesize defaultTileSetURL;
+@synthesize defaultTileSetName;
 
 + (DSMapBoxTileSetManager *)defaultManager
 {
@@ -43,8 +43,7 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *path = [[bundledTileSets sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
         
-        activeTileSetURL  = [[NSURL fileURLWithPath:path] retain];
-        defaultTileSetURL = [activeTileSetURL copy];
+        defaultTileSetURL = [[NSURL fileURLWithPath:path] retain];
     }
     
     return self;
@@ -52,7 +51,6 @@ static DSMapBoxTileSetManager *defaultManager;
 
 - (void)dealloc
 {
-    [activeTileSetURL  release];
     [defaultTileSetURL release];
     [defaultTileSetName release];
     
@@ -61,7 +59,7 @@ static DSMapBoxTileSetManager *defaultManager;
 
 #pragma mark -
 
-- (NSArray *)alternateTileSetURLsOfType:(DSMapBoxTileSetType)desiredTileSetType
+- (NSArray *)tileSetURLs
 {
     NSFileManager *fileManager  = [NSFileManager defaultManager];
     NSString *docsPath          = [[UIApplication sharedApplication] documentsFolderPathString];
@@ -76,7 +74,7 @@ static DSMapBoxTileSetManager *defaultManager;
     //
     NSArray *onlineLayers = [fileManager contentsOfDirectoryAtPath:onlineLayersPath error:NULL];
 
-    // iterate & look for proper type
+    // iterate each & add to list
     //
     for (NSString *localLayer in localLayers)
     {
@@ -84,17 +82,8 @@ static DSMapBoxTileSetManager *defaultManager;
         NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
         
         if ([[layerURL pathExtension] isEqualToString:@"mbtiles"])
-            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:[self defaultTileSetName]])
-            {
-                RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
-                
-                if ([source layerType] == desiredTileSetType)
-                    [tileSetURLs addObject:layerURL];
-
-                // close explicitly to avoid file descriptor problems
-                //
-                [source release];
-            }
+            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:self.defaultTileSetName])
+                [tileSetURLs addObject:layerURL];
     }
     
     for (NSString *onlineLayer in onlineLayers)
@@ -103,26 +92,14 @@ static DSMapBoxTileSetManager *defaultManager;
         NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
         
         if ([[[layerURL pathExtension] lowercaseString] isEqualToString:@"plist"])
-            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:[self defaultTileSetName]])
-            {
-                RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
-                
-                if ([source layerType] == desiredTileSetType)
-                    [tileSetURLs addObject:layerURL];
-                
-                // close explicitly to avoid file descriptor problems
-                //
-                [source release];
-            }
+            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:self.defaultTileSetName])
+                [tileSetURLs addObject:layerURL];
     }
     
-    // add OpenStreetMap & MapQuest for base layers
+    // add OpenStreetMap & MapQuest
     //
-    if (desiredTileSetType == DSMapBoxTileSetTypeBaselayer)
-    {
-        [tileSetURLs addObject:kDSOpenStreetMapURL];
-        [tileSetURLs addObject:kDSMapQuestOSMURL];
-    }
+    [tileSetURLs addObject:kDSOpenStreetMapURL];
+    [tileSetURLs addObject:kDSMapQuestOSMURL];
 
     return [NSArray arrayWithArray:tileSetURLs];
 }
@@ -157,7 +134,7 @@ static DSMapBoxTileSetManager *defaultManager;
         return name;
     }
     
-    return @"";
+    return @"(untitled)";
 }
 
 - (NSString *)descriptionForTileSetAtURL:(NSURL *)tileSetURL
@@ -243,11 +220,6 @@ static DSMapBoxTileSetManager *defaultManager;
 
 #pragma mark -
 
-- (BOOL)isUsingDefaultTileSet
-{
-    return [self.activeTileSetURL isEqual:self.defaultTileSetURL];
-}
-
 - (NSString *)defaultTileSetName
 {
     // do the actual lookup once
@@ -256,49 +228,6 @@ static DSMapBoxTileSetManager *defaultManager;
         defaultTileSetName = [[self displayNameForTileSetAtURL:self.defaultTileSetURL] retain];
     
     return defaultTileSetName;
-}
-
-- (NSString *)activeTileSetName
-{
-    return [self displayNameForTileSetAtURL:self.activeTileSetURL];
-}
-
-- (NSString *)activeTileSetAttribution
-{
-    return [self attributionForTileSetAtURL:self.activeTileSetURL];
-}
-
-- (BOOL)makeTileSetWithNameActive:(NSString *)tileSetName animated:(BOOL)animated
-{
-    NSLog(@"activating %@", tileSetName);
-    
-    NSURL *currentURL = [[self.activeTileSetURL copy] autorelease];
-    
-    if ([tileSetName isEqualToString:[self displayNameForTileSetAtURL:self.defaultTileSetURL]])
-    {
-        if ( ! [currentURL isEqual:self.defaultTileSetURL])
-            self.activeTileSetURL = [[self.defaultTileSetURL copy] autorelease];
-    }
-    else
-    {
-        NSArray *alternateTileSetURLs = [self alternateTileSetURLsOfType:DSMapBoxTileSetTypeBaselayer];
-        
-        for (NSURL *alternateURL in alternateTileSetURLs)
-        {
-            if ([[self displayNameForTileSetAtURL:alternateURL] isEqualToString:tileSetName])
-            {
-                self.activeTileSetURL = [[alternateURL copy] autorelease];
-                
-                break;
-            }
-        }
-    }
-
-    if ( ! [currentURL isEqual:self.activeTileSetURL])
-        [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:DSMapBoxTileSetChangedNotification 
-                                                                                             object:[NSNumber numberWithBool:animated]]];
-
-    return ! [currentURL isEqual:self.activeTileSetURL];
 }
 
 @end

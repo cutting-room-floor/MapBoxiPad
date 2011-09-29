@@ -10,14 +10,8 @@
 
 extern NSString *const DSMapContentsZoomBoundsReached;
 
-#define kWarningAlpha          0.25f
-
-@class RMMapView;
-
 @interface DSMapContents : RMMapContents
 {
-    NSArray *layerMapViews;
-    RMMapView *mapView;
 }
 
 @property (nonatomic, retain) NSArray *layerMapViews;

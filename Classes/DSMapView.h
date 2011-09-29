@@ -8,7 +8,7 @@
 
 #import "RMMapView.h"
 
-@class DSTiledLayerMapView;
+@class DSMapBoxTiledLayerMapView;
 
 @protocol DSMapBoxInteractivityDelegate
 
@@ -23,15 +23,11 @@
 
 @interface DSMapView : RMMapView
 {
-    BOOL touchesMoved;
-    id <DSMapBoxInteractivityDelegate>interactivityDelegate;
-    NSInvocationOperation *interactivityOperation;
-    CGPoint lastInteractivityPoint;
 }
 
 @property (nonatomic, assign) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
 
 - (DSMapView *)topMostMapView;
-- (void)insertLayerMapView:(DSTiledLayerMapView *)layerMapView;
+- (void)insertLayerMapView:(DSMapBoxTiledLayerMapView *)layerMapView;
 
 @end

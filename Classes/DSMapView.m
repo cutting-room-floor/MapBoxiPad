@@ -10,20 +10,31 @@
 
 #import "RMMarker.h"
 
+@interface DSMapView ()
+
+@property (nonatomic, assign) BOOL touchesMoved;
+@property (nonatomic, assign) CGPoint lastInteractivityPoint;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapView
 
 @synthesize interactivityDelegate;
+@synthesize touchesMoved;
+@synthesize lastInteractivityPoint;
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    touchesMoved = NO;
+    self.touchesMoved = NO;
     
     [super touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    touchesMoved = YES;
+    self.touchesMoved = YES;
     
     [super touchesMoved:touches withEvent:event];
 }
@@ -59,7 +70,7 @@
     //
     if (lastGesture.numTouches == 1 && touch.tapCount == 1 && self.interactivityDelegate && ! markerTap)
     {
-        lastInteractivityPoint = lastGesture.center;
+        self.lastInteractivityPoint = lastGesture.center;
         
         [NSObject cancelPreviousPerformRequestsWithTarget:self 
                                                  selector:@selector(triggerInteractivity:) 
@@ -87,7 +98,7 @@
 
     // two-finger tap to zoom out
     //
-    if (lastGesture.numTouches == 2 && ! touchesMoved)
+    if (lastGesture.numTouches == 2 && ! self.touchesMoved)
     {
         if (self.contents.zoom - 1.0 < kLowerZoomBounds)
         {
@@ -125,7 +136,7 @@
 
 - (void)triggerInteractivity:(NSValue *)pointValue
 {
-    [self.interactivityDelegate presentInteractivityAtPoint:lastInteractivityPoint];
+    [self.interactivityDelegate presentInteractivityAtPoint:self.lastInteractivityPoint];
 }
 
 #pragma mark -
@@ -150,7 +161,7 @@
     return topMostMapView;
 }
 
-- (void)insertLayerMapView:(DSTiledLayerMapView *)layerMapView
+- (void)insertLayerMapView:(DSMapBoxTiledLayerMapView *)layerMapView
 {
     [[self superview] insertSubview:(UIView *)layerMapView aboveSubview:[self topMostMapView]];
 }

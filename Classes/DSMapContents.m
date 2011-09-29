@@ -8,7 +8,7 @@
 
 #import "DSMapContents.h"
 #import "DSMapBoxMarkerManager.h"
-#import "DSTiledLayerMapView.h"
+#import "DSMapBoxTiledLayerMapView.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 
@@ -22,7 +22,9 @@
 
 NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";
 
-@interface DSMapContents (DSMapContentsPrivate)
+@interface DSMapContents ()
+
+@property (nonatomic, assign) RMMapView *mapView;
 
 - (void)postZoom;
 - (void)recalculateClustersIfNeeded;
@@ -36,6 +38,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 @implementation DSMapContents
 
 @synthesize layerMapViews;
+@synthesize mapView;
 
 - (id)initWithView:(UIView*)newView
 		tilesource:(id<RMTileSource>)newTilesource
@@ -88,7 +91,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     [super moveToLatLong:latlong];
     
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents moveToLatLong:latlong];
 
     [self recalculateClustersIfNeeded];
@@ -101,7 +104,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     [super moveToProjectedPoint:aPoint];
     
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents moveToProjectedPoint:aPoint];
 
     [self recalculateClustersIfNeeded];
@@ -155,7 +158,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     [super moveBy:delta];
         
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents moveBy:delta];
         
     [self recalculateClustersIfNeeded];
@@ -180,7 +183,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     // trigger overlays, if any
     //
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents setZoom:zoom];
     
     [self recalculateClustersIfNeeded];
@@ -225,7 +228,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     // trigger overlays, if any
     //
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents zoomByFactor:zoomFactor near:pivot animated:NO withCallback:callback];
     
     [self recalculateClustersIfNeeded];
@@ -254,7 +257,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     // trigger overlays, if any
     //
     if (self.layerMapViews)
-        for (RMMapView *layerMapView in layerMapViews)
+        for (RMMapView *layerMapView in self.layerMapViews)
             [layerMapView.contents zoomWithLatLngBoundsNorthEast:ne SouthWest:se];
     
     [self recalculateClustersIfNeeded];
@@ -395,9 +398,8 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
         {
             newTag = 0; // out of bounds
 
-            // Only warn once per bounds limit crossing. Do this for
-            // base layers as well, so use tag since we don't actually
-            // change their alpha value. 
+            // Only warn once per bounds limit crossing. We use tag as a way to 
+            // mark which layer we're warning the user about.
             //
             if (mapView.tag != newTag)
                 [[NSNotificationCenter defaultCenter] postNotificationName:DSMapContentsZoomBoundsReached object:self];

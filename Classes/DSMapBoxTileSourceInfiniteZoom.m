@@ -65,13 +65,7 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 - (RMTileImage *)tileImageInfinite:(RMTile)tile
 {
     if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
-    {
-        if ([self layerType] == RMMBTilesLayerTypeBaselayer)
-            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
-
-        else
-            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
-    }
+        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
     
     return [self tileImageInfinite:tile];
 }
@@ -129,18 +123,9 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 
 - (RMTileImage *)tileImageInfinite:(RMTile)tile
 {
-    if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
-    {
-        if ([self layerType] == RMTileStreamLayerTypeBaselayer)
-            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
-
-        else
-            return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
-    }
+    if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative] || ! [self.infoDictionary objectForKey:@"tileURL"])
+        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
     
-    if ( ! [self.infoDictionary objectForKey:@"tileURL"])
-        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"caution.png"])];
-        
     return [self tileImageInfinite:tile];
 }
 

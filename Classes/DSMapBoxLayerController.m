@@ -156,10 +156,6 @@
     
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase:
-            layers = self.layerManager.baseLayers;
-            break;
-            
         case DSMapBoxLayerSectionTile:
             layers = self.layerManager.tileLayers;
             break;
@@ -204,21 +200,18 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 2;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     switch (section)
     {
-        case DSMapBoxLayerSectionBase:
-            return @"Base Layers";
-
         case DSMapBoxLayerSectionTile:
-            return [self tableView:tableView numberOfRowsInSection:section] ? @"Overlay Layers" : nil;
+            return @"Tile Layers";
             
         case DSMapBoxLayerSectionData:
-            return [self tableView:tableView numberOfRowsInSection:section] ? @"Data Layers" : nil;
+            return @"Data Layers";
     }
     
     return nil;
@@ -228,14 +221,11 @@
 {
     switch (section)
     {
-        case DSMapBoxLayerSectionBase:
-            return self.layerManager.baseLayerCount;
-            
         case DSMapBoxLayerSectionTile:
-            return self.layerManager.tileLayerCount;
+            return [self.layerManager.tileLayers count];
 
         case DSMapBoxLayerSectionData:
-            return self.layerManager.dataLayerCount;
+            return [self.layerManager.dataLayers count];
     }
 
     return 0;
@@ -252,27 +242,6 @@
     
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase:
-            
-            cell.accessoryView        = nil;
-            cell.accessoryType        = [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text       = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
-            
-            if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
-                cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
-
-            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
-                cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
-            
-            else if ([[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
-                cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
-                
-            else
-                cell.imageView.image = [UIImage imageNamed:@"mbtiles_layer.png"];
-            
-            break;
-            
         case DSMapBoxLayerSectionTile:
 
             if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
@@ -307,7 +276,13 @@
             cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
             cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
 
-            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
+                cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
+            
+            else if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
+                cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
+            
+            else if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
             
             else
@@ -344,37 +319,10 @@
     return cell;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSURL *baseTileSetURL;
-
-    switch (indexPath.section)
-    {
-        case DSMapBoxLayerSectionBase:
-            baseTileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-       
-            // don't allow deletion of OSM or bundled tile set
-            //
-            if ([baseTileSetURL isEqual:kDSOpenStreetMapURL] || [baseTileSetURL isEqual:kDSMapQuestOSMURL] || [[[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"name"] isEqualToString:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName]])
-                return NO;
-                
-            return YES;
-            
-        case DSMapBoxLayerSectionTile:
-        case DSMapBoxLayerSectionData:
-            return YES;
-    }
-    
-    return NO;
-}
-
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase:
-            return NO;
-            
         case DSMapBoxLayerSectionTile:
             return YES;
             
@@ -394,13 +342,11 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // "archival" is currently deletion -- this might change! 
-    //
-    if (indexPath.section == DSMapBoxLayerSectionBase)
+    if (indexPath.section == DSMapBoxLayerSectionTile)
     {
         // we want to warn the user if they are deleting a base layer, which is possibly quite large
         //
-        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
         
         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
         
@@ -418,14 +364,14 @@
             
             return;
         }
-
+        // FIXME
         // revert to default bundled tileset if active one was deleted
         //
-        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
-            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
+//        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
+//            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
     }
     
-    [self.layerManager archiveLayerAtIndexPath:indexPath];
+    [self.layerManager deleteLayerAtIndexPath:indexPath];
     
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     
@@ -440,14 +386,26 @@
     cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == DSMapBoxLayerSectionTile)
+    {
+        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+        
+        // don't allow deletion of bundled tile sets
+        //
+        if ([tileSetURL isEqual:kDSOpenStreetMapURL] || [tileSetURL isEqual:kDSMapQuestOSMURL])
+            return UITableViewCellEditingStyleNone;
+    }
+
+    return UITableViewCellEditingStyleDelete;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *layer;
     
-    if (indexPath.section == DSMapBoxLayerSectionBase)
-        layer = [self.layerManager.baseLayers objectAtIndex:indexPath.row];
-    
-    else if (indexPath.section == DSMapBoxLayerSectionTile)
+    if (indexPath.section == DSMapBoxLayerSectionTile)
         layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
     
     else if (indexPath.section == DSMapBoxLayerSectionData)
@@ -470,15 +428,11 @@
             return;
         }
     }
-    else if (indexPath.section == DSMapBoxLayerSectionBase || indexPath.section == DSMapBoxLayerSectionTile)
+    else if (indexPath.section == DSMapBoxLayerSectionTile)
     {
         NSArray *layers;
         
-        if (indexPath.section == DSMapBoxLayerSectionBase)
-            layers = self.layerManager.baseLayers;
-
-        else
-            layers = self.layerManager.tileLayers;
+        layers = self.layerManager.tileLayers;
         
         NSDictionary *layer = [layers objectAtIndex:indexPath.row];
         
@@ -542,10 +496,6 @@
     
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase:
-            layer = [self.layerManager.baseLayers objectAtIndex:indexPath.row];
-            break;
-            
         case DSMapBoxLayerSectionTile:
             layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
             break;
@@ -570,14 +520,7 @@
     {
         NSIndexPath *indexPath = (NSIndexPath *)((DSMapBoxAlertView *)alertView).context;
         
-        NSURL *tileSetURL = [[self.layerManager.baseLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-
-        // revert to default bundled tileset if active one was deleted
-        //
-        if ([tileSetURL isEqual:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]])
-            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
-        
-        [self.layerManager archiveLayerAtIndexPath:indexPath];
+        [self.layerManager deleteLayerAtIndexPath:indexPath];
         
         [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
     }

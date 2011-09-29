@@ -1,16 +1,16 @@
 //
-//  DSTiledLayerMapView.m
+//  DSMapBoxTiledLayerMapView.m
 //  MapBoxiPadDemo
 //
 //  Created by Justin R. Miller on 7/26/10.
 //  Copyright 2010 Code Sorcery Workshop. All rights reserved.
 //
 
-#import "DSTiledLayerMapView.h"
+#import "DSMapBoxTiledLayerMapView.h"
 
 #import "RMMarker.h"
 
-@interface RMMapView (DSTiledLayerMapView)
+@interface RMMapView (DSMapBoxTiledLayerMapView)
 
 - (void)performInitialSetup;
 
@@ -18,7 +18,7 @@
 
 #pragma mark -
 
-@interface DSTiledLayerMapView (DSTiledLayerMapViewPrivate)
+@interface DSMapBoxTiledLayerMapView ()
 
 - (BOOL)checkForOverlayTouches:(NSSet *)touches;
 
@@ -26,7 +26,7 @@
 
 #pragma mark -
 
-@implementation DSTiledLayerMapView
+@implementation DSMapBoxTiledLayerMapView
 
 @synthesize masterView;
 @synthesize tileSetURL;
@@ -73,7 +73,7 @@
         [super touchesBegan:touches withEvent:event];
 
     else
-        [masterView touchesBegan:touches withEvent:event];
+        [self.masterView touchesBegan:touches withEvent:event];
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
@@ -82,7 +82,7 @@
         [super touchesCancelled:touches withEvent:event];
 
     else
-        [masterView touchesCancelled:touches withEvent:event];
+        [self.masterView touchesCancelled:touches withEvent:event];
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
@@ -91,14 +91,14 @@
         [super touchesEnded:touches withEvent:event];
 
     else
-        [masterView touchesEnded:touches withEvent:event];
+        [self.masterView touchesEnded:touches withEvent:event];
 }
 
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
 {
     // don't allow moves on the marker overlay
     //
-    [masterView touchesMoved:touches withEvent:event];
+    [self.masterView touchesMoved:touches withEvent:event];
 }
 
 #pragma mark -

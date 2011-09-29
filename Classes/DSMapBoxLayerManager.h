@@ -11,7 +11,7 @@
 //
 //  That is, KML & GeoRSS overlays, as CALayer subclasses, must always be
 //  part of the 'overlay' member of the top-most RMMapView (or subclass)
-//  so that they show up on top. They can then be ordered among themselves.
+//  so that they show up on top. They can then be ordered amongst themselves.
 //
 //  Below that, the RMMapView objects can be ordered above the base map 
 //  layer in order to display their tiles in different stacking orders.
@@ -19,15 +19,13 @@
 //  new top-most map view. 
 //
 
-#import <UIKit/UIKit.h>
-
 static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocumentsChangedNotification";
 
 @class DSMapBoxDataOverlayManager;
 @class DSMapView;
 @class RMMBTilesTileSource;
 
-@protocol DSDataLayerHandlerDelegate
+@protocol DSMapBoxDataLayerHandlerDelegate
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayerCount:(int)count;
 - (void)dataLayerHandler:(id)handler didFailToHandleDataLayerAtURL:(NSURL *)layerURL;
@@ -45,33 +43,22 @@ typedef enum {
 } DSMapBoxLayerType;
 
 typedef enum {
-    DSMapBoxLayerSectionBase = 0,
-    DSMapBoxLayerSectionTile = 1,
-    DSMapBoxLayerSectionData = 2,
+    DSMapBoxLayerSectionTile = 0,
+    DSMapBoxLayerSectionData = 1,
 } DSMapBoxLayerSection;
 
 @interface DSMapBoxLayerManager : NSObject
 {
-    DSMapBoxDataOverlayManager *dataOverlayManager;
-    DSMapView *baseMapView;
-    NSArray *baseLayers;
-    NSArray *tileLayers;
-    NSArray *dataLayers;
-    id <NSObject, DSDataLayerHandlerDelegate>delegate;
 }
 
-@property (nonatomic, retain) DSMapView *baseMapView;
-@property (nonatomic, readonly, retain) NSArray *baseLayers;
+@property (nonatomic, readonly, retain) DSMapView *baseMapView;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;
 @property (nonatomic, readonly, retain) NSArray *dataLayers;
-@property (nonatomic, readonly, assign) NSUInteger baseLayerCount;
-@property (nonatomic, readonly, assign) NSUInteger tileLayerCount;
-@property (nonatomic, readonly, assign) NSUInteger dataLayerCount;
-@property (nonatomic, assign) id <NSObject, DSDataLayerHandlerDelegate>delegate;
+@property (nonatomic, assign) id <NSObject, DSMapBoxDataLayerHandlerDelegate>delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
-- (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath;
+- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow;
 

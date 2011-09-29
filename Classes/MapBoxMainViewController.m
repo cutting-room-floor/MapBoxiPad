@@ -76,21 +76,7 @@
     
     // base map view
     //
-    NSObject <RMTileSource>*source;
-    
-    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
-    
-    if ([activeTileSetURL isEqual:kDSOpenStreetMapURL])
-        source = [[[RMOpenStreetMapSource alloc] init] autorelease];
-
-    else if ([activeTileSetURL isEqual:kDSMapQuestOSMURL])
-        source = [[[RMMapQuestOSMSource alloc] init] autorelease];
-
-    else if ([activeTileSetURL isTileStreamURL])
-        source = [[[RMTileStreamSource alloc] initWithInfo:[NSDictionary dictionaryWithContentsOfURL:activeTileSetURL]] autorelease];
-
-    else
-        source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] activeTileSetURL]] autorelease];
+    RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]] autorelease];
     
 	[[[DSMapContents alloc] initWithView:mapView 
                               tilesource:source
@@ -119,13 +105,6 @@
     mapView.interactivityDelegate = dataOverlayManager;
     layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     layerManager.delegate = self;
-    
-    // watch for tile changes
-    //
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(tileSetDidChange:)
-                                                 name:DSMapBoxTileSetChangedNotification
-                                               object:nil];
     
     // watch for net changes
     //
@@ -234,10 +213,9 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached     object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached   object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded              object:nil];
     
     [reachability stopNotifier];
     [reachability release];
@@ -295,24 +273,6 @@
         
         if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kUpperZoomBounds)
             mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
-        
-        // get base tile set
-        //
-        NSURL *restoreTileSetURL = [NSURL fileURLWithPath:[baseMapState objectForKey:@"tileSetURL"]];
-        
-        // apply base, if able
-        //
-        if ([[NSFileManager defaultManager] fileExistsAtPath:[restoreTileSetURL relativePath]] || [restoreTileSetURL isEqual:kDSOpenStreetMapURL] || [restoreTileSetURL isEqual:kDSMapQuestOSMURL])
-        {        
-            NSString *restoreTileSetName = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:restoreTileSetURL];
-            
-            if (([restoreTileSetName isEqualToString:kDSOpenStreetMapName] || [restoreTileSetName isEqualToString:kDSMapQuestOSMName] || [restoreTileSetURL isTileStreamURL]) && 
-                [reachability currentReachabilityStatus] == NotReachable)
-                [self offlineAlert];
-            
-            else
-                [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:restoreTileSetName animated:NO];
-        }
     }
     
     // load tile overlay state(s)
@@ -380,7 +340,6 @@
     // get base map state
     //
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [[[DSMapBoxTileSetManager defaultManager] activeTileSetURL] relativePath], @"tileSetURL",
                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
                                      [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
                                      [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
@@ -684,135 +643,22 @@
 
 #pragma mark -
 
-- (void)tileSetDidChange:(NSNotification *)notification
-{
-    // hide layers popover
-    //
-    [layersPopover dismissPopoverAnimated:NO];
-    
-    // determine if we should animate
-    //
-    BOOL animated = [[notification object] boolValue];
-
-    UIImageView *snapshotView = nil;
-    
-    // replace map with image to animate away
-    //
-    if (animated)
-    {
-        // get an image of the current map
-        //
-        UIImage *snapshot = [self mapSnapshot];
-        
-        // swap map view with image view
-        //
-        snapshotView = [[[UIImageView alloc] initWithFrame:mapView.frame] autorelease];
-        snapshotView.image = snapshot;
-        [self.view insertSubview:snapshotView atIndex:0];
-        [mapView removeFromSuperview];
-    }
-    
-    // force switch to new tile source to update tiles
-    //
-    NSURL *newTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
-    
-    if ([newTileSetURL isEqual:kDSOpenStreetMapURL] || [newTileSetURL isEqual:kDSMapQuestOSMURL])
-    {
-        id <RMTileSource>source;
-        
-        if ([newTileSetURL isEqual:kDSOpenStreetMapURL])
-            source = [[[RMOpenStreetMapSource alloc] init] autorelease];
-        else if ([newTileSetURL isEqual:kDSMapQuestOSMURL])
-            source = [[[RMMapQuestOSMSource alloc] init] autorelease];
-        
-        if (mapView.contents.zoom < [source minZoom])
-            mapView.contents.zoom = [source minZoom];
-        
-        else if (mapView.contents.zoom > [source maxZoom])
-            mapView.contents.zoom = [source maxZoom];
-        
-        mapView.contents.tileSource = source;
-        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-    }
-    else
-    {
-        id source;
-        
-        if ([newTileSetURL isTileStreamURL])
-            source = [[[RMTileStreamSource alloc] initWithReferenceURL:newTileSetURL] autorelease];
-        
-        else
-            source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:newTileSetURL] autorelease];
-        
-        mapView.contents.tileSource = source;
-        mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-
-        // switch to new base layer bounds if less than whole world
-        //
-        if ( ! [source coversFullWorld] && 
-            [source latitudeLongitudeBoundingBox].southwest.latitude >= kLowerLatitudeBounds &&
-            [source latitudeLongitudeBoundingBox].northeast.latitude <= kUpperLatitudeBounds)
-        {
-            RMLatLong sw = [source latitudeLongitudeBoundingBox].southwest;
-            RMLatLong ne = [source latitudeLongitudeBoundingBox].northeast;
-            
-            RMLatLong center = CLLocationCoordinate2DMake((ne.latitude + sw.latitude) / 2, (ne.longitude + sw.longitude) / 2);
-            
-            mapView.contents.mapCenter = center;
-            mapView.contents.zoom      = fmaxf([source minZoomNative], kLowerZoomBounds);
-        }
-    }
-
-    // perform image to map animated swap back
-    //
-    if (animated)
-    {
-        // start up page turn sound effect
-        //
-        [DSSound playSoundNamed:@"page_flip.wav"];
-        
-        // animate swap from old snapshot to new map
-        //
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
-        [UIView setAnimationDuration:0.8];
-        [snapshotView removeFromSuperview];
-        [self.view insertSubview:mapView atIndex:0];
-        [UIView commitAnimations];
-    }
-    
-    // update attribution
-    //
-    if ([[DSMapBoxTileSetManager defaultManager] activeTileSetAttribution])
-    {
-        attributionLabel.text   = [[DSMapBoxTileSetManager defaultManager] activeTileSetAttribution];
-        attributionLabel.hidden = NO;
-    }
-    else
-    {        
-        attributionLabel.hidden = YES;
-    }
-}
-
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
-    NSURL *activeTileSetURL = [[DSMapBoxTileSetManager defaultManager] activeTileSetURL];
-    
-    if (([activeTileSetURL isEqual:kDSOpenStreetMapURL] || [activeTileSetURL isEqual:kDSMapQuestOSMURL] || [activeTileSetURL isTileStreamURL]) && 
-        [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
-        [self offlineAlert];
+    // FIXME: compare active layers + [(Reachability *)[notification object] currentReachabilityStatus] == NotReachable
+    // then [self offlineAlert]
 }
 
 - (void)offlineAlert
 {
+    NSString *tileSetName = @"FIXME";
+    
     UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", [[DSMapBoxTileSetManager defaultManager] activeTileSetName], [[DSMapBoxTileSetManager defaultManager] defaultTileSetName]]
+                                                     message:[NSString stringWithFormat:@"You are now offline. %@ requires an active internet connection, so %@ was activated instead.", tileSetName, tileSetName]
                                                     delegate:nil
                                            cancelButtonTitle:nil
                                            otherButtonTitles:@"OK", nil] autorelease];
 
-    [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName] animated:NO];
-    
     [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
 }
 

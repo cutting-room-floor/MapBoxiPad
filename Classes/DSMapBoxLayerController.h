@@ -6,8 +6,6 @@
 //  Copyright 2010 Code Sorcery Workshop. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 @class DSMapBoxLayerManager;
 
 @protocol DSMapBoxLayerControllerDelegate
@@ -21,8 +19,6 @@
 
 @interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate>
 {
-    DSMapBoxLayerManager *layerManager;
-    id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
 }
 
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;

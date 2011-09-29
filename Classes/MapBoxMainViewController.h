@@ -6,8 +6,6 @@
 //  Copyright Code Sorcery Workshop 2010. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-
 #import "DSMapBoxDocumentLoadController.h"
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
@@ -23,7 +21,7 @@
 
 @interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
                                                         DSMapBoxDocumentLoadControllerDelegate, 
-                                                        DSDataLayerHandlerDelegate,
+                                                        DSMapBoxDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate>

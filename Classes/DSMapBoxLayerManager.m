@@ -10,7 +10,7 @@
 
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapBoxTileSetManager.h"
-#import "DSTiledLayerMapView.h"
+#import "DSMapBoxTiledLayerMapView.h"
 #import "DSMapContents.h"
 #import "DSMapView.h"
 
@@ -25,7 +25,12 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface DSMapBoxLayerManager (DSMapBoxLayerManagerPrivate)
+@interface DSMapBoxLayerManager ()
+
+@property (nonatomic, retain) DSMapBoxDataOverlayManager *dataOverlayManager;
+@property (nonatomic, retain) DSMapView *baseMapView;
+@property (nonatomic, retain) NSArray *tileLayers;
+@property (nonatomic, retain) NSArray *dataLayers;
 
 - (void)reloadLayersFromDisk;
 - (void)reorderLayerDisplay;
@@ -36,13 +41,10 @@
 
 @implementation DSMapBoxLayerManager
 
+@synthesize dataOverlayManager;
 @synthesize baseMapView;
-@synthesize baseLayers;
 @synthesize tileLayers;
 @synthesize dataLayers;
-@synthesize baseLayerCount;
-@synthesize tileLayerCount;
-@synthesize dataLayerCount;
 @synthesize delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
@@ -54,23 +56,16 @@
         dataOverlayManager = [overlayManager retain];
         baseMapView        = [mapView retain];
         
-        baseLayers = [[NSArray array] retain];
         tileLayers = [[NSArray array] retain];
         dataLayers = [[NSArray array] retain];
         
         [self reloadLayersFromDisk];
         
-        if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"]) // bundled set doesn't have a URL
-            [TESTFLIGHT passCheckpoint:@"has MBTiles base layer"];
-        
-        if ([[baseLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
-            [TESTFLIGHT passCheckpoint:@"has TileStream base layer"];
-        
-        if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"])
-            [TESTFLIGHT passCheckpoint:@"has MBTiles overlay layer"];
+        if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"]) // bundled set doesn't have a URL
+            [TESTFLIGHT passCheckpoint:@"has MBTiles layer"];
         
         if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
-            [TESTFLIGHT passCheckpoint:@"has TileStream overlay layer"];
+            [TESTFLIGHT passCheckpoint:@"has TileStream layer"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kml"])
             [TESTFLIGHT passCheckpoint:@"has KML layer (.kml)"];
@@ -90,14 +85,8 @@
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"geojson"])
             [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.geojson)"];
         
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [baseLayers count]] forKey:@"base layer count"];
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"overlay layer count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"tile layer count"];
         [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadLayersFromDisk)
-                                                     name:DSMapBoxTileSetChangedNotification
-                                                   object:nil];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadLayersFromDisk)
@@ -110,12 +99,10 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxTileSetChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDocumentsChangedNotification object:nil];
 
     [dataOverlayManager release];
     [baseMapView release];
-    [baseLayers release];
     [tileLayers release];
     [dataLayers release];
     
@@ -124,62 +111,11 @@
 
 #pragma mark -
 
-- (NSUInteger)baseLayerCount
-{
-    return [self.baseLayers count];
-}
-
-- (NSUInteger)tileLayerCount
-{
-    return [self.tileLayers count];
-}
-
-- (NSUInteger)dataLayerCount
-{
-    return [self.dataLayers count];
-}
-
-#pragma mark -
-
 - (void)reloadLayersFromDisk
 {
-    // base layers
-    //
-    NSArray *baseSetURLs = [[DSMapBoxTileSetManager defaultManager] alternateTileSetURLsOfType:DSMapBoxTileSetTypeBaselayer];
-    
-    NSMutableArray *mutableBaseLayers = [NSMutableArray array];
-    
-    [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:[[DSMapBoxTileSetManager defaultManager] defaultTileSetName], @"name",
-                                                                                   [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]], @"description",
-                                                                                   [NSNumber numberWithBool:[[DSMapBoxTileSetManager defaultManager] isUsingDefaultTileSet]], @"selected",
-                                                                                   nil]];
-    
-    for (NSURL *baseSetURL in baseSetURLs)
-    {
-        if ( ! [[mutableBaseLayers valueForKeyPath:@"URL"] containsObject:baseSetURL])
-        {
-            NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:baseSetURL];
-            NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:baseSetURL];
-            
-            BOOL isSelected = [[[DSMapBoxTileSetManager defaultManager] activeTileSetName] isEqualToString:name] && 
-                              [[mutableBaseLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count] == 0;
-            
-            [mutableBaseLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:baseSetURL,                           @"URL",
-                                                                                           name,                                 @"name",
-                                                                                           (description ? description : @""),    @"description",
-                                                                                           [NSNumber numberWithBool:isSelected], @"selected",
-                                                                                           nil]];
-        }
-    }
-    
-    [mutableBaseLayers sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"name" ascending:YES] autorelease]]];
-    
-    [baseLayers release];
-    baseLayers = [[NSArray arrayWithArray:mutableBaseLayers] retain];
-    
     // tile layers
     //
-    NSArray *tileSetURLs = [[DSMapBoxTileSetManager defaultManager] alternateTileSetURLsOfType:DSMapBoxTileSetTypeOverlay];
+    NSArray *tileSetURLs = [[DSMapBoxTileSetManager defaultManager] tileSetURLs];
     
     NSMutableArray *mutableTileLayers  = [NSMutableArray arrayWithArray:self.tileLayers];
     NSMutableArray *tileLayersToRemove = [NSMutableArray array];
@@ -221,8 +157,7 @@
         }
     }
     
-    [tileLayers release];
-    tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+    self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
 
     // data layers
     //
@@ -333,8 +268,7 @@
         }
     }
         
-    [dataLayers release];
-    dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
+    self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
 }
 
 - (void)reorderLayerDisplay
@@ -351,37 +285,37 @@
         
         // remove all tile layer maps from superview
         //
-        [((DSMapContents *)baseMapView.contents).layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+        [((DSMapContents *)self.baseMapView.contents).layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         
         // iterate visible layers, finding map for each & inserting it above top-most existing map layer
         //
         for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
         {
-            DSTiledLayerMapView *layerMapView = [[((DSMapContents *)baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
+            DSMapBoxTiledLayerMapView *layerMapView = [[((DSMapContents *)self.baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
             
-            [baseMapView insertLayerMapView:layerMapView];
+            [self.baseMapView insertLayerMapView:layerMapView];
             
             [orderedMaps addObject:layerMapView];
         }
         
         // find the new top-most map
         //
-        DSTiledLayerMapView *topMostMap = [orderedMaps lastObject];
+        DSMapBoxTiledLayerMapView *topMostMap = [orderedMaps lastObject];
 
         // pass the data overlay baton to it
         //
-        dataOverlayManager.mapView = topMostMap;
+        self.dataOverlayManager.mapView = topMostMap;
 
         // setup the master map & data manager connections
         //
-        topMostMap.masterView = baseMapView;
-        topMostMap.delegate   = dataOverlayManager;
+        topMostMap.masterView = self.baseMapView;
+        topMostMap.delegate   = self.dataOverlayManager;
         
         // zero out the non-top-most map connections
         //
         [orderedMaps removeLastObject];
 
-        for (DSTiledLayerMapView *orderedMap in orderedMaps)
+        for (DSMapBoxTiledLayerMapView *orderedMap in orderedMaps)
         {
             orderedMap.masterView = nil;
             orderedMap.delegate   = nil;
@@ -397,11 +331,7 @@
     
     switch (fromIndexPath.section)
     {
-        case DSMapBoxLayerSectionBase: // can't move base layers
-            
-            return;
-            
-        case DSMapBoxLayerSectionTile: // tile layers
+        case DSMapBoxLayerSectionTile:
             
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
 
@@ -410,12 +340,11 @@
             [mutableTileLayers removeObject:layer];
             [mutableTileLayers insertObject:layer atIndex:toIndexPath.row];
 
-            [tileLayers release];
-            tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+            self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
             
             break;
             
-        case DSMapBoxLayerSectionData: // data layers
+        case DSMapBoxLayerSectionData:
             
             layer = [self.dataLayers objectAtIndex:fromIndexPath.row];
             
@@ -424,8 +353,7 @@
             [mutableDataLayers removeObject:layer];
             [mutableDataLayers insertObject:layer atIndex:toIndexPath.row];
             
-            [dataLayers release];
-            dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
+            self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
             break;
     }
@@ -434,33 +362,13 @@
     [self reorderLayerDisplay];
 }
 
-- (void)archiveLayerAtIndexPath:(NSIndexPath *)indexPath
+- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: change this from a deletion into a library archival
-    
     NSMutableDictionary *layer;
 
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase: // can't archive base layers (for now)
-            
-            layer = [self.baseLayers objectAtIndex:indexPath.row];
-            
-            if ([[layer objectForKey:@"selected"] boolValue])
-                [self toggleLayerAtIndexPath:indexPath];
-            
-            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
-            
-            NSMutableArray *mutableBaseLayers = [NSMutableArray arrayWithArray:self.baseLayers];
-            
-            [mutableBaseLayers removeObject:layer];
-            
-            [baseLayers release];
-            baseLayers = [[NSArray arrayWithArray:mutableBaseLayers] retain];
-            
-            break;
-
-        case DSMapBoxLayerSectionTile: // tile layers
+        case DSMapBoxLayerSectionTile:
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
@@ -473,12 +381,11 @@
             
             [mutableTileLayers removeObject:layer];
             
-            [tileLayers release];
-            tileLayers = [[NSArray arrayWithArray:mutableTileLayers] retain];
+            self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
             
             break;
             
-        case DSMapBoxLayerSectionData: // data layers
+        case DSMapBoxLayerSectionData:
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
 
@@ -491,8 +398,7 @@
             
             [mutableDataLayers removeObject:layer];
             
-            [dataLayers release];
-            dataLayers = [[NSArray arrayWithArray:mutableDataLayers] retain];
+            self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
             break;
     }
@@ -507,46 +413,25 @@
 {
     NSMutableDictionary *layer;
     
-    NSMutableDictionary *newLayer;
-    NSMutableDictionary *oldLayer;
-    
     switch (indexPath.section)
     {
-        case DSMapBoxLayerSectionBase:
-            
-            newLayer = [self.baseLayers objectAtIndex:indexPath.row];
-
-            if ([[newLayer objectForKey:@"selected"] boolValue]) // already active
-                return;
-
-            oldLayer = [[self.baseLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] lastObject];
-            
-            [oldLayer setObject:[NSNumber numberWithBool:NO]  forKey:@"selected"];
-            [newLayer setObject:[NSNumber numberWithBool:YES] forKey:@"selected"];
-            
-            [[DSMapBoxTileSetManager defaultManager] makeTileSetWithNameActive:[newLayer objectForKey:@"name"] animated:YES];
-            
-            [TESTFLIGHT passCheckpoint:@"changed base layer"];
-            
-            return;
-            
-        case DSMapBoxLayerSectionTile: // tile layers
+        case DSMapBoxLayerSectionTile:
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
             {
-                for (UIView *baseMapPeer in baseMapView.superview.subviews)
+                for (UIView *baseMapPeer in self.baseMapView.superview.subviews)
                 {
-                    if ([baseMapPeer isKindOfClass:[DSTiledLayerMapView class]])
+                    if ([baseMapPeer isKindOfClass:[DSMapBoxTiledLayerMapView class]])
                     {
-                        if ([((DSTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"URL"]])
+                        if ([((DSMapBoxTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"URL"]])
                         {
                             // disassociate with master map
                             //
-                            NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)baseMapView.contents).layerMapViews];
+                            NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
                             [layerMapViews removeObject:baseMapPeer];
-                            ((DSMapContents *)baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+                            ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
 
                             // remove from view hierarchy
                             //
@@ -554,7 +439,7 @@
                             
                             // transfer data overlay status
                             //
-                            dataOverlayManager.mapView = ([layerMapViews count] ? [layerMapViews lastObject] : baseMapView);
+                            self.dataOverlayManager.mapView = ([layerMapViews count] ? [layerMapViews lastObject] : self.baseMapView);
                         }
                     }
                 }
@@ -581,35 +466,35 @@
                 
                 // create the overlay map view
                 //
-                DSTiledLayerMapView *layerMapView = [[[DSTiledLayerMapView alloc] initWithFrame:baseMapView.frame] autorelease];
+                DSMapBoxTiledLayerMapView *layerMapView = [[[DSMapBoxTiledLayerMapView alloc] initWithFrame:self.baseMapView.frame] autorelease];
                 
                 layerMapView.tileSetURL = tileSetURL;
                 
                 // insert above top-most existing map view
                 //
-                [baseMapView insertLayerMapView:layerMapView];
+                [self.baseMapView insertLayerMapView:layerMapView];
                 
                 // copy main map view attributes
                 //
-                layerMapView.autoresizingMask = baseMapView.autoresizingMask;
-                layerMapView.enableRotate     = baseMapView.enableRotate;
-                layerMapView.deceleration     = baseMapView.deceleration;
+                layerMapView.autoresizingMask = self.baseMapView.autoresizingMask;
+                layerMapView.enableRotate     = self.baseMapView.enableRotate;
+                layerMapView.deceleration     = self.baseMapView.deceleration;
 
                 [[[DSMapContents alloc] initWithView:layerMapView 
                                           tilesource:source
-                                        centerLatLon:baseMapView.contents.mapCenter
-                                           zoomLevel:baseMapView.contents.zoom
+                                        centerLatLon:self.baseMapView.contents.mapCenter
+                                           zoomLevel:self.baseMapView.contents.zoom
                                         maxZoomLevel:[source maxZoom]
                                         minZoomLevel:[source minZoom]
                                      backgroundImage:nil] autorelease];
                 
                 // get peer layer map views
                 //
-                NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)baseMapView.contents).layerMapViews];
+                NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
 
                 // disassociate peers with master
                 //
-                for (DSTiledLayerMapView *mapView in layerMapViews)
+                for (DSMapBoxTiledLayerMapView *mapView in layerMapViews)
                 {
                     mapView.masterView = nil;
                     mapView.delegate   = nil;
@@ -618,26 +503,26 @@
                 // associate new with master
                 //
                 [layerMapViews addObject:layerMapView];
-                ((DSMapContents *)baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
-                layerMapView.masterView = baseMapView;
+                ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+                layerMapView.masterView = self.baseMapView;
 
                 // associate new with data overlay manager
                 //
-                layerMapView.delegate = dataOverlayManager;
-                dataOverlayManager.mapView = layerMapView;
+                layerMapView.delegate = self.dataOverlayManager;
+                self.dataOverlayManager.mapView = layerMapView;
                 
-                [TESTFLIGHT passCheckpoint:@"enabled overlay layer"];
+                [TESTFLIGHT passCheckpoint:@"enabled tile layer"];
             }
 
             break;
             
-        case DSMapBoxLayerSectionData: // data layers
+        case DSMapBoxLayerSectionData:
             
             layer = [self.dataLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
             {
-                [dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
+                [self.dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
             }
             else
             {
@@ -653,7 +538,7 @@
                         return;
                     }
                     
-                    [dataOverlayManager addOverlayForKML:kml];
+                    [self.dataOverlayManager addOverlayForKML:kml];
                     
                     if ( ! [layer objectForKey:@"source"])
                         [layer setObject:[kml source] forKey:@"source"];
@@ -670,7 +555,7 @@
                         [layer setObject:source forKey:@"source"];
                     }
                     
-                    [dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                    [self.dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
                     
                     [TESTFLIGHT passCheckpoint:@"enabled GeoRSS layer"];
                 }
@@ -684,7 +569,7 @@
                         [layer setObject:source forKey:@"source"];
                     }
                     
-                    [dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
+                    [self.dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
                     
                     [TESTFLIGHT passCheckpoint:@"enabled GeoJSON layer"];
                 }
