@@ -163,9 +163,9 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
         {
             // preserve timestamp because of doc ordering
             //
-            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[saveFile path] error:NULL];
+            NSString *path = [saveFile path];
             
-            NSString *path = [NSString stringWithFormat:@"%@/%@", saveFolder, [saveFile path]];
+            NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:path error:NULL];
             
             NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
             
@@ -185,7 +185,7 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
                 // write it back out
                 //
                 [dict writeToFile:path atomically:YES];
-                [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:[saveFile path] error:NULL];
+                [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:path error:NULL];
             }
         }
         
