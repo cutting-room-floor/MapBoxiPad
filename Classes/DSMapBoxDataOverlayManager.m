@@ -700,7 +700,7 @@
             
             DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
             
-            self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+            self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
             
             self.balloon.passthroughViews = [NSArray arrayWithObject:aMapView];
             self.balloon.delegate = self;
@@ -748,7 +748,7 @@
     
     // init with generic view controller
     //
-    self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]];
+    self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
     
     self.balloon.passthroughViews = [NSArray arrayWithObject:mapView];
     self.balloon.delegate = self;
