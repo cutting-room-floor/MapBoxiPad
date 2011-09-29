@@ -1,9 +1,9 @@
 //
 //  DSMapBoxLayerManager.m
-//  MapBoxiPadDemo
+//  MapBoxiPad
 //
 //  Created by Justin R. Miller on 7/27/10.
-//  Copyright 2010 Code Sorcery Workshop. All rights reserved.
+//  Copyright 2010 Development Seed. All rights reserved.
 //
 
 #import "DSMapBoxLayerManager.h"

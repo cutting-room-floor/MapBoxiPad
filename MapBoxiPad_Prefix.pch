@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'MapBoxiPadDemo' target in the 'MapBoxiPadDemo' project
+// Prefix header for all source files of the 'MapBoxiPad' target in the 'MapBoxiPad' project
 //
 
 #ifdef __OBJC__

@@ -1,9 +1,9 @@
 //
 //  MapBoxAppDelegate.h
-//  MapBoxiPadDemo
+//  MapBoxiPad
 //
 //  Created by Justin R. Miller on 6/17/10.
-//  Copyright Code Sorcery Workshop 2010. All rights reserved.
+//  Copyright Development Seed 2010. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

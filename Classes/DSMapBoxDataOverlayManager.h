@@ -1,9 +1,9 @@
 //
 //  DSMapBoxDataOverlayManager.h
-//  MapBoxiPadDemo
+//  MapBoxiPad
 //
 //  Created by Justin R. Miller on 7/8/10.
-//  Copyright 2010 Code Sorcery Workshop. All rights reserved.
+//  Copyright 2010 Development Seed. All rights reserved.
 //
 //  This class manages the data layers associated with a map view.
 //  Data layers consist of KML, GeoRSS, GeoJSON, and any other CALayer-
