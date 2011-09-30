@@ -12,7 +12,16 @@ void dispatch_delayed_ui_action(NSTimeInterval, dispatch_block_t block);
 
 @interface UIApplication (UIApplication_Additions)
 
-- (NSString *)documentsFolderPathString;
-- (NSString *)preferencesFolderPathString;
+- (NSString *)documentsFolderPath;
+- (NSString *)preferencesFolderPath;
+- (NSString *)applicationSandboxFolderPath;
+
+@end
+
+#pragma mark -
+
+@interface NSURL (UIApplication_Additions)
+
+- (NSString *)pathRelativeToApplicationSandbox;
 
 @end

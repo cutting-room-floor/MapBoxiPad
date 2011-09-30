@@ -76,7 +76,7 @@
         
         for (NSString *item in preloadItems)
             [[NSFileManager defaultManager] copyItemAtPath:item 
-                                                    toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], [item lastPathComponent]] 
+                                                    toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], [item lastPathComponent]] 
                                                      error:NULL];
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunDataPreloaded"];

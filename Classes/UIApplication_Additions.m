@@ -15,18 +15,53 @@ void dispatch_delayed_ui_action(NSTimeInterval delaySeconds, dispatch_block_t bl
 
 @implementation UIApplication (UIApplication_Additions)
 
-- (NSString *)documentsFolderPathString
+- (NSString *)documentsFolderPath
 {
     NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     
     return [userPaths objectAtIndex:0];
 }
 
-- (NSString *)preferencesFolderPathString
+- (NSString *)preferencesFolderPath
 {
     NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
     
     return [NSString stringWithFormat:@"%@/Preferences", [userPaths objectAtIndex:0]];
+}
+
+- (NSString *)applicationSandboxFolderPath
+{
+    NSMutableArray *parts = [NSMutableArray arrayWithArray:[[[NSBundle mainBundle] bundleURL] pathComponents]];
+
+    [parts removeObject:@"/"];
+    [parts removeLastObject];
+    
+    return [@"/" stringByAppendingString:[parts componentsJoinedByString:@"/"]];
+}
+
+@end
+
+#pragma mark -
+
+@implementation NSURL (UIApplication_Additions)
+
+- (NSString *)pathRelativeToApplicationSandbox;
+{
+    /**
+     * This exists so that paths can be stored relative to the app sandbox
+     * in case that absolute sandbox path changes. This could happen when the 
+     * app is reinstalled or when testing in the simulator. 
+     */
+
+    NSURL *sandboxURL = [[NSBundle mainBundle] bundleURL];
+    
+    int count = [[sandboxURL pathComponents] count] - 1;
+    
+    NSMutableArray *parts = [NSMutableArray arrayWithArray:[self pathComponents]];
+    
+    [parts removeObjectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, count)]];
+    
+    return [parts componentsJoinedByString:@"/"];
 }
 
 @end

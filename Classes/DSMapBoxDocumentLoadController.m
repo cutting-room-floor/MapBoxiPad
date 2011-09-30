@@ -82,7 +82,7 @@
 
 + (NSString *)saveFolderPath
 {
-    return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+    return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
 }
 
 - (NSArray *)saveFilesReloadingFromDisk:(BOOL)shouldReloadFromDisk

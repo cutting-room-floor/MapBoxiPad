@@ -70,7 +70,7 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
         
         // saved docs
         //
-        NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+        NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
         
         NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:saveFolder]
                                                            includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLCreationDateKey, nil]
@@ -120,7 +120,8 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
     
     if ( ! [defaults objectForKey:@"legacyMigration1.5.x"])
     {
-        // Routines to migration saved state & document files referencing base layers.
+        // Routines to migrate saved state & document files referencing base layers. (#21)
+        // Routines to migrate absolute tile/data paths in saved documents. (#107)
         //
         // Existent in versions through 1.5.x.
         //
@@ -129,6 +130,7 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
         
         NSMutableDictionary *baseMapState;
         NSMutableArray *tileOverlayState;
+        NSMutableArray *dataOverlayState;
 
         // app-wide saved state
         //
@@ -138,20 +140,34 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             //
             baseMapState     = [NSMutableDictionary dictionaryWithDictionary:[defaults dictionaryForKey:@"baseMapState"]];
             tileOverlayState = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"tileOverlayState"]];
+            dataOverlayState = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"dataOverlayState"]];
 
             if ([baseMapState objectForKey:@"tileSetURL"])
             {
                 [tileOverlayState addObject:[baseMapState objectForKey:@"tileSetURL"]];
                 [baseMapState removeObjectForKey:@"tileSetURL"];
-            
-                [defaults setObject:baseMapState     forKey:@"baseMapState"];
-                [defaults setObject:tileOverlayState forKey:@"tileOverlayState"];
             }
+            
+            // update to relative paths
+            //
+            for (int i = 0; i < [tileOverlayState count]; i++)
+                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                    [tileOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
+
+            for (int i = 0; i < [dataOverlayState count]; i++)
+                if ([[dataOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                    [dataOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[dataOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
+
+            // write back out
+            //
+            [defaults setObject:baseMapState     forKey:@"baseMapState"];
+            [defaults setObject:tileOverlayState forKey:@"tileOverlayState"];
+            [defaults setObject:dataOverlayState forKey:@"dataOverlayState"];
         }
         
         // saved docs
         //
-        NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName];
+        NSString *saveFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
         
         NSArray *saveFiles = [[NSFileManager defaultManager] contentsOfDirectoryAtURL:[NSURL fileURLWithPath:saveFolder]
                                                            includingPropertiesForKeys:[NSArray arrayWithObjects:NSURLNameKey, NSURLCreationDateKey, nil]
@@ -170,6 +186,7 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             
             baseMapState      = [NSMutableDictionary dictionaryWithDictionary:[dict objectForKey:@"baseMapState"]];
             tileOverlayState  = [NSMutableArray arrayWithArray:[dict objectForKey:@"tileOverlayState"]];
+            dataOverlayState  = [NSMutableArray arrayWithArray:[dict objectForKey:@"dataOverlayState"]];
             
             // move base to tile layers
             //
@@ -177,15 +194,27 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             {
                 [tileOverlayState addObject:[baseMapState objectForKey:@"tileSetURL"]];
                 [baseMapState removeObjectForKey:@"tileSetURL"];
-                
-                [dict setObject:baseMapState     forKey:@"baseMapState"];
-                [dict setObject:tileOverlayState forKey:@"tileOverlayState"];
-                
-                // write it back out
-                //
-                [dict writeToFile:path atomically:YES];
-                [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:path error:NULL];
             }
+            
+            // update to relative paths
+            //
+            for (int i = 0; i < [tileOverlayState count]; i++)
+                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                    [tileOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
+            
+            for (int i = 0; i < [dataOverlayState count]; i++)
+                if ([[dataOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                    [dataOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[dataOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
+            
+            // write back out
+            //
+            [dict setObject:baseMapState     forKey:@"baseMapState"];
+            [dict setObject:tileOverlayState forKey:@"tileOverlayState"];
+            [dict setObject:dataOverlayState forKey:@"dataOverlayState"];
+            
+            [dict writeToFile:path atomically:YES];
+            
+            [[NSFileManager defaultManager] setAttributes:attributes ofItemAtPath:path error:NULL];
         }
         
         // mark as done

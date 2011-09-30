@@ -62,8 +62,8 @@ static DSMapBoxTileSetManager *defaultManager;
 - (NSArray *)tileSetURLs
 {
     NSFileManager *fileManager  = [NSFileManager defaultManager];
-    NSString *docsPath          = [[UIApplication sharedApplication] documentsFolderPathString];
-    NSString *onlineLayersPath  = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
+    NSString *docsPath          = [[UIApplication sharedApplication] documentsFolderPath];
+    NSString *onlineLayersPath  = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kTileStreamFolderName];
     NSMutableArray *tileSetURLs = [NSMutableArray array];
 
     // MBTiles in docs folder

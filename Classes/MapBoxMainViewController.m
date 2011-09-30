@@ -142,7 +142,7 @@
     
     NSPredicate *zippedPredicate = [NSPredicate predicateWithFormat:@"self ENDSWITH '.mbtiles.zip'"];
     
-    NSArray *zippedTiles = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString]
+    NSArray *zippedTiles = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPath]
                                                                                 error:NULL] filteredArrayUsingPredicate:zippedPredicate];
     
     NSMutableSet *seenZips = [NSMutableSet set];
@@ -176,7 +176,7 @@
     
     // make sure online tiles folder exists
     //
-    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPathString], kTileStreamFolderName];
+    NSString *onlineLayersFolder = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kTileStreamFolderName];
 
     [[NSFileManager defaultManager] createDirectoryAtPath:onlineLayersFolder
                               withIntermediateDirectories:YES
@@ -243,7 +243,7 @@
     //
     if ([sender isKindOfClass:[NSString class]])
     {
-        NSString *saveFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPathString], kDSSaveFolderName, sender];
+        NSString *saveFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName, sender];
         NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:saveFile];
         
         baseMapState      = [dict objectForKey:@"baseMapState"];
@@ -292,6 +292,8 @@
         
         for (NSString *tileOverlayURLString in tileOverlayState)
         {
+            tileOverlayURLString = [[[[UIApplication sharedApplication] applicationSandboxFolderPath] stringByAppendingString:@"/"] stringByAppendingString:tileOverlayURLString];
+            
             NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
             
             for (NSDictionary *tileLayer in layerManager.tileLayers)
@@ -337,6 +339,8 @@
         //
         for (NSString *dataOverlayURLString in dataOverlayState)
         {
+            dataOverlayURLString = [[[[UIApplication sharedApplication] applicationSandboxFolderPath] stringByAppendingString:@"/"] stringByAppendingString:dataOverlayURLString];
+
             NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
             
             for (NSDictionary *dataLayer in layerManager.dataLayers)
@@ -369,11 +373,11 @@
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.relativePath"];
+    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToAppSandbox"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.relativePath"];
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToAppSandbox"];
 
     // determine if document or global save
     //
@@ -471,7 +475,7 @@
     {
         NSString *source      = [fileURL relativePath];
         NSString *filename    = [[fileURL relativePath] lastPathComponent];
-        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], filename];
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
@@ -491,7 +495,7 @@
     {
         NSString *source      = [fileURL relativePath];
         NSString *filename    = [[fileURL relativePath] lastPathComponent];
-        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], filename];
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
@@ -514,7 +518,7 @@
     {
         NSString *source      = [fileURL relativePath];
         NSString *filename    = [[fileURL relativePath] lastPathComponent];
-        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+        NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], filename];
         
         [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
         
@@ -531,7 +535,7 @@
 {
     NSString *source      = [fileURL relativePath];
     NSString *filename    = [[fileURL relativePath] lastPathComponent];
-    NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], filename];
+    NSString *destination = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], filename];
     
     [[NSFileManager defaultManager] copyItemAtPath:source toPath:destination error:NULL];
     
@@ -800,7 +804,7 @@
                                  ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
                                  nil];
         
-        NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPathString];
+        NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPath];
         
         [dict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist", prefsFolder, kTileStreamFolderName, [layer objectForKey:@"id"]] atomically:YES];
     }

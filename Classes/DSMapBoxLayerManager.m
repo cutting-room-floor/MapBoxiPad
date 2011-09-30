@@ -161,7 +161,7 @@
 
     // data layers
     //
-    NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPathString] error:NULL];
+    NSArray *docs = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[[UIApplication sharedApplication] documentsFolderPath] error:NULL];
     
     NSMutableArray *mutableDataLayers  = [NSMutableArray arrayWithArray:self.dataLayers];
     NSMutableArray *dataLayersToRemove = [NSMutableArray array];
@@ -191,7 +191,7 @@
     //
     for (NSString *path in docs)
     {
-        path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPathString], path];
+        path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], path];
         
         if (([[[path pathExtension] lowercaseString] isEqualToString:@"kml"] || [[[path pathExtension] lowercaseString] isEqualToString:@"kmz"]) && 
              ! [[mutableDataLayers valueForKeyPath:@"URL"] containsObject:[NSURL fileURLWithPath:path]])
