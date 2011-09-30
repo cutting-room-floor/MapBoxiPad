@@ -26,6 +26,7 @@
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
 
+#import "UIViewController_Additions.h"
 #import "UIApplication_Additions.h"
 #import "DSSound.h"
 
@@ -96,7 +97,13 @@
     // hide cluster button to start
     //
     [toolbar setItems:[[NSMutableArray arrayWithArray:toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", clusteringButton]] animated:NO];
-
+    
+    // setup toolbar items as exclusive actions
+    //
+    for (id item in toolbar.items)
+        if ([item isKindOfClass:[UIBarButtonItem class]])
+            [self manageExclusiveItem:item];
+    
     // data overlay & layer managers
     //
     dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
@@ -437,12 +444,6 @@
 
 - (IBAction)tappedDocumentsButton:(id)sender
 {
-    if (layersPopover.popoverVisible)
-        [layersPopover dismissPopoverAnimated:NO];
-
-    if (shareActionSheet)
-        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-    
     if ( ! documentsActionSheet || ! documentsActionSheet.visible)
     {
         documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -452,6 +453,8 @@
                                                   otherButtonTitles:@"Load Map", @"Save Map", nil];
         
         [documentsActionSheet showFromBarButtonItem:sender animated:YES];
+        
+        [self manageExclusiveItem:documentsActionSheet];
     }
 
     else
@@ -547,33 +550,27 @@
 
 - (IBAction)tappedLayersButton:(id)sender
 {
-    if (documentsActionSheet)
-        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-    
-    if (shareActionSheet)
-        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-    
+    if ( ! layersPopover)
+    {
+        DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
+        
+        layerController.layerManager = layerManager;
+        layerController.delegate     = self;
+        
+        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
+        
+        layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+        
+        layersPopover.passthroughViews = nil;
+    }
+
+    [self manageExclusiveItem:layersPopover];
+
     if (layersPopover.popoverVisible)
         [layersPopover dismissPopoverAnimated:YES];
     
     else
-    {
-        if ( ! layersPopover)
-        {
-            DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
-            
-            layerController.layerManager = layerManager;
-            layerController.delegate     = self;
-            
-            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
-            
-            layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
-            
-            layersPopover.passthroughViews = nil;
-        }
-        
         [layersPopover presentPopoverFromBarButtonItem:layersButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    }
 }
 
 - (IBAction)tappedClusteringButton:(id)sender
@@ -591,14 +588,7 @@
 {
     [TESTFLIGHT passCheckpoint:@"viewed help"];
     
-    if (layersPopover && layersPopover.popoverVisible)
-        [layersPopover dismissPopoverAnimated:NO];
-    
-    if (documentsActionSheet)
-        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-    
-    if (shareActionSheet)
-        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
+    [self manageExclusiveItem:sender];
     
     DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
     
@@ -624,12 +614,6 @@
 
 - (IBAction)tappedShareButton:(id)sender
 {
-    if (layersPopover.popoverVisible)
-        [layersPopover dismissPopoverAnimated:NO];
-    
-    if (documentsActionSheet)
-        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:NO];
-    
     if ( ! shareActionSheet || ! shareActionSheet.visible)
     {
         shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -639,6 +623,8 @@
                                               otherButtonTitles:@"Email Snapshot", nil];
         
         [shareActionSheet showFromBarButtonItem:sender animated:YES];
+        
+        [self manageExclusiveItem:shareActionSheet];
     }
     
     else

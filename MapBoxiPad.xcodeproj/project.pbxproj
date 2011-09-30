@@ -132,6 +132,7 @@
 		DD601BAD12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B9F12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m */; };
 		DD601BAE12FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */; };
 		DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */; };
+		DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD64BF8D14366355000CF679 /* UIViewController_Additions.m */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
@@ -450,6 +451,8 @@
 		DD601BA012FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CXMLNode_CreationExtensions.h; sourceTree = "<group>"; };
 		DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CXMLNode_CreationExtensions.m; sourceTree = "<group>"; };
 		DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DD64BF8C14366355000CF679 /* UIViewController_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Additions.h; sourceTree = "<group>"; };
+		DD64BF8D14366355000CF679 /* UIViewController_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewController_Additions.m; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
@@ -1106,6 +1109,8 @@
 		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
 			isa = PBXGroup;
 			children = (
+				DD64BF8C14366355000CF679 /* UIViewController_Additions.h */,
+				DD64BF8D14366355000CF679 /* UIViewController_Additions.m */,
 				DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */,
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
 				DD4BABF613BE62C50043FA21 /* DSSound.h */,
@@ -1605,6 +1610,7 @@
 				DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */,
 				DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */,
 				DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */,
+				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
