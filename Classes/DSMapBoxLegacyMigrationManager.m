@@ -151,7 +151,9 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             // update to relative paths
             //
             for (int i = 0; i < [tileOverlayState count]; i++)
-                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"] &&
+                     ! [[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] isEqual:kDSOpenStreetMapURL] &&
+                     ! [[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] isEqual:kDSMapQuestOSMURL])
                     [tileOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
 
             for (int i = 0; i < [dataOverlayState count]; i++)
@@ -199,7 +201,9 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             // update to relative paths
             //
             for (int i = 0; i < [tileOverlayState count]; i++)
-                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"])
+                if ([[tileOverlayState objectAtIndex:i] hasPrefix:@"/"] &&
+                     ! [[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] isEqual:kDSOpenStreetMapURL] &&
+                     ! [[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] isEqual:kDSMapQuestOSMURL])
                     [tileOverlayState replaceObjectAtIndex:i withObject:[[NSURL fileURLWithPath:[tileOverlayState objectAtIndex:i]] pathRelativeToApplicationSandbox]];
             
             for (int i = 0; i < [dataOverlayState count]; i++)

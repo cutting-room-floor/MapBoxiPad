@@ -299,7 +299,9 @@
         
         for (NSString *tileOverlayURLString in tileOverlayState)
         {
-            tileOverlayURLString = [[[[UIApplication sharedApplication] applicationSandboxFolderPath] stringByAppendingString:@"/"] stringByAppendingString:tileOverlayURLString];
+            if ( ! [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSOpenStreetMapURL] &&
+                 ! [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSMapQuestOSMURL])
+                 tileOverlayURLString = [[[[UIApplication sharedApplication] applicationSandboxFolderPath] stringByAppendingString:@"/"] stringByAppendingString:tileOverlayURLString];
             
             NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
             
