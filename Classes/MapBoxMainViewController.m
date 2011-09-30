@@ -306,10 +306,11 @@
             // notify if any require net & we're offline if loading doc
             //
             if ([sender isKindOfClass:[NSString class]] &&
-                ! warnedOffline && 
                 ([[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSOpenStreetMapURL] || 
                  [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSMapQuestOSMURL]   || 
-                 [[NSURL fileURLWithPath:tileOverlayURLString] isTileStreamURL]))
+                 [[NSURL fileURLWithPath:tileOverlayURLString] isTileStreamURL]) &&
+                ! warnedOffline && 
+                [reachability currentReachabilityStatus] == NotReachable)
             {
                 UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
                                                                  message:@"At least one layer requires an internet connection, so it may not appear reliably."
