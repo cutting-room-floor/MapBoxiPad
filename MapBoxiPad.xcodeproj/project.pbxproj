@@ -914,9 +914,14 @@
 				DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */,
 				DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */,
 				DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */,
+				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */,
+				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
+				DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */,
+				DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */,
 				DD2F016013BE3A2200A72513 /* Resources */,
 			);
 			name = "Custom UI";
+			path = Classes;
 			sourceTree = "<group>";
 		};
 		DD2F016013BE3A2200A72513 /* Resources */ = {
@@ -924,6 +929,7 @@
 			children = (
 				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
 				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
+				DDE011A013CE33390070F421 /* error.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1123,13 +1129,15 @@
 				DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */,
 				DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */,
 				DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */,
+				DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */,
+				DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
 			name = "Data Overlays & Interactivity";
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DDA291D811F8AD7C000FFFF4 /* Feed Parsing */ = {
+		DDA291D811F8AD7C000FFFF4 /* GeoRSS Feed Parsing */ = {
 			isa = PBXGroup;
 			children = (
 				DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */,
@@ -1139,27 +1147,25 @@
 				DDA0748811E7A41F0049865F /* DSMapBoxFeedParserAtom.h */,
 				DDA0748911E7A41F0049865F /* DSMapBoxFeedParserAtom.m */,
 			);
-			name = "Feed Parsing";
+			name = "GeoRSS Feed Parsing";
 			sourceTree = "<group>";
 		};
-		DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */ = {
+		DDA291D911F8AD87000FFFF4 /* Tile Overlays */ = {
 			isa = PBXGroup;
 			children = (
+				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
+				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
 				DDC7F97511FE1BE80019A081 /* DSMapBoxTiledLayerMapView.h */,
 				DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */,
+				DDA58F6D1326CAA6000E0761 /* DSMapView.h */,
+				DDA58F6E1326CAA6000E0761 /* DSMapView.m */,
 				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
 				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
 				DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */,
 				DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */,
-				DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */,
-				DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */,
-				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
-				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
-				DDA58F6D1326CAA6000E0761 /* DSMapView.h */,
-				DDA58F6E1326CAA6000E0761 /* DSMapView.m */,
 				D75E3E7A12A0ADD50007996C /* Resources */,
 			);
-			name = "Base & Overlay Tiles";
+			name = "Tile Overlays";
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -1178,10 +1184,11 @@
 			children = (
 				080E96DDFE201D6D7F000001 /* Main */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
-				DDEF900F13831D7A00FF148C /* Layer Addition */,
-				DDA291D911F8AD87000FFFF4 /* Base & Overlay Tiles */,
+				DDA291D911F8AD87000FFFF4 /* Tile Overlays */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
+				DDEF900F13831D7A00FF148C /* TileStream Integration */,
 				DDBA88E21210E71000E5B572 /* Document Management */,
+				DD2F015913BD189600A72513 /* Custom UI */,
 				DDEEAD81136F7BBD0058BA90 /* Minor Functionality */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
@@ -1195,14 +1202,6 @@
 				DDACBC9F141FC6F4002704B7 /* libTestFlight.a */,
 			);
 			name = "TestFlight SDK";
-			sourceTree = "<group>";
-		};
-		DDB7BEDD13CE192000280095 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				DDE011A013CE33390070F421 /* error.png */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		DDBA88E21210E71000E5B572 /* Document Management */ = {
@@ -1271,30 +1270,16 @@
 		DDEEAD81136F7BBD0058BA90 /* Minor Functionality */ = {
 			isa = PBXGroup;
 			children = (
-				DDA291D811F8AD7C000FFFF4 /* Feed Parsing */,
+				DDA291D811F8AD7C000FFFF4 /* GeoRSS Feed Parsing */,
 				DD506C1913FD8F44008EB626 /* GeoJSON Parsing */,
 				DD56786612AEEB4B00B73C8A /* Help */,
-				DDEEAD84136F7BEC0058BA90 /* User Notification */,
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
-				DD2F015913BD189600A72513 /* Custom UI */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DDEEAD84136F7BEC0058BA90 /* User Notification */ = {
-			isa = PBXGroup;
-			children = (
-				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */,
-				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
-				DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */,
-				DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */,
-				DDB7BEDD13CE192000280095 /* Resources */,
-			);
-			name = "User Notification";
-			sourceTree = "<group>";
-		};
-		DDEF900F13831D7A00FF148C /* Layer Addition */ = {
+		DDEF900F13831D7A00FF148C /* TileStream Integration */ = {
 			isa = PBXGroup;
 			children = (
 				DDB8390713CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.h */,
@@ -1315,7 +1300,7 @@
 				DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */,
 				DD2754D613856855007B58AC /* Resources */,
 			);
-			name = "Layer Addition";
+			name = "TileStream Integration";
 			path = Classes;
 			sourceTree = "<group>";
 		};
