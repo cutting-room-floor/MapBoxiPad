@@ -389,7 +389,7 @@
                                                        attributes:nil
                                                             error:NULL];
         
-        NSString *stateName;
+        NSString *stateName = nil;
         
         if ([sender isKindOfClass:[UIButton class]]) // button save
             stateName = saveController.name;
@@ -897,7 +897,7 @@
                                                   // path
                                                   //
                                                   CGPoint startPoint = view.center;
-                                                  CGPoint endPoint;
+                                                  CGPoint endPoint   = CGPointZero;
                                                   
                                                   for (UIBarButtonItem *item in toolbar.items)
                                                       if (item.action == @selector(tappedLayersButton:))
@@ -1351,7 +1351,7 @@
 {
     NSURL *layerURL = [layer objectForKey:@"URL"];
     
-    id source;
+    id source = nil;
     
     if ([layerURL isMBTilesURL])
         source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL] autorelease];

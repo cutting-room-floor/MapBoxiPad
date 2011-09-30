@@ -411,7 +411,7 @@
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow
 {
-    NSMutableDictionary *layer;
+    NSMutableDictionary *layer = nil;
     
     switch (indexPath.section)
     {

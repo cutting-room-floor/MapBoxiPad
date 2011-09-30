@@ -159,7 +159,7 @@
                     else
                         itemID = [NSString stringWithFormat:@"%i", ++itemCount];
                     
-                    NSNumber *geometryType;
+                    NSNumber *geometryType = [NSNumber numberWithInt:-1];
                     
                     NSMutableArray *geometries = [NSMutableArray array];
                     
@@ -257,7 +257,7 @@
                     
                     // include any features with geometries, but for points, only if they have properties to display
                     //
-                    if ([geometries count] && (properties || geometryType != DSMapBoxGeoJSONGeometryTypePoint))
+                    if ([geometries count] && (properties || [geometryType intValue] != DSMapBoxGeoJSONGeometryTypePoint))
                     {
                         NSDictionary *featureDictionary = [NSDictionary dictionaryWithObjectsAndKeys:itemID,                              @"id",
                                                                                                      geometryType,                        @"type",

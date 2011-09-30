@@ -152,7 +152,7 @@
 
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     
-    NSArray *layers;
+    NSArray *layers = nil;
     
     switch (indexPath.section)
     {
@@ -398,7 +398,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *layer;
+    NSDictionary *layer = nil;
     
     if (indexPath.section == DSMapBoxLayerSectionTile)
         layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
@@ -488,7 +488,7 @@
      * Note that we are currently faking this via accessory view button actions.
      */
     
-    NSDictionary *layer;
+    NSDictionary *layer = nil;
     
     switch (indexPath.section)
     {

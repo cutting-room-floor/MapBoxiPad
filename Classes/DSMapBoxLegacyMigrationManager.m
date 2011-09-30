@@ -88,7 +88,6 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithContentsOfFile:path];
             
             baseMapState      = [NSMutableDictionary dictionaryWithDictionary:[dict objectForKey:@"baseMapState"]];
-            tileOverlayState  = [NSMutableArray arrayWithArray:[dict objectForKey:@"tileOverlayState"]];
             
             // base
             //
@@ -99,8 +98,8 @@ static DSMapBoxLegacyMigrationManager *defaultManager;
             
             // overlays
             //
-            NSMutableArray *tileOverlayState = [NSMutableArray arrayWithArray:[defaults arrayForKey:@"tileOverlayState"]];
-            
+            tileOverlayState  = [NSMutableArray arrayWithArray:[dict objectForKey:@"tileOverlayState"]];
+
             for (int i = 0; i < [tileOverlayState count]; i++)
                 if ([[tileOverlayState objectAtIndex:i] isEqualToString:@"OpenStreetMap"])
                     [tileOverlayState replaceObjectAtIndex:i withObject:kDSOpenStreetMapURL];
