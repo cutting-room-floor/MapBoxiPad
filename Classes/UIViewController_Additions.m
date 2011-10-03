@@ -10,12 +10,12 @@
 
 #import <objc/runtime.h>
 
-static NSString *UIViewControllerExclusiveItems = @"UIViewControllerExclusiveItems";
-static NSString *UIViewControllerButtonInfo     = @"UIViewControllerButtonInfo";
+static NSString *UIViewControllerExclusiveItem = @"UIViewControllerExclusiveItem";
+static NSString *UIViewControllerButtonInfo    = @"UIViewControllerButtonInfo";
 
 @interface UIViewController ()
 
-- (void)dismissManagedItemsExcluding:(id)item;
+- (void)showExclusiveItem:(id)item;
 - (void)actionProxy:(id)sender;
 
 @end
@@ -26,21 +26,13 @@ static NSString *UIViewControllerButtonInfo     = @"UIViewControllerButtonInfo";
 
 - (void)manageExclusiveItem:(id)item
 {
-    // ensure that we are storing items
+    // show new item, dismissing any old one
     //
-    NSMutableArray *items = objc_getAssociatedObject(self, UIViewControllerExclusiveItems);
-    
-    if ( ! items)
-    {
-        items = [NSMutableArray array];
-        
-        objc_setAssociatedObject(self, UIViewControllerExclusiveItems, items, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    }
-    
-    // add item (if valid) to stored items
+    [self showExclusiveItem:item];
+
+    // store new item for dismissal later
     //
-    if (item && ! [items containsObject:item])
-        [items addObject:item];
+    objc_setAssociatedObject(self, UIViewControllerExclusiveItem, item, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     // for UIBarButtonItems, become a target/action proxy (if not already)
     //
@@ -65,31 +57,24 @@ static NSString *UIViewControllerButtonInfo     = @"UIViewControllerButtonInfo";
         ((UIBarButtonItem *)item).target = self;
         ((UIBarButtonItem *)item).action = @selector(actionProxy:);
     }
-
-    // dismiss others
-    //
-    [self dismissManagedItemsExcluding:item];
 }
 
 #pragma mark -
 
-- (void)dismissManagedItemsExcluding:(id)item
+- (void)showExclusiveItem:(id)item
 {
-    NSMutableArray *items = objc_getAssociatedObject(self, UIViewControllerExclusiveItems);
+    id activeItem = objc_getAssociatedObject(self, UIViewControllerExclusiveItem);
 
-    for (id anItem in items)
-    {
-        if ([anItem isKindOfClass:[UIPopoverController class]] && ! [anItem isEqual:item])
-            [(UIPopoverController *)anItem dismissPopoverAnimated:NO];
-        
-        else if ([anItem isKindOfClass:[UIActionSheet class]] && ! [anItem isEqual:item])
-            [(UIActionSheet *)anItem dismissWithClickedButtonIndex:-1 animated:NO];
-    }
+    if ([activeItem isKindOfClass:[UIPopoverController class]] && ! [activeItem isEqual:item])
+        [(UIPopoverController *)activeItem dismissPopoverAnimated:NO];
+    
+    else if ([activeItem isKindOfClass:[UIActionSheet class]] && ! [activeItem isEqual:item])
+        [(UIActionSheet *)activeItem dismissWithClickedButtonIndex:-1 animated:NO];
 }
 
 - (void)actionProxy:(id)sender
 {    
-    [self dismissManagedItemsExcluding:sender];
+    [self showExclusiveItem:sender];
 
     NSMutableDictionary *info = objc_getAssociatedObject(sender, UIViewControllerButtonInfo);
     
