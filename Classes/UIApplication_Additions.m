@@ -53,6 +53,9 @@ void dispatch_delayed_ui_action(NSTimeInterval delaySeconds, dispatch_block_t bl
      * app is reinstalled or when testing in the simulator. 
      */
 
+    if ([self isEqual:kDSOpenStreetMapURL] || [self isEqual:kDSMapQuestOSMURL])
+        return [self relativePath];
+    
     NSURL *sandboxURL = [[NSBundle mainBundle] bundleURL];
     
     int count = [[sandboxURL pathComponents] count] - 1;

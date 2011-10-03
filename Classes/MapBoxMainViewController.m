@@ -383,11 +383,11 @@
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToAppSandbox"];
+    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToApplicationSandbox"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToAppSandbox"];
+    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
 
     // determine if document or global save
     //

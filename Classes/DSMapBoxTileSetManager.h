@@ -6,11 +6,6 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
-#define kDSOpenStreetMapURL  [NSURL URLWithString:@"file://localhost/tmp/OpenStreetMap"]
-#define kDSOpenStreetMapName @"OpenStreetMap"
-#define kDSMapQuestOSMURL    [NSURL URLWithString:@"file://localhost/tmp/MapQuestOSM"]
-#define kDSMapQuestOSMName   @"MapQuest Open"
-
 @interface DSMapBoxTileSetManager : NSObject
 {
 }

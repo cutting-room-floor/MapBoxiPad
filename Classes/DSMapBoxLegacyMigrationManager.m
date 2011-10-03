@@ -11,7 +11,6 @@
 #import "UIApplication_Additions.h"
 
 #import "DSMapBoxDocumentLoadController.h"
-#import "DSMapBoxTileSetManager.h"
 
 static DSMapBoxLegacyMigrationManager *defaultManager;
 

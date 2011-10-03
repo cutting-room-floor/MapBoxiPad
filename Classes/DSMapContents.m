@@ -9,7 +9,6 @@
 #import "DSMapContents.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxTiledLayerMapView.h"
-#import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 
 #import "RMProjection.h"

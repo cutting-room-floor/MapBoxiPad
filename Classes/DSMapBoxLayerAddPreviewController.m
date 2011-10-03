@@ -10,7 +10,6 @@
 
 #import "DSMapView.h"
 #import "RMTileStreamSource.h"
-#import "DSMapBoxTileSetManager.h"
 #import "DSMapContents.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "RMInteractiveSource.h"
