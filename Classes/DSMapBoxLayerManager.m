@@ -22,6 +22,7 @@
 #import "RMMapQuestOSMSource.h"
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
+#import "RMCachedTileSource.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -437,6 +438,28 @@
                             //
                             [baseMapPeer removeFromSuperview];
                             
+                            // show base if necessary
+                            //
+                            if ([layerMapViews count] == 0)
+                            {
+                                self.baseMapView.hidden = NO;
+                            }
+                            else
+                            {
+                                for (RMMapView *layerMapView in layerMapViews)
+                                {
+                                    id <RMTileSource>source = layerMapView.contents.tileSource;
+                                    
+                                    if (([source isKindOfClass:[RMMBTilesTileSource class]] && [(RMMBTilesTileSource *)source coversFullWorld]) ||
+                                        ([source isKindOfClass:[RMCachedTileSource  class]] && [[(NSObject *)source valueForKey:@"tileSource"] isKindOfClass:[RMTileStreamSource class]] && [(RMTileStreamSource *)[(NSObject *)source valueForKey:@"tileSource"] coversFullWorld]))
+                                    {
+                                        self.baseMapView.hidden = NO;
+                                        
+                                        break;
+                                    }
+                                }
+                            }
+                            
                             // transfer data overlay status
                             //
                             self.dataOverlayManager.mapView = ([layerMapViews count] ? [layerMapViews lastObject] : self.baseMapView);
@@ -473,6 +496,14 @@
                 // insert above top-most existing map view
                 //
                 [self.baseMapView insertLayerMapView:layerMapView];
+                
+                // hide base if necessary
+                //
+                if (([source isKindOfClass:[RMMBTilesTileSource class]] && [(RMMBTilesTileSource *)source coversFullWorld]) ||
+                    ([source isKindOfClass:[RMCachedTileSource  class]] && [[(NSObject *)source valueForKey:@"tileSource"] isKindOfClass:[RMTileStreamSource class]] && [(RMTileStreamSource *)[(NSObject *)source valueForKey:@"tileSource"] coversFullWorld]))
+                {
+                    self.baseMapView.hidden = YES;
+                }
                 
                 // copy main map view attributes
                 //
