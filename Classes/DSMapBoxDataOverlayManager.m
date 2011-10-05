@@ -43,7 +43,9 @@
 
 #import "UIImage-Extensions.h"
 
-#define kDSPlacemarkAlpha 0.9f
+#define kDSPlacemarkAlpha    0.9f
+#define kDSPathShadowBlur   10.0f
+#define kDSPathShadowOffset CGSizeMake(3, 3)
 
 @interface DSMapBoxDataOverlayManager ()
 
@@ -192,9 +194,11 @@
             {
                 RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
                 
-                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
-                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
-                path.fillColor = [UIColor clearColor];
+                path.lineColor    = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
+                path.lineWidth    = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                path.fillColor    = [UIColor clearColor];
+                path.shadowBlur   = kDSPathShadowBlur;
+                path.shadowOffset = kDSPathShadowOffset;
                 
                 SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
                 
@@ -250,8 +254,10 @@
                 else
                     path.fillColor = [UIColor clearColor];
                 
-                path.lineWidth = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
-                
+                path.lineWidth    = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                path.shadowBlur   = kDSPathShadowBlur;
+                path.shadowOffset = kDSPathShadowOffset;
+
                 SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
                 
                 BOOL hasStarted = NO;
@@ -521,10 +527,12 @@
         {
             RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
             
-            path.lineColor = kMapBoxBlue;
-            path.fillColor = [UIColor clearColor];
-            path.lineWidth = 10.0;
-            
+            path.lineColor    = kMapBoxBlue;
+            path.fillColor    = [UIColor clearColor];
+            path.lineWidth    = 10.0;
+            path.shadowBlur   = kDSPathShadowBlur;
+            path.shadowOffset = kDSPathShadowOffset;
+
             BOOL hasStarted = NO;
             
             for (CLLocation *geometry in [item objectForKey:@"geometries"])
@@ -550,10 +558,12 @@
             {
                 RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
                 
-                path.lineColor = kMapBoxBlue;
-                path.fillColor = [UIColor clearColor];
-                path.lineWidth = 10.0;
-                
+                path.lineColor    = kMapBoxBlue;
+                path.fillColor    = [UIColor clearColor];
+                path.lineWidth    = 10.0;
+                path.shadowBlur   = kDSPathShadowBlur;
+                path.shadowOffset = kDSPathShadowOffset;
+
                 BOOL hasStarted = NO;
                 
                 for (CLLocation *point in [linearRing subarrayWithRange:NSMakeRange(0, [linearRing count] - 1)])
