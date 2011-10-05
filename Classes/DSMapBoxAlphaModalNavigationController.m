@@ -72,32 +72,33 @@
         self.baseView = [[UIApplication sharedApplication].keyWindow.subviews objectAtIndex:0];
             
         BOOL viewIsFullscreen = ((self.baseView.bounds.size.width >= 748 && self.baseView.bounds.size.width <= 768 && self.baseView.bounds.size.height >= 1004 && self.baseView.bounds.size.height <= 1024) ||
-                                 (self.baseView.bounds.size.height >= 748 && self.baseView.bounds.size.height <= 768 && self.baseView.bounds.size.width >= 1004 && self.baseView.bounds.size.height <= 1024));
-        
-        NSAssert(viewIsFullscreen, @"main app view must be full screen for iPad");
-        
-       // take snapshot of main view to fake background
-       //
-       // start with a vertical slice of the middle, slightly taller than modal
-       //
-       UIGraphicsBeginImageContext(CGSizeMake(540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
-       
-       // translate & clip layer before rendering for performance
-       //
-       CGContextTranslateCTM(UIGraphicsGetCurrentContext(), (self.baseView.bounds.size.width - 540) / -2, 0);
-       CGContextClipToRect(UIGraphicsGetCurrentContext(), CGRectMake((self.baseView.bounds.size.width - 540) / 2, 0, 540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
-       
-       // render to context
-       //
-       [self.baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
-       
-       // set image from it
-       //
-       self.backgroundImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+                                (self.baseView.bounds.size.height >= 748 && self.baseView.bounds.size.height <= 768 && self.baseView.bounds.size.width >= 1004 && self.baseView.bounds.size.height <= 1024));
 
-       // clean up
-       //
-       UIGraphicsEndImageContext();
+        if (viewIsFullscreen)
+        {
+            // take snapshot of main view to fake background
+            //
+            // start with a vertical slice of the middle, slightly taller than modal
+            //
+            UIGraphicsBeginImageContext(CGSizeMake(540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
+
+            // translate & clip layer before rendering for performance
+            //
+            CGContextTranslateCTM(UIGraphicsGetCurrentContext(), (self.baseView.bounds.size.width - 540) / -2, 0);
+            CGContextClipToRect(UIGraphicsGetCurrentContext(), CGRectMake((self.baseView.bounds.size.width - 540) / 2, 0, 540, self.baseView.bounds.size.height - ((self.baseView.bounds.size.height - 620) / 2)));
+
+            // render to context
+            //
+            [self.baseView.layer renderInContext:UIGraphicsGetCurrentContext()];
+
+            // set image from it
+            //
+            self.backgroundImageView.image = UIGraphicsGetImageFromCurrentImageContext();
+
+            // clean up
+            //
+            UIGraphicsEndImageContext();
+        }
     }
 }
 
