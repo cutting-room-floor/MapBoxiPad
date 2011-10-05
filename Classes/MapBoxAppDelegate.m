@@ -67,6 +67,8 @@
     {
         NSMutableArray *preloadItems = [NSMutableArray array];
         
+        // data layers
+        //
         for (NSString *extension in [NSArray arrayWithObjects:@"kml", @"kmz", @"rss", nil])
         {
             NSArray *items = [NSBundle pathsForResourcesOfType:extension inDirectory:[[NSBundle mainBundle] resourcePath]];
@@ -77,6 +79,20 @@
         for (NSString *item in preloadItems)
             [[NSFileManager defaultManager] copyItemAtPath:item 
                                                     toPath:[NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], [item lastPathComponent]] 
+                                                     error:NULL];
+        
+        // tile layers
+        //
+        for (NSString *extension in [NSArray arrayWithObjects:@"plist", nil])
+        {
+            NSArray *items = [NSBundle pathsForResourcesOfType:extension inDirectory:[[NSBundle mainBundle] resourcePath]];
+            
+            [preloadItems addObjectsFromArray:items];
+        }
+        
+        for (NSString *item in preloadItems)
+            [[NSFileManager defaultManager] copyItemAtPath:item 
+                                                    toPath:[NSString stringWithFormat:@"%@/%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kTileStreamFolderName, [item lastPathComponent]] 
                                                      error:NULL];
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunDataPreloaded"];

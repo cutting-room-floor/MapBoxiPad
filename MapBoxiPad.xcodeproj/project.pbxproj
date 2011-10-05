@@ -95,6 +95,8 @@
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
 		DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015E13BE2CB000A72513 /* mapbox_button.png */; };
+		DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */; };
+		DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497D143CDEAB0049EE9E /* geography-class.plist */; };
 		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
@@ -394,6 +396,8 @@
 		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
 		DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedBarButtonItem.m; sourceTree = "<group>"; };
 		DD2F015E13BE2CB000A72513 /* mapbox_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_button.png; path = ../mapbox_button.png; sourceTree = "<group>"; };
+		DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "blue-marble-topo-bathy-jul.plist"; sourceTree = "<group>"; };
+		DD30497D143CDEAB0049EE9E /* geography-class.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "geography-class.plist"; sourceTree = "<group>"; };
 		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
 		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -989,6 +993,8 @@
 				DD52697012C1E051002E890C /* Haiti Aid Projects.kml */,
 				DD52697112C1E051002E890C /* USGS Earthquakes.rss */,
 				DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */,
+				DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */,
+				DD30497D143CDEAB0049EE9E /* geography-class.plist */,
 			);
 			name = "Preloaded Data";
 			path = preload;
@@ -1455,6 +1461,8 @@
 				DD506C3C13FDAC4F008EB626 /* geojson_layer.png in Resources */,
 				DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */,
 				DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */,
+				DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */,
+				DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
