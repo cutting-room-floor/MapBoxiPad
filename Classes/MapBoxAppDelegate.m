@@ -91,9 +91,10 @@
         }
         
         for (NSString *item in preloadItems)
-            [[NSFileManager defaultManager] copyItemAtPath:item 
-                                                    toPath:[NSString stringWithFormat:@"%@/%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kTileStreamFolderName, [item lastPathComponent]] 
-                                                     error:NULL];
+            if ([[NSDictionary dictionaryWithContentsOfFile:item] objectForKey:@"basename"])
+                [[NSFileManager defaultManager] copyItemAtPath:item 
+                                                        toPath:[NSString stringWithFormat:@"%@/%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kTileStreamFolderName, [item lastPathComponent]] 
+                                                         error:NULL];
         
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunDataPreloaded"];
         [[NSUserDefaults standardUserDefaults] synchronize];
