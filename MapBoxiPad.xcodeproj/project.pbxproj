@@ -39,9 +39,6 @@
 		DD0F615A11ED5A9F0050174D /* SimpleKMLStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614311ED5A9F0050174D /* SimpleKMLStyle.m */; };
 		DD0F615B11ED5A9F0050174D /* SimpleKMLStyleSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614511ED5A9F0050174D /* SimpleKMLStyleSelector.m */; };
 		DD0F615C11ED5A9F0050174D /* SimpleKMLSubStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */; };
-		DD0F616411ED5ABC0050174D /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F615F11ED5ABC0050174D /* FMDatabase.m */; };
-		DD0F616511ED5ABC0050174D /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616111ED5ABC0050174D /* FMDatabaseAdditions.m */; };
-		DD0F616611ED5ABC0050174D /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F616311ED5ABC0050174D /* FMResultSet.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
@@ -90,7 +87,6 @@
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */; };
 		DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */; };
-		DD28C08213B263A6008BED70 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28C08113B263A6008BED70 /* JSONKit.m */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
@@ -177,7 +173,6 @@
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
-		DDCD58A61406D4FB00F59E0D /* RMInteractiveSource.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
@@ -295,12 +290,6 @@
 		DD0F614511ED5A9F0050174D /* SimpleKMLStyleSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLStyleSelector.m; path = "Externals/Simple KML/SimpleKMLStyleSelector.m"; sourceTree = "<group>"; };
 		DD0F614611ED5A9F0050174D /* SimpleKMLSubStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLSubStyle.h; path = "Externals/Simple KML/SimpleKMLSubStyle.h"; sourceTree = "<group>"; };
 		DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLSubStyle.m; path = "Externals/Simple KML/SimpleKMLSubStyle.m"; sourceTree = "<group>"; };
-		DD0F615E11ED5ABC0050174D /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = Externals/FMDB/src/FMDatabase.h; sourceTree = "<group>"; };
-		DD0F615F11ED5ABC0050174D /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = Externals/FMDB/src/FMDatabase.m; sourceTree = "<group>"; };
-		DD0F616011ED5ABC0050174D /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = Externals/FMDB/src/FMDatabaseAdditions.h; sourceTree = "<group>"; };
-		DD0F616111ED5ABC0050174D /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = Externals/FMDB/src/FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		DD0F616211ED5ABC0050174D /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = Externals/FMDB/src/FMResultSet.h; sourceTree = "<group>"; };
-		DD0F616311ED5ABC0050174D /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = Externals/FMDB/src/FMResultSet.m; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
@@ -389,8 +378,6 @@
 		DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLOverlay.m; path = "Externals/Simple KML/SimpleKMLOverlay.m"; sourceTree = "<group>"; };
 		DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLGroundOverlay.h; path = "Externals/Simple KML/SimpleKMLGroundOverlay.h"; sourceTree = "<group>"; };
 		DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLGroundOverlay.m; path = "Externals/Simple KML/SimpleKMLGroundOverlay.m"; sourceTree = "<group>"; };
-		DD28C08013B263A6008BED70 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = Externals/JSONKit/JSONKit.h; sourceTree = "<group>"; };
-		DD28C08113B263A6008BED70 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = Externals/JSONKit/JSONKit.m; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
 		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
@@ -521,8 +508,6 @@
 		DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSourceInfiniteZoom.m; sourceTree = "<group>"; };
 		DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSourceInfiniteZoom.h; sourceTree = "<group>"; };
-		DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMInteractiveSource.h; sourceTree = "<group>"; };
-		DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMInteractiveSource.m; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
@@ -901,15 +886,6 @@
 			name = "Legacy Data Migration";
 			sourceTree = "<group>";
 		};
-		DD28C07F13B26381008BED70 /* JSONKit */ = {
-			isa = PBXGroup;
-			children = (
-				DD28C08013B263A6008BED70 /* JSONKit.h */,
-				DD28C08113B263A6008BED70 /* JSONKit.m */,
-			);
-			name = JSONKit;
-			sourceTree = "<group>";
-		};
 		DD2F015913BD189600A72513 /* Custom UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -965,8 +941,6 @@
 			children = (
 				DD1ACD0713CD1735001244D2 /* ASIHTTPRequest */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
-				DD72C37D11E53CF60030C637 /* FMDB */,
-				DD28C07F13B26381008BED70 /* JSONKit */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
@@ -1099,19 +1073,6 @@
 			name = TouchXML;
 			sourceTree = "<group>";
 		};
-		DD72C37D11E53CF60030C637 /* FMDB */ = {
-			isa = PBXGroup;
-			children = (
-				DD0F615E11ED5ABC0050174D /* FMDatabase.h */,
-				DD0F615F11ED5ABC0050174D /* FMDatabase.m */,
-				DD0F616011ED5ABC0050174D /* FMDatabaseAdditions.h */,
-				DD0F616111ED5ABC0050174D /* FMDatabaseAdditions.m */,
-				DD0F616211ED5ABC0050174D /* FMResultSet.h */,
-				DD0F616311ED5ABC0050174D /* FMResultSet.m */,
-			);
-			name = FMDB;
-			sourceTree = "<group>";
-		};
 		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1140,8 +1101,6 @@
 				DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */,
 				DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */,
 				DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */,
-				DDCD58A41406D4FB00F59E0D /* RMInteractiveSource.h */,
-				DDCD58A51406D4FB00F59E0D /* RMInteractiveSource.m */,
 				DDA291DC11F8ADAF000FFFF4 /* Resources */,
 			);
 			name = "Data Overlays & Interactivity";
@@ -1534,9 +1493,6 @@
 				DD0F615A11ED5A9F0050174D /* SimpleKMLStyle.m in Sources */,
 				DD0F615B11ED5A9F0050174D /* SimpleKMLStyleSelector.m in Sources */,
 				DD0F615C11ED5A9F0050174D /* SimpleKMLSubStyle.m in Sources */,
-				DD0F616411ED5ABC0050174D /* FMDatabase.m in Sources */,
-				DD0F616511ED5ABC0050174D /* FMDatabaseAdditions.m in Sources */,
-				DD0F616611ED5ABC0050174D /* FMResultSet.m in Sources */,
 				DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */,
 				DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */,
 				DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */,
@@ -1592,7 +1548,6 @@
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
-				DD28C08213B263A6008BED70 /* JSONKit.m in Sources */,
 				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
 				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
@@ -1614,7 +1569,6 @@
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
 				DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */,
 				DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */,
-				DDCD58A61406D4FB00F59E0D /* RMInteractiveSource.m in Sources */,
 				DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */,
 				DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */,
 				DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */,
@@ -1660,7 +1614,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
 				PRODUCT_NAME = MapBox;
 			};
 			name = Debug;
@@ -1690,7 +1647,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
 				PRODUCT_NAME = MapBox;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1777,7 +1737,10 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
 				);
-				OTHER_LDFLAGS = "-lxml2";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lxml2",
+				);
 				PRODUCT_NAME = MapBox;
 				VALIDATE_PRODUCT = YES;
 			};

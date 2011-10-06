@@ -1,6 +1,3 @@
-[submodule "Externals/FMDB"]
-	path = Externals/FMDB
-	url = https://github.com/ccgus/fmdb.git
 [submodule "Externals/TouchXML"]
 	path = Externals/TouchXML
 	url = https://github.com/TouchCode/TouchXML.git
@@ -13,9 +10,6 @@
 [submodule "Externals/Simple KML"]
 	path = Externals/Simple KML
 	url = git@github.com:mapbox/Simple-KML.git
-[submodule "Externals/JSONKit"]
-	path = Externals/JSONKit
-	url = https://github.com/johnezang/JSONKit.git
 [submodule "Externals/ASIHTTPRequest"]
 	path = Externals/ASIHTTPRequest
 	url = https://github.com/pokeb/asi-http-request.git
