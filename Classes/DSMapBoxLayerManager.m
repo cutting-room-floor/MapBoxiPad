@@ -556,8 +556,6 @@
                     self.baseMapView.hidden = YES;
                 }
             }
-            
-            NSLog(@"base hidden: %i", self.baseMapView.hidden);
 
             break;
             
