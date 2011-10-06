@@ -442,7 +442,7 @@
             
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
-            if ([[layer objectForKey:@"selected"] boolValue])
+            if ([[layer objectForKey:@"selected"] boolValue]) // layer disable
             {
                 for (UIView *baseMapPeer in self.baseMapView.superview.subviews)
                 {
@@ -460,36 +460,14 @@
                             //
                             [baseMapPeer removeFromSuperview];
                             
-                            // show base if necessary
-                            //
-                            if ([layerMapViews count] == 0)
-                            {
-                                self.baseMapView.hidden = NO;
-                            }
-                            else
-                            {
-                                for (RMMapView *layerMapView in layerMapViews)
-                                {
-                                    id <RMTileSource>source = layerMapView.contents.tileSource;
-                                    
-                                    if (([source isKindOfClass:[RMMBTilesTileSource class]] && [(RMMBTilesTileSource *)source coversFullWorld]) ||
-                                        ([source isKindOfClass:[RMCachedTileSource  class]] && [[(NSObject *)source valueForKey:@"tileSource"] isKindOfClass:[RMTileStreamSource class]] && [(RMTileStreamSource *)[(NSObject *)source valueForKey:@"tileSource"] coversFullWorld]))
-                                    {
-                                        self.baseMapView.hidden = NO;
-                                        
-                                        break;
-                                    }
-                                }
-                            }
-                            
                             // transfer data overlay status
                             //
-                            self.dataOverlayManager.mapView = ([layerMapViews count] ? [layerMapViews lastObject] : self.baseMapView);
+                            self.dataOverlayManager.mapView = self.baseMapView.topMostMapView;
                         }
                     }
                 }
             }
-            else
+            else // layer enable
             {
                 // create tile source
                 //
@@ -518,14 +496,6 @@
                 // insert above top-most existing map view
                 //
                 [self.baseMapView insertLayerMapView:layerMapView];
-                
-                // hide base if necessary
-                //
-                if (([source isKindOfClass:[RMMBTilesTileSource class]] && [(RMMBTilesTileSource *)source coversFullWorld]) ||
-                    ([source isKindOfClass:[RMCachedTileSource  class]] && [[(NSObject *)source valueForKey:@"tileSource"] isKindOfClass:[RMTileStreamSource class]] && [(RMTileStreamSource *)[(NSObject *)source valueForKey:@"tileSource"] coversFullWorld]))
-                {
-                    self.baseMapView.hidden = YES;
-                }
                 
                 // copy main map view attributes
                 //
@@ -566,6 +536,28 @@
                 
                 [TESTFLIGHT passCheckpoint:@"enabled tile layer"];
             }
+
+            // hide default base map if we have full-world coverage somewhere else
+            //
+            self.baseMapView.hidden = NO;
+            
+            for (RMMapView *layerMapView in ((DSMapContents *)self.baseMapView.contents).layerMapViews)
+            {
+                id <RMTileSource>source = layerMapView.contents.tileSource;
+                
+                if ([source isKindOfClass:[RMCachedTileSource class]])
+                    source = [(NSObject *)source valueForKey:@"tileSource"];
+                
+                if ( [source isKindOfClass:[RMOpenStreetMapSource class]]                                                      || 
+                     [source isKindOfClass:[RMMapQuestOSMSource   class]]                                                      || 
+                    ([source isKindOfClass:[RMMBTilesTileSource   class]] && [(RMMBTilesTileSource *)source coversFullWorld])  ||
+                    ([source isKindOfClass:[RMTileStreamSource    class]] && [(RMTileStreamSource  *)source coversFullWorld]))
+                {
+                    self.baseMapView.hidden = YES;
+                }
+            }
+            
+            NSLog(@"base hidden: %i", self.baseMapView.hidden);
 
             break;
             
