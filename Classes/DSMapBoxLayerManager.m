@@ -274,7 +274,7 @@
 
 - (void)reorderLayerDisplay
 {
-    // check tile layers
+    // tile layers
     //
     NSArray *visibleTileLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
 
@@ -321,6 +321,28 @@
             orderedMap.masterView = nil;
             orderedMap.delegate   = nil;
         }
+    }
+    
+    // data layers
+    //
+    NSArray *visibleDataLayers = [self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+    
+    if ([visibleDataLayers count] > 1)
+    {
+        // find the superlayer of all live paths
+        //
+        RMLayerCollection *destinationLayer = baseMapView.topMostMapView.contents.overlay;
+        
+        // remove all live paths from the superlayer
+        //
+        for (NSDictionary *overlay in dataOverlayManager.overlays)
+            [[overlay objectForKey:@"overlay"] makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
+        
+        // re-add paths in order
+        //
+        for (NSArray *overlay in [visibleDataLayers valueForKey:@"overlay"])
+            for (CALayer *sublayer in overlay)
+                [destinationLayer addSublayer:sublayer];
     }
 }
 
@@ -553,6 +575,12 @@
             
             if ([[layer objectForKey:@"selected"] boolValue])
             {
+                // free up reorder reference to visuals
+                //
+                [layer removeObjectForKey:@"overlay"];
+                
+                // remove visuals
+                //
                 [self.dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
             }
             else
@@ -569,15 +597,25 @@
                         return;
                     }
                     
+                    // add layer visuals
+                    //
                     [self.dataOverlayManager addOverlayForKML:kml];
                     
+                    // save source for comparison later
+                    //
                     if ( ! [layer objectForKey:@"source"])
                         [layer setObject:[kml source] forKey:@"source"];
+                    
+                    // reference visuals for reordering later
+                    //
+                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
                     [TESTFLIGHT passCheckpoint:@"enabled KML layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
+                    // save source for comparison later
+                    //
                     if ( ! [layer objectForKey:@"source"])
                     {
                         NSError *error = nil;
@@ -586,12 +624,20 @@
                         [layer setObject:source forKey:@"source"];
                     }
                     
+                    // add layer visuals
+                    //
                     [self.dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                    
+                    // reference visuals for reordering later
+                    //
+                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
                     [TESTFLIGHT passCheckpoint:@"enabled GeoRSS layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
                 {
+                    // save source for comparison later
+                    //
                     if ( ! [layer objectForKey:@"source"])
                     {
                         NSError *error = nil;
@@ -600,7 +646,13 @@
                         [layer setObject:source forKey:@"source"];
                     }
                     
+                    // add layer visuals
+                    //
                     [self.dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
+                    
+                    // reference visuals for reordering later
+                    //
+                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
                     [TESTFLIGHT passCheckpoint:@"enabled GeoJSON layer"];
                 }
@@ -609,11 +661,17 @@
             break;
     }
     
+    // toggle selected state
+    //
     [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
     
+    // send notification for clustering button to toggle visibility
+    //
     if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayerCount:)])
         [self.delegate dataLayerHandler:self didUpdateDataLayerCount:[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count]];
 
+    // reorder layers according to current arrangement
+    //
     if ([[layer objectForKey:@"selected"] boolValue])
         [self reorderLayerDisplay];
 }

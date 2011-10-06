@@ -26,8 +26,8 @@
 }
 
 @property (nonatomic, assign) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
+@property (nonatomic, readonly, retain) DSMapView *topMostMapView;
 
-- (DSMapView *)topMostMapView;
 - (void)insertLayerMapView:(DSMapBoxTiledLayerMapView *)layerMapView;
 
 @end

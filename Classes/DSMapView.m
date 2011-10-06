@@ -22,6 +22,7 @@
 @implementation DSMapView
 
 @synthesize interactivityDelegate;
+@synthesize topMostMapView;
 @synthesize touchesMoved;
 @synthesize lastInteractivityPoint;
 
@@ -148,22 +149,22 @@
      * map one, which might just be us.
      */
 
-    DSMapView *topMostMapView = self;
+    DSMapView *returnedMapView = self;
     
     for (UIView *peerView in [[self superview] subviews])
     {
         if ( ! [peerView isKindOfClass:[RMMapView class]])
             break;
         
-        topMostMapView = (DSMapView *)peerView;
+        returnedMapView = (DSMapView *)peerView;
     }
     
-    return topMostMapView;
+    return returnedMapView;
 }
 
 - (void)insertLayerMapView:(DSMapBoxTiledLayerMapView *)layerMapView
 {
-    [[self superview] insertSubview:(UIView *)layerMapView aboveSubview:[self topMostMapView]];
+    [[self superview] insertSubview:(UIView *)layerMapView aboveSubview:self.topMostMapView];
 }
 
 @end

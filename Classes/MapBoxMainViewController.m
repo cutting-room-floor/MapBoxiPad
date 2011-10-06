@@ -192,7 +192,7 @@
     
     // set clustering button state
     //
-    if (((DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager).clusteringEnabled)
+    if (((DSMapBoxMarkerManager *)mapView.topMostMapView.contents.markerManager).clusteringEnabled)
         [self setClusteringOn:YES];
 
     else
@@ -577,9 +577,11 @@
 
 - (IBAction)tappedClusteringButton:(id)sender
 {
+    [self manageExclusiveItem:sender];
+    
     [TESTFLIGHT passCheckpoint:@"toggled clustering"];
     
-    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)[mapView topMostMapView].contents.markerManager;
+    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.topMostMapView.contents.markerManager;
     
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
     

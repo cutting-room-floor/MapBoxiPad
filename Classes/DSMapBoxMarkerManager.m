@@ -130,14 +130,14 @@
 
 - (void)moveMarker:(RMMarker *)marker AtLatLon:(RMLatLong)point
 {
-    NSAssert(clusteringEnabled == NO, @"Moving markers is unsupported when clustering is enabled");
+    NSAssert(self.clusteringEnabled == NO, @"Moving markers is unsupported when clustering is enabled");
     
     [super moveMarker:marker AtLatLon:point];
 }
 
 - (void)moveMarker:(RMMarker *)marker AtXY:(CGPoint)point
 {
-    NSAssert(clusteringEnabled == NO, @"Moving markers is unsupported when clustering is enabled");
+    NSAssert(self.clusteringEnabled == NO, @"Moving markers is unsupported when clustering is enabled");
     
     [super moveMarker:marker AtXY:point];
 }
@@ -148,7 +148,7 @@
 {
     NSAssert(*inClusters, @"Invalid clusters passed to cluster routine");
     
-    if (clusteringEnabled)
+    if (self.clusteringEnabled)
     {
         CGFloat threshold = [contents.mercatorToScreenProjection metersPerPixel] * kDSMapBoxMarkerClusterPixels;
         

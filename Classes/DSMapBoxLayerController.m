@@ -16,8 +16,8 @@
 #import "DSMapBoxTintedPlusItem.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
+#import "DSMapView.h"
 
-#import "RMMapView.h"
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
@@ -327,7 +327,7 @@
             return YES;
             
         case DSMapBoxLayerSectionData:
-            return ! ((DSMapBoxMarkerManager *)((RMMapView *)self.layerManager.baseMapView).contents.markerManager).clusteringEnabled;
+            return ! ((DSMapBoxMarkerManager *)self.layerManager.baseMapView.topMostMapView.contents.markerManager).clusteringEnabled;
     }
     
     return NO;

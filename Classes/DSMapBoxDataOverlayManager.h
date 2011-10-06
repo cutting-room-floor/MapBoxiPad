@@ -27,6 +27,7 @@
 }
 
 @property (nonatomic, retain) DSMapView *mapView;
+@property (nonatomic, retain) NSMutableArray *overlays;
 
 - (id)initWithMapView:(DSMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;

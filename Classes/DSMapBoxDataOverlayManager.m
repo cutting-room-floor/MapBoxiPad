@@ -49,7 +49,6 @@
 
 @interface DSMapBoxDataOverlayManager ()
 
-@property (nonatomic, retain) NSMutableArray *overlays;
 @property (nonatomic, retain) DSMapBoxPopoverController *balloon;
 @property (nonatomic, assign) float lastKnownZoom;
 
