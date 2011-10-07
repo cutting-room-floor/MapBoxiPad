@@ -673,34 +673,52 @@
 
 - (void)presentInteractivityAtPoint:(CGPoint)point
 {
-    DSMapView *aMapView         = nil;
-    id <RMTileSource>tileSource = nil;
-    
-    // grab top-most tile layer and see if it's interactive
+    // We get here without knowing which layer to query. So, find 
+    // the top-most overlay that supports interactivity, then query 
+    // it for interactivity.
     //
+    // In the future, we could, depending on performance, query
+    // all layers, top-down, until we get *results*. But this would
+    // potentially delay local sources while we query every 
+    // remote source above it, coming up empty. 
+    //
+    DSMapView *interactiveMapView = nil;
+
     if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
     {
-        id <RMTileSource>aTileSource = self.mapView.contents.tileSource;
+        // if we don't get here, no tile layers are enabled anyway
+        //
+        DSMapView *masterMapView = ((DSMapBoxTiledLayerMapView *)self.mapView).masterView;
+        NSArray *peerMapViews = ((DSMapContents *)masterMapView.contents).layerMapViews;
         
-        if ([aTileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)aTileSource supportsInteractivity])
+        if (peerMapViews && [peerMapViews count])
         {
-            aMapView   = self.mapView;
-            tileSource = aTileSource;
+            // find top-most interactive one
+            //
+            for (DSMapView *peerMapView in [[peerMapViews reverseObjectEnumerator] allObjects])
+            {
+                if ([peerMapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)peerMapView.contents.tileSource supportsInteractivity])
+                {
+                    interactiveMapView = peerMapView;
+                    
+                    NSLog(@"querying for interactivity: %@", peerMapView.contents.tileSource);
+
+                    break;
+                }
+            }
         }
     }
     
-    NSLog(@"querying for interactivity: %@", tileSource);    
-    
-    if ([tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)tileSource supportsInteractivity])
+    if (interactiveMapView)
     {
-        NSString *formattedOutput = [(id <RMInteractiveSource>)tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeFull 
-                                                                                       forPoint:point 
-                                                                                      inMapView:aMapView];
+        NSString *formattedOutput = [(id <RMInteractiveSource>)interactiveMapView.contents.tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeFull 
+                                                                                                                   forPoint:point 
+                                                                                                                  inMapView:interactiveMapView];
         
         if ( ! formattedOutput || ! [formattedOutput length])
-            formattedOutput = [(id <RMInteractiveSource>)tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser 
-                                                                                 forPoint:point 
-                                                                                inMapView:aMapView];
+            formattedOutput = [(id <RMInteractiveSource>)interactiveMapView.contents.tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser 
+                                                                                                             forPoint:point 
+                                                                                                            inMapView:interactiveMapView];
 
         if (formattedOutput && [formattedOutput length])
         {
@@ -711,7 +729,7 @@
             
             self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
             
-            self.balloon.passthroughViews = [NSArray arrayWithObject:aMapView];
+            self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView];
             self.balloon.delegate = self;
             
             balloonController.name        = @"";
@@ -722,9 +740,9 @@
             [self.balloon setContentViewController:balloonController];
             
             [self.balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
-                                     inView:aMapView 
-                   permittedArrowDirections:UIPopoverArrowDirectionAny
-                                   animated:YES];
+                                          inView:self.mapView 
+                        permittedArrowDirections:UIPopoverArrowDirectionAny
+                                        animated:YES];
             
             [TESTFLIGHT passCheckpoint:@"tapped interactive layer"];
         }
@@ -759,7 +777,7 @@
     //
     self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
     
-    self.balloon.passthroughViews = [NSArray arrayWithObject:mapView];
+    self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView];
     self.balloon.delegate = self;
     
     // KML placemarks have their own title & description
@@ -771,8 +789,8 @@
         balloonController.name        = placemark.name;
         balloonController.description = placemark.featureDescription;
         
-        attachPoint = CGRectMake([mapView.contents latLongToPixel:placemark.point.coordinate].x,
-                                 [mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+        attachPoint = CGRectMake([self.mapView.contents latLongToPixel:placemark.point.coordinate].x,
+                                 [self.mapView.contents latLongToPixel:placemark.point.coordinate].y, 
                                  1,
                                  1);
         
@@ -786,10 +804,10 @@
         balloonController.name        = [markerData objectForKey:@"title"];
         balloonController.description = [markerData objectForKey:@"description"];
         
-        RMLatLong latLong = [mapView.contents.projection pointToLatLong:marker.projectedLocation];
+        RMLatLong latLong = [self.mapView.contents.projection pointToLatLong:marker.projectedLocation];
         
-        attachPoint = CGRectMake([mapView.contents latLongToPixel:latLong].x,
-                                 [mapView.contents latLongToPixel:latLong].y, 
+        attachPoint = CGRectMake([self.mapView.contents latLongToPixel:latLong].x,
+                                 [self.mapView.contents latLongToPixel:latLong].y, 
                                  1, 
                                  1);
         
@@ -801,7 +819,7 @@
     [self.balloon setContentViewController:balloonController];
     
     [self.balloon presentPopoverFromRect:attachPoint
-                             inView:mapView 
+                             inView:self.mapView 
            permittedArrowDirections:UIPopoverArrowDirectionAny
                            animated:YES];
     

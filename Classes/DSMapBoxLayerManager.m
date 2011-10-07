@@ -274,56 +274,52 @@
 
 - (void)reorderLayerDisplay
 {
-    // tile layers
+    // reorder tile layers
     //
     NSArray *visibleTileLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
-
-    if ([visibleTileLayers count] > 1)
+    NSArray *layerMapViews     = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
+    
+    // remove all tile layer maps from superview
+    //
+    [layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    // iterate visible layers, finding map for each & inserting it above top-most existing map layer
+    //
+    for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
     {
-        // track map views in order
-        //
-        NSMutableArray *orderedMaps = [NSMutableArray array];
+        DSMapBoxTiledLayerMapView *layerMapView = [[layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
         
-        // remove all tile layer maps from superview
-        //
-        [((DSMapContents *)self.baseMapView.contents).layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        
-        // iterate visible layers, finding map for each & inserting it above top-most existing map layer
-        //
-        for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
-        {
-            DSMapBoxTiledLayerMapView *layerMapView = [[((DSMapContents *)self.baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
-            
-            [self.baseMapView insertLayerMapView:layerMapView];
-            
-            [orderedMaps addObject:layerMapView];
-        }
-        
-        // find the new top-most map
-        //
-        DSMapBoxTiledLayerMapView *topMostMap = [orderedMaps lastObject];
-
-        // pass the data overlay baton to it
-        //
-        self.dataOverlayManager.mapView = topMostMap;
-
-        // setup the master map & data manager connections
-        //
-        topMostMap.masterView = self.baseMapView;
-        topMostMap.delegate   = self.dataOverlayManager;
-        
-        // zero out the non-top-most map connections
-        //
-        [orderedMaps removeLastObject];
-
-        for (DSMapBoxTiledLayerMapView *orderedMap in orderedMaps)
-        {
-            orderedMap.masterView = nil;
-            orderedMap.delegate   = nil;
-        }
+        [self.baseMapView insertLayerMapView:layerMapView];
     }
     
-    // data layers
+    // find the new top-most map
+    //
+    DSMapView *topMostMapView = self.baseMapView.topMostMapView;
+
+    // pass the data overlay baton to it
+    //
+    self.dataOverlayManager.mapView = topMostMapView;
+
+    // setup the master map & data manager connections
+    //
+    if ( ! [topMostMapView isEqual:self.baseMapView])
+    {
+        ((DSMapBoxTiledLayerMapView *)self.baseMapView.topMostMapView).masterView = self.baseMapView;
+        
+        self.baseMapView.topMostMapView.delegate              = self.dataOverlayManager;
+        self.baseMapView.topMostMapView.interactivityDelegate = self.dataOverlayManager;
+    }
+    
+    // zero out the non-top-most map connections
+    //
+    for (DSMapBoxTiledLayerMapView *otherMap in [layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", self.baseMapView.topMostMapView]])
+    {
+        otherMap.masterView            = nil;
+        otherMap.delegate              = nil;
+        otherMap.interactivityDelegate = nil;
+    }
+    
+    // reorder data layers
     //
     NSArray *visibleDataLayers = [self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
     
@@ -444,26 +440,21 @@
             
             if ([[layer objectForKey:@"selected"] boolValue]) // layer disable
             {
-                for (UIView *baseMapPeer in self.baseMapView.superview.subviews)
+                for (DSMapBoxTiledLayerMapView *layerMapView in ((DSMapContents *)self.baseMapView.contents).layerMapViews)
                 {
-                    if ([baseMapPeer isKindOfClass:[DSMapBoxTiledLayerMapView class]])
+                    if ([layerMapView.tileSetURL isEqual:[layer objectForKey:@"URL"]])
                     {
-                        if ([((DSMapBoxTiledLayerMapView *)baseMapPeer).tileSetURL isEqual:[layer objectForKey:@"URL"]])
-                        {
-                            // disassociate with master map
-                            //
-                            NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
-                            [layerMapViews removeObject:baseMapPeer];
-                            ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
+                        // disassociate with master map
+                        //
+                        NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
+                        [layerMapViews removeObject:layerMapView];
+                        ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
 
-                            // remove from view hierarchy
-                            //
-                            [baseMapPeer removeFromSuperview];
-                            
-                            // transfer data overlay status
-                            //
-                            self.dataOverlayManager.mapView = self.baseMapView.topMostMapView;
-                        }
+                        // remove from view hierarchy
+                        //
+                        [layerMapView removeFromSuperview];
+                        
+                        break;
                     }
                 }
             }
@@ -493,7 +484,7 @@
                 
                 layerMapView.tileSetURL = tileSetURL;
                 
-                // insert above top-most existing map view
+                // insert above top-most existing map view (this will get ordered properly afterwards)
                 //
                 [self.baseMapView insertLayerMapView:layerMapView];
                 
@@ -515,24 +506,10 @@
                 //
                 NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
 
-                // disassociate peers with master
-                //
-                for (DSMapBoxTiledLayerMapView *mapView in layerMapViews)
-                {
-                    mapView.masterView = nil;
-                    mapView.delegate   = nil;
-                }
-                
                 // associate new with master
                 //
                 [layerMapViews addObject:layerMapView];
                 ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
-                layerMapView.masterView = self.baseMapView;
-
-                // associate new with data overlay manager
-                //
-                layerMapView.delegate = self.dataOverlayManager;
-                self.dataOverlayManager.mapView = layerMapView;
                 
                 [TESTFLIGHT passCheckpoint:@"enabled tile layer"];
             }
@@ -662,8 +639,7 @@
 
     // reorder layers according to current arrangement
     //
-    if ([[layer objectForKey:@"selected"] boolValue])
-        [self reorderLayerDisplay];
+    [self reorderLayerDisplay];
 }
 
 @end

@@ -75,8 +75,10 @@
     startingPoint.latitude  = kStartingLat;
     startingPoint.longitude = kStartingLon;
     
-    // base map view
+    // base view & map view
     //
+    self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
+    
     RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]] autorelease];
     
 	[[[DSMapContents alloc] initWithView:mapView 
