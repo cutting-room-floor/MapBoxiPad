@@ -276,21 +276,28 @@
 {
     // reorder tile layers
     //
-    NSArray *visibleTileLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
-    NSArray *layerMapViews     = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
+    NSArray *visibleTileLayers    = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+    NSArray *currentLayerMapViews = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
     
     // remove all tile layer maps from superview
     //
-    [layerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [currentLayerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     // iterate visible layers, finding map for each & inserting it above top-most existing map layer
     //
+    NSMutableArray *newLayerMapViews = [NSMutableArray array];
+    
     for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
     {
-        DSMapBoxTiledLayerMapView *layerMapView = [[layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
+        DSMapBoxTiledLayerMapView *layerMapView = [[currentLayerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
         
         [self.baseMapView insertLayerMapView:layerMapView];
+        [newLayerMapViews addObject:layerMapView];
     }
+    
+    // update stacking order of map views structure
+    //
+    ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:newLayerMapViews];
     
     // find the new top-most map
     //
@@ -312,7 +319,7 @@
     
     // zero out the non-top-most map connections
     //
-    for (DSMapBoxTiledLayerMapView *otherMap in [layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", self.baseMapView.topMostMapView]])
+    for (DSMapBoxTiledLayerMapView *otherMap in [((DSMapContents *)self.baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", self.baseMapView.topMostMapView]])
     {
         otherMap.masterView            = nil;
         otherMap.delegate              = nil;

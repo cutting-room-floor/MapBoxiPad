@@ -674,7 +674,7 @@
 - (void)presentInteractivityAtPoint:(CGPoint)point
 {
     // We get here without knowing which layer to query. So, find 
-    // the top-most overlay that supports interactivity, then query 
+    // the top-most layer that supports interactivity, then query 
     // it for interactivity.
     //
     // In the future, we could, depending on performance, query
@@ -686,31 +686,35 @@
 
     if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
     {
-        // if we don't get here, no tile layers are enabled anyway
+        // if we get here, tile layers are enabled
         //
         DSMapView *masterMapView = ((DSMapBoxTiledLayerMapView *)self.mapView).masterView;
         NSArray *peerMapViews = ((DSMapContents *)masterMapView.contents).layerMapViews;
         
-        if (peerMapViews && [peerMapViews count])
+        // find top-most interactive one
+        //
+        for (DSMapView *peerMapView in [[peerMapViews reverseObjectEnumerator] allObjects])
         {
-            // find top-most interactive one
-            //
-            for (DSMapView *peerMapView in [[peerMapViews reverseObjectEnumerator] allObjects])
+            if ([peerMapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)peerMapView.contents.tileSource supportsInteractivity])
             {
-                if ([peerMapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)peerMapView.contents.tileSource supportsInteractivity])
-                {
-                    interactiveMapView = peerMapView;
-                    
-                    NSLog(@"querying for interactivity: %@", peerMapView.contents.tileSource);
-
-                    break;
-                }
+                interactiveMapView = peerMapView;
+                
+                break;
             }
         }
+    }
+    else
+    {
+        // no tile layers; just check our (base) map - previews, for example
+        //
+        if ([self.mapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)self.mapView.contents.tileSource supportsInteractivity])
+            interactiveMapView = self.mapView;
     }
     
     if (interactiveMapView)
     {
+        NSLog(@"querying for interactivity: %@", interactiveMapView.contents.tileSource);
+
         NSString *formattedOutput = [(id <RMInteractiveSource>)interactiveMapView.contents.tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeFull 
                                                                                                                    forPoint:point 
                                                                                                                   inMapView:interactiveMapView];
