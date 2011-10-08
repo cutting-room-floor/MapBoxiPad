@@ -10,9 +10,12 @@
 
 @interface DSMapBoxPopoverController : UIPopoverController
 {
-    RMProjectedPoint projectedPoint;
 }
 
+@property (nonatomic, assign) UIView *presentingView;
+@property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;
 @property (nonatomic, assign) RMProjectedPoint projectedPoint;
+
+- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated;
 
 @end

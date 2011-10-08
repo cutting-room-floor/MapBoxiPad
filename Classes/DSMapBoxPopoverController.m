@@ -14,26 +14,49 @@
 
 @implementation DSMapBoxPopoverController
 
+@synthesize presentingView;
+@synthesize arrowDirection;
 @synthesize projectedPoint;
 
 - (void)dismissPopoverAnimated:(BOOL)animated
 {
-    [super dismissPopoverAnimated:animated];
+    self.presentingView = nil;
     
+    [super dismissPopoverAnimated:animated];
+
+    // this is normally only called when the user takes action to dismiss the popover
+    //
     [self.delegate popoverControllerDidDismissPopover:self];
 }
 
-- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated
+- (void)presentPopoverFromRect:(CGRect)rect inView:(UIView *)view animated:(BOOL)animated
 {
+    self.presentingView = nil;
+    
+    // if attached to a map, track the view & the attach point
+    //
     if ([view isKindOfClass:[RMMapView class]])
     {
-        CGPoint attachPoint     = CGPointMake(rect.origin.x /*+ (rect.size.width / 2)*/, rect.origin.y /*+ (rect.size.height / 2)*/);
+        self.presentingView = view;
+        
+        CGPoint attachPoint     = CGPointMake(rect.origin.x, rect.origin.y);
         RMLatLong attachLatLong = [((RMMapView *)view).contents pixelToLatLong:attachPoint];
 
         self.projectedPoint = [((RMMapView *)view).contents.projection latLongToPoint:attachLatLong];
     }
 
-    [super presentPopoverFromRect:rect inView:view permittedArrowDirections:arrowDirections animated:animated];
+    // determine best arrow direction based on screen location
+    //
+    UIPopoverArrowDirection direction = UIPopoverArrowDirectionDown;
+    
+    if (CGRectGetMidY(rect) < 200)
+        direction = UIPopoverArrowDirectionUp;
+
+    [super presentPopoverFromRect:rect inView:view permittedArrowDirections:direction animated:animated];
+
+    // remember for later (see https://github.com/developmentseed/MapBoxiPad/issues/178)
+    //
+    self.arrowDirection = direction;
 }
 
 @end
