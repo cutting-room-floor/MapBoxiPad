@@ -91,9 +91,10 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    // first load is about:blank before content is injected
+    // First load is "about:blank" before content is injected.
+    // Also, load <iframe> inline & only follow user-clicked links.
     //
-    if ( ! [[[request URL] scheme] isEqualToString:@"about"])
+    if ( ! [[[request URL] scheme] isEqualToString:@"about"] && navigationType == UIWebViewNavigationTypeLinkClicked)
     {
         [[UIApplication sharedApplication] openURL:[request URL]];
         
