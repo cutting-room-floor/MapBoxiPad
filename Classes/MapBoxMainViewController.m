@@ -1150,9 +1150,26 @@
 
 #pragma mark -
 
-- (void)dataLayerHandler:(id)handler didUpdateDataLayerCount:(int)count
+- (void)dataLayerHandler:(id)handler didUpdateTileLayers:(NSArray *)activeTileLayers
 {
-    if (count > 0 && ! [toolbar.items containsObject:clusteringButton])
+    // update attributions - first, remove empties
+    //
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF != '' AND SELF != %@", [NSNull null]];
+    
+    NSArray *allAttributions = [[activeTileLayers valueForKey:@"attribution"] filteredArrayUsingPredicate:predicate];
+    
+    // de-dupe
+    //
+    NSSet *uniqueAttributions = [NSSet setWithArray:allAttributions];
+    
+    // update label
+    //
+    attributionLabel.text = [[uniqueAttributions allObjects] componentsJoinedByString:@" "];
+}
+
+- (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
+{
+    if ([activeDataLayers count] > 0 && ! [toolbar.items containsObject:clusteringButton])
     {
         NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
 
@@ -1160,7 +1177,7 @@
 
         [toolbar setItems:newItems animated:YES];
     }
-    else if (count == 0 && [toolbar.items containsObject:clusteringButton])
+    else if ([activeDataLayers count] == 0 && [toolbar.items containsObject:clusteringButton])
     {
         NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
 

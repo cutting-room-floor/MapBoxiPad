@@ -149,11 +149,13 @@
         {
             NSString *name        = [[DSMapBoxTileSetManager defaultManager] displayNameForTileSetAtURL:tileSetURL];
             NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetURL];
+            NSString *attribution = [[DSMapBoxTileSetManager defaultManager] attributionForTileSetAtURL:tileSetURL];
             
             [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                        @"URL",
                                                                                            name,                              @"name",
                                                                                            (description ? description : @""), @"description",
                                                                                            [NSNumber numberWithBool:NO],      @"selected",
+                                                                                           attribution,                       @"attribution",
                                                                                            nil]];
         }
     }
@@ -639,10 +641,15 @@
     //
     [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
     
-    // send notification for clustering button to toggle visibility
+    // notify delegate of tile layer toggles to update attributions
     //
-    if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayerCount:)])
-        [self.delegate dataLayerHandler:self didUpdateDataLayerCount:[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] count]];
+    if (indexPath.section == DSMapBoxLayerSectionTile && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateTileLayers:)])
+        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+    
+    // notify delegate for clustering button to toggle visibility
+    //
+    if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayers:)])
+        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
 
     // reorder layers according to current arrangement
     //
