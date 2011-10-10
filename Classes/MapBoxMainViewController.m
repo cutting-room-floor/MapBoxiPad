@@ -215,7 +215,7 @@
     if ([mapView.contents isKindOfClass:[DSMapContents class]])
         [mapView.contents performSelector:@selector(postZoom) 
                                withObject:nil 
-                               afterDelay:0.1];
+                               afterDelay:0.0];
     
     [mapView.delegate mapViewRegionDidChange:mapView]; // trigger popover move
 }
@@ -666,7 +666,7 @@
 {
     if ([(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
     {
-        for (NSURL *layerURL in [[layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.selected = 1"]] valueForKey:@"URL"])
+        for (NSURL *layerURL in [[layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = 1"]] valueForKey:@"URL"])
         {
             if ([layerURL isEqual:kDSOpenStreetMapURL] || [layerURL isEqual:kDSMapQuestOSMURL] || [layerURL isTileStreamURL])
             {
