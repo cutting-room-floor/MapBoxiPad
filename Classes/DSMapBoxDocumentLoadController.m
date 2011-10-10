@@ -23,6 +23,15 @@
 @implementation DSMapBoxDocumentLoadController
 
 @synthesize delegate;
+@synthesize noDocsView;
+@synthesize scroller;
+@synthesize nameLabel;
+@synthesize dateLabel;
+@synthesize actionButton;
+@synthesize trashButton;
+@synthesize saveFiles;
+@synthesize dimmer;
+@synthesize spinner;
 
 - (void)viewDidLoad
 {
@@ -32,7 +41,33 @@
     
     saveFiles = [[NSArray array] retain];
     
-    [self reload];
+    // put up dimmer & spinner while loading
+    //
+    dimmer = [[UIView alloc] initWithFrame:self.view.frame];
+    
+    dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    
+    [self.view addSubview:dimmer];
+    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    
+    [spinner startAnimating];
+    
+    spinner.center = dimmer.center;
+
+    [dimmer addSubview:spinner];
+
+    // prep the UI
+    //
+    [self updateMetadata];
+    
+    noDocsView.hidden = YES;
+    
+    self.navigationItem.leftBarButtonItem.enabled = NO;
+
+    // perform the reload
+    //
+    dispatch_delayed_ui_action(0.0, ^(void) { [self reload]; });
     
     [TESTFLIGHT passCheckpoint:@"viewed document loader"];
 }
@@ -44,7 +79,15 @@
 
 - (void)dealloc
 {
+    [noDocsView release];
+    [scroller release];
+    [nameLabel release];
+    [dateLabel release];
+    [actionButton release];
+    [trashButton release];
     [saveFiles release];
+    [dimmer release];
+    [spinner release];
     
     [super dealloc];
 }
@@ -53,7 +96,7 @@
 
 - (void)reload
 {
-    [scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     // iterate documents
     //
@@ -69,15 +112,22 @@
         DSMapBoxLargeSnapshotView *snapshotView = [[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease];
         snapshotView.snapshotName = [saveFile valueForKey:@"name"];
         snapshotView.delegate = self;
-        [scroller addSubview:snapshotView];
-        snapshotView.frame = CGRectMake(kDSDocumentWidth * ([scroller.subviews count] - 1), 0, kDSDocumentWidth, kDSDocumentHeight);
+        [self.scroller addSubview:snapshotView];
+        snapshotView.frame = CGRectMake(kDSDocumentWidth * ([self.scroller.subviews count] - 1), 0, kDSDocumentWidth, kDSDocumentHeight);
     }
     
-    scroller.contentSize = CGSizeMake(kDSDocumentWidth * [scroller.subviews count], kDSDocumentHeight);
+    self.scroller.contentSize = CGSizeMake(kDSDocumentWidth * [self.scroller.subviews count], kDSDocumentHeight);
     
-    [self scrollViewDidScroll:scroller];
+    [self scrollViewDidScroll:self.scroller];
     
-    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [scroller.subviews count]] forKey:@"saved document count"];
+    // clean up modal UI
+    //
+    [self.dimmer  removeFromSuperview];
+    [self.spinner removeFromSuperview];
+
+    self.navigationItem.leftBarButtonItem.enabled = YES;
+    
+    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [self.scroller.subviews count]] forKey:@"saved document count"];
 }
 
 + (NSString *)saveFolderPath
@@ -108,19 +158,17 @@
         
         [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
         
-        [saveFiles release];
-        
-        saveFiles = [[NSArray arrayWithArray:filesWithDates] retain];
+        self.saveFiles = [NSArray arrayWithArray:filesWithDates];
     }
     
-    return saveFiles;
+    return self.saveFiles;
 }
 
 - (void)updateMetadata
 {
     if ([[self saveFilesReloadingFromDisk:NO] count])
     {
-        CGFloat needle = scroller.contentOffset.x / kDSDocumentWidth;
+        CGFloat needle = self.scroller.contentOffset.x / kDSDocumentWidth;
         
         int index = -1;
         
@@ -130,33 +178,33 @@
         else if (ceilf(needle) - needle < 0.5) // scrolling right
             index = (int)ceilf(needle);
         
-        if (index < 0 || index >= [[scroller subviews] count])
+        if (index < 0 || index >= [[self.scroller subviews] count])
             return;
         
         self.title = [NSString stringWithFormat:@"My Maps (%i of %i)", index + 1, [[self saveFilesReloadingFromDisk:NO] count]];
         
         NSString *currentFile = [[self saveFilesReloadingFromDisk:NO] objectAtIndex:index];
         
-        nameLabel.text = [[currentFile valueForKey:@"name"] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
+        self.nameLabel.text = [[currentFile valueForKey:@"name"] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
         
         NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
 
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
         
-        dateLabel.text = [dateFormatter stringFromDate:[currentFile valueForKey:@"date"]];
+        self.dateLabel.text = [dateFormatter stringFromDate:[currentFile valueForKey:@"date"]];
         
-        noDocsView.hidden   = YES;
-        scroller.hidden     = NO;
-        actionButton.hidden = NO;
-        trashButton.hidden  = NO;
+        self.noDocsView.hidden   = YES;
+        self.scroller.hidden     = NO;
+        self.actionButton.hidden = NO;
+        self.trashButton.hidden  = NO;
         
-        DSMapBoxLargeSnapshotView *oldActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[[scroller subviews] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isActive = YES"]] lastObject];
+        DSMapBoxLargeSnapshotView *oldActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[[self.scroller subviews] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isActive = YES"]] lastObject];
         
-        if ([[scroller subviews] indexOfObject:oldActiveSnapshot] != index)
+        if ([[self.scroller subviews] indexOfObject:oldActiveSnapshot] != index)
             oldActiveSnapshot.isActive = NO;
         
-        DSMapBoxLargeSnapshotView *newActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[scroller subviews] objectAtIndex:index];
+        DSMapBoxLargeSnapshotView *newActiveSnapshot = (DSMapBoxLargeSnapshotView *)[[self.scroller subviews] objectAtIndex:index];
         
         if ( ! newActiveSnapshot.isActive)
             newActiveSnapshot.isActive = YES;
@@ -164,13 +212,13 @@
     else
     {
         self.title     = @"My Maps";
-        nameLabel.text = @"";
-        dateLabel.text = @"";
+        self.nameLabel.text = @"";
+        self.dateLabel.text = @"";
 
-        noDocsView.hidden   = NO;
-        scroller.hidden     = YES;
-        actionButton.hidden = YES;
-        trashButton.hidden  = YES;
+        self.noDocsView.hidden   = NO;
+        self.scroller.hidden     = YES;
+        self.actionButton.hidden = YES;
+        self.trashButton.hidden  = YES;
     }
 }
 
@@ -199,7 +247,7 @@
     sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     sheet.tag = 0;
     
-    [sheet showFromRect:actionButton.bounds inView:actionButton animated:YES];
+    [sheet showFromRect:self.actionButton.bounds inView:self.actionButton animated:YES];
 }
 
 - (IBAction)tappedTrashButton:(id)sender
@@ -213,7 +261,7 @@
     sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     sheet.tag = 1;
     
-    [sheet showFromRect:trashButton.bounds inView:trashButton animated:YES];
+    [sheet showFromRect:self.trashButton.bounds inView:self.trashButton animated:YES];
 }
 
 #pragma mark -
@@ -228,7 +276,7 @@
         {
             // get the current image
             //
-            NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
+            NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
             
             NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
             
@@ -266,7 +314,7 @@
     {
         // trash button: delete
         //
-        NSUInteger index = scroller.contentOffset.x / kDSDocumentWidth;
+        NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
         
         NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
         

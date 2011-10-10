@@ -1037,30 +1037,7 @@
             wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
 
-            // put up dimmer & spinner
-            //
-            UIView *dimmer = [[[UIView alloc] initWithFrame:loadController.view.frame] autorelease];
-            
-            dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-
-            [self.view addSubview:dimmer];
-            
-            UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
-            
-            [spinner startAnimating];
-            
-            spinner.center = loadController.view.center;
-            
-            [self.view addSubview:spinner];
-            
-            // start the flip
-            //
             [self presentModalViewController:wrapper animated:YES];
-            
-            // dispose of dimmer & spinner
-            //
-            [dimmer  performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
-            [spinner performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
         }
         else if (buttonIndex > -1)
         {
@@ -1155,13 +1132,13 @@
     
     [spinner startAnimating];
     
-    spinner.center = controller.view.center;
+    spinner.center = dimmer.center;
     
-    [controller.view addSubview:spinner];
+    [dimmer addSubview:spinner];
     
     // actually load state
     //
-    [self restoreState:name];
+    dispatch_delayed_ui_action(0.0, ^(void) { [self restoreState:name]; });
 }
 
 - (void)documentLoadController:(DSMapBoxDocumentLoadController *)controller wantsToSaveDocumentWithName:(NSString *)name

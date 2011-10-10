@@ -30,17 +30,18 @@
                                                               MFMailComposeViewControllerDelegate,
                                                               UIAlertViewDelegate>
 {
-    IBOutlet UIView *noDocsView;
-    IBOutlet UIScrollView *scroller;
-    IBOutlet UILabel *nameLabel;
-    IBOutlet UILabel *dateLabel;
-    IBOutlet UIButton *actionButton;
-    IBOutlet UIButton *trashButton;
-    id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
-    NSArray *saveFiles;
 }
 
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
+@property (nonatomic, retain) IBOutlet UIView *noDocsView;
+@property (nonatomic, retain) IBOutlet UIScrollView *scroller;
+@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
+@property (nonatomic, retain) IBOutlet UILabel *dateLabel;
+@property (nonatomic, retain) IBOutlet UIButton *actionButton;
+@property (nonatomic, retain) IBOutlet UIButton *trashButton;
+@property (nonatomic, retain) NSArray *saveFiles;
+@property (nonatomic, retain) UIView *dimmer;
+@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 + (NSString *)saveFolderPath;
 
