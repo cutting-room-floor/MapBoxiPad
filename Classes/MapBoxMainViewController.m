@@ -199,6 +199,27 @@
 
     else
         [self setClusteringOn:NO];
+    
+    // add beta tester feedback button
+    //
+#if BETA_TESTING
+    UIImage *testFlightImage = [UIImage imageNamed:@"testflight.png"];
+    
+    UIButton *feedbackButton = [[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width  - testFlightImage.size.width  - 10,
+                                                                           self.view.bounds.size.height - testFlightImage.size.height - 10, 
+                                                                           testFlightImage.size.width, 
+                                                                           testFlightImage.size.height)] autorelease];
+    
+    [feedbackButton setImage:testFlightImage forState:UIControlStateNormal];
+    
+    [feedbackButton addTarget:[TESTFLIGHT class] action:@selector(openFeedbackView) forControlEvents:UIControlEventTouchUpInside];
+    
+    feedbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    
+    feedbackButton.alpha = 0.25;
+    
+    [self.view addSubview:feedbackButton];
+#endif
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

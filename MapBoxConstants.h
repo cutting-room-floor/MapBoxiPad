@@ -36,14 +36,15 @@
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN(v)                ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
 #define SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(v)    ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedDescending)
+#define BETA_TESTING                               ! (defined(DEBUG) || defined(RELEASE))
 
 //
 // Preprocessor directives
 //
-#if defined(DEBUG) || defined(RELEASE)
-    #import "TestFlightDummy.h"
-    #define TESTFLIGHT TestFlightDummy
-#else
+#if BETA_TESTING
     #import "TestFlight.h"
     #define TESTFLIGHT TestFlight
+#else
+    #import "TestFlightDummy.h"
+    #define TESTFLIGHT TestFlightDummy
 #endif

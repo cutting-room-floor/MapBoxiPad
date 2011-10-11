@@ -184,6 +184,7 @@
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
+		DDE41E5E1443CABB00837C16 /* testflight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE41E5D1443CABB00837C16 /* testflight.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
@@ -520,6 +521,7 @@
 		DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs_highlight.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
+		DDE41E5D1443CABB00837C16 /* testflight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testflight.png; sourceTree = "<group>"; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
@@ -1039,6 +1041,7 @@
 				DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */,
 				DDDA3C6313D75EEC00DDEA58 /* help.png */,
 				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
+				DDE41E5D1443CABB00837C16 /* testflight.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1422,6 +1425,7 @@
 				DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */,
 				DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */,
 				DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */,
+				DDE41E5E1443CABB00837C16 /* testflight.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
