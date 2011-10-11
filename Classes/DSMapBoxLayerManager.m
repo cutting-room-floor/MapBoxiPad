@@ -86,8 +86,8 @@
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"geojson"])
             [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.geojson)"];
         
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"tile layer count"];
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"data layer count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"Tile Layer Count"];
+        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"Data Layer Count"];
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reloadLayersFromDisk)
