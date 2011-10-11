@@ -80,6 +80,8 @@
                                                                                           action:@selector(tappedDoneButton:)] autorelease];
 
     self.tableView.editing = YES;
+    
+    [self.tableView reloadData];
 }
 
 - (IBAction)tappedDoneButton:(id)sender
@@ -240,13 +242,17 @@
     if ( ! cell)
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     
+    NSDictionary *layer = nil;
+    
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionTile:
 
-            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
+            layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+            
+            if ([[layer valueForKey:@"selected"] boolValue])
             {
-                NSURL *layerURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
+                NSURL *layerURL = [layer valueForKey:@"URL"];
                 
                 if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
@@ -259,30 +265,37 @@
                     
                     [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
                     
-                    cell.accessoryView = button;
+                    cell.accessoryView        = button;
+                    cell.editingAccessoryView = button;
                 }
                 else
                 {
-                    cell.accessoryView = nil;
-                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    cell.accessoryView        = nil;
+                    cell.editingAccessoryView = nil;
+                    
+                    cell.accessoryType        = UITableViewCellAccessoryCheckmark;
+                    cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
                 }
             }
             else
             {
-                cell.accessoryView = nil;
-                cell.accessoryType = UITableViewCellAccessoryNone;                
+                cell.accessoryView        = nil;
+                cell.editingAccessoryView = nil;
+                
+                cell.accessoryType        = UITableViewCellAccessoryNone;
+                cell.editingAccessoryType = UITableViewCellAccessoryNone;
             }
 
-            cell.textLabel.text       = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            cell.textLabel.text       = [layer valueForKey:@"name"];
+            cell.detailTextLabel.text = [layer valueForKey:@"description"];
 
-            if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSOpenStreetMapURL])
+            if ([[layer valueForKey:@"URL"] isEqual:kDSOpenStreetMapURL])
                 cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
             
-            else if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isEqual:kDSMapQuestOSMURL])
+            else if ([[layer valueForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
                 cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
             
-            else if ([[[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"] isTileStreamURL])
+            else if ([[layer valueForKey:@"URL"] isTileStreamURL])
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
             
             else
@@ -292,12 +305,18 @@
             
         case DSMapBoxLayerSectionData:
 
-            cell.accessoryView        = nil;
-            cell.accessoryType        = [[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.textLabel.text       = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"name"];
-            cell.detailTextLabel.text = [[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"description"];
+            layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
             
-            switch ([[[self.layerManager.dataLayers objectAtIndex:indexPath.row] valueForKeyPath:@"type"] intValue])
+            cell.accessoryView        = nil;
+            cell.editingAccessoryView = nil;
+            
+            cell.accessoryType        = [[layer valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.editingAccessoryType = cell.accessoryType;
+            
+            cell.textLabel.text       = [layer valueForKey:@"name"];
+            cell.detailTextLabel.text = [layer valueForKey:@"description"];
+            
+            switch ([[layer valueForKey:@"type"] intValue])
             {
                 case DSMapBoxLayerTypeKML:
                 case DSMapBoxLayerTypeKMZ:
