@@ -78,7 +78,7 @@
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"layerEditingNotified"])
     {
         UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Reordering Layers" 
-                                                         message:@"In addition to deleting layers, you can reorder layers in the visible map by going into Edit mode and dragging their rows up or down relative to other visible layers."
+                                                         message:@"You can reorder layers in the visible map by dragging their rows up or down relative to other visible layers."
                                                         delegate:nil
                                                cancelButtonTitle:nil
                                                otherButtonTitles:@"OK", nil] autorelease];
@@ -100,7 +100,7 @@
 
 - (IBAction)tappedDoneButton:(id)sender
 {
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Edit" 
+    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Reorder" 
                                                                                style:UIBarButtonItemStyleBordered
                                                                               target:self
                                                                               action:@selector(tappedEditButton:)] autorelease];
