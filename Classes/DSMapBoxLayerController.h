@@ -17,15 +17,11 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate>
+@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate, UIActionSheetDelegate>
 {
 }
 
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
 @property (nonatomic, assign) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
-
-- (IBAction)tappedEditButton:(id)sender;
-- (IBAction)tappedDoneButton:(id)sender;
-- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
 
 @end

@@ -23,8 +23,11 @@
 
 #import "Reachability.h"
 
-@interface DSMapBoxLayerController (DSMapBoxLayerControllerPrivate)
+@interface DSMapBoxLayerController ()
 
+@property (nonatomic, retain) NSIndexPath *indexPathToDelete;
+
+- (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -34,6 +37,7 @@
 @implementation DSMapBoxLayerController
 
 @synthesize layerManager;
+@synthesize indexPathToDelete;
 @synthesize delegate;
 
 - (void)viewDidLoad
@@ -45,7 +49,13 @@
     self.navigationItem.leftBarButtonItem = [[[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
                                                                                      action:@selector(presentAddLayerHelper)] autorelease];
     
-    [self tappedDoneButton:self];
+    // We are always in editing mode, which allows reordering
+    // of layers at any time. We use gestures to bring up a
+    // menu for deletion rather than use the built-in table 
+    // view way, though.
+    //
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.editing = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -57,56 +67,15 @@
     [self.tableView reloadData];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    
-    [self tappedDoneButton:self];
-}
-
 - (void)dealloc
 {
     [layerManager release];
+    [indexPathToDelete release];
     
     [super dealloc];
 }
 
 #pragma mark -
-
-- (IBAction)tappedEditButton:(id)sender
-{
-    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"layerEditingNotified"])
-    {
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Reordering Layers" 
-                                                         message:@"You can reorder layers in the visible map by dragging their rows up or down relative to other visible layers."
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
-        
-        [alert show];
-        
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"layerEditingNotified"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    
-    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                          target:self
-                                                                                          action:@selector(tappedDoneButton:)] autorelease];
-
-    self.tableView.editing = YES;
-    
-    [self.tableView reloadData];
-}
-
-- (IBAction)tappedDoneButton:(id)sender
-{
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Reorder" 
-                                                                               style:UIBarButtonItemStyleBordered
-                                                                              target:self
-                                                                              action:@selector(tappedEditButton:)] autorelease];
-    
-    self.tableView.editing = NO;
-}
 
 - (IBAction)tappedLayerButton:(id)sender event:(id)event
 {
@@ -117,6 +86,54 @@
 
     if (indexPath)
         [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
+}
+
+- (void)handleGesture:(UIGestureRecognizer *)gesture
+{
+    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan)
+    {
+        // cancel gesture
+        //
+        gesture.enabled = NO;
+        gesture.enabled = YES;
+        
+        // determine cell touched & index path
+        //
+        UITableViewCell *cell = (UITableViewCell *)gesture.view;
+        
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
+        
+        // show deletion menu for deletable layers
+        //
+        BOOL layerCanBeDeleted = NO;
+        
+        if (indexPath.section == DSMapBoxLayerSectionTile)
+        {
+            NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+            
+            if ( ! [tileSetURL isEqual:kDSOpenStreetMapURL] && ! [tileSetURL isEqual:kDSMapQuestOSMURL])
+                layerCanBeDeleted = YES;
+        }
+        else if (indexPath.section == DSMapBoxLayerSectionData)
+        {
+            layerCanBeDeleted = YES;
+        }
+        
+        if (layerCanBeDeleted)
+        {
+            self.indexPathToDelete = [self.tableView indexPathForCell:cell];
+            
+            UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:cell.textLabel.text
+                                                                      delegate:self
+                                                             cancelButtonTitle:@"Cancel"
+                                                        destructiveButtonTitle:@"Delete Layer"
+                                                             otherButtonTitles:nil] autorelease];
+            
+            [actionSheet showFromRect:cell.frame inView:cell animated:YES];
+            
+            [TESTFLIGHT passCheckpoint:@"long-press gesture to delete layer table row"];
+        }
+    }
 }
 
 #pragma mark -
@@ -210,6 +227,8 @@
         cell.accessoryView = nil;
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
+    
+    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 #pragma mark -
@@ -249,12 +268,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *LayerCellIdentifier = @"LayerCellIdentifier";
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LayerCellIdentifier];
 
     if ( ! cell)
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:LayerCellIdentifier] autorelease];
     
     NSDictionary *layer = nil;
     
@@ -349,7 +368,21 @@
             break;
     }
     
+    if ( ! cell.gestureRecognizers)
+    {
+        UILongPressGestureRecognizer *gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+
+        gesture.minimumPressDuration = 1.0;
+
+        [cell addGestureRecognizer:gesture];
+    }
+    
     return cell;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
@@ -385,15 +418,17 @@
         
         if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
         {
-            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Delete Layer?"
-                                                                         message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"Don't Delete"
-                                                               otherButtonTitles:@"Delete", nil] autorelease];
+            self.indexPathToDelete = indexPath;
             
-            alert.context = indexPath;
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Layer?"
+                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Don't Delete"
+                                                   otherButtonTitles:@"Delete", nil] autorelease];
             
             [alert show];
+            
+            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
             
             return;
         }
@@ -402,8 +437,6 @@
     [self.layerManager deleteLayerAtIndexPath:indexPath];
     
     [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
-    
-    [self tappedDoneButton:self];
 }
 
 #pragma mark -
@@ -414,19 +447,14 @@
     cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NO;
+}
+
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == DSMapBoxLayerSectionTile)
-    {
-        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-        
-        // don't allow deletion of bundled tile sets
-        //
-        if ([tileSetURL isEqual:kDSOpenStreetMapURL] || [tileSetURL isEqual:kDSMapQuestOSMURL])
-            return UITableViewCellEditingStyleNone;
-    }
-
-    return UITableViewCellEditingStyleDelete;
+    return UITableViewCellEditingStyleNone;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -478,6 +506,8 @@
                                                        otherButtonTitles:@"OK", nil] autorelease];
                 
                 [alert show];
+                
+                [TESTFLIGHT passCheckpoint:@"user warned about out-of-zoom layer"];
                 
                 return;
             }
@@ -547,14 +577,22 @@
 {
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
-        NSIndexPath *indexPath = (NSIndexPath *)((DSMapBoxAlertView *)alertView).context;
+        [self.layerManager deleteLayerAtIndexPath:self.indexPathToDelete];
         
-        [self.layerManager deleteLayerAtIndexPath:indexPath];
-        
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationLeft];
     }
+}
 
-    [self tappedDoneButton:self];
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == actionSheet.destructiveButtonIndex)
+    {
+        [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:self.indexPathToDelete];
+        
+        [TESTFLIGHT passCheckpoint:@"confirmed layer deletion"];
+    }
 }
 
 @end
