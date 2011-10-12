@@ -121,7 +121,7 @@
     NSMutableArray *mutableTileLayers  = [NSMutableArray arrayWithArray:self.tileLayers];
     NSMutableArray *tileLayersToRemove = [NSMutableArray array];
     
-    // look for layers missing on disk, turning them off
+    // look for tile layers missing on disk, turning them off
     //
     for (NSDictionary *tileLayer in mutableTileLayers)
     {
@@ -134,14 +134,14 @@
         }
     }
 
-    // remove any missing layers from UI
+    // remove any missing tile layers from UI
     while ([tileLayersToRemove count] > 0)
     {
         [mutableTileLayers removeObject:[tileLayersToRemove objectAtIndex:0]];
         [tileLayersToRemove removeObjectAtIndex:0];
     }
     
-    // pick up any new tiles on disk
+    // pick up any new tile layers on disk
     //
     for (NSURL *tileSetURL in tileSetURLs)
     {
@@ -169,7 +169,7 @@
     NSMutableArray *mutableDataLayers  = [NSMutableArray arrayWithArray:self.dataLayers];
     NSMutableArray *dataLayersToRemove = [NSMutableArray array];
     
-    // look for layers missing on disk, turning them off
+    // look for data layers missing on disk, turning them off
     //
     for (NSDictionary *dataLayer in mutableDataLayers)
     {
@@ -182,7 +182,7 @@
         }
     }
 
-    // remove any missing layers from UI
+    // remove any missing data layers from UI
     //
     while ([dataLayersToRemove count] > 0)
     {
@@ -190,7 +190,7 @@
         [dataLayersToRemove removeObjectAtIndex:0];
     }
     
-    // pick up any new layers on disk
+    // pick up any new data layers on disk
     //
     for (NSString *path in docs)
     {

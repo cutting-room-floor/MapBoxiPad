@@ -44,8 +44,8 @@ typedef enum {
 } DSMapBoxLayerType;
 
 typedef enum {
-    DSMapBoxLayerSectionTile = 0,
-    DSMapBoxLayerSectionData = 1,
+    DSMapBoxLayerSectionData = 0,
+    DSMapBoxLayerSectionTile = 1,
 } DSMapBoxLayerSection;
 
 @interface DSMapBoxLayerManager : NSObject
