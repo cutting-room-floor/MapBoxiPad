@@ -110,6 +110,16 @@
         return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
     
+#ifdef BETA_TESTING
+    // track number of saved maps
+    //
+    NSString *savedMapsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
+    
+    int savedMapsCount = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:savedMapsPath error:NULL] count];
+    
+    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", savedMapsCount] forKey:@"Saved Map Count"];
+#endif
+    
 	return YES;
 }
 

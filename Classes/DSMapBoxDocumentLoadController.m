@@ -126,8 +126,6 @@
     [self.spinner removeFromSuperview];
 
     self.navigationItem.leftBarButtonItem.enabled = YES;
-    
-    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [self.scroller.subviews count]] forKey:@"saved document count"];
 }
 
 + (NSString *)saveFolderPath

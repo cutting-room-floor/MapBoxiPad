@@ -200,9 +200,9 @@
     else
         [self setClusteringOn:NO];
     
+#ifdef BETA_TESTING
     // add beta tester feedback button
     //
-#if BETA_TESTING
     UIImage *testFlightImage = [UIImage imageNamed:@"testflight.png"];
     
     UIButton *feedbackButton = [[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width  - testFlightImage.size.width  - 10,
