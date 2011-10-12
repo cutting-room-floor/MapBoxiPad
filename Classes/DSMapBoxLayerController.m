@@ -499,7 +499,7 @@
             {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
                 
-                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable to zoom"
+                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable To Zoom"
                                                                  message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
                                                                 delegate:nil
                                                        cancelButtonTitle:nil
