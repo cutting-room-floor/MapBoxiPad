@@ -586,7 +586,7 @@
         
         layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
         
-        [layersPopover setPopoverContentSize:CGSizeMake(400, wrapper.view.bounds.size.height)];
+        [layersPopover setPopoverContentSize:CGSizeMake(450, wrapper.view.bounds.size.height)];
         
         layersPopover.passthroughViews = nil;
     }
