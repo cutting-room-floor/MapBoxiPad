@@ -110,7 +110,7 @@
         return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
     
-#ifdef BETA_TESTING
+#if BETA_TESTING
     // track number of saved maps
     //
     NSString *savedMapsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];

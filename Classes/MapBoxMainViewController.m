@@ -200,7 +200,7 @@
     else
         [self setClusteringOn:NO];
     
-#ifdef BETA_TESTING
+#if BETA_TESTING
     // add beta tester feedback button
     //
     UIImage *testFlightImage = [UIImage imageNamed:@"testflight.png"];
