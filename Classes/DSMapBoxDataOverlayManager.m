@@ -649,6 +649,8 @@
             [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
             
             overlayToRemove = overlayDict;
+            
+            break;
         }
     }
     
