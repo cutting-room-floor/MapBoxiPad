@@ -135,6 +135,7 @@
     }
 
     // remove any missing tile layers from UI
+    //
     while ([tileLayersToRemove count] > 0)
     {
         [mutableTileLayers removeObject:[tileLayersToRemove objectAtIndex:0]];
@@ -160,7 +161,13 @@
         }
     }
     
-    self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
+    // reverse sort the first time we populate to match stacking order
+    //
+    if ([self.tileLayers count])
+        self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
+    
+    else
+        self.tileLayers = [[[NSArray arrayWithArray:mutableTileLayers] reverseObjectEnumerator] allObjects];
 
     // data layers
     //
@@ -270,15 +277,21 @@
             [mutableDataLayers addObject:layer];
         }
     }
-        
-    self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
+    
+    // reverse sort the first time we populate to match stacking order
+    //
+    if ([self.dataLayers count])
+        self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
+    
+    else
+        self.dataLayers = [[[NSArray arrayWithArray:mutableDataLayers] reverseObjectEnumerator] allObjects];
 }
 
 - (void)reorderLayerDisplay
 {
     // reorder tile layers
     //
-    NSArray *visibleTileLayers    = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+    NSArray *visibleTileLayers    = [[[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
     NSArray *currentLayerMapViews = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
     
     // remove all tile layer maps from superview
@@ -330,7 +343,7 @@
     
     // reorder data layers
     //
-    NSArray *visibleDataLayers = [self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+    NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
     
     if ([visibleDataLayers count] > 1)
     {
