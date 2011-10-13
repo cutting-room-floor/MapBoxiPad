@@ -225,7 +225,7 @@
         else if ([[[path pathExtension] lowercaseString] isEqualToString:@"rss"] && 
                   ! [[mutableDataLayers valueForKeyPath:@"URL"] containsObject:[NSURL fileURLWithPath:path]])
         {
-            NSString *description = @"GeoRSS Feed";
+            NSString *description = @"GeoRSS";
 
             NSString *name = [path lastPathComponent];
         
