@@ -7,7 +7,7 @@
 
 ## Requirements
 
- * Base SDK: iOS 4.3
+ * Base SDK: iOS 5.0
  * Deployment Target: iOS 4.2
 
 ## License
