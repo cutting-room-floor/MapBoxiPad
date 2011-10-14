@@ -26,8 +26,12 @@
 @interface DSMapBoxLayerController ()
 
 @property (nonatomic, retain) NSIndexPath *indexPathToDelete;
+@property (nonatomic, assign) BOOL showActiveLayersOnly;
 
+- (void)toggleShowActiveLayersOnly:(id)sender;
+- (void)updateLayersButton;
 - (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
+- (BOOL)layersActiveInSection:(DSMapBoxLayerSection)section;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
@@ -38,6 +42,7 @@
 
 @synthesize layerManager;
 @synthesize indexPathToDelete;
+@synthesize showActiveLayersOnly;
 @synthesize delegate;
 
 - (void)viewDidLoad
@@ -48,6 +53,10 @@
 
     self.navigationItem.leftBarButtonItem = [[[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
                                                                                      action:@selector(presentAddLayerHelper)] autorelease];
+    
+    self.showActiveLayersOnly = YES;
+    
+    [self toggleShowActiveLayersOnly:self];
     
     // We are always in editing mode, which allows reordering
     // of layers at any time. We use gestures to bring up a
@@ -65,6 +74,8 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDocumentsChangedNotification object:nil];
     
     [self.tableView reloadData];
+    
+    [self updateLayersButton];
 }
 
 - (void)dealloc
@@ -76,6 +87,27 @@
 }
 
 #pragma mark -
+
+- (void)toggleShowActiveLayersOnly:(id)sender
+{
+    self.showActiveLayersOnly = ! self.showActiveLayersOnly;
+
+    [self.tableView reloadData];
+
+    [self updateLayersButton];
+}
+
+- (void)updateLayersButton
+{
+    if ( ! [self layersActiveInSection:DSMapBoxLayerSectionData] && ! [self layersActiveInSection:DSMapBoxLayerSectionTile])
+        self.navigationItem.rightBarButtonItem = nil;
+    
+    else
+        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:self.showActiveLayersOnly ? @"Show All" : @"Show Active" 
+                                                                                   style:UIBarButtonItemStyleBordered 
+                                                                                  target:self
+                                                                                  action:@selector(toggleShowActiveLayersOnly:)] autorelease];
+}
 
 - (IBAction)tappedLayerButton:(id)sender event:(id)event
 {
@@ -164,6 +196,19 @@
     return shouldShowCrosshairs;
 }
 
+- (BOOL)layersActiveInSection:(DSMapBoxLayerSection)section
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"selected = YES"];
+
+    if (section == DSMapBoxLayerSectionData)
+        return (BOOL)[[self.layerManager.dataLayers filteredArrayUsingPredicate:predicate] count];
+    
+    else if (section == DSMapBoxLayerSectionTile)
+        return (BOOL)[[self.layerManager.tileLayers filteredArrayUsingPredicate:predicate] count];
+
+    return NO;
+}
+
 #pragma mark -
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
@@ -229,6 +274,13 @@
     }
     
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    
+    [self updateLayersButton];
+
+    // if, after toggling, we aren't showing any layers, get out of "active layers" mode
+    //
+    if (self.showActiveLayersOnly && ! [self layersActiveInSection:DSMapBoxLayerSectionData] && ! [self layersActiveInSection:DSMapBoxLayerSectionTile])
+        [self toggleShowActiveLayersOnly:self];
 }
 
 #pragma mark -
@@ -432,8 +484,43 @@
 
 #pragma mark -
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (self.showActiveLayersOnly && ! [self layersActiveInSection:section])
+        return 0.0;
+        
+    return [tableView sectionHeaderHeight];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.showActiveLayersOnly)
+    {
+        if (indexPath.section == DSMapBoxLayerSectionData)
+            if ([[((NSDictionary *)[self.layerManager.dataLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
+                return 0.0;
+
+        if (indexPath.section == DSMapBoxLayerSectionTile)
+            if ([[((NSDictionary *)[self.layerManager.tileLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
+                return 0.0;
+    }
+
+    return [tableView rowHeight];
+}
+
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.showActiveLayersOnly)
+    {
+        if (indexPath.section == DSMapBoxLayerSectionData)
+            if ([[((NSDictionary *)[self.layerManager.dataLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
+                cell.hidden = YES;
+
+        if (indexPath.section == DSMapBoxLayerSectionTile)
+            if ([[((NSDictionary *)[self.layerManager.tileLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
+                cell.hidden = YES;
+    }
+
     cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
     cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
 }
