@@ -15,12 +15,14 @@
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMProjection.h"
+#import "RMMercatorToScreenProjection.h"
 
 #define kDSMapBoxMarkerClusterPixels 50.0f
 #define kDSClusterAlpha               0.7f
 
-@interface DSMapBoxMarkerManager (DSMapBoxMarkerManagerPrivate)
+@interface DSMapBoxMarkerManager ()
 
+- (void)addBaseMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point;
 - (void)clusterMarker:(RMMarker *)marker inClusters:(NSMutableArray **)inClusters;
 - (void)redrawClusters;
 
@@ -81,6 +83,18 @@
     [allMarkers makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
     
     [[contents overlay] setSublayers:nonMarkers];
+}
+
+- (void)addBaseMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point
+{
+    // this is just like super's, but allows us to insert a marker as the first sublayer
+    //
+    RMProjectedPoint projectedPoint = [[contents projection] latLongToPoint:point];
+    
+    [marker setAffineTransform:rotationTransform];
+    [marker setProjectedLocation:projectedPoint];
+    [marker setPosition:[[contents mercatorToScreenProjection] projectXYPoint:projectedPoint]];
+    [[contents overlay] insertSublayer:marker atIndex:0];
 }
 
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point
@@ -241,6 +255,8 @@
             if ([[cluster markers] count] > maxMarkerCount)
                 maxMarkerCount = [[cluster markers] count];
         
+        NSMutableArray *clusterMarkers = [NSMutableArray array];
+        
         for (DSMapBoxMarkerCluster *cluster in clusters)
         {
             RMMarker *marker;
@@ -284,9 +300,15 @@
                 
                 [descriptions sortUsingSelector:@selector(compare:)];
                 
-                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                @"title",
-                                                                         [descriptions componentsJoinedByString:@", "], @"description",
-                                                                         [NSNumber numberWithBool:YES],                 @"isCluster",
+                // build the cluster marker
+                //
+                CLLocation *center = [[[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude] autorelease];
+                
+                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                     @"title",
+                                                                         [descriptions componentsJoinedByString:@", "],      @"description",
+                                                                         [NSNumber numberWithInt:[[cluster markers] count]], @"count",
+                                                                         center,                                             @"location",
+                                                                         [NSNumber numberWithBool:YES],                      @"isCluster",
                                                                          nil];
                 
                 [marker changeLabelUsingText:labelText
@@ -294,7 +316,9 @@
                              foregroundColor:[UIColor whiteColor]
                              backgroundColor:[UIColor clearColor]];
                 
-                [super addMarker:marker AtLatLong:cluster.center];
+                // store up clusters for a moment so we can sort them
+                //
+                [clusterMarkers addObject:marker];
             }
 
             // otherwise add marker (the cluster's only) directly
@@ -306,6 +330,16 @@
                 [super addMarker:marker AtLatLong:((CLLocation *)[((NSDictionary *)marker.data) objectForKey:@"location"]).coordinate];
             }
         }
+        
+        // sort cluster markers by increasing size
+        //
+        if ([clusterMarkers count])
+            [clusterMarkers sortUsingDescriptors:[NSArray arrayWithObject:[NSSortDescriptor sortDescriptorWithKey:@"data.count.intValue" ascending:YES]]];
+        
+        // finally add clusters to map, in order, under all other path layers
+        //
+        for (RMMarker *clusterMarker in clusterMarkers)
+            [self addBaseMarker:clusterMarker AtLatLong:((CLLocation *)[((NSDictionary *)clusterMarker.data) objectForKey:@"location"]).coordinate];
     }
 }
 

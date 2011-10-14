@@ -23,6 +23,7 @@
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 #import "RMCachedTileSource.h"
+#import "RMMarker.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -34,7 +35,6 @@
 @property (nonatomic, retain) NSArray *dataLayers;
 
 - (void)reloadLayersFromDisk;
-- (void)reorderLayerDisplay;
 
 @end
 
@@ -345,23 +345,31 @@
     //
     NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
     
-    if ([visibleDataLayers count] > 1)
+    // First iterate all layers & get all non-cluster paths, in order.
+    // Clusters aren't grabbed here because they aren't associated 
+    // with data layers directly.
+    //
+    NSMutableArray *orderedDataPaths = [NSMutableArray array];
+    
+    for (NSDictionary *dataLayer in visibleDataLayers)
     {
-        // find the superlayer of all live paths
-        //
-        RMLayerCollection *destinationLayer = baseMapView.topMostMapView.contents.overlay;
-        
-        // remove all live paths from the superlayer
-        //
-        for (NSDictionary *overlay in dataOverlayManager.overlays)
-            [[overlay objectForKey:@"overlay"] makeObjectsPerformSelector:@selector(removeFromSuperlayer)];
-        
-        // re-add paths in order
-        //
-        for (NSArray *overlay in [visibleDataLayers valueForKey:@"overlay"])
-            for (CALayer *sublayer in overlay)
-                [destinationLayer addSublayer:sublayer];
+        for (CALayer *path in [dataLayer objectForKey:@"overlay"])
+        {
+            // make sure it's live, then remove it and store it in order
+            //
+            if ([path.superlayer isEqual:self.dataOverlayManager.mapView.contents.overlay])
+            {
+                [orderedDataPaths addObject:path];
+                
+                [path removeFromSuperlayer];
+            }
+        }
     }
+    
+    // add them back in collected order
+    //
+    for (CALayer *path in orderedDataPaths)
+        [self.dataOverlayManager.mapView.contents.overlay addSublayer:path];
 }
 
 #pragma mark -

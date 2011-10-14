@@ -10,7 +10,6 @@
 
 @interface DSMapBoxMarkerManager : RMMarkerManager
 {
-    BOOL clusteringEnabled;
     NSMutableArray *clusters;
 }
 

@@ -387,16 +387,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case DSMapBoxLayerSectionTile:
-            return YES;
-            
-        case DSMapBoxLayerSectionData:
-            return ! ((DSMapBoxMarkerManager *)self.layerManager.baseMapView.topMostMapView.contents.markerManager).clusteringEnabled;
-    }
-    
-    return NO;
+    return YES;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath

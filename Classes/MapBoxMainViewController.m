@@ -611,6 +611,10 @@
     markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
     
     [self setClusteringOn:markerManager.clusteringEnabled];
+    
+    // reorder to ensure clusters or points are ordered properly
+    //
+    [layerManager reorderLayerDisplay];
 }
 
 - (IBAction)tappedHelpButton:(id)sender
