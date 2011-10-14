@@ -224,19 +224,20 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    postRotationMapCenter = mapView.contents.mapCenter;
-    
     return YES;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    postRotationMapCenter = mapView.contents.mapCenter;
+}
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
     mapView.contents.mapCenter = postRotationMapCenter;
     
     if ([mapView.contents isKindOfClass:[DSMapContents class]])
-        [mapView.contents performSelector:@selector(postZoom) 
-                               withObject:nil 
-                               afterDelay:0.0];
+        [(DSMapContents *)mapView.contents postZoom];
     
     [mapView.delegate mapViewRegionDidChange:mapView]; // trigger popover move
 }

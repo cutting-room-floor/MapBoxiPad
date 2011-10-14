@@ -16,4 +16,6 @@ extern NSString *const DSMapContentsZoomBoundsReached;
 
 @property (nonatomic, retain) NSArray *layerMapViews;
 
+- (void)postZoom;
+
 @end

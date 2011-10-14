@@ -25,7 +25,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 @property (nonatomic, assign) RMMapView *mapView;
 
-- (void)postZoom;
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
 - (void)checkOutOfZoomBounds;
