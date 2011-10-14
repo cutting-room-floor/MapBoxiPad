@@ -33,6 +33,8 @@
 - (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
 - (BOOL)layersActiveInSection:(DSMapBoxLayerSection)section;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
+- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath warningForLargeLayers:(BOOL)shouldWarn;
+- (UIButton *)crosshairsButton;
 
 @end
 
@@ -209,6 +211,20 @@
     return NO;
 }
 
+- (UIButton *)crosshairsButton
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    button.frame = CGRectMake(0, 0, 44.0, 44.0);
+    
+    [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
+    
+    [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
+}
+
 #pragma mark -
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
@@ -249,16 +265,7 @@
         
         if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
-            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            button.frame = CGRectMake(0, 0, 44.0, 44.0);
-            
-            [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
-            [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
-            
-            [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
-            
-            cell.accessoryView = button;
+            cell.accessoryView = [self crosshairsButton];
         }
         else
         {
@@ -281,6 +288,39 @@
     //
     if (self.showActiveLayersOnly && ! [self layersActiveInSection:DSMapBoxLayerSectionData] && ! [self layersActiveInSection:DSMapBoxLayerSectionTile])
         [self toggleShowActiveLayersOnly:self];
+}
+
+- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath warningForLargeLayers:(BOOL)shouldWarn
+{
+    if (shouldWarn && indexPath.section == DSMapBoxLayerSectionTile)
+    {
+        // we want to warn the user if they are deleting a large tile layer
+        //
+        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+        
+        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
+        
+        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
+        {
+            self.indexPathToDelete = indexPath;
+            
+            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Layer?"
+                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Don't Delete"
+                                                   otherButtonTitles:@"Delete", nil] autorelease];
+            
+            [alert show];
+            
+            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
+            
+            return;
+        }
+    }
+    
+    [self.layerManager deleteLayerAtIndexPath:indexPath];
+    
+    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark -
@@ -341,17 +381,8 @@
                 
                 if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
-                    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-                    
-                    button.frame = CGRectMake(0, 0, 44.0, 44.0);
-                    
-                    [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
-                    [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
-                    
-                    [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
-                    
-                    cell.accessoryView        = button;
-                    cell.editingAccessoryView = button;
+                    cell.accessoryView        = [self crosshairsButton];
+                    cell.editingAccessoryView = [self crosshairsButton];
                 }
                 else
                 {
@@ -447,39 +478,6 @@
     [self.layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     
     [TESTFLIGHT passCheckpoint:@"reordered layers"];
-}
-
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == DSMapBoxLayerSectionTile)
-    {
-        // we want to warn the user if they are deleting a large tile layer
-        //
-        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-        
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
-        
-        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
-        {
-            self.indexPathToDelete = indexPath;
-            
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Layer?"
-                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Don't Delete"
-                                                   otherButtonTitles:@"Delete", nil] autorelease];
-            
-            [alert show];
-            
-            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
-            
-            return;
-        }
-    }
-    
-    [self.layerManager deleteLayerAtIndexPath:indexPath];
-    
-    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark -
@@ -606,11 +604,6 @@
     [self performSelector:@selector(toggleLayerAtIndexPath:) withObject:indexPath afterDelay:0.0];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return @"Delete";
-}
-
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
     if (sourceIndexPath.section < proposedDestinationIndexPath.section)
@@ -655,9 +648,9 @@
 {
     if (buttonIndex == alertView.firstOtherButtonIndex)
     {
-        [self.layerManager deleteLayerAtIndexPath:self.indexPathToDelete];
+        [self deleteLayerAtIndexPath:self.indexPathToDelete warningForLargeLayers:NO];
         
-        [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:self.indexPathToDelete] withRowAnimation:UITableViewRowAnimationLeft];
+        [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
     }
 }
 
@@ -667,7 +660,7 @@
 {
     if (buttonIndex == actionSheet.destructiveButtonIndex)
     {
-        [self tableView:self.tableView commitEditingStyle:UITableViewCellEditingStyleDelete forRowAtIndexPath:self.indexPathToDelete];
+        [self deleteLayerAtIndexPath:self.indexPathToDelete warningForLargeLayers:YES];
         
         [TESTFLIGHT passCheckpoint:@"confirmed layer deletion"];
     }
