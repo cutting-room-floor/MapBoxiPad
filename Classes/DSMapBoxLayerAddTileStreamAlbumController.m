@@ -125,10 +125,15 @@
 {
     [spinner stopAnimating];
     
-    id newServers = [request.responseData mutableObjectFromJSONData];
+    id newServersReceived = [request.responseData mutableObjectFromJSONData];
     
-    if (newServers && [newServers isKindOfClass:[NSMutableArray class]])
+    if (newServersReceived && [newServersReceived isKindOfClass:[NSMutableArray class]])
     {
+        // Grab parsed objects for safekeeping. Previously, accessing the response 
+        // objects directly was unreliably available in memory.
+        //
+        NSMutableArray *newServers = [NSMutableArray arrayWithArray:[newServersReceived allObjects]];
+        
         // filter out empty accounts
         //
         [newServers filterUsingPredicate:[NSPredicate predicateWithFormat:@"thumbs.@count > 0"]];

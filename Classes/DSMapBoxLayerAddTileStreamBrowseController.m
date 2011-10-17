@@ -244,10 +244,15 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     [spinner stopAnimating];
     
-    id newLayers = [request.responseData mutableObjectFromJSONData];
+    id newLayersReceived = [request.responseData mutableObjectFromJSONData];
 
-    if (newLayers && [newLayers isKindOfClass:[NSMutableArray class]])
+    if (newLayersReceived && [newLayersReceived isKindOfClass:[NSMutableArray class]])
     {
+        // Grab parsed objects for safekeeping. Previously, accessing the response 
+        // objects directly was unreliably available in memory.
+        //
+        NSMutableArray *newLayers = [NSMutableArray arrayWithArray:[newLayersReceived allObjects]];
+
         if ([newLayers count])
         {
             NSMutableArray *updatedLayers    = [NSMutableArray array];
