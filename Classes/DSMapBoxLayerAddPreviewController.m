@@ -67,9 +67,6 @@
     else
         [metadata appendString:[NSString stringWithFormat:@"  Zoom levels %@-%@", [info objectForKey:@"minzoom"], [info objectForKey:@"maxzoom"]]];
     
-    if ( ! [((NSString *)[info objectForKey:@"type"]) isEqualToString:@"baselayer"])
-        [metadata appendString:@", overlay"];
-    
     if ([source supportsInteractivity])
         [metadata appendString:@", interactive"];
 

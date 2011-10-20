@@ -212,7 +212,6 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                            [layer objectForKey:@"id"], @"id", 
                            [layer objectForKey:@"name"], @"name", 
                            [layer objectForKey:@"center"], @"center",
-                           ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @"baselayer"), @"type",
                            [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
