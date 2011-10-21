@@ -823,6 +823,7 @@
                                  [layer objectForKey:@"tileURL"], @"tileURL",
                                  ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
                                  ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
+                                 ([layer objectForKey:@"legend"] ? [layer objectForKey:@"legend"] : @""), @"legend",
                                  nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPath];
