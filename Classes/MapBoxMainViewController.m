@@ -682,6 +682,8 @@
     {
         if ([sender isKindOfClass:[UIButton class]])
         {
+            [TESTFLIGHT passCheckpoint:@"legend button tapped"];
+
             [UIView beginAnimations:nil context:nil];
             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
             [UIView setAnimationDuration:0.15];
@@ -1259,6 +1261,8 @@
                              
                              [UIView commitAnimations];
                          }];
+        
+        [TESTFLIGHT passCheckpoint:@"legend watermark animated"];
     }
 }
 
@@ -1444,6 +1448,8 @@
     webView.alpha = 1.0;
     
     [UIView commitAnimations];
+    
+    [TESTFLIGHT passCheckpoint:@"legend loaded"];
 }
 
 #pragma mark -
