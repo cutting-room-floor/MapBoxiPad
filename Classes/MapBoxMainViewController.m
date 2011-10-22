@@ -1239,7 +1239,7 @@
             if ([layerMapView.contents.tileSource isKindOfClass:[RMMBTilesTileSource class]] || [layerMapView.contents.tileSource isKindOfClass:[RMCachedTileSource class]])
                 legend = [((RMMBTilesTileSource *)layerMapView.contents.tileSource) legend];
 
-    if (legend)
+    if (legend && ! [legend isEqualToString:[legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML;"]])
         [legendView loadHTMLString:legend baseURL:nil];
     
     // animate watermark if legend updated but hidden
