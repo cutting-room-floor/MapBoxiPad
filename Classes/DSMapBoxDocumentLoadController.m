@@ -10,11 +10,15 @@
 
 #import "UIApplication_Additions.h"
 
-@interface DSMapBoxDocumentLoadController (DSMapBoxDocumentLoadControllerPrivate)
+@interface DSMapBoxDocumentLoadController ()
 
 - (void)reload;
 - (NSArray *)saveFilesReloadingFromDisk:(BOOL)shouldReloadFromDisk;
 - (void)updateMetadata;
+
+@property (nonatomic, retain) NSArray *saveFiles;
+@property (nonatomic, retain) UIView *dimmer;
+@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 @end
 
@@ -39,29 +43,29 @@
     
     self.view.backgroundColor = [UIColor colorWithRed:0.138 green:0.138 blue:0.138 alpha:1.000];
     
-    saveFiles = [[NSArray array] retain];
+    self.saveFiles = [NSArray array];
     
     // put up dimmer & spinner while loading
     //
-    dimmer = [[UIView alloc] initWithFrame:self.view.frame];
+    self.dimmer = [[[UIView alloc] initWithFrame:self.view.frame] autorelease];
     
-    dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+    self.dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
-    [self.view addSubview:dimmer];
+    [self.view addSubview:self.dimmer];
     
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
     
-    [spinner startAnimating];
+    [self.spinner startAnimating];
     
-    spinner.center = dimmer.center;
+    self.spinner.center = self.dimmer.center;
 
-    [dimmer addSubview:spinner];
+    [self.dimmer addSubview:self.spinner];
 
     // prep the UI
     //
     [self updateMetadata];
     
-    noDocsView.hidden = YES;
+    self.noDocsView.hidden = YES;
     
     self.navigationItem.leftBarButtonItem.enabled = NO;
 

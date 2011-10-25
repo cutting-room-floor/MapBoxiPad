@@ -12,9 +12,13 @@
 #define DSMapBoxErrorViewHeight 150.0f
 #define DSMapBoxErrorViewAlpha    0.8f
 
-@interface DSMapBoxErrorView (DSMapBoxErrorViewPrivate)
+@interface DSMapBoxErrorView ()
 
 - (void)DSMapBoxErrorView_commonInit;
+
+@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UITextField *textField;
+@property (nonatomic, retain) NSString *message;
 
 @end
 
@@ -22,6 +26,8 @@
 
 @implementation DSMapBoxErrorView
 
+@synthesize imageView;
+@synthesize textField;
 @synthesize message;
 
 + (id)errorViewWithMessage:(NSString *)inMessage
@@ -88,6 +94,7 @@
 {
     [imageView release];
     [textField release];
+    [message release];
     
     [super dealloc];
 }
@@ -96,7 +103,7 @@
 
 - (void)setMessage:(NSString *)inMessage
 {
-    textField.text = inMessage;
+    self.textField.text = inMessage;
 }
 
 #pragma mark -

@@ -8,9 +8,6 @@
 
 @interface DSMapBoxBalloonController : UIViewController <UIWebViewDelegate>
 {
-    IBOutlet UIWebView *webView;
-    NSString *name;
-    NSString *description;
 }
 
 @property (nonatomic, retain) NSString *name;

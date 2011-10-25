@@ -16,10 +16,34 @@
 
 #import "UIApplication_Additions.h"
 
+@interface DSMapBoxLayerAddAccountView ()
+
+@property (nonatomic, retain) NSArray *previewImageURLs;
+@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, retain) ASIHTTPRequest *primaryImageRequest;
+@property (nonatomic, retain) NSMutableArray *secondaryImageRequests;
+@property (nonatomic, assign) CGPoint originalCenter;
+@property (nonatomic, assign) CGSize originalSize;
+@property (nonatomic, assign) BOOL flicked;
+@property (nonatomic, assign) BOOL touched;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerAddAccountView
 
 @synthesize delegate;
 @synthesize featured;
+@synthesize previewImageURLs;
+@synthesize imageView;
+@synthesize label;
+@synthesize primaryImageRequest;
+@synthesize secondaryImageRequests;
+@synthesize originalCenter;
+@synthesize originalSize;
+@synthesize flicked;
 @synthesize touched;
 
 - (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText
@@ -30,7 +54,7 @@
     {
         // create front, inset image view
         //
-        imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)] autorelease];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)];
         
         imageView.image = [UIImage imageNamed:@"placeholder.png"];
         
@@ -42,12 +66,12 @@
         
         // create label
         //
-        label = [[[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)] autorelease];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)];
         
         label.font            = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
         label.text            = [NSString stringWithFormat:@" %@", labelText];
 
-        self.featured = NO;
+        featured = NO;
         
         [imageView addSubview:label];
         
@@ -104,6 +128,8 @@
 
 - (void)dealloc
 {
+    [imageView release];
+    [label release];
     [previewImageURLs release];
     
     [primaryImageRequest clearDelegatesAndCancel];
@@ -131,16 +157,16 @@
     {
         CGColorRef color = CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.8);
         
-        label.backgroundColor = [UIColor colorWithCGColor:color];
+        self.label.backgroundColor = [UIColor colorWithCGColor:color];
         
         CGColorRelease(color);
         
-        label.textColor = [UIColor blackColor];
+        self.label.textColor = [UIColor blackColor];
     }
     else
     {
-        label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-        label.textColor       = [UIColor whiteColor];
+        self.label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
+        self.label.textColor       = [UIColor whiteColor];
     }
 
     featured = flag;    
@@ -157,7 +183,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformMakeScale(originalSize.width / self.frame.size.width * 0.9, originalSize.height / self.frame.size.height * 0.9);
+        self.imageView.transform = CGAffineTransformMakeScale(self.originalSize.width / self.frame.size.width * 0.9, self.originalSize.height / self.frame.size.height * 0.9);
         
         [UIView commitAnimations];
     }
@@ -170,7 +196,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformScale(imageView.transform, originalSize.width / self.frame.size.width / 0.9, originalSize.height / self.frame.size.height / 0.9);
+        self.imageView.transform = CGAffineTransformScale(self.imageView.transform, self.originalSize.width / self.frame.size.width / 0.9, self.originalSize.height / self.frame.size.height / 0.9);
         
         [UIView commitAnimations];
     }
@@ -207,22 +233,22 @@
 {
     UIPinchGestureRecognizer *gesture = (UIPinchGestureRecognizer *)recognizer;
 
-    if (gesture.state == UIGestureRecognizerStateBegan && [previewImageURLs count])
+    if (gesture.state == UIGestureRecognizerStateBegan && [self.previewImageURLs count])
     {
         [self.superview bringSubviewToFront:self];
         
-        originalCenter = self.center;
+        self.originalCenter = self.center;
         
         [UIView beginAnimations:nil context:nil];
         [UIView setAnimationDuration:0.25];
         
-        label.alpha = 0.0;
+        self.label.alpha = 0.0;
 
         [UIView commitAnimations];
     }
     else if (gesture.state == UIGestureRecognizerStateChanged && gesture.scale > 1.0)
     {
-        if ([previewImageURLs count] == 0)
+        if ([self.previewImageURLs count] == 0)
         {
             // disallow stack gesture since not a stack
             //
@@ -262,7 +288,7 @@
             {
                 // flick gesture
                 //
-                flicked = YES;
+                self.flicked = YES;
 
                 [UIView animateWithDuration:0.5
                                       delay:0.0
@@ -319,7 +345,7 @@
     }
     else if (gesture.state == UIGestureRecognizerStateEnded || gesture.state == UIGestureRecognizerStateCancelled)
     {
-        if ([previewImageURLs count] == 0)
+        if ([self.previewImageURLs count] == 0)
         {
             // rotate single tile back into place
             //
@@ -339,13 +365,13 @@
         {
             // put stack tiles back together
             //
-            if (flicked)
+            if (self.flicked)
             {
                 // invisibly on a delay for cleaning up after flicks
                 //
                 dispatch_delayed_ui_action(1.0, ^(void)
                 {
-                    self.center = originalCenter;
+                    self.center = self.originalCenter;
 
                     CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
 
@@ -358,9 +384,9 @@
                     }
 
                     self.alpha = 1.0;
-                    label.alpha = 1.0;
+                    self.label.alpha = 1.0;
 
-                    flicked = NO;
+                    self.flicked = NO;
                 });
             }
             else
@@ -371,14 +397,14 @@
                 [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
                 [UIView setAnimationDuration:0.25];
                 
-                self.center = originalCenter;
+                self.center = self.originalCenter;
                 
                 CGPoint myCenter = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
                 
                 for (int i = 0; i < 4; i++)
                     ((UIView *)[self.subviews objectAtIndex:i]).center = myCenter;
                 
-                label.alpha = 1.0;
+                self.label.alpha = 1.0;
 
                 [UIView commitAnimations];
                 
@@ -394,13 +420,13 @@
 {
     // queue up secondary image downloads
     //
-    for (int i = 0; i < [previewImageURLs count]; i++)
+    for (int i = 0; i < [self.previewImageURLs count]; i++)
     {
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[previewImageURLs objectAtIndex:i]];
+        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[self.previewImageURLs objectAtIndex:i]];
         
         request.timeOutSeconds = 10;
         
-        [secondaryImageRequests addObject:request];
+        [self.secondaryImageRequests addObject:request];
         
         [request setCompletionBlock:^(void)
         {
@@ -471,15 +497,15 @@
         UIBezierPath *corneredPath = [UIBezierPath bezierPath];
         
         [corneredPath moveToPoint:CGPointMake(0, 0)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width - cornerImage.size.width, 0)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width, cornerImage.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width, imageView.bounds.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(0, imageView.bounds.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width - cornerImage.size.width, 0)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, cornerImage.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, self.imageView.bounds.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(0, self.imageView.bounds.size.height)];
         [corneredPath closePath];
 
         // begin image mods
         //
-        UIGraphicsBeginImageContext(imageView.bounds.size);
+        UIGraphicsBeginImageContext(self.imageView.bounds.size);
         
         CGContextRef c = UIGraphicsGetCurrentContext();
         
@@ -496,7 +522,7 @@
 
         // draw tile
         //
-        [tileImage drawInRect:imageView.bounds];
+        [tileImage drawInRect:self.imageView.bounds];
 
         UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
         
@@ -506,7 +532,7 @@
         //
         UIImageView *cornerImageView = [[[UIImageView alloc] initWithImage:cornerImage] autorelease];
         
-        cornerImageView.frame = CGRectMake(imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+        cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
         
         // add shadow to corner image
         //
@@ -521,7 +547,7 @@
         cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
         cornerImageView.layer.shadowPath    = [cornerPath CGPath];
         
-        [imageView addSubview:cornerImageView];
+        [self.imageView addSubview:cornerImageView];
         
         // cover tile for animated reveal
         //
@@ -529,13 +555,13 @@
         
         UIImageView *coverView = [[[UIImageView alloc] initWithFrame:self.bounds] autorelease];
         
-        coverView.image = imageView.image;
+        coverView.image = self.imageView.image;
         
         [self addSubview:coverView];
         
         // update tile
         //
-        imageView.image = [clippedImage transparentBorderImage:1];
+        self.imageView.image = [clippedImage transparentBorderImage:1];
         
         // animate cover removal
         //
@@ -544,7 +570,7 @@
                             options:UIViewAnimationOptionCurveEaseOut
                          animations:^(void)
                          {
-                             imageView.layer.shadowPath = [corneredPath CGPath];
+                             self.imageView.layer.shadowPath = [corneredPath CGPath];
                              
                              cornerImageView.hidden = NO;
                              coverView.hidden       = YES;

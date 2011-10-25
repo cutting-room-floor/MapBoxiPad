@@ -39,9 +39,6 @@
 @property (nonatomic, retain) IBOutlet UILabel *dateLabel;
 @property (nonatomic, retain) IBOutlet UIButton *actionButton;
 @property (nonatomic, retain) IBOutlet UIButton *trashButton;
-@property (nonatomic, retain) NSArray *saveFiles;
-@property (nonatomic, retain) UIView *dimmer;
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
 
 + (NSString *)saveFolderPath;
 

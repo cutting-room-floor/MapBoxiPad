@@ -10,7 +10,7 @@
 
 #import <AudioToolbox/AudioToolbox.h>
 
-@interface DSSound (DSSoundPrivate)
+@interface DSSound ()
 
 void DSSound_SoundCompletionProc(SystemSoundID sound, void *clientData);
 

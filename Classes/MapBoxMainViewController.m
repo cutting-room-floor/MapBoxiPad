@@ -40,6 +40,7 @@
 
 #import "TouchXML.h"
 
+#import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/UTCoreTypes.h>
 #import <MobileCoreServices/UTType.h>
@@ -48,12 +49,24 @@
 
 #import "UIImage+Alpha.h"
 
-@interface MapBoxMainViewController (MapBoxMainViewControllerPrivate)
+@interface MapBoxMainViewController ()
 
 - (void)offlineAlert;
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
 - (void)setClusteringOn:(BOOL)clusteringOn;
+
+@property (nonatomic, retain) UIPopoverController *layersPopover;
+@property (nonatomic, retain) DSMapBoxDataOverlayManager *dataOverlayManager;
+@property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
+@property (nonatomic, retain) DSMapBoxDocumentSaveController *saveController;
+@property (nonatomic, retain) DSMapBoxDocumentLoadController *loadController;
+@property (nonatomic, retain) UIActionSheet *documentsActionSheet;
+@property (nonatomic, retain) UIActionSheet *shareActionSheet;
+@property (nonatomic, retain) Reachability *reachability;
+@property (nonatomic, retain) NSURL *badParseURL;
+@property (nonatomic, retain) NSDate *lastLayerAlertDate;
+@property (nonatomic, assign) CLLocationCoordinate2D postRotationMapCenter;
 
 @end
 
@@ -61,8 +74,22 @@
 
 @implementation MapBoxMainViewController
 
+@synthesize mapView;
+@synthesize attributionLabel;
+@synthesize toolbar;
+@synthesize layersButton;
+@synthesize clusteringButton;
+@synthesize layersPopover;
+@synthesize dataOverlayManager;
+@synthesize layerManager;
+@synthesize saveController;
+@synthesize loadController;
+@synthesize documentsActionSheet;
+@synthesize shareActionSheet;
+@synthesize reachability;
 @synthesize badParseURL;
 @synthesize lastLayerAlertDate;
+@synthesize postRotationMapCenter;
 
 - (void)viewDidLoad
 {
@@ -81,7 +108,7 @@
     
     RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]] autorelease];
     
-	[[[DSMapContents alloc] initWithView:mapView 
+	[[[DSMapContents alloc] initWithView:self.mapView 
                               tilesource:source
                             centerLatLon:startingPoint
                                zoomLevel:kStartingZoom
@@ -89,31 +116,31 @@
                             minZoomLevel:[source minZoom]
                          backgroundImage:nil] autorelease];
     
-    mapView.enableRotate = NO;
-    mapView.deceleration = NO;
+    self.mapView.enableRotate = NO;
+    self.mapView.deceleration = NO;
     
-    mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
+    self.mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
 
-    mapView.contents.zoom = kStartingZoom;
+    self.mapView.contents.zoom = kStartingZoom;
 
     // hide cluster button to start
     //
-    [toolbar setItems:[[NSMutableArray arrayWithArray:toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", clusteringButton]] animated:NO];
+    [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", self.clusteringButton]] animated:NO];
     
     // setup toolbar items as exclusive actions
     //
-    for (id item in toolbar.items)
+    for (id item in self.toolbar.items)
         if ([item isKindOfClass:[UIBarButtonItem class]])
             [self manageExclusiveItem:item];
     
     // data overlay & layer managers
     //
-    dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-    dataOverlayManager.mapView = mapView;
-    mapView.delegate = dataOverlayManager;
-    mapView.interactivityDelegate = dataOverlayManager;
-    layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
-    layerManager.delegate = self;
+    self.dataOverlayManager = [[[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView] autorelease];
+    self.dataOverlayManager.mapView = self.mapView;
+    self.mapView.delegate = self.dataOverlayManager;
+    self.mapView.interactivityDelegate = self.dataOverlayManager;
+    self.layerManager = [[[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView] autorelease];
+    self.layerManager.delegate = self;
     
     // watch for net changes
     //
@@ -122,8 +149,8 @@
                                                  name:kReachabilityChangedNotification
                                                object:nil];
     
-    reachability = [[Reachability reachabilityForInternetConnection] retain];
-    [reachability startNotifier];
+    self.reachability = [Reachability reachabilityForInternetConnection];
+    [self.reachability startNotifier];
     
     // watch for zoom bounds limits
     //
@@ -229,17 +256,17 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    postRotationMapCenter = mapView.contents.mapCenter;
+    self.postRotationMapCenter = self.mapView.contents.mapCenter;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-    mapView.contents.mapCenter = postRotationMapCenter;
+    self.mapView.contents.mapCenter = self.postRotationMapCenter;
     
-    if ([mapView.contents isKindOfClass:[DSMapContents class]])
-        [(DSMapContents *)mapView.contents postZoom];
+    if ([self.mapView.contents isKindOfClass:[DSMapContents class]])
+        [(DSMapContents *)self.mapView.contents postZoom];
     
-    [mapView.delegate mapViewRegionDidChange:mapView]; // trigger popover move
+    [self.mapView.delegate mapViewRegionDidChange:self.mapView]; // trigger popover move
 }
 
 - (void)dealloc
@@ -251,14 +278,21 @@
     [reachability stopNotifier];
     [reachability release];
     
+    [mapView release];
+    [attributionLabel release];
+    [toolbar release];
+    [layersButton release];
+    [clusteringButton release];
     [layersPopover release];
-    [layerManager release];
     [dataOverlayManager release];
-    [badParseURL release];
+    [layerManager release];
+    [saveController release];
+    [loadController release];
     [documentsActionSheet release];
     [shareActionSheet release];
+    [badParseURL release];
     [lastLayerAlertDate release];
-
+    
     [super dealloc];
 }
 
@@ -300,10 +334,10 @@
         };
         
         if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
-            mapView.contents.mapCenter = mapCenter;
+            self.mapView.contents.mapCenter = mapCenter;
         
         if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kUpperZoomBounds)
-            mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+            self.mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
     }
     
     // load tile overlay state(s)
@@ -312,10 +346,10 @@
     {
         // remove current layers
         //
-        NSArray *activeTileLayers = [layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+        NSArray *activeTileLayers = [self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
         for (NSDictionary *tileLayer in activeTileLayers)
-            [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer]
-                                                                    inSection:DSMapBoxLayerSectionTile]];
+            [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.tileLayers indexOfObject:tileLayer]
+                                                                         inSection:DSMapBoxLayerSectionTile]];
         
         // toggle new ones
         //
@@ -333,8 +367,8 @@
                 if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
                     ([[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]] ||
                      [tileOverlayURL isEqual:kDSOpenStreetMapURL] || [tileOverlayURL isEqual:kDSMapQuestOSMURL]))
-                    [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.tileLayers indexOfObject:tileLayer] 
-                                                                            inSection:DSMapBoxLayerSectionTile]];
+                    [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.tileLayers indexOfObject:tileLayer] 
+                                                                                 inSection:DSMapBoxLayerSectionTile]];
         
             // notify if any require net & we're offline if loading doc
             //
@@ -343,7 +377,7 @@
                  [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSMapQuestOSMURL]   || 
                  [[NSURL fileURLWithPath:tileOverlayURLString] isTileStreamURL]) &&
                 ! warnedOffline && 
-                [reachability currentReachabilityStatus] == NotReachable)
+                [self.reachability currentReachabilityStatus] == NotReachable)
             {
                 UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
                                                                  message:@"At least one layer requires an internet connection, so it may not appear reliably."
@@ -364,10 +398,10 @@
     {
         // remove current layers
         //
-        NSArray *activeDataLayers = [layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+        NSArray *activeDataLayers = [self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
         for (NSDictionary *dataLayer in activeDataLayers)
-            [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer]
-                                                                    inSection:DSMapBoxLayerSectionData]];
+            [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer]
+                                                                         inSection:DSMapBoxLayerSectionData]];
 
         // toggle new ones
         //
@@ -377,11 +411,11 @@
 
             NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
             
-            for (NSDictionary *dataLayer in layerManager.dataLayers)
+            for (NSDictionary *dataLayer in self.layerManager.dataLayers)
                 if ([[dataLayer objectForKey:@"URL"] isEqual:dataOverlayURL] &&
                     [[NSFileManager defaultManager] fileExistsAtPath:[dataOverlayURL relativePath]])
-                    [layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[layerManager.dataLayers indexOfObject:dataLayer] 
-                                                                            inSection:DSMapBoxLayerSectionData]];
+                    [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer] 
+                                                                                 inSection:DSMapBoxLayerSectionData]];
         }
     }
 
@@ -400,18 +434,18 @@
     // get base map state
     //
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.latitude],            @"centerLatitude",
-                                     [NSNumber numberWithFloat:mapView.contents.mapCenter.longitude],           @"centerLongitude",
-                                     [NSNumber numberWithFloat:mapView.contents.zoom],                          @"zoomLevel",
+                                     [NSNumber numberWithFloat:self.mapView.contents.mapCenter.latitude],  @"centerLatitude",
+                                     [NSNumber numberWithFloat:self.mapView.contents.mapCenter.longitude], @"centerLongitude",
+                                     [NSNumber numberWithFloat:self.mapView.contents.zoom],                @"zoomLevel",
                                      nil];
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToApplicationSandbox"];
+    NSArray *tileOverlayState = [((DSMapContents *)self.mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToApplicationSandbox"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
+    NSArray *dataOverlayState = [[self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
 
     // determine if document or global save
     //
@@ -430,7 +464,7 @@
         NSString *stateName = nil;
         
         if ([sender isKindOfClass:[UIButton class]]) // button save
-            stateName = saveController.name;
+            stateName = self.saveController.name;
         
         else if ([sender isKindOfClass:[NSString class]]) // load controller save
             stateName = sender;
@@ -470,21 +504,21 @@
 
 - (IBAction)tappedDocumentsButton:(id)sender
 {
-    if ( ! documentsActionSheet || ! documentsActionSheet.visible)
+    if ( ! self.documentsActionSheet || ! self.documentsActionSheet.visible)
     {
-        documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                           delegate:self
-                                                  cancelButtonTitle:nil
-                                             destructiveButtonTitle:nil
-                                                  otherButtonTitles:@"Load Map", @"Save Map", nil];
+        self.documentsActionSheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                                 delegate:self
+                                                        cancelButtonTitle:nil
+                                                   destructiveButtonTitle:nil
+                                                        otherButtonTitles:@"Load Map", @"Save Map", nil] autorelease];
         
-        [documentsActionSheet showFromBarButtonItem:sender animated:YES];
+        [self.documentsActionSheet showFromBarButtonItem:sender animated:YES];
         
-        [self manageExclusiveItem:documentsActionSheet];
+        [self manageExclusiveItem:self.documentsActionSheet];
     }
 
     else
-        [documentsActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.documentsActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
 - (void)dismissModal
@@ -576,29 +610,29 @@
 
 - (IBAction)tappedLayersButton:(id)sender
 {
-    if ( ! layersPopover)
+    if ( ! self.layersPopover)
     {
         DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
         
-        layerController.layerManager = layerManager;
+        layerController.layerManager = self.layerManager;
         layerController.delegate     = self;
         
         UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
         
-        layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+        self.layersPopover = [[[UIPopoverController alloc] initWithContentViewController:wrapper] autorelease];
         
-        [layersPopover setPopoverContentSize:CGSizeMake(450, wrapper.view.bounds.size.height)];
+        [self.layersPopover setPopoverContentSize:CGSizeMake(450, wrapper.view.bounds.size.height)];
         
-        layersPopover.passthroughViews = nil;
+        self.layersPopover.passthroughViews = nil;
     }
 
-    [self manageExclusiveItem:layersPopover];
+    [self manageExclusiveItem:self.layersPopover];
 
-    if (layersPopover.popoverVisible)
-        [layersPopover dismissPopoverAnimated:YES];
+    if (self.layersPopover.popoverVisible)
+        [self.layersPopover dismissPopoverAnimated:YES];
     
     else
-        [layersPopover presentPopoverFromBarButtonItem:layersButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        [self.layersPopover presentPopoverFromBarButtonItem:self.layersButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
 }
 
 - (IBAction)tappedClusteringButton:(id)sender
@@ -615,7 +649,7 @@
     
     // reorder to ensure clusters or points are ordered properly
     //
-    [layerManager reorderLayerDisplay];
+    [self.layerManager reorderLayerDisplay];
 }
 
 - (IBAction)tappedHelpButton:(id)sender
@@ -648,38 +682,38 @@
 
 - (IBAction)tappedShareButton:(id)sender
 {
-    if ( ! shareActionSheet || ! shareActionSheet.visible)
+    if ( ! self.shareActionSheet || ! self.shareActionSheet.visible)
     {
-        shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Email Snapshot", nil];
+        self.shareActionSheet = [[[UIActionSheet alloc] initWithTitle:nil
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:@"Email Snapshot", nil] autorelease];
         
-        [shareActionSheet showFromBarButtonItem:sender animated:YES];
+        [self.shareActionSheet showFromBarButtonItem:sender animated:YES];
         
-        [self manageExclusiveItem:shareActionSheet];
+        [self manageExclusiveItem:self.shareActionSheet];
     }
     
     else
-        [shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
+        [self.shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
 - (void)setClusteringOn:(BOOL)clusteringOn
 {
     UIButton *button;
 
-    if ( ! clusteringButton.customView)
+    if ( ! self.clusteringButton.customView)
     {
         button = [UIButton buttonWithType:UIButtonTypeCustom];
         
         [button addTarget:self action:@selector(tappedClusteringButton:) forControlEvents:UIControlEventTouchUpInside];
         
-        clusteringButton.customView = button;
+        self.clusteringButton.customView = button;
     }
     
     else
-        button = ((UIButton *)clusteringButton.customView);
+        button = ((UIButton *)self.clusteringButton.customView);
 
     UIImage *stateImage = (clusteringOn ? [UIImage imageNamed:@"cluster_on.png"] : [UIImage imageNamed:@"cluster_off.png"]);
 
@@ -694,7 +728,7 @@
 {
     if ([(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
     {
-        for (NSURL *layerURL in [[layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = 1"]] valueForKey:@"URL"])
+        for (NSURL *layerURL in [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = 1"]] valueForKey:@"URL"])
         {
             if ([layerURL isEqual:kDSOpenStreetMapURL] || [layerURL isEqual:kDSMapQuestOSMURL] || [layerURL isTileStreamURL])
             {
@@ -721,14 +755,14 @@
 {
     // zoom to even zoom level to avoid artifacts
     //
-    CGFloat oldZoom = mapView.contents.zoom;
-    CGPoint center  = CGPointMake(mapView.frame.size.width / 2, mapView.frame.size.height / 2);
+    CGFloat oldZoom = self.mapView.contents.zoom;
+    CGPoint center  = CGPointMake(self.mapView.frame.size.width / 2, self.mapView.frame.size.height / 2);
     
     if ((CGFloat)ceil(oldZoom) - oldZoom < 0.5)    
-        [mapView.contents zoomInToNextNativeZoomAt:center];
+        [self.mapView.contents zoomInToNextNativeZoomAt:center];
     
     else
-        [mapView.contents zoomOutToNextNativeZoomAt:center];
+        [self.mapView.contents zoomOutToNextNativeZoomAt:center];
     
     // get full screen snapshot
     //
@@ -739,15 +773,15 @@
 
     // restore previous zoom
     //
-    float factor = exp2f(oldZoom - [mapView.contents zoom]);
-    [mapView.contents zoomByFactor:factor near:center];
+    float factor = exp2f(oldZoom - [self.mapView.contents zoom]);
+    [self.mapView.contents zoomByFactor:factor near:center];
     
     // crop out top toolbar
     //
     CGImageRef cropped = CGImageCreateWithImageInRect(full.CGImage, CGRectMake(0, 
-                                                                               toolbar.frame.size.height, 
+                                                                               self.toolbar.frame.size.height, 
                                                                                full.size.width, 
-                                                                               full.size.height - toolbar.frame.size.height));
+                                                                               full.size.height - self.toolbar.frame.size.height));
     
     // convert & clean up
     //
@@ -855,7 +889,7 @@
         imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
         imageView.layer.shadowOffset = CGSizeMake(0, 1);
         
-        [self.view insertSubview:imageView aboveSubview:toolbar];
+        [self.view insertSubview:imageView aboveSubview:self.toolbar];
         
         // determine even spacing
         //
@@ -872,7 +906,7 @@
         
         // place & rotate initially
         //
-        imageView.center = CGPointMake(mapView.center.x + delta, mapView.center.y);
+        imageView.center = CGPointMake(self.mapView.center.x + delta, self.mapView.center.y);
         
         imageView.transform = CGAffineTransformMakeRotation([[angles objectAtIndex:(i % 5)] intValue] * M_PI / 180);
         
@@ -889,7 +923,7 @@
                          // slide up from center of screen
                          //
                          for (UIView *view in imageViews)
-                             view.center = CGPointMake(view.center.x, mapView.center.y - 200);
+                             view.center = CGPointMake(view.center.x, self.mapView.center.y - 200);
                      }
                      completion:^(BOOL finished)
                      {
@@ -911,7 +945,7 @@
                                               // move together into stack
                                               //
                                               for (UIView *view in imageViews)
-                                                  view.center = CGPointMake(mapView.center.x, mapView.center.y - 200);
+                                                  view.center = CGPointMake(self.mapView.center.x, self.mapView.center.y - 200);
                                           }
                                           completion:^(BOOL finished)
                                           {
@@ -924,7 +958,7 @@
                                                   CGPoint startPoint = view.center;
                                                   CGPoint endPoint   = CGPointZero;
                                                   
-                                                  for (UIBarButtonItem *item in toolbar.items)
+                                                  for (UIBarButtonItem *item in self.toolbar.items)
                                                       if (item.action == @selector(tappedLayersButton:))
                                                           endPoint = [[[item valueForKeyPath:@"view"] valueForKeyPath:@"center"] CGPointValue];
                                                   
@@ -1044,23 +1078,23 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if ([actionSheet isEqual:documentsActionSheet])
+    if ([actionSheet isEqual:self.documentsActionSheet])
     {
         if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
-            loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
+            self.loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
 
             UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
             
             wrapper.navigationBar.barStyle    = UIBarStyleBlack;
             wrapper.navigationBar.translucent = YES;
             
-            loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                 style:UIBarButtonItemStyleBordered
-                                                                                                target:self
-                                                                                                action:@selector(dismissModal)] autorelease];
+            self.loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                      style:UIBarButtonItemStyleBordered
+                                                                                                     target:self
+                                                                                                     action:@selector(dismissModal)] autorelease];
             
-            loadController.delegate = self;
+            self.loadController.delegate = self;
             
             wrapper.modalPresentationStyle = UIModalPresentationFullScreen;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleFlipHorizontal;
@@ -1069,9 +1103,9 @@
         }
         else if (buttonIndex > -1)
         {
-            saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
+            self.saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
             
-            saveController.snapshot = [self mapSnapshot];
+            self.saveController.snapshot = [self mapSnapshot];
             
             NSUInteger i = 1;
             
@@ -1086,18 +1120,18 @@
                     docName = [NSString stringWithFormat:@"%@%@", kDSSaveFileName, (i == 1 ? @"" : [NSString stringWithFormat:@" %i", i])];
             }
             
-            saveController.name = docName;
+            self.saveController.name = docName;
             
             DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
             
-            saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                 style:UIBarButtonItemStyleBordered
-                                                                                                target:self
-                                                                                                action:@selector(dismissModal)] autorelease];
+            self.saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                      style:UIBarButtonItemStyleBordered
+                                                                                                     target:self
+                                                                                                     action:@selector(dismissModal)] autorelease];
             
-            saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
-                                                                                                            target:self
-                                                                                                            action:@selector(saveState:)] autorelease];
+            self.saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
+                                                                                                                 target:self
+                                                                                                                 action:@selector(saveState:)] autorelease];
             
             wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
@@ -1105,7 +1139,7 @@
             [self presentModalViewController:wrapper animated:YES];
         }
     }
-    else if ([actionSheet isEqual:shareActionSheet])
+    else if ([actionSheet isEqual:self.shareActionSheet])
     {
         if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
@@ -1192,26 +1226,26 @@
     
     // update label
     //
-    attributionLabel.text = [[uniqueAttributions allObjects] componentsJoinedByString:@" "];
+    self.attributionLabel.text = [[uniqueAttributions allObjects] componentsJoinedByString:@" "];
 }
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
 {
-    if ([activeDataLayers count] > 0 && ! [toolbar.items containsObject:clusteringButton])
+    if ([activeDataLayers count] > 0 && ! [self.toolbar.items containsObject:self.clusteringButton])
     {
-        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
 
-        [newItems insertObject:clusteringButton atIndex:([newItems count] - 1)];
+        [newItems insertObject:self.clusteringButton atIndex:([newItems count] - 1)];
 
-        [toolbar setItems:newItems animated:YES];
+        [self.toolbar setItems:newItems animated:YES];
     }
-    else if ([activeDataLayers count] == 0 && [toolbar.items containsObject:clusteringButton])
+    else if ([activeDataLayers count] == 0 && [self.toolbar.items containsObject:self.clusteringButton])
     {
-        NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
 
-        [newItems removeObject:clusteringButton];
+        [newItems removeObject:self.clusteringButton];
 
-        [toolbar setItems:newItems animated:YES];
+        [self.toolbar setItems:newItems animated:YES];
     }
 }
 
@@ -1381,7 +1415,7 @@
     if ( ! source)
         return;
     
-    mapView.contents.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
+    self.mapView.contents.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
     
     if ( ! [source coversFullWorld])
     {
@@ -1392,13 +1426,13 @@
         lon = (bbox.northeast.longitude + bbox.southwest.longitude) / 2;
         lat = (bbox.northeast.latitude  + bbox.southwest.latitude)  / 2;
         
-        [mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
+        [self.mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
     }
 }
 
 - (void)presentAddLayerHelper
 {
-    if ([reachability currentReachabilityStatus] == NotReachable)
+    if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
         UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
                                                          message:@"Adding a layer requires an active internet connection."

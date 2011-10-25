@@ -21,9 +21,6 @@
 
 @interface DSMapBoxLargeSnapshotView : UIView
 {
-    NSString *snapshotName;
-    id <NSObject, DSMapBoxLargeSnapshotDelegate>delegate;
-    BOOL isActive;
 }
 
 @property (nonatomic, retain) NSString *snapshotName;

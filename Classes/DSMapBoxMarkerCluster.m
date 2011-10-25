@@ -9,9 +9,11 @@
 #import "DSMapBoxMarkerCluster.h"
 #import "RMMarker.h"
 
-@interface DSMapBoxMarkerCluster (DSMapBoxMarkerClusterPrivate)
+@interface DSMapBoxMarkerCluster ()
 
 - (void)recalculateCenter;
+
+@property (nonatomic, assign) CLLocationCoordinate2D center;
 
 @end
 
@@ -30,8 +32,7 @@
     {
         markers = [[NSArray array] retain];
 
-        center.latitude  = 0.0;
-        center.longitude = 0.0;
+        center = CLLocationCoordinate2DMake(0.0, 0.0);
     }
 
     return self;
@@ -80,8 +81,7 @@
     {
         NSDictionary *data = (NSDictionary *)[[markers objectAtIndex:0] data];
         
-        center.latitude  = ((CLLocation *)[data objectForKey:@"location"]).coordinate.latitude;
-        center.longitude = ((CLLocation *)[data objectForKey:@"location"]).coordinate.longitude;
+        self.center = ((CLLocation *)[data objectForKey:@"location"]).coordinate;
     }
 }
 

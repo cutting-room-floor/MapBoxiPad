@@ -8,8 +8,6 @@
 
 @interface DSMapBoxAlphaModalNavigationController : UINavigationController
 {
-    UIView *baseView;
-    UIImageView *backgroundImageView;
 }
 
 @end

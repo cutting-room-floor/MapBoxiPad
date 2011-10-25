@@ -16,10 +16,13 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface DSMapBoxLayerAddCustomServerController (DSMapBoxLayerAddTypeControllerPrivate)
+@interface DSMapBoxLayerAddCustomServerController ()
 
 - (void)setRecentServersHidden:(BOOL)flag;
 - (void)updateRecentServersAppearance;
+
+@property (nonatomic, retain) ASIHTTPRequest *validationRequest;
+@property (nonatomic, retain) NSURL *finalURL;
 
 @end
 
@@ -27,6 +30,11 @@
 
 @implementation DSMapBoxLayerAddCustomServerController
 
+@synthesize entryField;
+@synthesize spinner;
+@synthesize successImage;
+@synthesize recentServersTableView;
+@synthesize validationRequest;
 @synthesize finalURL;
 
 - (void)viewDidLoad
@@ -47,15 +55,15 @@
     
     // text field styling
     //
-    entryField.superview.backgroundColor    = [UIColor blackColor];
-    entryField.superview.layer.cornerRadius = 10.0;
-    entryField.superview.clipsToBounds      = YES;
+    self.entryField.superview.backgroundColor    = [UIColor blackColor];
+    self.entryField.superview.layer.cornerRadius = 10.0;
+    self.entryField.superview.clipsToBounds      = YES;
     
     // table styling, including selection background clipping
     //
-    recentServersTableView.layer.cornerRadius = 10.0;
-    recentServersTableView.clipsToBounds      = YES;
-    recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
+    self.recentServersTableView.layer.cornerRadius = 10.0;
+    self.recentServersTableView.clipsToBounds      = YES;
+    self.recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
     
     [TESTFLIGHT passCheckpoint:@"viewed custom TileStream servers"];
 }
@@ -66,35 +74,39 @@
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
     
-    successImage.hidden = YES;
+    self.successImage.hidden = YES;
 
-    [recentServersTableView reloadData];
+    [self.recentServersTableView reloadData];
     
     [self updateRecentServersAppearance];
     
-    entryField.text = @"";
+    self.entryField.text = @"";
 
-    [entryField becomeFirstResponder];
+    [self.entryField becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
     
-    [entryField resignFirstResponder];
+    [self.entryField resignFirstResponder];
 }
 
 - (void)dealloc
 {
+    [entryField release];
+    [spinner release];
+    [successImage release];
+    [recentServersTableView release];;
+    [finalURL release];
+
     if (validationRequest)
     {
         [validationRequest clearDelegatesAndCancel];
         [validationRequest release];
     }
-
-    [finalURL release];
     
     [super dealloc];
 }
@@ -107,17 +119,17 @@
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:0.5];
     
-    recentServersTableView.hidden = flag;
+    self.recentServersTableView.hidden = flag;
     
     [UIView commitAnimations];
 }
 
 - (void)updateRecentServersAppearance
 {
-    recentServersTableView.frame = CGRectMake(recentServersTableView.frame.origin.x,
-                                              recentServersTableView.frame.origin.y,
-                                              recentServersTableView.frame.size.width,
-                                              [recentServersTableView numberOfRowsInSection:0] * [recentServersTableView rowHeight] - 1);
+    self.recentServersTableView.frame = CGRectMake(self.recentServersTableView.frame.origin.x,
+                                                   self.recentServersTableView.frame.origin.y,
+                                                   self.recentServersTableView.frame.size.width,
+                                                   [self.recentServersTableView numberOfRowsInSection:0] * [self.recentServersTableView rowHeight] - 1);
 
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"recentServers"] || [[[NSUserDefaults standardUserDefaults] arrayForKey:@"recentServers"] count] == 0)
         [self setRecentServersHidden:YES];
@@ -128,12 +140,12 @@
 
 - (void)validateEntry
 {
-    if ([entryField.text length])
+    if ([self.entryField.text length])
     {
         self.finalURL = nil;
         
-        NSString *enteredValue = [entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                  enteredValue = [enteredValue    stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+        NSString *enteredValue = [self.entryField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                  enteredValue = [enteredValue         stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
 
         if ([[enteredValue componentsSeparatedByString:@"."] count] > 1 || [[enteredValue componentsSeparatedByString:@":"] count] > 1 || [[enteredValue componentsSeparatedByString:@"localhost"] count] > 1)
         {
@@ -155,22 +167,22 @@
         {
             [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
             
-            validationRequest = [[ASIHTTPRequest requestWithURL:self.finalURL] retain];
+            self.validationRequest = [ASIHTTPRequest requestWithURL:self.finalURL];
 
-            validationRequest.timeOutSeconds = 10;
-            validationRequest.delegate = self;
+            self.validationRequest.timeOutSeconds = 10;
+            self.validationRequest.delegate = self;
             
-            [validationRequest startAsynchronous];
+            [self.validationRequest startAsynchronous];
             
-            [spinner startAnimating];
+            [self.spinner startAnimating];
         }
         
         else
-            [spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
+            [self.spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
     }
 
     else
-        [spinner stopAnimating];
+        [self.spinner stopAnimating];
 }
 
 
@@ -223,7 +235,7 @@
     else
         controller.serverName = [self.finalURL absoluteString];
     
-    controller.serverURL  = self.finalURL;
+    controller.serverURL = self.finalURL;
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
     
@@ -237,16 +249,15 @@
     [NSObject cancelPreviousPerformRequestsWithTarget:spinner];
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
-    if (validationRequest)
+    if (self.validationRequest)
     {
-        [validationRequest clearDelegatesAndCancel];
-        [validationRequest release];
-        validationRequest = nil;
+        [self.validationRequest clearDelegatesAndCancel];
+        self.validationRequest = nil;
     }
 
-    [spinner startAnimating];
+    [self.spinner startAnimating];
     
-    successImage.hidden = YES;
+    self.successImage.hidden = YES;
     
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -269,12 +280,12 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
 
     id layers = [request.responseData objectFromJSONData];
 
@@ -282,7 +293,7 @@
     {
         self.finalURL = [NSURL URLWithString:[[self.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
         
-        successImage.hidden = NO;
+        self.successImage.hidden = NO;
         self.navigationItem.rightBarButtonItem.enabled = YES;
     }
 }

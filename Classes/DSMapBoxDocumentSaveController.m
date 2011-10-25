@@ -1,4 +1,4 @@
-    //
+//
 //  DSMapBoxDocumentSaveController.m
 //  MapBoxiPad
 //
@@ -12,6 +12,8 @@
 
 @implementation DSMapBoxDocumentSaveController
 
+@synthesize snapshotView;
+@synthesize nameTextField;
 @synthesize snapshot;
 @synthesize name;
 
@@ -23,17 +25,17 @@
     self.navigationController.navigationBar.translucent = YES;
     
     snapshotView.image = self.snapshot;
-    nameTextField.text = self.name;
+    self.nameTextField.text = self.name;
     
-    nameTextField.superview.backgroundColor    = [UIColor blackColor];
-    nameTextField.superview.layer.cornerRadius = 10.0;
-    nameTextField.superview.clipsToBounds      = YES;
-    nameTextField.clearButtonMode              = UITextFieldViewModeAlways;
+    self.nameTextField.superview.backgroundColor    = [UIColor blackColor];
+    self.nameTextField.superview.layer.cornerRadius = 10.0;
+    self.nameTextField.superview.clipsToBounds      = YES;
+    self.nameTextField.clearButtonMode              = UITextFieldViewModeAlways;
         
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateName:)
                                                  name:UITextFieldTextDidChangeNotification
-                                               object:nameTextField];
+                                               object:self.nameTextField];
     
     [TESTFLIGHT passCheckpoint:@"prompted to save document"];
 }
@@ -42,7 +44,7 @@
 {
     [super viewDidAppear:animated];
     
-    [nameTextField becomeFirstResponder];
+    [self.nameTextField becomeFirstResponder];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -64,7 +66,7 @@
 
 - (void)updateName:(NSNotification *)notification
 {
-    self.name = nameTextField.text;
+    self.name = self.nameTextField.text;
     
     if ([self.name length] && [[self.name componentsSeparatedByString:@"/"] count] < 2) // no slashes
         self.navigationItem.rightBarButtonItem.enabled = YES;

@@ -8,10 +8,7 @@
 
 @interface DSMapBoxNotificationView : UIView
 {
-    UILabel *label;
 }
-
-@property (nonatomic, assign) NSString *message;
 
 + (id)notificationWithMessage:(NSString *)message;
 

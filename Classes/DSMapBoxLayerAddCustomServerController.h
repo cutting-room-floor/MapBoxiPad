@@ -13,15 +13,12 @@
                                                                       UITableViewDataSource,
                                                                       ASIHTTPRequestDelegate>
 {
-    IBOutlet UITextField *entryField;
-    IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet UIImageView *successImage;
-    IBOutlet UITableView *recentServersTableView;
-    ASIHTTPRequest *validationRequest;
-    NSURL *finalURL;
 }
 
-@property (nonatomic, retain) NSURL *finalURL;
+@property (nonatomic, retain) IBOutlet UITextField *entryField;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIImageView *successImage;
+@property (nonatomic, retain) IBOutlet UITableView *recentServersTableView;
 
 - (IBAction)tappedNextButton:(id)sender;
 
