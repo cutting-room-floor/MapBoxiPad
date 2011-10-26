@@ -10,14 +10,9 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 
-#import <CoreLocation/CoreLocation.h>
 #import <MessageUI/MessageUI.h>
 
 @class DSMapView;
-@class DSMapBoxDataOverlayManager;
-@class DSMapBoxLayerManager;
-@class DSMapBoxDocumentSaveController;
-@class Reachability;
 
 @interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
                                                         DSMapBoxDocumentLoadControllerDelegate, 
@@ -26,31 +21,14 @@
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate,
                                                         UIWebViewDelegate>
-{
-    IBOutlet DSMapView *mapView;
-    IBOutlet UILabel *attributionLabel;
-    IBOutlet UIToolbar *toolbar;
-    IBOutlet UIBarButtonItem *layersButton;
-    IBOutlet UIBarButtonItem *clusteringButton;
-    IBOutlet UIWebView *legendView;
-    IBOutlet UIButton *watermarkButton;
-    UIPopoverController *layersPopover;
-    DSMapBoxDataOverlayManager *dataOverlayManager;
-    DSMapBoxLayerManager *layerManager;
-    CLLocationCoordinate2D postRotationMapCenter;
-    DSMapBoxDocumentSaveController *saveController;
-    DSMapBoxDocumentLoadController *loadController;
-    UIActionSheet *documentsActionSheet;
-    UIActionSheet *shareActionSheet;
-    
-    @private
-        NSURL *badParseURL;
-        Reachability *reachability;
-        NSDate *lastLayerAlertDate;
-}
 
-@property (nonatomic, retain) NSURL *badParseURL;
-@property (nonatomic, retain) NSDate *lastLayerAlertDate;
+@property (nonatomic, retain) IBOutlet DSMapView *mapView;
+@property (nonatomic, retain) IBOutlet UILabel *attributionLabel;
+@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;
+@property (nonatomic, retain) IBOutlet UIBarButtonItem *clusteringButton;
+@property (nonatomic, retain) IBOutlet UIWebView *legendView;
+@property (nonatomic, retain) IBOutlet UIButton *watermarkButton;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;

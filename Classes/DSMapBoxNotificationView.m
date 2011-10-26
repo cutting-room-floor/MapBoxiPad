@@ -10,9 +10,19 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxNotificationView ()
+
+@property (nonatomic, retain) NSString *message;
+@property (nonatomic, retain) UILabel *label;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxNotificationView
 
 @synthesize message;
+@synthesize label;
 
 + (id)notificationWithMessage:(NSString *)message
 {
@@ -50,6 +60,13 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [label release];
+    
+    [super dealloc];
+}
+
 #pragma mark -
 
 - (void)setMessage:(NSString *)inMessage
@@ -61,12 +78,12 @@
     
     // update label
     //
-    label.text = message;
+    self.label.text = message;
     
     // resize as needed
     //
-    CGSize labelSize   = label.frame.size;
-    CGSize textSize    = [label.text sizeWithFont:label.font];
+    CGSize labelSize   = self.label.frame.size;
+    CGSize textSize    = [self.label.text sizeWithFont:self.label.font];
     
     CGFloat adjustment = labelSize.width - textSize.width;
     

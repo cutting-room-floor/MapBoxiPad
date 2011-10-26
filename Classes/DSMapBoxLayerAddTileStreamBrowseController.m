@@ -25,10 +25,35 @@
 
 NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
+@interface DSMapBoxLayerAddTileStreamBrowseController ()
+
+@property (nonatomic, retain) NSArray *layers;
+@property (nonatomic, retain) NSMutableArray *selectedLayers;
+@property (nonatomic, retain) NSMutableArray *selectedImages;
+@property (nonatomic, retain) ASIHTTPRequest *layersRequest;
+@property (nonatomic, retain) UIView *animatedTileView;
+@property (nonatomic, assign) CGPoint originalTileViewCenter;
+@property (nonatomic, assign) CGSize originalTileViewSize;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerAddTileStreamBrowseController
 
+@synthesize helpLabel;
+@synthesize spinner;
+@synthesize tileScrollView;
+@synthesize tilePageControl;
 @synthesize serverName;
 @synthesize serverURL;
+@synthesize layers;
+@synthesize selectedLayers;
+@synthesize selectedImages;
+@synthesize layersRequest;
+@synthesize animatedTileView;
+@synthesize originalTileViewCenter;
+@synthesize originalTileViewSize;
 
 - (void)viewDidLoad
 {
@@ -36,10 +61,10 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // setup state
     //
-    layers = [[NSArray array] retain];
+    self.layers = [NSArray array];
     
-    selectedLayers = [[NSMutableArray array] retain];
-    selectedImages = [[NSMutableArray array] retain];
+    self.selectedLayers = [NSMutableArray array];
+    self.selectedImages = [NSMutableArray array];
     
     // setup nav bar
     //
@@ -57,11 +82,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // setup progress indication
     //
-    [spinner startAnimating];
+    [self.spinner startAnimating];
     
-    helpLabel.hidden       = YES;
-    tileScrollView.hidden  = YES;
-    tilePageControl.hidden = YES;
+    self.helpLabel.hidden       = YES;
+    self.tileScrollView.hidden  = YES;
+    self.tilePageControl.hidden = YES;
     
     // fire off layer list request
     //
@@ -75,12 +100,12 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
     
-    layersRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
+    self.layersRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
-    layersRequest.timeOutSeconds = 10;
-    layersRequest.delegate = self;
+    self.layersRequest.timeOutSeconds = 10;
+    self.layersRequest.delegate = self;
     
-    [layersRequest startAsynchronous];
+    [self.layersRequest startAsynchronous];
     
     [TESTFLIGHT passCheckpoint:@"browsed TileStream server"];
 }
@@ -89,33 +114,36 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     [super viewWillAppear:animated];
     
-    if (animatedTileView)
+    if (self.animatedTileView)
     {
         [UIView animateWithDuration:0.5
                               delay:0.0
                             options:UIViewAnimationCurveEaseIn
                          animations:^(void)
                          {
-                             animatedTileView.transform = CGAffineTransformScale(animatedTileView.transform, originalTileViewSize.width / animatedTileView.frame.size.width, originalTileViewSize.height / animatedTileView.frame.size.height);
-                             animatedTileView.center    = originalTileViewCenter;
-                             animatedTileView.alpha     = 1.0;
+                             self.animatedTileView.transform = CGAffineTransformScale(self.animatedTileView.transform, self.originalTileViewSize.width / self.animatedTileView.frame.size.width, self.originalTileViewSize.height / self.animatedTileView.frame.size.height);
+                             self.animatedTileView.center    = self.originalTileViewCenter;
+                             self.animatedTileView.alpha     = 1.0;
                          }
                          completion:^(BOOL finished)
                          {
-                             [animatedTileView release];
-                             animatedTileView = nil;
+                             self.animatedTileView = nil;
                          }];
     }
 }
 
 - (void)dealloc
 {
+    [helpLabel release];
+    [spinner release];
+    [tileScrollView release];
+    [tilePageControl release];
+    [serverName release];
+    [serverURL release];
     [layers release];
     [selectedLayers release];
     [selectedImages release];
-
-    [serverName release];
-    [serverURL release];
+    [animatedTileView release];
     
     [layersRequest clearDelegatesAndCancel];
     [layersRequest release];
@@ -132,8 +160,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxLayersAdded 
                                                         object:self 
-                                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:selectedLayers, @"selectedLayers",
-                                                                                                          selectedImages, @"selectedImages", 
+                                                      userInfo:[NSDictionary dictionaryWithObjectsAndKeys:self.selectedLayers, @"selectedLayers",
+                                                                                                          self.selectedImages, @"selectedImages", 
                                                                                                           nil]];
 }
 
@@ -143,25 +171,25 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     // get layer & image in question
     //
-    NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+    NSDictionary *layer = [self.layers objectAtIndex:tileView.tag];
     UIImage *layerImage = tileView.image;
     
     // update selection
     //
-    if ([selectedLayers containsObject:layer])
+    if ([self.selectedLayers containsObject:layer])
     {
-        [selectedLayers removeObject:layer];
-        [selectedImages removeObject:layerImage];
+        [self.selectedLayers removeObject:layer];
+        [self.selectedImages removeObject:layerImage];
     }
     else
     {
-        [selectedLayers addObject:layer];
-        [selectedImages addObject:layerImage];
+        [self.selectedLayers addObject:layer];
+        [self.selectedImages addObject:layerImage];
     }
     
     // enable/disable action button
     //
-    if ([selectedLayers count])
+    if ([self.selectedLayers count])
         self.navigationItem.rightBarButtonItem.enabled = YES;
     
     else
@@ -169,8 +197,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     
     // modify action button title
     //
-    if ([selectedLayers count] > 1)
-        self.navigationItem.rightBarButtonItem.title = [NSString stringWithFormat:@"Add %i Layers", [selectedLayers count]];
+    if ([self.selectedLayers count] > 1)
+        self.navigationItem.rightBarButtonItem.title = [NSString stringWithFormat:@"Add %i Layers", [self.selectedLayers count]];
     
     else
         self.navigationItem.rightBarButtonItem.title = @"Add Layer";
@@ -180,16 +208,15 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 {
     // tapped on top-right "preview" corner; animate
     //
-    animatedTileView       = [tileView retain];
-    originalTileViewCenter = tileView.center;
-    originalTileViewSize   = tileView.frame.size;
-    
+    self.animatedTileView       = tileView;
+    self.originalTileViewCenter = tileView.center;
+    self.originalTileViewSize   = tileView.frame.size;
     
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     [UIView setAnimationDuration:0.5];
     
-    tileView.transform = CGAffineTransformMakeScale(originalTileViewSize.width / tileView.frame.size.width * 8.0, originalTileViewSize.height / tileView.frame.size.height * 8.0);
+    tileView.transform = CGAffineTransformMakeScale(self.originalTileViewSize.width / tileView.frame.size.width * 8.0, self.originalTileViewSize.height / tileView.frame.size.height * 8.0);
     tileView.center    = self.view.center;
     tileView.alpha     = 0.0;
     
@@ -201,7 +228,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     {
         DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];                         
         
-        NSDictionary *layer = [layers objectAtIndex:tileView.tag];
+        NSDictionary *layer = [self.layers objectAtIndex:tileView.tag];
         
         preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
                            [layer objectForKey:@"tileURL"], @"tileURL",
@@ -230,7 +257,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
     
@@ -241,7 +268,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
     
     id newLayersReceived = [request.responseData mutableObjectFromJSONData];
 
@@ -327,27 +354,25 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 [updatedLayers addObject:layer];
             }
             
-            helpLabel.hidden       = NO;
-            tileScrollView.hidden  = NO;
+            self.helpLabel.hidden       = NO;
+            self.tileScrollView.hidden  = NO;
             
             if ([updatedLayers count] > 9)
-                tilePageControl.hidden = NO;
+                self.tilePageControl.hidden = NO;
 
-            [layers release];
-            
-            layers = [[NSArray arrayWithArray:updatedLayers] retain];
+            self.layers = [NSArray arrayWithArray:updatedLayers];
             
             // layout preview tiles
             //
-            int pageCount = ([layers count] / 9) + ([layers count] % 9 ? 1 : 0);
+            int pageCount = ([self.layers count] / 9) + ([self.layers count] % 9 ? 1 : 0);
             
-            tileScrollView.contentSize = CGSizeMake((tileScrollView.frame.size.width * pageCount), tileScrollView.frame.size.height);
+            self.tileScrollView.contentSize = CGSizeMake((self.tileScrollView.frame.size.width * pageCount), self.tileScrollView.frame.size.height);
             
-            tilePageControl.numberOfPages = pageCount;
+            self.tilePageControl.numberOfPages = pageCount;
             
             for (int i = 0; i < pageCount; i++)
             {
-                UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * tileScrollView.frame.size.width, 0, tileScrollView.frame.size.width, tileScrollView.frame.size.height)] autorelease];
+                UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * self.tileScrollView.frame.size.width, 0, self.tileScrollView.frame.size.width, self.tileScrollView.frame.size.height)] autorelease];
                 
                 containerView.backgroundColor = [UIColor clearColor];
                 
@@ -355,7 +380,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                 {
                     int index = i * 9 + j;
                     
-                    if (index < [layers count])
+                    if (index < [self.layers count])
                     {
                         int row = j / 3;
                         int col = j - (row * 3);
@@ -373,7 +398,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                         
                         DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
                                                                                                      imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                    labelText:[[layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
+                                                                                                    labelText:[[self.layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
                         
                         tileView.delegate = self;
                         tileView.tag = index;
@@ -382,7 +407,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                     }
                 }
                 
-                [tileScrollView addSubview:containerView];
+                [self.tileScrollView addSubview:containerView];
             }
         }
         else
@@ -410,7 +435,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 //
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    tilePageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
+    self.tilePageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
 }
 
 @end

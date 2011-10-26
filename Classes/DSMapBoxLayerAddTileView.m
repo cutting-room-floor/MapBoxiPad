@@ -12,10 +12,28 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxLayerAddTileView ()
+
+@property (nonatomic, retain) UIImageView *imageView;
+@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, retain) ASIHTTPRequest *imageRequest;
+@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, assign) CGSize originalSize;
+@property (nonatomic, assign) BOOL selected;
+@property (nonatomic, assign) BOOL touched;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerAddTileView
 
 @synthesize delegate;
 @synthesize image;
+@synthesize imageView;
+@synthesize label;
+@synthesize imageRequest;
+@synthesize originalSize;
 @synthesize selected;
 @synthesize touched;
 
@@ -32,7 +50,7 @@
         
         // create inset image view
         //
-        imageView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)] autorelease];
+        imageView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)];
         
         imageView.image = [UIImage imageNamed:@"placeholder.png"];
         
@@ -46,7 +64,7 @@
         
         // create label
         //
-        label = [[[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)] autorelease];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)];
         
         label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
         label.textColor       = [UIColor whiteColor];
@@ -110,8 +128,10 @@
 - (void)dealloc
 {
     [imageRequest clearDelegatesAndCancel];
+    
     [imageRequest release];
     [image release];
+    [label release];
     
     [super dealloc];
 }
@@ -152,7 +172,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformMakeScale(originalSize.width / self.frame.size.width * 0.9, originalSize.height / self.frame.size.height * 0.9);
+        self.imageView.transform = CGAffineTransformMakeScale(self.originalSize.width / self.frame.size.width * 0.9, self.originalSize.height / self.frame.size.height * 0.9);
         
         [UIView commitAnimations];
     }
@@ -165,7 +185,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.transform = CGAffineTransformScale(imageView.transform, originalSize.width / self.frame.size.width / 0.9, originalSize.height / self.frame.size.height / 0.9);
+        self.imageView.transform = CGAffineTransformScale(self.imageView.transform, self.originalSize.width / self.frame.size.width / 0.9, self.originalSize.height / self.frame.size.height / 0.9);
         
         [UIView commitAnimations];
     }
@@ -260,33 +280,31 @@
         UIBezierPath *corneredPath = [UIBezierPath bezierPath];
         
         [corneredPath moveToPoint:CGPointMake(0, 0)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width - cornerImage.size.width, 0)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width, cornerImage.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(imageView.bounds.size.width, imageView.bounds.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(0, imageView.bounds.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width - cornerImage.size.width, 0)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, cornerImage.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, self.imageView.bounds.size.height)];
+        [corneredPath addLineToPoint:CGPointMake(0, self.imageView.bounds.size.height)];
         [corneredPath closePath];
 
         // begin image mods
         //
-        UIGraphicsBeginImageContext(imageView.bounds.size);
+        UIGraphicsBeginImageContext(self.imageView.bounds.size);
         
         CGContextRef c = UIGraphicsGetCurrentContext();
         
         // fill background with white
         //
-        CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath]);
+        CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:self.imageView.bounds] CGPath]);
         CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
         CGContextFillPath(c);
         
         // store unclipped version for later & reset context
         //
-        [tileImage drawInRect:imageView.bounds];
+        [tileImage drawInRect:self.imageView.bounds];
         
-        [image release];
+        self.image = UIGraphicsGetImageFromCurrentImageContext();
         
-        image = [UIGraphicsGetImageFromCurrentImageContext() retain];
-        
-        CGContextClearRect(c, imageView.bounds);
+        CGContextClearRect(c, self.imageView.bounds);
         
         // fill background with white again, but cornered
         //
@@ -301,7 +319,7 @@
 
         // draw again for our display
         //
-        [tileImage drawInRect:imageView.bounds];
+        [tileImage drawInRect:self.imageView.bounds];
 
         UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
         
@@ -311,7 +329,7 @@
         //
         UIImageView *cornerImageView = [[[UIImageView alloc] initWithImage:cornerImage] autorelease];
         
-        cornerImageView.frame = CGRectMake(imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+        cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
         
         // add shadow to corner image
         //
@@ -326,11 +344,11 @@
         cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
         cornerImageView.layer.shadowPath    = [cornerPath CGPath];
         
-        [imageView addSubview:cornerImageView];
+        [self.imageView addSubview:cornerImageView];
         
         // update tile
         //
-        imageView.image = clippedImage;
+        self.imageView.image = clippedImage;
         
         // animate cover removal
         //
@@ -338,7 +356,7 @@
         [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
         [UIView setAnimationDuration:0.1];
         
-        imageView.layer.shadowPath = [corneredPath CGPath];
+        self.imageView.layer.shadowPath = [corneredPath CGPath];
         cornerImageView.hidden = NO;
 
         [UIView commitAnimations];

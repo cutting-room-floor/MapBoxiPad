@@ -9,8 +9,6 @@
 #import "DSMapBoxFeedParser.h"
 
 @interface DSMapBoxFeedParserAtom : DSMapBoxFeedParser
-{
-}
 
 + (NSArray *)itemsForFeed:(NSString *)feed;
 

@@ -8,10 +8,19 @@
 
 #import "DSMapBoxBalloonController.h"
 
+@interface DSMapBoxBalloonController ()
+
+@property (nonatomic, retain) IBOutlet UIWebView *webView;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxBalloonController
 
 @synthesize name;
 @synthesize description;
+@synthesize webView;
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle
 {
@@ -46,9 +55,9 @@
     
     balloonText = [balloonText stringByReplacingOccurrencesOfString:@"##description##" withString:self.description];
     
-    webView.dataDetectorTypes = UIDataDetectorTypeLink;
+    self.webView.dataDetectorTypes = UIDataDetectorTypeLink;
 
-    [webView loadHTMLString:balloonText baseURL:nil];
+    [self.webView loadHTMLString:balloonText baseURL:nil];
 }
 
 - (void)dealloc
@@ -59,6 +68,7 @@
     
     [name release];
     [description release];
+    [webView release];
     
     [super dealloc];
 }

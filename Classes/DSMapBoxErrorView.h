@@ -7,15 +7,9 @@
 //
 
 @interface DSMapBoxErrorView : UIView
-{
-    UIImageView *imageView;
-    UITextField *textField;
-}
 
 + (id)errorViewWithMessage:(NSString *)inMessage;
 
 - (id)initWithMessage:(NSString *)inMessage;
-
-@property (nonatomic, assign) NSString *message;
 
 @end

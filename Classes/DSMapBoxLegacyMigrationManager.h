@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxLegacyMigrationManager : NSObject
-{
-}
 
 + (DSMapBoxLegacyMigrationManager *)defaultManager;
 

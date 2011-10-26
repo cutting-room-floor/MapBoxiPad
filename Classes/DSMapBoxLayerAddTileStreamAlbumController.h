@@ -13,14 +13,10 @@
 @interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, 
                                                                          DSMapBoxLayerAddAccountViewDelegate,
                                                                          ASIHTTPRequestDelegate>
-{
-    IBOutlet UILabel *helpLabel;
-    IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet UIScrollView *accountScrollView;
-    IBOutlet UIPageControl *accountPageControl;
-    ASIHTTPRequest *albumRequest;
-    
-    NSArray *servers;
-}
+
+@property (nonatomic, retain) IBOutlet UILabel *helpLabel;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIScrollView *accountScrollView;
+@property (nonatomic, retain) IBOutlet UIPageControl *accountPageControl;
 
 @end

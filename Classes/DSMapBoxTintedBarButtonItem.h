@@ -7,11 +7,6 @@
 //
 
 @interface DSMapBoxTintedBarButtonItem : UIBarButtonItem
-{
-    @private
-    
-    UIButton *tintedButton;
-}
 
 - (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 

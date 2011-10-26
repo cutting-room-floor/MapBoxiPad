@@ -10,15 +10,19 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface DSMapBoxTintedBarButtonItem (DSMapBoxTintedBarButtonItemPrivate)
+@interface DSMapBoxTintedBarButtonItem ()
 
 - (void)setTitleResizing:(NSString *)title;
+
+@property (nonatomic, retain) UIButton *tintedButton;
 
 @end
 
 #pragma mark -
 
 @implementation DSMapBoxTintedBarButtonItem
+
+@synthesize tintedButton;
 
 - (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action
 {
@@ -62,11 +66,11 @@
 
 - (void)setTitleResizing:(NSString *)title
 {
-    [tintedButton setTitle:title forState:UIControlStateNormal];
+    [self.tintedButton setTitle:title forState:UIControlStateNormal];
     
-    CGSize textSize = [title sizeWithFont:tintedButton.titleLabel.font];
+    CGSize textSize = [title sizeWithFont:self.tintedButton.titleLabel.font];
     
-    tintedButton.bounds = CGRectMake(0, 0, textSize.width + 22, textSize.height + 15);
+    self.tintedButton.bounds = CGRectMake(0, 0, textSize.width + 22, textSize.height + 15);
 }
 
 @end

@@ -13,7 +13,6 @@
 @interface DSMapBoxMarkerCluster : NSObject
 {
     NSMutableArray *markers;
-    CLLocationCoordinate2D center;
 }
 
 @property (nonatomic, readonly, retain) NSArray *markers;

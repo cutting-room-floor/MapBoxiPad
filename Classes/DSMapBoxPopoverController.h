@@ -9,8 +9,6 @@
 #import "RMFoundation.h"
 
 @interface DSMapBoxPopoverController : UIPopoverController
-{
-}
 
 @property (nonatomic, assign) UIView *presentingView;
 @property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;

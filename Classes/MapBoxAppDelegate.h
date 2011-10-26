@@ -6,15 +6,9 @@
 //  Copyright Development Seed 2010. All rights reserved.
 //
 
-@class DSFingerTipWindow;
 @class MapBoxMainViewController;
 
 @interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate>
-{
-    DSFingerTipWindow *window;
-    MapBoxMainViewController *viewController;
-    BOOL openingExternalFile;
-}
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;

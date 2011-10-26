@@ -16,7 +16,23 @@
 
 #import "JSONKit.h"
 
+@interface DSMapBoxLayerAddTileStreamAlbumController ()
+
+@property (nonatomic, retain) ASIHTTPRequest *albumRequest;
+@property (nonatomic, retain) NSArray *servers;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxLayerAddTileStreamAlbumController
+
+@synthesize helpLabel;
+@synthesize spinner;
+@synthesize accountScrollView;
+@synthesize accountPageControl;
+@synthesize albumRequest;
+@synthesize servers;
 
 - (void)viewDidLoad
 {
@@ -24,7 +40,7 @@
     
     // setup state
     //
-    servers = [[NSArray array] retain];
+    self.servers = [NSArray array];
     
     // setup nav bar
     //
@@ -46,11 +62,11 @@
 
     // setup progress indication
     //
-    [spinner startAnimating];
+    [self.spinner startAnimating];
     
-    helpLabel.hidden          = YES;
-    accountScrollView.hidden  = YES;
-    accountPageControl.hidden = YES;
+    self.helpLabel.hidden          = YES;
+    self.accountScrollView.hidden  = YES;
+    self.accountPageControl.hidden = YES;
     
     // fire off account list request
     //
@@ -58,22 +74,26 @@
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
 
-    albumRequest = [[ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]] retain];
+    self.albumRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
-    albumRequest.timeOutSeconds = 10;
-    albumRequest.delegate = self;
+    self.albumRequest.timeOutSeconds = 10;
+    self.albumRequest.delegate = self;
 
-    [albumRequest startAsynchronous];
+    [self.albumRequest startAsynchronous];
     
     [TESTFLIGHT passCheckpoint:@"browsed TileStream accounts"];
 }
 
 - (void)dealloc
 {
-    [servers release];
-    
     [albumRequest clearDelegatesAndCancel];
+
+    [helpLabel release];
+    [spinner release];
+    [accountScrollView release];
+    [accountPageControl release];
     [albumRequest release];
+    [servers release];
     
     [super dealloc];
 }
@@ -96,7 +116,7 @@
 
 - (void)accountViewWasSelected:(DSMapBoxLayerAddAccountView *)accountView
 {
-    NSDictionary *account = [servers objectAtIndex:accountView.tag];
+    NSDictionary *account = [self.servers objectAtIndex:accountView.tag];
     
     NSString *serverURLString = [NSString stringWithFormat:@"%@/%@", kTileStreamHostingURL, [account valueForKey:@"id"]];
     
@@ -112,7 +132,7 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to connect"];
     
@@ -123,7 +143,7 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [spinner stopAnimating];
+    [self.spinner stopAnimating];
     
     id newServersReceived = [request.responseData mutableObjectFromJSONData];
     
@@ -179,29 +199,27 @@
         
         // make things visible
         //
-        helpLabel.hidden         = NO;
-        accountScrollView.hidden = NO;
+        self.helpLabel.hidden         = NO;
+        self.accountScrollView.hidden = NO;
         
         if ([newServers count] > 9)
-            accountPageControl.hidden = NO;
+            self.accountPageControl.hidden = NO;
 
         // update content
         //
-        [servers release];
-        
-        servers = [[NSArray arrayWithArray:newServers] retain];
+        self.servers = [NSArray arrayWithArray:newServers];
         
         // layout preview tiles
         //
-        int pageCount = ([servers count] / 9) + ([servers count] % 9 ? 1 : 0);
+        int pageCount = ([self.servers count] / 9) + ([self.servers count] % 9 ? 1 : 0);
         
-        accountScrollView.contentSize = CGSizeMake((accountScrollView.frame.size.width * pageCount), accountScrollView.frame.size.height);
+        self.accountScrollView.contentSize = CGSizeMake((self.accountScrollView.frame.size.width * pageCount), self.accountScrollView.frame.size.height);
 
-        accountPageControl.numberOfPages = pageCount;
+        self.accountPageControl.numberOfPages = pageCount;
 
         for (int i = 0; i < pageCount; i++)
         {
-            UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * accountScrollView.frame.size.width, 0, accountScrollView.frame.size.width, accountScrollView.frame.size.height)] autorelease];
+            UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * self.accountScrollView.frame.size.width, 0, self.accountScrollView.frame.size.width, self.accountScrollView.frame.size.height)] autorelease];
             
             containerView.backgroundColor = [UIColor clearColor];
             
@@ -209,7 +227,7 @@
             {
                 int index = i * 9 + j;
                 
-                if (index < [servers count])
+                if (index < [self.servers count])
                 {
                     int row = j / 3;
                     int col = j - (row * 3);
@@ -227,7 +245,7 @@
                     
                     // get label bits
                     //
-                    NSDictionary *server  = [servers objectAtIndex:index];
+                    NSDictionary *server  = [self.servers objectAtIndex:index];
                     NSString *accountName = ([server objectForKey:@"name"] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
                     NSString *layerCount  = [server valueForKey:@"mapCount"];
 
@@ -269,7 +287,7 @@
                 }
             }
                         
-            [accountScrollView addSubview:containerView];
+            [self.accountScrollView addSubview:containerView];
         }
     }
 }
@@ -280,7 +298,7 @@
 //
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    accountPageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
+    self.accountPageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
 }
 
 @end

@@ -22,21 +22,9 @@
 #pragma mark -
 
 @interface DSMapBoxLayerAddTileView : UIView <ASIHTTPRequestDelegate>
-{
-    id <DSMapBoxLayerAddTileViewDelegate>delegate;
-    UIImageView *imageView;
-    UIImage *image;
-    UILabel *label;
-    CGSize originalSize;
-    ASIHTTPRequest *imageRequest;
-    BOOL selected;
-    BOOL touched;
-}
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddTileViewDelegate>delegate;
-@property (nonatomic, readonly, assign) UIImage *image;
-@property (nonatomic, assign) BOOL selected;
-@property (nonatomic, assign) BOOL touched;
+@property (nonatomic, readonly, retain) UIImage *image;
 
 - (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText;
 

@@ -10,8 +10,6 @@
 
 #import "MapBoxMainViewController.h"
 
-#import "DSFingerTipWindow.h"
-
 #import "UIApplication_Additions.h"
 
 #import "DSMapBoxLegacyMigrationManager.h"
@@ -47,8 +45,8 @@
     
     // main UI setup
     //
-    [window addSubview:viewController.view];
-    [window makeKeyAndVisible];
+    [self.window addSubview:self.viewController.view];
+    [self.window makeKeyAndVisible];
 
     // display help UI on first run
     //
@@ -56,9 +54,9 @@
     {
         // tap help button on next run loop pass to allow for device rotation
         //
-        [viewController performSelector:@selector(tappedHelpButton:) 
-                             withObject:self 
-                             afterDelay:0.0];
+        [self.viewController performSelector:@selector(tappedHelpButton:) 
+                                  withObject:self 
+                                  afterDelay:0.0];
     }
 
     // preload data on first run
@@ -125,12 +123,12 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    [viewController saveState:self];
+    [self.viewController saveState:self];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [viewController saveState:self];
+    [self.viewController saveState:self];
     
     // For 4.2+, mark that we are no longer processing an external file.
     //
@@ -165,7 +163,7 @@
     
     // check pasteboard for supported URLs
     //
-    [viewController checkPasteboardForURL];
+    [self.viewController checkPasteboardForURL];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -255,25 +253,25 @@
     //
     if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
     {
-        [viewController openKMLFile:externalURL];
+        [self.viewController openKMLFile:externalURL];
 
         return YES;
     }
     else if ([[[externalURL path] lastPathComponent] hasSuffix:@"xml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"rss"])
     {
-        [viewController openRSSFile:externalURL];
+        [self.viewController openRSSFile:externalURL];
         
         return YES;
     }
     else if ([[[externalURL path] lastPathComponent] hasSuffix:@"geojson"] || [[[externalURL path] lastPathComponent] hasSuffix:@"json"])
     {
-        [viewController openGeoJSONFile:externalURL];
+        [self.viewController openGeoJSONFile:externalURL];
         
         return YES;
     }
     else if ([[[externalURL path] lastPathComponent] hasSuffix:@"mbtiles"])
     {
-        [viewController openMBTilesFile:externalURL];
+        [self.viewController openMBTilesFile:externalURL];
         
         return YES;
     }

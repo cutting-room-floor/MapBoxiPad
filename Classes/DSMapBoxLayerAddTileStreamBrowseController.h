@@ -15,27 +15,11 @@ extern NSString *const DSMapBoxLayersAdded;
 @interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, 
                                                                           DSMapBoxLayerAddTileViewDelegate,
                                                                           ASIHTTPRequestDelegate>
-{
-    IBOutlet UILabel *helpLabel;
-    IBOutlet UIActivityIndicatorView *spinner;
-    IBOutlet UIScrollView *tileScrollView;
-    IBOutlet UIPageControl *tilePageControl;
-    
-    NSArray *layers;
-    
-    NSMutableArray *selectedLayers;
-    NSMutableArray *selectedImages;
-    
-    ASIHTTPRequest *layersRequest;
-    
-    NSString *serverName;
-    NSURL *serverURL;
-    
-    UIView *animatedTileView;
-    CGPoint originalTileViewCenter;
-    CGSize originalTileViewSize;
-}
 
+@property (nonatomic, retain) IBOutlet UILabel *helpLabel;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, retain) IBOutlet UIScrollView *tileScrollView;
+@property (nonatomic, retain) IBOutlet UIPageControl *tilePageControl;
 @property (nonatomic, retain) NSString *serverName;
 @property (nonatomic, retain) NSURL *serverURL;
 

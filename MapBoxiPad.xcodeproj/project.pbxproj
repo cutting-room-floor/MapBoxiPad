@@ -93,7 +93,6 @@
 		DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015E13BE2CB000A72513 /* mapbox_button.png */; };
 		DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */; };
 		DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497D143CDEAB0049EE9E /* geography-class.plist */; };
-		DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
 		DD3ACCD111FFCD2600B4203F /* Default-Landscape.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */; };
 		DD3ACCD211FFCD2600B4203F /* Default-Portrait.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */; };
@@ -386,8 +385,6 @@
 		DD2F015E13BE2CB000A72513 /* mapbox_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_button.png; path = ../mapbox_button.png; sourceTree = "<group>"; };
 		DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "blue-marble-topo-bathy-jul.plist"; sourceTree = "<group>"; };
 		DD30497D143CDEAB0049EE9E /* geography-class.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "geography-class.plist"; sourceTree = "<group>"; };
-		DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxForwardingView.h; sourceTree = "<group>"; };
-		DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxForwardingView.m; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
 		DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerManager.m; sourceTree = "<group>"; };
 		DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape.png"; sourceTree = "<group>"; };
@@ -1188,8 +1185,6 @@
 				DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */,
 				DD540F7C12131F3800C5899E /* DSMapBoxLargeSnapshotView.h */,
 				DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */,
-				DD337E5E121AEEC6008E17ED /* DSMapBoxForwardingView.h */,
-				DD337E5F121AEEC6008E17ED /* DSMapBoxForwardingView.m */,
 				DDE77D5712120B4600201ACE /* Resources */,
 			);
 			name = "Document Management";
@@ -1528,7 +1523,6 @@
 				DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */,
 				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
-				DD337E60121AEEC6008E17ED /* DSMapBoxForwardingView.m in Sources */,
 				DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */,
 				DD601BA212FA3C9A00CE7C14 /* CTidy.m in Sources */,
 				DD601BA312FA3C9A00CE7C14 /* CXMLNode.m in Sources */,

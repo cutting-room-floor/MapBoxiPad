@@ -23,8 +23,6 @@
 @class DSMapBoxPopoverController;
 
 @interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxInteractivityDelegate>
-{
-}
 
 @property (nonatomic, retain) DSMapView *mapView;
 @property (nonatomic, retain) NSMutableArray *overlays;
