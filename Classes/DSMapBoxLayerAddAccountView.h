@@ -21,8 +21,6 @@
 #pragma mark -
 
 @interface DSMapBoxLayerAddAccountView : UIView <ASIHTTPRequestDelegate>
-{
-}
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddAccountViewDelegate>delegate;
 @property (nonatomic, assign) BOOL featured;

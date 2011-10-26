@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxNotificationView : UIView
-{
-}
 
 + (id)notificationWithMessage:(NSString *)message;
 

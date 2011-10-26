@@ -22,8 +22,6 @@
 #pragma mark -
 
 @interface DSMapBoxLayerAddTileView : UIView <ASIHTTPRequestDelegate>
-{
-}
 
 @property (nonatomic, assign) id <DSMapBoxLayerAddTileViewDelegate>delegate;
 @property (nonatomic, readonly, retain) UIImage *image;

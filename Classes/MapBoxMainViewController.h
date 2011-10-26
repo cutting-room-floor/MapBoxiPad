@@ -20,8 +20,6 @@
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet DSMapView *mapView;
 @property (nonatomic, retain) IBOutlet UILabel *attributionLabel;

@@ -22,8 +22,6 @@
 #pragma mark -
 
 @interface DSMapView : RMMapView
-{
-}
 
 @property (nonatomic, assign) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
 @property (nonatomic, readonly, retain) DSMapView *topMostMapView;

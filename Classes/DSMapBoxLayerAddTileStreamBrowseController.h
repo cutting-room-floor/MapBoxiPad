@@ -15,8 +15,6 @@ extern NSString *const DSMapBoxLayersAdded;
 @interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, 
                                                                           DSMapBoxLayerAddTileViewDelegate,
                                                                           ASIHTTPRequestDelegate>
-{    
-}
 
 @property (nonatomic, retain) IBOutlet UILabel *helpLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

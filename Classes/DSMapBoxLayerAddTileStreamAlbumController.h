@@ -13,8 +13,6 @@
 @interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, 
                                                                          DSMapBoxLayerAddAccountViewDelegate,
                                                                          ASIHTTPRequestDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet UILabel *helpLabel;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

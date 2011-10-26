@@ -7,8 +7,6 @@
 //
 
 @interface TestFlightDummy : NSObject
-{    
-}
 
 + (void)addCustomEnvironmentInformation:(NSString *)information forKey:(NSString*)key;
 + (void)takeOff:(NSString *)teamToken;

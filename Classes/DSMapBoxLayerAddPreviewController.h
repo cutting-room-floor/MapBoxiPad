@@ -9,8 +9,6 @@
 @class DSMapView;
 
 @interface DSMapBoxLayerAddPreviewController : UIViewController
-{
-}
 
 @property (nonatomic, retain) IBOutlet DSMapView *mapView;
 @property (nonatomic, retain) IBOutlet UILabel *metadataLabel;

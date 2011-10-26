@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxTileSetManager : NSObject
-{
-}
 
 @property (nonatomic, retain) NSURL *defaultTileSetURL;
 @property (nonatomic, retain) NSString *defaultTileSetName;

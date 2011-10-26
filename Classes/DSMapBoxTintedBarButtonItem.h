@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxTintedBarButtonItem : UIBarButtonItem
-{
-}
 
 - (id)initWithTitle:(NSString *)title target:(id)target action:(SEL)action;
 

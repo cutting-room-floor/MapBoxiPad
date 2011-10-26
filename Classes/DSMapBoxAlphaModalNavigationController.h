@@ -7,7 +7,5 @@
 //
 
 @interface DSMapBoxAlphaModalNavigationController : UINavigationController
-{
-}
 
 @end

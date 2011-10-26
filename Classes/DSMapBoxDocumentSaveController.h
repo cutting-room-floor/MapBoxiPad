@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxDocumentSaveController : UIViewController <UITextFieldDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet UIImageView *snapshotView;
 @property (nonatomic, retain) IBOutlet UITextField *nameTextField;

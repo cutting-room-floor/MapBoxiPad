@@ -7,8 +7,6 @@
 //
 
 @interface DSMapBoxFeedParser : NSObject
-{
-}
 
 + (Class)parserClassForFeed:(NSString *)feed;
 + (NSArray *)itemsForFeed:(NSString *)feed;

@@ -29,8 +29,6 @@
                                                               DSMapBoxLargeSnapshotDelegate, 
                                                               MFMailComposeViewControllerDelegate,
                                                               UIAlertViewDelegate>
-{
-}
 
 @property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
 @property (nonatomic, retain) IBOutlet UIView *noDocsView;

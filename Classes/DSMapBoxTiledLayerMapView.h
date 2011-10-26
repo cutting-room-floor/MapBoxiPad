@@ -9,8 +9,6 @@
 #import "DSMapView.h"
 
 @interface DSMapBoxTiledLayerMapView : DSMapView
-{
-}
 
 /* Setting masterView to another map view will cause us to respond to overlay 
  * (i.e., marker) touches, but not regular pan/zoom touches. Those instead will

@@ -12,8 +12,6 @@
                                                                       UITableViewDelegate, 
                                                                       UITableViewDataSource,
                                                                       ASIHTTPRequestDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet UITextField *entryField;
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;

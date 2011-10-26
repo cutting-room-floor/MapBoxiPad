@@ -49,8 +49,6 @@ typedef enum {
 } DSMapBoxLayerSection;
 
 @interface DSMapBoxLayerManager : NSObject
-{
-}
 
 @property (nonatomic, readonly, retain) DSMapView *baseMapView;
 @property (nonatomic, readonly, retain) NSArray *tileLayers;

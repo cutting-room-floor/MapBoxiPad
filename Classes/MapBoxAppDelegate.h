@@ -9,8 +9,6 @@
 @class MapBoxMainViewController;
 
 @interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 @property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;

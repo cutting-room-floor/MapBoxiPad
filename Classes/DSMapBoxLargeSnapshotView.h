@@ -20,8 +20,6 @@
 #pragma mark -
 
 @interface DSMapBoxLargeSnapshotView : UIView
-{
-}
 
 @property (nonatomic, retain) NSString *snapshotName;
 @property (nonatomic, assign) id <NSObject, DSMapBoxLargeSnapshotDelegate>delegate;

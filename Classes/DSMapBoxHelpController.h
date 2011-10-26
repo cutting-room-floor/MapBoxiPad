@@ -10,8 +10,6 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface DSMapBoxHelpController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-{
-}
 
 @property (nonatomic, retain) IBOutlet UIButton *moviePlayButton;
 @property (nonatomic, retain) MPMoviePlayerController *moviePlayer;

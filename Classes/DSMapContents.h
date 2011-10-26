@@ -11,8 +11,6 @@
 extern NSString *const DSMapContentsZoomBoundsReached;
 
 @interface DSMapContents : RMMapContents
-{
-}
 
 @property (nonatomic, retain) NSArray *layerMapViews;
 
