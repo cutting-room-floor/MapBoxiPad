@@ -233,6 +233,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
         preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
                            [layer objectForKey:@"tileURL"], @"tileURL",
                            ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
+                           ([layer objectForKey:@"template"] ? [layer objectForKey:@"template"] : @""), @"template",
                            ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
