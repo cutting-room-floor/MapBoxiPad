@@ -15,6 +15,7 @@
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
+		DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */ = {isa = PBXBuildFile; fileRef = DD01F5BE14634BBB00BD29C9 /* mustache.js */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
@@ -243,6 +244,7 @@
 		8D1107310486CEB800E47090 /* MapBoxiPad-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "MapBoxiPad-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		D7246FF01347B4D20069B3E2 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
+		DD01F5BE14634BBB00BD29C9 /* mustache.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = mustache.js; path = "Externals/route-me/MapView/Map/mustache.js/mustache.js"; sourceTree = "<group>"; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0A9E0E13DA313600D7B7D1 /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
@@ -654,6 +656,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		DD01F5BD14634B9C00BD29C9 /* mustache.js */ = {
+			isa = PBXGroup;
+			children = (
+				DD01F5BE14634BBB00BD29C9 /* mustache.js */,
+			);
+			name = mustache.js;
+			sourceTree = "<group>";
+		};
 		DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -940,6 +950,7 @@
 			children = (
 				DD1ACD0713CD1735001244D2 /* ASIHTTPRequest */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
+				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
@@ -1421,6 +1432,7 @@
 				DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */,
 				DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */,
 				DDE41E5E1443CABB00837C16 /* testflight.png in Resources */,
+				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
