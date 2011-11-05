@@ -13,3 +13,6 @@
 [submodule "Externals/ASIHTTPRequest"]
 	path = Externals/ASIHTTPRequest
 	url = https://github.com/pokeb/asi-http-request.git
+[submodule "Externals/Wax"]
+	path = Externals/Wax
+	url = git@github.com:mapbox/wax.git

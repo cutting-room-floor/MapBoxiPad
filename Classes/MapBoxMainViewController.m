@@ -148,9 +148,10 @@
     //
     self.legendView.userInteractionEnabled = NO;
     self.legendView.opaque = NO;
-    self.legendView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.6];
-    self.legendView.layer.borderColor = [[UIColor colorWithWhite:0.0 alpha:0.25] CGColor];
-    self.legendView.layer.borderWidth = 1.0;
+    self.legendView.backgroundColor = [UIColor whiteColor];
+    self.legendView.layer.shadowOffset = CGSizeMake(0, 1);
+    self.legendView.layer.shadowColor = [[UIColor blackColor] CGColor];
+    self.legendView.layer.shadowOpacity = 0.5;
     self.legendView.alpha = 0.0;
 
     [self tappedLegendButton:self];
@@ -1278,8 +1279,30 @@
             if ([layerMapView.contents.tileSource isKindOfClass:[RMMBTilesTileSource class]] || [layerMapView.contents.tileSource isKindOfClass:[RMCachedTileSource class]])
                 legend = [((RMMBTilesTileSource *)layerMapView.contents.tileSource) legend];
 
-    if (legend && ! [legend isEqualToString:[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML;"]])
-        [self.legendView loadHTMLString:legend baseURL:nil];
+    if (legend)
+    {
+        NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
+                                                       encoding:NSUTF8StringEncoding
+                                                          error:NULL];
+        
+        legend = [NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
+                                                  %@                                   \
+                                              </div>                                   \
+                                              <div style='clear: both;'>               \
+                                              </div>                                   \
+                                              <style type='text/css'>                  \
+                                                  %@                                   \
+                                              </style>", legend, controls];
+
+        // return now if we're not updating
+        //
+        if ([legend isEqualToString:[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML;"]])
+            return;
+        
+        self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, self.legendView.frame.origin.y, 200, self.legendView.frame.size.height);
+        
+        [self.legendView loadHTMLString:legend baseURL:nil];        
+    }
     
     // animate watermark if legend updated but hidden
     //
@@ -1480,11 +1503,36 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    // adjust margin & padding & adjust for optimum content size
+    //
+    [self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.margin  = '5px';"];
+    [self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.padding = '0px';"];
+
+    CGFloat divWidth     = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementById('wax-legend').offsetWidth;"]  floatValue];
+    CGFloat divHeight    = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementById('wax-legend').offsetHeight;"] floatValue];
+    CGFloat scrollWidth  = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth;"]  floatValue];
+    CGFloat scrollHeight = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight;"] floatValue];
+    
+    CGFloat w, h;
+    
+    if (scrollWidth > divWidth)
+        w = scrollWidth;
+    
+    else
+        w = divWidth;
+    
+    if (divHeight < scrollHeight)
+        h = divHeight;
+    
+    else
+        h = scrollHeight;
+    
+    webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y + webView.frame.size.height - h - 10, w + 5, h + 10);
+    
     // fade in updated legend
     //
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:1.0];
-    [UIView setAnimationDelay:0.5];
+    [UIView setAnimationDuration:0.25];
     
     webView.alpha = 1.0;
     
