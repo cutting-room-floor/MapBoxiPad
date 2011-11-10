@@ -197,9 +197,9 @@
 
 - (void)handleGesture:(UISwipeGestureRecognizer *)swipe
 {
-    if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
+    if (([swipe locationInView:self.legendView].y <= self.dragHandle.frame.size.height || [swipe locationInView:self.legendView].y >= self.legendView.frame.size.height - self.dragHandle.frame.size.height) && swipe.direction == UISwipeGestureRecognizerDirectionLeft && self.legendView.alpha == 1.0)
     {
-        // left swipe to hide
+        // left swipe in top or bottom to hide
         //
         [UIView animateWithDuration:0.25
                               delay:0.0
@@ -226,9 +226,9 @@
                              self.legendView.layer.shadowOpacity = 0.0;
                          }];
     }
-    else if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
+    else if (swipe.direction == UISwipeGestureRecognizerDirectionRight && self.legendView.alpha < 1.0)
     {
-        // right swipe to show
+        // right swipe anywhere to show
         //
         self.legendView.alpha = 1.0;
         
