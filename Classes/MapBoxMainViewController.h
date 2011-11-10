@@ -26,7 +26,6 @@
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *clusteringButton;
-@property (nonatomic, retain) IBOutlet UIButton *watermarkButton;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;

@@ -81,7 +81,6 @@
 @synthesize toolbar;
 @synthesize layersButton;
 @synthesize clusteringButton;
-@synthesize watermarkButton;
 @synthesize layersPopover;
 @synthesize dataOverlayManager;
 @synthesize layerManager;
@@ -288,7 +287,6 @@
     [toolbar release];
     [layersButton release];
     [clusteringButton release];
-    [watermarkButton release];
     [layersPopover release];
     [dataOverlayManager release];
     [layerManager release];

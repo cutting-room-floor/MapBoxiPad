@@ -157,6 +157,7 @@
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
 		DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */; };
+		DDAB24DE146C770600C14467 /* grabber.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24DD146C770600C14467 /* grabber.png */; };
 		DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
@@ -484,6 +485,7 @@
 		DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLegendView.xib; sourceTree = "<group>"; };
 		DDAB24D6146B49C100C14467 /* DSMapBoxLegendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegendManager.h; sourceTree = "<group>"; };
 		DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegendManager.m; sourceTree = "<group>"; };
+		DDAB24DD146C770600C14467 /* grabber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grabber.png; sourceTree = SOURCE_ROOT; };
 		DDAB4E5C14313F9C00840F9C /* TestFlightDummy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlightDummy.h; sourceTree = "<group>"; };
 		DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestFlightDummy.m; sourceTree = "<group>"; };
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
@@ -1175,6 +1177,7 @@
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD72C76211E6847C0030C637 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
+				DDAB24DD146C770600C14467 /* grabber.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1454,6 +1457,7 @@
 				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
 				DD22C0301464C093006CF1D7 /* controls.css in Resources */,
 				DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */,
+				DDAB24DE146C770600C14467 /* grabber.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

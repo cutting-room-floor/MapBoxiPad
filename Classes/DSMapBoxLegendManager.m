@@ -16,6 +16,8 @@
 
 #import "UIApplication_Additions.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
@@ -44,8 +46,19 @@
     if (self)
     {
         _legendSources = [[NSArray array] retain];
-        
+
+        // load UI & pretty it up
+        //
         [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxLegendView" owner:self options:nil];
+
+        legendView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:legendView.frame] CGPath];
+        legendView.layer.shadowColor   = [[UIColor grayColor] CGColor];
+        legendView.layer.shadowOffset  = CGSizeMake(0, 0);
+        legendView.layer.shadowOpacity = 0.25;
+        legendView.layer.shadowRadius  = 10.0;
+        
+        legendView.layer.borderColor   = [[UIColor grayColor] CGColor];
+        legendView.layer.borderWidth   = 1.0;
         
         // start with legend in lower-left
         //
@@ -65,10 +78,6 @@
         UISwipeGestureRecognizer *rightSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.legendView addGestureRecognizer:rightSwipe];
-        
-        UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
-        tap.numberOfTapsRequired = 1;
-        [self.legendView addGestureRecognizer:tap];
     }
     
     return self;
@@ -110,7 +119,7 @@
             if ([source respondsToSelector:@selector(legend)])
                 legend = [source performSelector:@selector(legend)];
                 
-            if (legend && [legend length])
+            if ([legend length])
             {                
                 legend = [NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
                                                           %@                                   \
@@ -134,6 +143,9 @@
                 
                 webView.scrollView.bounces = NO;
                 
+                webView.layer.borderColor = [[UIColor grayColor] CGColor];
+                webView.layer.borderWidth = 1.0;
+                
                 self.scroller.contentSize = CGSizeMake(([self.scroller.subviews count] + 1) * self.scroller.frame.size.width, 
                                                        self.scroller.frame.size.height);
                 
@@ -143,42 +155,102 @@
             }
         }
         
-        [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10 - self.scroller.frame.size.width, 0, 10, 10) animated:NO];
-        
-        self.pager.currentPage = self.pager.numberOfPages - 1;
-
-        dispatch_delayed_ui_action(0.5, ^(void)
+        if (self.pager.numberOfPages)
         {
-            [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10, 0, 10, 10) animated:YES];
-        });
+            [UIView animateWithDuration:0.1
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseOut
+                             animations:^(void)
+                             {
+                                 self.legendView.alpha = 1.0;
+                             }
+                             completion:^(BOOL finished)
+                             {
+                             }];
+            
+            [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10 - self.scroller.frame.size.width, 0, 10, 10) animated:NO];
+            
+            [self scrollViewDidScroll:self.scroller];
+            
+            dispatch_delayed_ui_action(0.5, ^(void)
+            {
+                [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10, 0, 10, 10) animated:YES];
+            });
+        }
+        else
+        {
+            [UIView animateWithDuration:0.1
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseOut
+                             animations:^(void)
+                             {
+                                 self.legendView.alpha = 0.0;
+                             }
+                             completion:^(BOOL finished)
+                             {
+                             }];
+        }
     }
 }
 
 #pragma mark -
 
-- (void)handleGesture:(UIGestureRecognizer *)gestureRecognizer
+- (void)handleGesture:(UISwipeGestureRecognizer *)swipe
 {
-    // respond to gestures in bottom to hide & show
-    //
-    if ([gestureRecognizer locationInView:self.legendView].y > self.legendView.frame.size.height - self.dragHandle.frame.size.height)
+    if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
     {
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        // left swipe to hide
+        //
+        [UIView animateWithDuration:0.25
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^(void)
+                         {
+                             self.legendView.center = CGPointMake(self.legendView.frame.size.width / -2 + 4, 
+                                                                  self.legendView.center.y);
+                         }
+                         completion:^(BOOL finished)
+                         {
+                             self.legendView.alpha = 0.75;
+                            
+                             self.label.alpha    = 0.0;
+                             self.scroller.alpha = 0.0;
+                             self.pager.alpha    = 0.0;
+                             
+                             self.dragHandle.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:self.dragHandle.frame] CGPath];
+                             self.dragHandle.layer.shadowOpacity = self.legendView.layer.shadowOpacity;
+                             self.dragHandle.layer.shadowOffset  = self.legendView.layer.shadowOffset;
+                             self.dragHandle.layer.shadowColor   = self.legendView.layer.shadowColor;
+                             self.dragHandle.layer.shadowRadius  = self.legendView.layer.shadowRadius;
+                             
+                             self.legendView.layer.shadowOpacity = 0.0;
+                         }];
+    }
+    else if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        // right swipe to show
+        //
+        self.legendView.alpha = 1.0;
         
-        if ([gestureRecognizer isKindOfClass:[UISwipeGestureRecognizer class]] && ((UISwipeGestureRecognizer *)gestureRecognizer).direction == UISwipeGestureRecognizerDirectionLeft)
-        {
-            // left swipe to hide
-            //
-            self.legendView.center = CGPointMake(self.legendView.frame.size.width / -2 + self.dragHandle.frame.size.width, self.legendView.center.y);
-        }
-        else if (([gestureRecognizer isKindOfClass:[UISwipeGestureRecognizer class]] && ((UISwipeGestureRecognizer *)gestureRecognizer).direction == UISwipeGestureRecognizerDirectionRight) || [gestureRecognizer isKindOfClass:[UITapGestureRecognizer class]])
-        {
-            // right swipe or tap to show
-            //
-            self.legendView.center = CGPointMake(self.legendView.frame.size.width / 2, self.legendView.center.y);
-        }
+        self.label.alpha    = 1.0;
+        self.scroller.alpha = 1.0;
+        self.pager.alpha    = 1.0;
         
-        [UIView commitAnimations];
+        self.legendView.layer.shadowOpacity = 0.5;
+        self.dragHandle.layer.shadowOpacity = 0.0;
+        
+        [UIView animateWithDuration:0.25
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^(void)
+                         {
+                             self.legendView.center = CGPointMake(self.legendView.frame.size.width / 2, 
+                                                                  self.legendView.center.y);
+
+                         }
+                         completion:^(BOOL finished)
+                         {
+                         }];
     }
 }
 
@@ -192,7 +264,13 @@
     
     // update label
     //
-    self.label.text = [((id <RMTileSource>)[self.legendSources objectAtIndex:self.pager.currentPage]) shortName];
+    NSMutableArray *activeLegendSources = [NSMutableArray array];
+    
+    for (id <RMTileSource>source in self.legendSources)
+        if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
+            [activeLegendSources addObject:source];
+    
+    self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
 }
 
 #pragma mark -
