@@ -25,6 +25,7 @@
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
+#import "DSMapBoxLegendManager.h"
 
 #import "UIViewController_Additions.h"
 #import "UIApplication_Additions.h"
@@ -61,6 +62,7 @@
 @property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
 @property (nonatomic, retain) DSMapBoxDocumentSaveController *saveController;
 @property (nonatomic, retain) DSMapBoxDocumentLoadController *loadController;
+@property (nonatomic, retain) DSMapBoxLegendManager *legendManager;
 @property (nonatomic, retain) UIActionSheet *documentsActionSheet;
 @property (nonatomic, retain) UIActionSheet *shareActionSheet;
 @property (nonatomic, retain) Reachability *reachability;
@@ -79,13 +81,13 @@
 @synthesize toolbar;
 @synthesize layersButton;
 @synthesize clusteringButton;
-@synthesize legendView;
 @synthesize watermarkButton;
 @synthesize layersPopover;
 @synthesize dataOverlayManager;
 @synthesize layerManager;
 @synthesize saveController;
 @synthesize loadController;
+@synthesize legendManager;
 @synthesize documentsActionSheet;
 @synthesize shareActionSheet;
 @synthesize reachability;
@@ -135,7 +137,7 @@
         if ([item isKindOfClass:[UIBarButtonItem class]])
             [self manageExclusiveItem:item];
     
-    // data overlay & layer managers
+    // data overlay, layer, and legend managers
     //
     self.dataOverlayManager = [[[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView] autorelease];
     self.dataOverlayManager.mapView = self.mapView;
@@ -143,19 +145,8 @@
     self.mapView.interactivityDelegate = self.dataOverlayManager;
     self.layerManager = [[[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView] autorelease];
     self.layerManager.delegate = self;
+    self.legendManager = [[[DSMapBoxLegendManager alloc] initWithView:self.view] autorelease];
     
-    // setup legend view
-    //
-    self.legendView.userInteractionEnabled = NO;
-    self.legendView.opaque = NO;
-    self.legendView.backgroundColor = [UIColor whiteColor];
-    self.legendView.layer.shadowOffset = CGSizeMake(0, 1);
-    self.legendView.layer.shadowColor = [[UIColor blackColor] CGColor];
-    self.legendView.layer.shadowOpacity = 0.5;
-    self.legendView.alpha = 0.0;
-
-    [self tappedLegendButton:self];
-
     // watch for net changes
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -297,13 +288,13 @@
     [toolbar release];
     [layersButton release];
     [clusteringButton release];
-    [legendView release];
     [watermarkButton release];
     [layersPopover release];
     [dataOverlayManager release];
     [layerManager release];
     [saveController release];
     [loadController release];
+    [legendManager release];
     [documentsActionSheet release];
     [shareActionSheet release];
     [badParseURL release];
@@ -320,8 +311,6 @@
     NSArray *tileOverlayState;
     NSArray *dataOverlayState;
     
-    self.legendView.alpha = 0.0;
-
     // determine if document or global restore
     //
     if ([sender isKindOfClass:[NSString class]])
@@ -715,26 +704,6 @@
     
     else
         [self.shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
-}
-
-- (IBAction)tappedLegendButton:(id)sender
-{
-    if (self.legendView.alpha)
-    {
-        if ([sender isKindOfClass:[UIButton class]])
-        {
-            [TESTFLIGHT passCheckpoint:@"legend button tapped"];
-
-            [UIView beginAnimations:nil context:nil];
-            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-            [UIView setAnimationDuration:0.15];
-        }
-        
-        self.legendView.center = CGPointMake(-1.0 * self.legendView.center.x, self.legendView.center.y);
-        
-        if ([sender isKindOfClass:[UIButton class]])
-            [UIView commitAnimations];
-    }
 }
 
 - (void)setClusteringOn:(BOOL)clusteringOn
@@ -1268,66 +1237,9 @@
     //
     self.attributionLabel.text = [[uniqueAttributions allObjects] componentsJoinedByString:@" "];
     
-    // update legend for top-most map containing one
+    // update legends
     //
-    self.legendView.alpha = 0.0;
-    
-    NSString *legend = nil;
-    
-    for (RMMapView *layerMapView in [[((DSMapContents *)mapView.contents).layerMapViews reverseObjectEnumerator] allObjects])
-        if ( ! legend)
-            if ([layerMapView.contents.tileSource isKindOfClass:[RMMBTilesTileSource class]] || [layerMapView.contents.tileSource isKindOfClass:[RMCachedTileSource class]])
-                legend = [((RMMBTilesTileSource *)layerMapView.contents.tileSource) legend];
-
-    if (legend)
-    {
-        NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
-                                                       encoding:NSUTF8StringEncoding
-                                                          error:NULL];
-        
-        legend = [NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
-                                                  %@                                   \
-                                              </div>                                   \
-                                              <div style='clear: both;'>               \
-                                              </div>                                   \
-                                              <style type='text/css'>                  \
-                                                  %@                                   \
-                                              </style>", legend, controls];
-
-        // return now if we're not updating
-        //
-        if ([legend isEqualToString:[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.outerHTML;"]])
-            return;
-        
-        self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, self.legendView.frame.origin.y, 200, self.legendView.frame.size.height);
-        
-        [self.legendView loadHTMLString:legend baseURL:nil];        
-    }
-    
-    // animate watermark if legend updated but hidden
-    //
-    if (self.legendView.center.x < 0)
-    {
-        [UIView animateWithDuration:0.25
-                              delay:0.8
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^(void)
-                         {
-                             self.watermarkButton.center = CGPointMake(self.watermarkButton.center.x + 10, self.watermarkButton.center.y);
-                         }
-                         completion:^(BOOL finished)
-                         {
-                             [UIView beginAnimations:nil context:nil];
-                             [UIView setAnimationDuration:0.2];
-                             [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                             
-                             self.watermarkButton.center = CGPointMake(self.watermarkButton.center.x - 10, self.watermarkButton.center.y);
-                             
-                             [UIView commitAnimations];
-                         }];
-        
-        [TESTFLIGHT passCheckpoint:@"legend watermark animated"];
-    }
+    self.legendManager.legendSources = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"contents.tileSource"];
 }
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
@@ -1497,48 +1409,6 @@
             
             [self dismissModalViewControllerAnimated:YES];
     }
-}
-
-#pragma mark -
-
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    // adjust margin & padding & adjust for optimum content size
-    //
-    [self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.margin  = '5px';"];
-    [self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementsByTagName('body')[0].style.padding = '0px';"];
-
-    CGFloat divWidth     = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementById('wax-legend').offsetWidth;"]  floatValue];
-    CGFloat divHeight    = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.getElementById('wax-legend').offsetHeight;"] floatValue];
-    CGFloat scrollWidth  = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollWidth;"]  floatValue];
-    CGFloat scrollHeight = [[self.legendView stringByEvaluatingJavaScriptFromString:@"document.documentElement.scrollHeight;"] floatValue];
-    
-    CGFloat w, h;
-    
-    if (scrollWidth > divWidth)
-        w = scrollWidth;
-    
-    else
-        w = divWidth;
-    
-    if (divHeight < scrollHeight)
-        h = divHeight;
-    
-    else
-        h = scrollHeight;
-    
-    webView.frame = CGRectMake(webView.frame.origin.x, webView.frame.origin.y + webView.frame.size.height - h - 10, w + 5, h + 10);
-    
-    // fade in updated legend
-    //
-    [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:0.25];
-    
-    webView.alpha = 1.0;
-    
-    [UIView commitAnimations];
-    
-    [TESTFLIGHT passCheckpoint:@"legend loaded"];
 }
 
 #pragma mark -

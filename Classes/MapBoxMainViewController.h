@@ -19,15 +19,13 @@
                                                         DSMapBoxDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
-                                                        DSMapBoxLayerControllerDelegate,
-                                                        UIWebViewDelegate>
+                                                        DSMapBoxLayerControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet DSMapView *mapView;
 @property (nonatomic, retain) IBOutlet UILabel *attributionLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *clusteringButton;
-@property (nonatomic, retain) IBOutlet UIWebView *legendView;
 @property (nonatomic, retain) IBOutlet UIButton *watermarkButton;
 
 - (void)restoreState:(id)sender;
@@ -37,7 +35,6 @@
 - (IBAction)tappedDocumentsButton:(id)sender;
 - (IBAction)tappedHelpButton:(id)sender;
 - (IBAction)tappedShareButton:(id)sender;
-- (IBAction)tappedLegendButton:(id)sender;
 - (void)openKMLFile:(NSURL *)fileURL;
 - (void)openRSSFile:(NSURL *)fileURL;
 - (void)openGeoJSONFile:(NSURL *)fileURL;
