@@ -173,6 +173,7 @@
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
+		DDBB9831146CB88000A6C8D7 /* mapbox_relief.png in Resources */ = {isa = PBXBuildFile; fileRef = DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
@@ -510,6 +511,7 @@
 		DDBA89861210EF4600E5B572 /* DSMapBoxDocumentSaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentSaveController.h; sourceTree = "<group>"; };
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
+		DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox_relief.png; sourceTree = "<group>"; };
 		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
 		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
@@ -1068,6 +1070,7 @@
 				DDDA3C6313D75EEC00DDEA58 /* help.png */,
 				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
 				DDE41E5D1443CABB00837C16 /* testflight.png */,
+				DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1458,6 +1461,7 @@
 				DD22C0301464C093006CF1D7 /* controls.css in Resources */,
 				DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */,
 				DDAB24DE146C770600C14467 /* grabber.png in Resources */,
+				DDBB9831146CB88000A6C8D7 /* mapbox_relief.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

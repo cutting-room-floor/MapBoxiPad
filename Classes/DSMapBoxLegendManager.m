@@ -54,11 +54,14 @@
         legendView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:legendView.frame] CGPath];
         legendView.layer.shadowColor   = [[UIColor grayColor] CGColor];
         legendView.layer.shadowOffset  = CGSizeMake(0, 0);
-        legendView.layer.shadowOpacity = 0.25;
+        legendView.layer.shadowOpacity = 0.1;
         legendView.layer.shadowRadius  = 10.0;
         
         legendView.layer.borderColor   = [[UIColor grayColor] CGColor];
         legendView.layer.borderWidth   = 1.0;
+        
+        scroller.layer.borderColor     = [[UIColor colorWithWhite:0.5 alpha:0.25] CGColor];
+        scroller.layer.borderWidth     = 1.0;
         
         // start with legend in lower-left
         //
