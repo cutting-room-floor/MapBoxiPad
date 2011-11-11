@@ -101,40 +101,65 @@
 {
     if ( ! [legendSources isEqualToArray:_legendSources])
     {
+        // swap out new sources
+        //
         [_legendSources release];
         _legendSources = [legendSources retain];
         
-        [self.scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-        
-        self.pager.numberOfPages = 0;
-        
+        // get Wax CSS for repeated use
+        //
         NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
                                                        encoding:NSUTF8StringEncoding
                                                           error:NULL];
-
+        
+        // determine legend content across sources (not every source will have a legend)
+        //
+        NSMutableArray *legends = [NSMutableArray array];
+        
         for (id <RMTileSource>source in _legendSources)
+            if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
+                [legends addObject:[NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
+                                                                    %@                                   \
+                                                                </div>                                   \
+                                                                <div style='clear: both;'>               \
+                                                                </div>                                   \
+                                                                <style type='text/css'>                  \
+                                                                    %@                                   \
+                                                                </style>", [source performSelector:@selector(legend)], controls]];
+
+        if ([legends count])
         {
-            NSString *legend = nil;
+            // reverse order (rightmost = topmost)
+            //
+            [legends setArray:[[legends reverseObjectEnumerator] allObjects]];
             
-            if ([source respondsToSelector:@selector(legend)])
-                legend = [source performSelector:@selector(legend)];
-                
-            if ([legend length])
-            {                
-                legend = [NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
-                                                          %@                                   \
-                                                      </div>                                   \
-                                                      <div style='clear: both;'>               \
-                                                      </div>                                   \
-                                                      <style type='text/css'>                  \
-                                                          %@                                   \
-                                                      </style>", legend, controls];
-                
+            // show UI if needed
+            //
+            if (self.legendView.alpha < 1.0)
+            {
+                [UIView animateWithDuration:0.1
+                                      delay:0.0
+                                    options:UIViewAnimationCurveEaseOut
+                                 animations:^(void)
+                                 {
+                                     self.legendView.alpha = 1.0;
+                                 }
+                                 completion:^(BOOL finished)
+                                 {
+                                 }];
+            }
+            
+            // iterate legends, making web views
+            //
+            NSMutableArray *newLegendViews = [NSMutableArray array];
+            
+            for (NSString *legend in legends)
+            {
                 UIWebView *webView = [[[UIWebView alloc] initWithFrame:self.scroller.frame] autorelease];
                 
                 [webView loadHTMLString:legend baseURL:nil];
                 
-                webView.frame = CGRectMake([self.scroller.subviews count] * self.scroller.frame.size.width, 
+                webView.frame = CGRectMake([newLegendViews count] * self.scroller.frame.size.width, 
                                            0, 
                                            webView.frame.size.width, 
                                            webView.frame.size.height);
@@ -146,39 +171,33 @@
                 webView.layer.borderColor = [[UIColor grayColor] CGColor];
                 webView.layer.borderWidth = 1.0;
                 
-                self.scroller.contentSize = CGSizeMake(([self.scroller.subviews count] + 1) * self.scroller.frame.size.width, 
-                                                       self.scroller.frame.size.height);
-                
-                [self.scroller addSubview:webView];
-                
-                self.pager.numberOfPages++;
+                [newLegendViews addObject:webView];
             }
-        }
-        
-        if (self.pager.numberOfPages)
-        {
-            [UIView animateWithDuration:0.1
-                                  delay:0.0
-                                options:UIViewAnimationCurveEaseOut
-                             animations:^(void)
-                             {
-                                 self.legendView.alpha = 1.0;
-                             }
-                             completion:^(BOOL finished)
-                             {
-                             }];
             
-            [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10 - self.scroller.frame.size.width, 0, 10, 10) animated:NO];
+            // replace in view hierarchy
+            //
+            [self.scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+
+            for (UIWebView *webView in newLegendViews)
+                [self.scroller addSubview:webView];
+
+            // update scroller & pager
+            //
+            self.scroller.contentSize = CGSizeMake([self.scroller.subviews count] * self.scroller.frame.size.width, 
+                                                   self.scroller.frame.size.height);
+            
+            [self.scroller scrollRectToVisible:CGRectMake(0, 0, 0, 0) animated:NO];
+            
+            self.pager.numberOfPages = [self.scroller.subviews count];
+            
+            self.pager.currentPage = 0;
             
             [self scrollViewDidScroll:self.scroller];
-            
-            dispatch_delayed_ui_action(0.5, ^(void)
-            {
-                [self.scroller scrollRectToVisible:CGRectMake(self.scroller.contentSize.width - 10, 0, 10, 10) animated:YES];
-            });
         }
         else
         {
+            // otherwise, fade out the UI
+            //
             [UIView animateWithDuration:0.1
                                   delay:0.0
                                 options:UIViewAnimationCurveEaseOut
@@ -270,6 +289,10 @@
         if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
             [activeLegendSources addObject:source];
     
+    // reverse as in legend stacking order
+    //
+    [activeLegendSources setArray:[[activeLegendSources reverseObjectEnumerator] allObjects]];
+    
     self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
 }
 
@@ -302,5 +325,5 @@
     if (buttonIndex == alertView.firstOtherButtonIndex)
         [[UIApplication sharedApplication] openURL:((DSMapBoxAlertView *)alertView).context];
 }
-         
+
 @end

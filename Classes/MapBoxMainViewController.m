@@ -1240,6 +1240,13 @@
     self.legendManager.legendSources = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"contents.tileSource"];
 }
 
+- (void)dataLayerHandler:(id)handler didReorderTileLayers:(NSArray *)activeTileLayers
+{
+    // update legends
+    //
+    self.legendManager.legendSources = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"contents.tileSource"];
+}
+
 - (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
 {
     if ([activeDataLayers count] > 0 && ! [self.toolbar.items containsObject:self.clusteringButton])

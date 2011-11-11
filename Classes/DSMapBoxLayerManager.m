@@ -341,6 +341,11 @@
         otherMap.interactivityDelegate = nil;
     }
     
+    // notify delegate
+    //
+    if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
+        [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+    
     // reorder data layers
     //
     NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
@@ -370,6 +375,11 @@
     //
     for (CALayer *path in orderedDataPaths)
         [self.dataOverlayManager.mapView.contents.overlay addSublayer:path];
+    
+    // notify delegate
+    //
+    if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderDataLayers:)])
+        [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
 }
 
 #pragma mark -
