@@ -11,6 +11,7 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxLayerAddCustomServerController.h"
 #import "DSMapBoxErrorView.h"
+#import "DSMapBoxTileStreamCommon.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -70,7 +71,7 @@
     
     // fire off account list request
     //
-    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", kTileStreamHostingURL, kTileStreamAlbumAPIPath];
+    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], kTileStreamAlbumAPIPath];
     
     [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
 
@@ -118,7 +119,7 @@
 {
     NSDictionary *account = [self.servers objectAtIndex:accountView.tag];
     
-    NSString *serverURLString = [NSString stringWithFormat:@"%@/%@", kTileStreamHostingURL, [account valueForKey:@"id"]];
+    NSString *serverURLString = [NSString stringWithFormat:@"%@/%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], [account valueForKey:@"id"]];
     
     DSMapBoxLayerAddTileStreamBrowseController *browseController = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
     

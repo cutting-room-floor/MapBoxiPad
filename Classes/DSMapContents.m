@@ -292,7 +292,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     if (tileSource == newTileSource)
         return;
 
-    if ([newTileSource isKindOfClass:[RMMBTilesTileSource class]])
+    if ([newTileSource isKindOfClass:[RMMBTilesTileSource class]] || ! [[NSUserDefaults standardUserDefaults] boolForKey:@"cacheNetworkTiles"])
     {
         [tileSource release];
         tileSource = [newTileSource retain];
