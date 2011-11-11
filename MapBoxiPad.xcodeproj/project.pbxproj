@@ -176,6 +176,7 @@
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
+		DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
 		DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6413D75EEC00DDEA58 /* layers.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
@@ -512,6 +513,8 @@
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
 		DDCFC9491427F15A0089E2EB /* transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparent.png; sourceTree = SOURCE_ROOT; };
+		DDD0E062146DE41500FC4342 /* DSMapBoxTileStreamCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileStreamCommon.h; sourceTree = "<group>"; };
+		DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileStreamCommon.m; sourceTree = "<group>"; };
 		DDDA3C6313D75EEC00DDEA58 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		DDDA3C6413D75EEC00DDEA58 /* layers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layers.png; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
@@ -1261,6 +1264,8 @@
 		DDEF900F13831D7A00FF148C /* TileStream Integration */ = {
 			isa = PBXGroup;
 			children = (
+				DDD0E062146DE41500FC4342 /* DSMapBoxTileStreamCommon.h */,
+				DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */,
 				DDB8390713CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.h */,
 				DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */,
 				DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */,
@@ -1583,6 +1588,7 @@
 				DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */,
 				DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */,
 				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
+				DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

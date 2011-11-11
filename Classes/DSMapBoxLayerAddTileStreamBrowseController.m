@@ -12,6 +12,7 @@
 #import "DSMapBoxAlphaModalNavigationController.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxErrorView.h"
+#import "DSMapBoxTileStreamCommon.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -92,7 +93,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     //
     NSString *fullURLString;
     
-    if ([[self.serverURL absoluteString] hasPrefix:kTileStreamHostingURL])
+    if ([[self.serverURL absoluteString] hasPrefix:[DSMapBoxTileStreamCommon serverHostnamePrefix]])
         fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamMapAPIPath];
 
     else

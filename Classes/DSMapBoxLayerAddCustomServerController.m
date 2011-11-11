@@ -9,6 +9,7 @@
 #import "DSMapBoxLayerAddCustomServerController.h"
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
+#import "DSMapBoxTileStreamCommon.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -160,7 +161,7 @@
         {
             // assume hosting account username
             //
-            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", kTileStreamHostingURL, enteredValue, kTileStreamTilesetAPIPath]];
+            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], enteredValue, kTileStreamTilesetAPIPath]];
         }
         
         if (self.finalURL)
@@ -222,12 +223,19 @@
     //
     DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
 
-    if ([[self.finalURL absoluteString] hasPrefix:kTileStreamHostingURL])
+    if ([[self.finalURL absoluteString] hasPrefix:[DSMapBoxTileStreamCommon serverHostnamePrefix]])
     {
         NSMutableString *serverName = [NSMutableString stringWithString:[self.finalURL absoluteString]];
         
-        [serverName replaceOccurrencesOfString:kTileStreamHostingURL withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [serverName length])];
-        [serverName replaceOccurrencesOfString:@"/"                  withString:@"" options:NSAnchoredSearch range:NSMakeRange(0, [serverName length])];
+        [serverName replaceOccurrencesOfString:[DSMapBoxTileStreamCommon serverHostnamePrefix]
+                                    withString:@"" 
+                                       options:NSAnchoredSearch 
+                                         range:NSMakeRange(0, [serverName length])];
+
+        [serverName replaceOccurrencesOfString:@"/" 
+                                    withString:@"" 
+                                       options:NSAnchoredSearch 
+                                         range:NSMakeRange(0, [serverName length])];
         
         controller.serverName = serverName;
     }

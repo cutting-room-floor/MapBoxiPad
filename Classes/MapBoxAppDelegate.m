@@ -35,6 +35,14 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // set build version for settings bundle
+    //
+    NSString *majorVersion = [[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleShortVersionString"];
+    NSString *minorVersion = [[[[NSBundle mainBundle] infoDictionary] valueForKey:@"CFBundleVersion"] stringByReplacingOccurrencesOfString:@"." withString:@""];
+
+    [[NSUserDefaults standardUserDefaults] setValue:[NSString stringWithFormat:@"%@.%@", majorVersion, minorVersion] forKey:@"buildVersion"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
     // begin TestFlight tracking
     //
     [TESTFLIGHT takeOff:kTestFlightTeamToken];
