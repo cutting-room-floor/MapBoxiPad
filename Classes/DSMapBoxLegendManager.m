@@ -72,6 +72,8 @@
         
         [view addSubview:legendView];
         
+        legendView.hidden = YES;
+        
         // attach hide & show gestures
         //
         UISwipeGestureRecognizer *leftSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
@@ -138,6 +140,8 @@
             
             // show UI if needed
             //
+            self.legendView.hidden = NO;
+            
             if (self.legendView.alpha < 1.0)
             {
                 [UIView animateWithDuration:0.1
@@ -210,6 +214,7 @@
                              }
                              completion:^(BOOL finished)
                              {
+                                 self.legendView.hidden = YES;
                              }];
         }
     }
