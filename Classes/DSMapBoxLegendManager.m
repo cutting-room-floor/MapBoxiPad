@@ -63,6 +63,28 @@
         dragHandle.layer.borderWidth  = 1.0;
         dragHandle.layer.cornerRadius = 15.0;
         
+        UIGraphicsBeginImageContext(CGSizeMake(backgroundView.bounds.size.width, backgroundView.bounds.size.height + labelBackground.bounds.size.height));
+        
+        CGContextRef c = UIGraphicsGetCurrentContext();
+        
+        CGContextMoveToPoint(c, 0, 0);
+        CGContextAddLineToPoint(c, backgroundView.bounds.size.width, 0);
+        CGContextAddLineToPoint(c, backgroundView.bounds.size.width, backgroundView.bounds.size.height + labelBackground.bounds.size.height);
+        CGContextAddLineToPoint(c, backgroundView.bounds.size.width - 5, backgroundView.bounds.size.height + labelBackground.bounds.size.height);
+        CGContextAddLineToPoint(c, backgroundView.bounds.size.width - 5, 5);
+        CGContextAddLineToPoint(c, 0, 5);
+        CGContextClosePath(c);
+        
+        CGPathRef shadowPath = CGContextCopyPath(c);
+        
+        UIGraphicsEndImageContext();
+        
+        backgroundView.layer.shadowPath    = shadowPath;
+        backgroundView.layer.shadowColor   = [[UIColor blackColor] CGColor];
+        backgroundView.layer.shadowOpacity = 1.0;
+        backgroundView.layer.shadowRadius  = 10.0;
+        backgroundView.layer.shadowOffset  = CGSizeMake(3.0, -labelBackground.bounds.size.height - 3);
+        
         // swap in programmatic pager for unloadable XIB one
         //
         StyledPageControl *newPager = [[[StyledPageControl alloc] initWithFrame:pager.frame] autorelease];
@@ -268,12 +290,17 @@
                              self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
                                                                   self.legendView.center.y);
                          }
-                         completion:nil];
+                         completion:^(BOOL finished)
+                         {
+                             self.backgroundView.layer.shadowOpacity = 0.0;
+                         }];
     }
     else if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
     {
         // right swipe anywhere to show
         //
+        self.backgroundView.layer.shadowOpacity = 1.0;
+
         [UIView animateWithDuration:0.25
                               delay:0.0
                             options:UIViewAnimationCurveEaseOut
@@ -320,10 +347,26 @@
     self.labelBackground.alpha = 1.0;
     self.pager.alpha           = 1.0;
     self.dragHandle.alpha      = 0.0;
+    
+    [self.backgroundView.layer removeAnimationForKey:@"animateShadowOffset"];
+    
+    self.backgroundView.layer.shadowOffset = CGSizeMake(3.0, -self.labelBackground.bounds.size.height - 3.0);
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"shadowOffset"];
+    
+    animation.duration            = 0.5;
+    animation.beginTime           = CACurrentMediaTime() + 1.0;
+    animation.timingFunction      = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    animation.fromValue           = [NSValue valueWithCGSize:self.backgroundView.layer.shadowOffset];
+    animation.toValue             = [NSValue valueWithCGSize:CGSizeMake(3.0, -3.0)];
+    animation.fillMode            = kCAFillModeForwards;
+    animation.removedOnCompletion = NO;
+    
+    [self.backgroundView.layer addAnimation:animation forKey:@"animateShadowOffset"];
+    
     [UIView animateWithDuration:0.5
                           delay:1.0
                         options:UIViewAnimationCurveEaseInOut
