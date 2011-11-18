@@ -102,10 +102,12 @@
         UISwipeGestureRecognizer *leftSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
         [self.dragHandle addGestureRecognizer:leftSwipe];
+        leftSwipe.enabled = YES;
         
         UISwipeGestureRecognizer *rightSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.dragHandle addGestureRecognizer:rightSwipe];
+        rightSwipe.enabled = NO;
     }
     
     return self;
@@ -282,6 +284,10 @@
                          }
                          completion:nil];
     }
+    
+    [swipe.view.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
+    
+    swipe.enabled = NO;
 }
 
 #pragma mark -
@@ -329,6 +335,8 @@
                          self.dragHandle.alpha      = 1.0;
                      }
                      completion:nil];
+    
+    [((UIWebView *)[scrollView.subviews objectAtIndex:scrollView.contentOffset.x / scrollView.frame.size.width]).scrollView flashScrollIndicators];
 }
 
 #pragma mark -
