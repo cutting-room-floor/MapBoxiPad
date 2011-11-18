@@ -191,6 +191,8 @@
             //
             self.legendView.hidden = NO;
             
+            [self.legendView.superview bringSubviewToFront:self.legendView];
+            
             if (self.legendView.alpha < 1.0)
             {
                 [UIView animateWithDuration:0.1
