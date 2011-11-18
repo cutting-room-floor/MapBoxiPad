@@ -281,7 +281,9 @@
     if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
     {
         // left swipe in top or bottom to hide
-        //
+        //        
+        self.dragHandle.image = nil;
+
         [UIView animateWithDuration:0.25
                               delay:0.0
                             options:UIViewAnimationCurveEaseOut
@@ -300,6 +302,8 @@
         // right swipe anywhere to show
         //
         self.backgroundView.layer.shadowOpacity = 1.0;
+        
+        self.dragHandle.image = [UIImage imageNamed:@"grabber.png"];
 
         [UIView animateWithDuration:0.25
                               delay:0.0
