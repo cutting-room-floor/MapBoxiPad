@@ -16,3 +16,9 @@
 [submodule "Externals/Wax"]
 	path = Externals/Wax
 	url = git@github.com:mapbox/wax.git
+[submodule "Externals/StyledPageControl"]
+	path = Externals/StyledPageControl
+	url = https://github.com/honcheng/iOS-StyledPageControl.git
+[submodule "Externals/UIColor-Expanded"]
+	path = Externals/UIColor-Expanded
+	url = https://github.com/ars/uicolor-utilities.git

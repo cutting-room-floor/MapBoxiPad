@@ -16,6 +16,8 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */ = {isa = PBXBuildFile; fileRef = DD01F5BE14634BBB00BD29C9 /* mustache.js */; };
+		DD051E481475D00C00072B0F /* StyledPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DD051E471475D00C00072B0F /* StyledPageControl.m */; };
+		DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
@@ -251,6 +253,10 @@
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		D7246FF01347B4D20069B3E2 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		DD01F5BE14634BBB00BD29C9 /* mustache.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = mustache.js; path = "Externals/route-me/MapView/Map/mustache.js/mustache.js"; sourceTree = "<group>"; };
+		DD051E461475D00C00072B0F /* StyledPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StyledPageControl.h; path = Externals/StyledPageControl/StyledPageControlDemo/PageControlDemo/StyledPageControl.h; sourceTree = "<group>"; };
+		DD051E471475D00C00072B0F /* StyledPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StyledPageControl.m; path = Externals/StyledPageControl/StyledPageControlDemo/PageControlDemo/StyledPageControl.m; sourceTree = "<group>"; };
+		DD051E4A1475F37F00072B0F /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor-Expanded.h"; path = "Externals/UIColor-Expanded/UIColor-Expanded.h"; sourceTree = "<group>"; };
+		DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor-Expanded.m"; path = "Externals/UIColor-Expanded/UIColor-Expanded.m"; sourceTree = "<group>"; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
 		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0A9E0E13DA313600D7B7D1 /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
@@ -678,6 +684,24 @@
 			name = mustache.js;
 			sourceTree = "<group>";
 		};
+		DD051E451475CFEF00072B0F /* StyledPageControl */ = {
+			isa = PBXGroup;
+			children = (
+				DD051E461475D00C00072B0F /* StyledPageControl.h */,
+				DD051E471475D00C00072B0F /* StyledPageControl.m */,
+			);
+			name = StyledPageControl;
+			sourceTree = "<group>";
+		};
+		DD051E491475F36E00072B0F /* UIColor-Expanded */ = {
+			isa = PBXGroup;
+			children = (
+				DD051E4A1475F37F00072B0F /* UIColor-Expanded.h */,
+				DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */,
+			);
+			name = "UIColor-Expanded";
+			sourceTree = "<group>";
+		};
 		DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -975,8 +999,10 @@
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
+				DD051E451475CFEF00072B0F /* StyledPageControl */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
+				DD051E491475F36E00072B0F /* UIColor-Expanded */,
 				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
 				DD22C02F1464C076006CF1D7 /* Wax */,
@@ -1619,6 +1645,8 @@
 				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
 				DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */,
 				DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */,
+				DD051E481475D00C00072B0F /* StyledPageControl.m in Sources */,
+				DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
