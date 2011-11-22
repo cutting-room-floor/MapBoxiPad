@@ -82,7 +82,6 @@
 		DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */; };
 		DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */; };
 		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
-		DD22C0301464C093006CF1D7 /* controls.css in Resources */ = {isa = PBXBuildFile; fileRef = DD22C02E1464C03B006CF1D7 /* controls.css */; };
 		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
@@ -103,6 +102,8 @@
 		DD3E66B213C5337300D09B4B /* check.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B113C5337300D09B4B /* check.png */; };
 		DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B313C5339300D09B4B /* corner_fold.png */; };
 		DD3E66B613C53BA100D09B4B /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B513C53BA100D09B4B /* chevron.png */; };
+		DD4364DE147C3DAF00235F20 /* controls.css in Resources */ = {isa = PBXBuildFile; fileRef = DD4364DC147C3DAF00235F20 /* controls.css */; };
+		DD4364DF147C3DAF00235F20 /* reset.css in Resources */ = {isa = PBXBuildFile; fileRef = DD4364DD147C3DAF00235F20 /* reset.css */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
@@ -379,7 +380,6 @@
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		DD22C02E1464C03B006CF1D7 /* controls.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = controls.css; path = Externals/Wax/theme/controls.css; sourceTree = SOURCE_ROOT; };
 		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
 		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
@@ -407,6 +407,8 @@
 		DD3E66B113C5337300D09B4B /* check.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = check.png; sourceTree = SOURCE_ROOT; };
 		DD3E66B313C5339300D09B4B /* corner_fold.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = corner_fold.png; sourceTree = SOURCE_ROOT; };
 		DD3E66B513C53BA100D09B4B /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = SOURCE_ROOT; };
+		DD4364DC147C3DAF00235F20 /* controls.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = controls.css; path = Externals/tilemill/assets/css/controls.css; sourceTree = "<group>"; };
+		DD4364DD147C3DAF00235F20 /* reset.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = reset.css; path = Externals/tilemill/assets/css/reset.css; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
@@ -911,14 +913,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		DD22C02F1464C076006CF1D7 /* Wax */ = {
-			isa = PBXGroup;
-			children = (
-				DD22C02E1464C03B006CF1D7 /* controls.css */,
-			);
-			name = Wax;
-			sourceTree = "<group>";
-		};
 		DD2754D613856855007B58AC /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -972,6 +966,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		DD4364DB147C3D4400235F20 /* TileMill */ = {
+			isa = PBXGroup;
+			children = (
+				DD4364DC147C3DAF00235F20 /* controls.css */,
+				DD4364DD147C3DAF00235F20 /* reset.css */,
+			);
+			name = TileMill;
+			sourceTree = "<group>";
+		};
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -1001,11 +1004,11 @@
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DD051E451475CFEF00072B0F /* StyledPageControl */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
+				DD4364DB147C3D4400235F20 /* TileMill */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD051E491475F36E00072B0F /* UIColor-Expanded */,
 				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
-				DD22C02F1464C076006CF1D7 /* Wax */,
 			);
 			name = Externals;
 			sourceTree = "<group>";
@@ -1489,10 +1492,11 @@
 				DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */,
 				DDE41E5E1443CABB00837C16 /* testflight.png in Resources */,
 				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
-				DD22C0301464C093006CF1D7 /* controls.css in Resources */,
 				DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */,
 				DDAB24DE146C770600C14467 /* grabber.png in Resources */,
 				DDBB9831146CB88000A6C8D7 /* mapbox_relief.png in Resources */,
+				DD4364DE147C3DAF00235F20 /* controls.css in Resources */,
+				DD4364DF147C3DAF00235F20 /* reset.css in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

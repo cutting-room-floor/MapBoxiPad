@@ -165,7 +165,11 @@
         NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
                                                        encoding:NSUTF8StringEncoding
                                                           error:NULL];
-        
+
+        NSString *reset    = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"reset" ofType:@"css"]
+                                                       encoding:NSUTF8StringEncoding
+                                                          error:NULL];
+
         // determine legend content across sources (not every source will have a legend)
         //
         NSMutableArray *legends = [NSMutableArray array];
@@ -179,7 +183,8 @@
                                                                 </div>                                   \
                                                                 <style type='text/css'>                  \
                                                                     %@                                   \
-                                                                </style>", [source performSelector:@selector(legend)], controls]];
+                                                                    %@                                   \
+                                                                </style>", [source performSelector:@selector(legend)], controls, reset]];
 
         if ([legends count])
         {
