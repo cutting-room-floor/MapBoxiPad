@@ -6,7 +6,7 @@
 //  Copyright (c) 2011 Development Seed. All rights reserved.
 //
 
-@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate>
+@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) NSArray *legendSources;
 
