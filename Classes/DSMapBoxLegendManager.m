@@ -172,7 +172,7 @@
         
         for (id <RMTileSource>source in _legendSources)
             if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
-                [legends addObject:[NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend'> \
+                [legends addObject:[NSString stringWithFormat:@"<div id='wax-legend' class='wax-legend' style='font-family: Arial, sans-serif;'> \
                                                                     %@                                   \
                                                                 </div>                                   \
                                                                 <div style='clear: both;'>               \
