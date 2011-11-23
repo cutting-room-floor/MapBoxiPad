@@ -46,7 +46,6 @@
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
-		DD1ACD5E13CD1CD2001244D2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */; };
 		DD1ACD7613CD1D44001244D2 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ACD6013CD1D44001244D2 /* ASIAuthenticationDialog.m */; };
 		DD1ACD7713CD1D44001244D2 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ACD6313CD1D44001244D2 /* ASIDataCompressor.m */; };
 		DD1ACD7813CD1D44001244D2 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ACD6513CD1D44001244D2 /* ASIDataDecompressor.m */; };
@@ -104,6 +103,8 @@
 		DD3E66B613C53BA100D09B4B /* chevron.png in Resources */ = {isa = PBXBuildFile; fileRef = DD3E66B513C53BA100D09B4B /* chevron.png */; };
 		DD4364DE147C3DAF00235F20 /* controls.css in Resources */ = {isa = PBXBuildFile; fileRef = DD4364DC147C3DAF00235F20 /* controls.css */; };
 		DD4364DF147C3DAF00235F20 /* reset.css in Resources */ = {isa = PBXBuildFile; fileRef = DD4364DD147C3DAF00235F20 /* reset.css */; };
+		DD43652F147C847700235F20 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD43652E147C847700235F20 /* MobileCoreServices.framework */; };
+		DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */ = {isa = PBXBuildFile; fileRef = DD436531147C8E0A00235F20 /* DirectoryWatcher.m */; };
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
@@ -310,7 +311,6 @@
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		DD1ACD5F13CD1D44001244D2 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASIAuthenticationDialog.h; path = Externals/ASIHTTPRequest/Classes/ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		DD1ACD6013CD1D44001244D2 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ASIAuthenticationDialog.m; path = Externals/ASIHTTPRequest/Classes/ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		DD1ACD6113CD1D44001244D2 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ASICacheDelegate.h; path = Externals/ASIHTTPRequest/Classes/ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -409,6 +409,10 @@
 		DD3E66B513C53BA100D09B4B /* chevron.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chevron.png; sourceTree = SOURCE_ROOT; };
 		DD4364DC147C3DAF00235F20 /* controls.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = controls.css; path = Externals/tilemill/assets/css/controls.css; sourceTree = "<group>"; };
 		DD4364DD147C3DAF00235F20 /* reset.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; name = reset.css; path = Externals/tilemill/assets/css/reset.css; sourceTree = "<group>"; };
+		DD43652C147C844C00235F20 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		DD43652E147C847700235F20 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		DD436530147C8E0A00235F20 /* DirectoryWatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DirectoryWatcher.h; path = Externals/DirectoryWatcher/DirectoryWatcher.h; sourceTree = "<group>"; };
+		DD436531147C8E0A00235F20 /* DirectoryWatcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DirectoryWatcher.m; path = Externals/DirectoryWatcher/DirectoryWatcher.m; sourceTree = "<group>"; };
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
@@ -573,7 +577,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */,
 				DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */,
-				DD1ACD5E13CD1CD2001244D2 /* MobileCoreServices.framework in Frameworks */,
+				DD43652F147C847700235F20 /* MobileCoreServices.framework in Frameworks */,
 				DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */,
 				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
@@ -655,12 +659,13 @@
 			children = (
 				DD48AC4311D3D807000AF79E /* AudioToolbox.framework */,
 				DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */,
+				DD43652C147C844C00235F20 /* CoreFoundation.framework */,
 				DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */,
 				DDF3221211DADD720068287A /* CoreLocation.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				DD5678F212AEF62200B73C8A /* MediaPlayer.framework */,
 				DD92F641121C9B84008CF88F /* MessageUI.framework */,
-				DD1ACD5B13CD1CD2001244D2 /* MobileCoreServices.framework */,
+				DD43652E147C847700235F20 /* MobileCoreServices.framework */,
 				DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */,
 				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
@@ -975,6 +980,15 @@
 			name = TileMill;
 			sourceTree = "<group>";
 		};
+		DD436528147C838400235F20 /* DirectoryWatcher */ = {
+			isa = PBXGroup;
+			children = (
+				DD436530147C8E0A00235F20 /* DirectoryWatcher.h */,
+				DD436531147C8E0A00235F20 /* DirectoryWatcher.m */,
+			);
+			name = DirectoryWatcher;
+			sourceTree = "<group>";
+		};
 		DD48AC4111D3D79B000AF79E /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -998,6 +1012,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1ACD0713CD1735001244D2 /* ASIHTTPRequest */,
+				DD436528147C838400235F20 /* DirectoryWatcher */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD48C2CB11CBF30600038969 /* route-me */,
@@ -1529,7 +1544,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "INFO=$( echo $PWD)/MapBoxiPad-Info\nTAG=\nCOMMIT=\nGITPATH=/usr/bin:/usr/local/bin:/usr/local/git/bin\nPATH=$PATH:$GITPATH; export PATH\n\nif [ -z $( which git ) ]; then\n  echo \"Unable to find git binary in \\$GITPATH\"\n  exit 1\nfi\n\nwhile [ -z $TAG ]; do\n  # start with HEAD, adding carats\n  REVISION=\"HEAD\"$COMMIT\n\n  # see if we've found a tag yet\n  TAG=$( git tag --contains $REVISION )\n\n  # add another carat to go back a revision\n  COMMIT=$COMMIT\"^\"\ndone\n\n# check if we've got untagged commits, adding a 'd' if so\nif [ $COMMIT != \"^\" ]; then\n  TAG=$( echo $TAG )d\nfi\n\nCURRENT=$( defaults read \"$INFO\" CFBundleVersion )\n\nif [ $CURRENT != $TAG ]; then\n  # output for Xcode logging\n  echo \"Updating CFBundleVersion to $TAG\"\n\n  # write it to the Info.plist\n  defaults write \"$INFO\" CFBundleVersion $TAG  \nelse\n  # output for Xcode logging\n  echo \"CFBundleVersion already at $TAG\"\nfi";
+			shellScript = "INFO=$( echo $PWD)/MapBoxiPad-Info\nTAG=$( git describe --tags `git rev-list --tags --max-count=1` )\nCOMMIT=\nGITPATH=/usr/bin:/usr/local/bin:/usr/local/git/bin\nPATH=$PATH:$GITPATH; export PATH\n\nif [ -z $( which git ) ]; then\n  echo \"Unable to find git binary in \\$GITPATH\"\n  exit 1\nfi\n\n# check if we've got untagged commits, adding a 'd' if so\nif [ $( git log | sed -n '1p' | awk '{ print $2 }' ) != $( git rev-list --tags --max-count=1 ) ]; then\n  TAG=$( echo $TAG )d\nfi\n\nCURRENT=$( defaults read \"$INFO\" CFBundleVersion )\n\nif [ $CURRENT != $TAG ]; then\n  # output for Xcode logging\n  echo \"Updating CFBundleVersion to $TAG\"\n\n  # write it to the Info.plist\n  defaults write \"$INFO\" CFBundleVersion $TAG  \nelse\n  # output for Xcode logging\n  echo \"CFBundleVersion already at $TAG\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1651,6 +1666,7 @@
 				DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */,
 				DD051E481475D00C00072B0F /* StyledPageControl.m in Sources */,
 				DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */,
+				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
