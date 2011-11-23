@@ -176,7 +176,7 @@
         [_legendSources release];
         _legendSources = [legendSources retain];
         
-        // get TileMill CSS for repeated use
+        // get TileMill CSS once for repeated use
         //
         NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
                                                        encoding:NSUTF8StringEncoding
@@ -193,9 +193,9 @@
         for (id <RMTileSource>source in _legendSources)
             if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
                 [legends addObject:[NSString stringWithFormat:@"<body style='background-color: transparent;'> \
-                                                                <div    id='wax-legend' \
-                                                                     class='wax-legend' \
-                                                                     style='background-color: white; font-family: Arial, sans-serif;'> \
+                                                                <div id='wax-legend' \
+                                                                  class='wax-legend' \
+                                                                  style='background-color: white;'> \
                                                                     %@ \
                                                                 </div> \
                                                                 <style type='text/css'> \
