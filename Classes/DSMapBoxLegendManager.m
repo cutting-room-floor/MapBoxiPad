@@ -31,6 +31,8 @@
 @property (nonatomic, retain) IBOutlet StyledPageControl *pager;
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
 
+- (void)handleGesture:(UIGestureRecognizer *)gesture;
+
 @end
 
 #pragma mark -
@@ -136,6 +138,15 @@
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.dragHandle addGestureRecognizer:rightSwipe];
         rightSwipe.enabled = NO;
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"legendCollapsed"])
+        {
+            // hacky way to pass an argument to collapse routine to not animate
+            //
+            leftSwipe.numberOfTouchesRequired = 2;
+            [self handleGesture:leftSwipe];
+            leftSwipe.numberOfTouchesRequired = 1;
+        }
     }
     
     return self;
@@ -320,18 +331,39 @@
             //        
             self.dragHandle.image = nil;
 
-            [UIView animateWithDuration:0.25
-                                  delay:0.0
-                                options:UIViewAnimationCurveEaseOut
-                             animations:^(void)
-                             {
-                                 self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
-                                                                      self.legendView.center.y);
-                             }
-                             completion:^(BOOL finished)
-                             {
-                                 self.backgroundView.layer.shadowOpacity = 0.0;
-                             }];
+            void (^centerBlock)(void) = ^
+            {
+                self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
+                                                     self.legendView.center.y);
+            };
+
+            void (^opacityBlock)(void) = ^
+            {
+                self.backgroundView.layer.shadowOpacity = 0.0;
+            };
+            
+            if (swipe.numberOfTouchesRequired == 2)
+            {
+                centerBlock();
+                opacityBlock();
+            }
+            else
+            {
+                [UIView animateWithDuration:0.25
+                                      delay:0.0
+                                    options:UIViewAnimationCurveEaseOut
+                                 animations:^(void)
+                                 {
+                                     centerBlock();
+                                 }
+                                 completion:^(BOOL finished)
+                                 {
+                                     opacityBlock();
+                                 }];
+            }
+            
+            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
         else if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
         {
@@ -350,6 +382,9 @@
                                                                       self.legendView.center.y);
                              }
                              completion:nil];
+            
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"legendCollapsed"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
         }
         
         [swipe.view.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
