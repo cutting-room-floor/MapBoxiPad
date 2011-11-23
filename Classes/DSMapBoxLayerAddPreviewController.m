@@ -80,6 +80,9 @@
     
     if ([source supportsInteractivity])
         [metadata appendString:@", interactive"];
+    
+    if ([[source legend] length])
+        [metadata appendString:@", legend"];
 
     if ([source coversFullWorld])
         [metadata appendString:@", full-world coverage"];

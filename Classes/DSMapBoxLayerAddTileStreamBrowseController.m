@@ -236,6 +236,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                            ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
                            ([layer objectForKey:@"template"] ? [layer objectForKey:@"template"] : @""), @"template",
                            ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
+                           ([layer objectForKey:@"legend"] ? [layer objectForKey:@"legend"] : @""), @"legend",
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                            [layer objectForKey:@"id"], @"id", 
