@@ -17,14 +17,27 @@
 
 #import "ASIHTTPRequest.h"
 
+#include <sys/xattr.h>
+
+@interface MapBoxAppDelegate ()
+
+@property (nonatomic, retain) DirectoryWatcher *directoryWatcher;
+
+@end
+
+#pragma mark -
+
 @implementation MapBoxAppDelegate
 
 @synthesize window;
 @synthesize viewController;
 @synthesize openingExternalFile;
+@synthesize directoryWatcher;
 
 - (void)dealloc
 {
+    [directoryWatcher invalidate];
+    [directoryWatcher release];
     [viewController release];
     [window release];
     
@@ -106,6 +119,10 @@
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
     
+    // watch for document changes
+    //
+    directoryWatcher = [[DirectoryWatcher watchFolderWithPath:[[UIApplication sharedApplication] documentsFolderPath] delegate:self] retain];
+    
     if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
     {
         // Note that we are opening a file so that application:openURL:sourceApplication:annotation:
@@ -169,6 +186,10 @@
         }
     }
     
+    // trigger re-check of iCloud exclusion
+    //
+    [self directoryDidChange:directoryWatcher];
+    
     // check pasteboard for supported URLs
     //
     [self.viewController checkPasteboardForURL];
@@ -197,6 +218,38 @@
         NSURL *externalURL = (NSURL *)((DSMapBoxAlertView *)alertView).context;
         
         [self openExternalURL:externalURL];
+    }
+}
+
+#pragma mark -
+
+- (void)directoryDidChange:(DirectoryWatcher *)folderWatcher;
+{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"excludeiCloudBackup"])
+    {
+        NSURL *documentsURL = [NSURL fileURLWithPath:[[UIApplication sharedApplication] documentsFolderPath]];
+        
+        NSDirectoryEnumerator *directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtURL:documentsURL
+                                                                          includingPropertiesForKeys:nil
+                                                                                             options:0
+                                                                                        errorHandler:nil];
+        
+        for (NSURL *enumeratedURL in directoryEnumerator)
+        {
+            if ([enumeratedURL isFileURL])
+            {
+                const char *filePath = [[enumeratedURL path] fileSystemRepresentation];
+                
+                const char *attrName = "com.apple.MobileBackup"; // attribute means "do not backup"
+                
+                u_int8_t attrValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"excludeiCloudBackup"] ? 1 : 0;
+                
+                int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+
+                if (result != 0)
+                    NSLog(@"Unable to set %@ to iCloud backup exclusion %i", [enumeratedURL lastPathComponent], attrValue);
+            }
+        }
     }
 }
 

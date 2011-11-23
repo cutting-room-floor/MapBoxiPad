@@ -5,26 +5,36 @@
 	<key>PreferenceSpecifiers</key>
 	<array>
 		<dict>
+			<key>Title</key>
+			<string>Maps &amp; Documents</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
-			<key>Title</key>
-			<string>Performance</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>Cache Network Tiles</string>
-			<key>Key</key>
-			<string>cacheNetworkTiles</string>
 			<key>DefaultValue</key>
 			<false/>
+			<key>Key</key>
+			<string>cacheNetworkTiles</string>
+			<key>Title</key>
+			<string>Cache Network Tiles</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
+			<key>DefaultValue</key>
+			<false/>
+			<key>Key</key>
+			<string>excludeiCloudBackup</string>
+			<key>Title</key>
+			<string>Exclude From iCloud Backups</string>
 			<key>Type</key>
-			<string>PSGroupSpecifier</string>
+			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
 			<key>Title</key>
 			<string>Alerts</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
@@ -47,28 +57,28 @@
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSGroupSpecifier</string>
 			<key>Title</key>
 			<string>Debugging</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSTitleValueSpecifier</string>
-			<key>Title</key>
-			<string>Build Version</string>
-			<key>Key</key>
-			<string>buildVersion</string>
 			<key>DefaultValue</key>
 			<string></string>
+			<key>Key</key>
+			<string>buildVersion</string>
+			<key>Title</key>
+			<string>Build Version</string>
+			<key>Type</key>
+			<string>PSTitleValueSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
-			<key>Title</key>
-			<string>Hosting Server</string>
 			<key>Key</key>
 			<string>alternateHostingServer</string>
+			<key>Title</key>
+			<string>Hosting Server</string>
+			<key>Type</key>
+			<string>PSTextFieldSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>
