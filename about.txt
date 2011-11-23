@@ -4,11 +4,17 @@ Libraries used under license:
 
  * ASIHTTPRequest, (c) 2007-2011 All-Seeing Interactive https://github.com/pokeb/asi-http-request
 
+ * DirectoryWatcher, (c) 2011 Apple Inc. http://developer.apple.com/library/ios/#samplecode/AVPlayerDemo
+
  * Fingertips, (c) 2011 Development Seed, Inc. https://github.com/developmentseed/fingertips
 
  * FMDB, (c) 2008 Flying Meat Inc. https://github.com/ccgus/fmdb
 
+ * GRMustache, (c) 2010 Gwendal Roué https://github.com/groue/GRMustache
+
  * JSONKit, (c) 2011 John Engelhart https://github.com/johnezang/JSONKit
+
+ * mustache.js, (c) 2010 Jan Lehnardt https://github.com/janl/mustache.js
 
  * Route-Me, (c) 2008-2011 Route-Me Contributors https://github.com/route-me/route-me
 
@@ -19,5 +25,3 @@ Libraries used under license:
  * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
 
  * UIImage-Extensions, (c) 2009 Catamount Software http://www.catamount.com/blog/1015/uiimage-extensions-for-cutting-scaling-and-rotating-uiimages/
-
-Map data (c) OpenStreetMap (and) contributors, CC-BY-SA http://www.openstreetmap.org/
