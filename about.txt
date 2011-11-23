@@ -20,7 +20,13 @@ Libraries used under license:
 
  * Simple KML, (c) 2010 Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
 
+ * StyledPageControl, (c) 2011 Hon Cheng Muh https://github.com/honcheng/iOS-StyledPageControl
+
+ * TileMill, (c) 2011 Development Seed, Inc. https://github.com/mapbox/tilemill
+
  * TouchXML, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchXML
+
+ * UIColor-Expanded, (c) 2009 Erica Sadun https://github.com/ars/uicolor-utilities
 
  * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
 
