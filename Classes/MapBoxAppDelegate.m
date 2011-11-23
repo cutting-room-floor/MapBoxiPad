@@ -244,10 +244,7 @@
                 
                 u_int8_t attrValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"excludeiCloudBackup"] ? 1 : 0;
                 
-                int result = setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
-
-                if (result != 0)
-                    NSLog(@"Unable to set %@ to iCloud backup exclusion %i", [enumeratedURL lastPathComponent], attrValue);
+                setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
             }
         }
     }
