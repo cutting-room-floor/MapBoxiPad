@@ -121,7 +121,7 @@
     
     // watch for document changes
     //
-    directoryWatcher = [[DirectoryWatcher watchFolderWithPath:[[UIApplication sharedApplication] documentsFolderPath] delegate:self] retain];
+    self.directoryWatcher = [DirectoryWatcher watchFolderWithPath:[[UIApplication sharedApplication] documentsFolderPath] delegate:self];
     
     if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
     {
@@ -188,7 +188,7 @@
     
     // trigger re-check of iCloud exclusion
     //
-    [self directoryDidChange:directoryWatcher];
+    [self directoryDidChange:self.directoryWatcher];
     
     // check pasteboard for supported URLs
     //
