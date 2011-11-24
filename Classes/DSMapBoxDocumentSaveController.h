@@ -6,10 +6,12 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
+@class DSMapBoxDarkTextField;
+
 @interface DSMapBoxDocumentSaveController : UIViewController <UITextFieldDelegate>
 
 @property (nonatomic, retain) IBOutlet UIImageView *snapshotView;
-@property (nonatomic, retain) IBOutlet UITextField *nameTextField;
+@property (nonatomic, retain) IBOutlet DSMapBoxDarkTextField *nameTextField;
 @property (nonatomic, retain) UIImage *snapshot;
 @property (nonatomic, retain) NSString *name;
 

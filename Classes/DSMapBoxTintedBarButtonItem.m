@@ -62,6 +62,18 @@
     [self setTitleResizing:title];
 }
 
+- (id)target
+{
+    return [tintedButton.allTargets anyObject];
+}
+
+- (SEL)action
+{
+    NSString *selectorName = [[tintedButton actionsForTarget:[tintedButton.allTargets anyObject] forControlEvent:UIControlEventTouchUpInside] lastObject];
+    
+    return NSSelectorFromString(selectorName);
+}
+
 #pragma mark -
 
 - (void)setTitleResizing:(NSString *)title
