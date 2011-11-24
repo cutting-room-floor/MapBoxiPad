@@ -132,6 +132,8 @@
 		DD601BAE12FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601BA112FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m */; };
 		DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */; };
 		DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD64BF8D14366355000CF679 /* UIViewController_Additions.m */; };
+		DD680D56147DB66600BF32F2 /* white_clear.png in Resources */ = {isa = PBXBuildFile; fileRef = DD680D55147DB66600BF32F2 /* white_clear.png */; };
+		DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = DD680D58147DBA3300BF32F2 /* DSMapBoxDarkTextField.m */; };
 		DD70D80C11D176750002E222 /* DSMapBoxTileSetManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */; };
 		DD72C69311E673EF0030C637 /* DSMapBoxDataOverlayManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD72C69211E673EF0030C637 /* DSMapBoxDataOverlayManager.m */; };
 		DD72C76311E6847C0030C637 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = DD72C76211E6847C0030C637 /* circle.png */; };
@@ -449,6 +451,9 @@
 		DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		DD64BF8C14366355000CF679 /* UIViewController_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIViewController_Additions.h; sourceTree = "<group>"; };
 		DD64BF8D14366355000CF679 /* UIViewController_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIViewController_Additions.m; sourceTree = "<group>"; };
+		DD680D55147DB66600BF32F2 /* white_clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = white_clear.png; sourceTree = SOURCE_ROOT; };
+		DD680D57147DBA3300BF32F2 /* DSMapBoxDarkTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDarkTextField.h; sourceTree = "<group>"; };
+		DD680D58147DBA3300BF32F2 /* DSMapBoxDarkTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDarkTextField.m; sourceTree = "<group>"; };
 		DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSetManager.h; sourceTree = "<group>"; };
 		DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSetManager.m; sourceTree = "<group>"; };
 		DD72C69111E673EF0030C637 /* DSMapBoxDataOverlayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDataOverlayManager.h; sourceTree = "<group>"; };
@@ -918,6 +923,8 @@
 				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
 				DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */,
 				DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */,
+				DD680D57147DBA3300BF32F2 /* DSMapBoxDarkTextField.h */,
+				DD680D58147DBA3300BF32F2 /* DSMapBoxDarkTextField.m */,
 				DD2F016013BE3A2200A72513 /* Resources */,
 			);
 			name = "Custom UI";
@@ -930,6 +937,7 @@
 				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
 				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
 				DDE011A013CE33390070F421 /* error.png */,
+				DD680D55147DB66600BF32F2 /* white_clear.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1453,6 +1461,7 @@
 				DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */,
 				DDE41E5E1443CABB00837C16 /* testflight.png in Resources */,
 				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
+				DD680D56147DB66600BF32F2 /* white_clear.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1605,6 +1614,7 @@
 				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
 				DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */,
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
+				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

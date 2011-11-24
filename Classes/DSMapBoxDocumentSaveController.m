@@ -8,7 +8,7 @@
 
 #import "DSMapBoxDocumentSaveController.h"
 
-#import <QuartzCore/QuartzCore.h>
+#import "DSMapBoxDarkTextField.h"
 
 @implementation DSMapBoxDocumentSaveController
 
@@ -27,11 +27,8 @@
     snapshotView.image = self.snapshot;
     self.nameTextField.text = self.name;
     
-    self.nameTextField.superview.backgroundColor    = [UIColor blackColor];
-    self.nameTextField.superview.layer.cornerRadius = 10.0;
-    self.nameTextField.superview.clipsToBounds      = YES;
-    self.nameTextField.clearButtonMode              = UITextFieldViewModeAlways;
-        
+    // watch for edits
+    //
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(updateName:)
                                                  name:UITextFieldTextDidChangeNotification
