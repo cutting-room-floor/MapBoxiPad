@@ -449,7 +449,7 @@
 
     // determine if document or global save
     //
-    if ([sender isKindOfClass:[UIButton class]] || [sender isKindOfClass:[NSString class]])
+    if ([sender isKindOfClass:[UIBarButtonItem class]] || [sender isKindOfClass:[UIButton class]] || [sender isKindOfClass:[NSString class]])
     {
         NSString *saveFolderPath = [DSMapBoxDocumentLoadController saveFolderPath];
         
@@ -463,7 +463,7 @@
         
         NSString *stateName = nil;
         
-        if ([sender isKindOfClass:[UIButton class]]) // button save
+        if ([sender isKindOfClass:[UIBarButtonItem class]] || [sender isKindOfClass:[UIButton class]]) // manual save
             stateName = self.saveController.name;
         
         else if ([sender isKindOfClass:[NSString class]]) // load controller save

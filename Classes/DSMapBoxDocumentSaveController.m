@@ -76,11 +76,16 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    UIBarButtonItem *item = self.navigationItem.rightBarButtonItem;
+    [textField resignFirstResponder];
     
-    [item.target performSelector:item.action withObject:item];
+    if (self.navigationItem.rightBarButtonItem.enabled)
+    {
+        UIBarButtonItem *item = self.navigationItem.rightBarButtonItem;
+        
+        [item.target performSelector:item.action withObject:item];
+    }
     
-    return YES;
+    return NO;
 }
 
 @end
