@@ -20,6 +20,9 @@
 @interface DSMapBoxLayerAddCustomServerController ()
 
 - (void)setRecentServersHidden:(BOOL)flag;
+- (void)startActivity;
+- (void)indicateSuccess;
+- (void)indicateFailure;
 - (void)updateRecentServersAppearance;
 
 @property (nonatomic, retain) ASIHTTPRequest *validationRequest;
@@ -32,8 +35,6 @@
 @implementation DSMapBoxLayerAddCustomServerController
 
 @synthesize entryField;
-@synthesize spinner;
-@synthesize successImage;
 @synthesize recentServersTableView;
 @synthesize validationRequest;
 @synthesize finalURL;
@@ -75,15 +76,14 @@
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
-    [self.spinner stopAnimating];
-    
-    self.successImage.hidden = YES;
-
     [self.recentServersTableView reloadData];
     
     [self updateRecentServersAppearance];
     
     self.entryField.text = @"";
+
+    self.entryField.rightView     = nil;
+    self.entryField.rightViewMode = UITextFieldViewModeAlways;
 
     [self.entryField becomeFirstResponder];
 }
@@ -98,8 +98,6 @@
 - (void)dealloc
 {
     [entryField release];
-    [spinner release];
-    [successImage release];
     [recentServersTableView release];;
     [finalURL release];
 
@@ -125,6 +123,40 @@
     [UIView commitAnimations];
 }
 
+- (void)startActivity
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+
+    if ( ! [self.entryField.rightView isKindOfClass:[UIActivityIndicatorView class]])
+        self.entryField.rightView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+    
+    ((UIActivityIndicatorView *)self.entryField.rightView).hidesWhenStopped = YES;
+    
+    [(UIActivityIndicatorView *)self.entryField.rightView startAnimating];
+}
+
+- (void)indicateSuccess
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+    if ([self.entryField.rightView isKindOfClass:[UIActivityIndicatorView class]])
+        [(UIActivityIndicatorView *)self.entryField.rightView stopAnimating];
+    
+    self.entryField.rightView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]] autorelease];
+    
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)indicateFailure
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
+    if ([self.entryField.rightView isKindOfClass:[UIActivityIndicatorView class]])
+        [(UIActivityIndicatorView *)self.entryField.rightView stopAnimating];
+}
+
 - (void)updateRecentServersAppearance
 {
     self.recentServersTableView.frame = CGRectMake(self.recentServersTableView.frame.origin.x,
@@ -141,6 +173,8 @@
 
 - (void)validateEntry
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+
     if ([self.entryField.text length])
     {
         self.finalURL = nil;
@@ -175,15 +209,15 @@
             
             [self.validationRequest startAsynchronous];
             
-            [self.spinner startAnimating];
+            [self startActivity];
         }
         
         else
-            [self.spinner performSelector:@selector(stopAnimating) withObject:nil afterDelay:0.5];
+            [self performSelector:@selector(indicateFailure) withObject:nil afterDelay:0.5];
     }
 
     else
-        [self.spinner stopAnimating];
+        [self indicateFailure];
 }
 
 
@@ -254,20 +288,13 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:spinner];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    
     if (self.validationRequest)
     {
         [self.validationRequest clearDelegatesAndCancel];
         self.validationRequest = nil;
     }
 
-    [self.spinner startAnimating];
-    
-    self.successImage.hidden = YES;
-    
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    [self startActivity];
     
     [self performSelector:@selector(validateEntry) withObject:nil afterDelay:0.5];
     
@@ -288,22 +315,22 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
-    [self.spinner stopAnimating];
+    [self indicateFailure];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [self.spinner stopAnimating];
-
     id layers = [request.responseData objectFromJSONData];
 
-    if (layers && [layers isKindOfClass:[NSArray class]])
+    if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
     {
         self.finalURL = [NSURL URLWithString:[[self.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
         
-        self.successImage.hidden = NO;
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        [self indicateSuccess];
     }
+
+    else
+        [self indicateFailure];
 }
 
 #pragma mark -

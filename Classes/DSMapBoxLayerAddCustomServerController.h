@@ -14,8 +14,6 @@
                                                                       ASIHTTPRequestDelegate>
 
 @property (nonatomic, retain) IBOutlet UITextField *entryField;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UIImageView *successImage;
 @property (nonatomic, retain) IBOutlet UITableView *recentServersTableView;
 
 - (IBAction)tappedNextButton:(id)sender;
