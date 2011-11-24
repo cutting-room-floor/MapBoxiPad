@@ -66,11 +66,13 @@
         
         // create label
         //
-        label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 20, imageView.bounds.size.width, 20)];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(0, imageView.bounds.size.height - 21, imageView.bounds.size.width, 21)];
         
-        label.font            = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
-        label.text            = [NSString stringWithFormat:@" %@", labelText];
+        label.font = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
+        label.text = [NSString stringWithFormat:@" %@", labelText];
 
+        label.shadowOffset = CGSizeMake(0, 1);
+        
         [self setFeatured:NO];
         
         [imageView addSubview:label];
@@ -161,12 +163,14 @@
         
         CGColorRelease(color);
         
-        self.label.textColor = [UIColor blackColor];
+        self.label.textColor   = [UIColor blackColor];
+        self.label.shadowColor = [UIColor clearColor];
     }
     else
     {
         self.label.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
         self.label.textColor       = [UIColor whiteColor];
+        self.label.shadowColor     = [UIColor blackColor];
     }
 
     featured = flag;    

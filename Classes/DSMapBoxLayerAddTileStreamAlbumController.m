@@ -247,7 +247,7 @@
                     // get label bits
                     //
                     NSDictionary *server  = [self.servers objectAtIndex:index];
-                    NSString *accountName = ([server objectForKey:@"name"] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
+                    NSString *accountName = ([[server objectForKey:@"name"] length] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
                     NSString *layerCount  = [server valueForKey:@"mapCount"];
 
                     DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
