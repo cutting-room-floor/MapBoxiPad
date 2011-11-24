@@ -71,7 +71,7 @@
         label.font            = [UIFont systemFontOfSize:[UIFont smallSystemFontSize]];
         label.text            = [NSString stringWithFormat:@" %@", labelText];
 
-        featured = NO;
+        [self setFeatured:NO];
         
         [imageView addSubview:label];
         
