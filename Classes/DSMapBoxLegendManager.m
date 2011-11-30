@@ -62,6 +62,7 @@
 @property (nonatomic, retain) IBOutlet StyledPageControl *pager;
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
 @property (nonatomic, assign) CGFloat initialHeight;
+@property (nonatomic, assign) BOOL collapsed;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
 - (void)showInterface;
@@ -83,6 +84,7 @@
 @synthesize pager;
 @synthesize dragHandle;
 @synthesize initialHeight;
+@synthesize collapsed;
 
 - (id)initWithView:(UIView *)view
 {
@@ -399,7 +401,7 @@
         {
             // handle tap: expand/collapse interface
             //
-            if (self.dragHandle.image)
+            if ( ! self.collapsed)
                 [self collapseInterfaceAnimated:YES];
             
             else
@@ -456,6 +458,9 @@
 
 - (void)hideInterface
 {
+    if (self.collapsed)
+        return;
+    
     [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     // determine which legend we are on
@@ -472,9 +477,7 @@
                          self.backgroundView.alpha = 0.0;
                          self.label.alpha          = 0.0;
                          self.pager.alpha          = 0.0;
-                         
-                         if (self.dragHandle.image)
-                             self.dragHandle.alpha = 0.0;
+                         self.dragHandle.alpha     = 0.0;
                          
                          CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height) + 10;
                          
@@ -510,8 +513,8 @@
 
 - (void)collapseInterfaceAnimated:(BOOL)animated
 {
-    self.dragHandle.image = nil;
-    
+    self.collapsed = YES;
+
     void (^centerBlock)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
@@ -520,7 +523,11 @@
     
     void (^opacityBlock)(void) = ^
     {
-        self.backgroundView.layer.shadowOpacity = 0.0;
+        if (animated)
+            [self.backgroundView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerCollapseExpandDuration];
+
+        else
+            self.backgroundView.layer.shadowOpacity = 0.0;
     };
     
     if (animated)
@@ -553,7 +560,7 @@
 
 - (void)expandInterfaceAnimated:(BOOL)animated
 {
-    self.dragHandle.image = [UIImage imageNamed:@"grabber.png"];
+    self.collapsed = NO;
     
     void (^centerBlock)(void) = ^
     {
@@ -563,7 +570,11 @@
     
     void (^opacityBlock)(void) = ^
     {
-        self.backgroundView.layer.shadowOpacity = 1.0;
+        if (animated)
+            [self.backgroundView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerCollapseExpandDuration];
+        
+        else
+            self.backgroundView.layer.shadowOpacity = 1.0;
     };
     
     if (animated)
