@@ -50,6 +50,8 @@
 
 #import "UIImage+Alpha.h"
 
+#import "BALabel.h"
+
 @interface MapBoxMainViewController ()
 
 - (void)offlineAlert;
@@ -126,6 +128,8 @@
 
     self.mapView.contents.zoom = kStartingZoom;
 
+    self.attributionLabel.verticalAlignment = BAVerticalAlignmentBottom;
+    
     // hide cluster button to start
     //
     [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", self.clusteringButton]] animated:NO];

@@ -22,3 +22,6 @@
 [submodule "Externals/tilemill"]
 	path = Externals/tilemill
 	url = git@github.com:mapbox/tilemill.git
+[submodule "Externals/BaseAppKit"]
+	path = Externals/BaseAppKit
+	url = https://github.com/dimzzy/BaseAppKit.git

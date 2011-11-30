@@ -22,6 +22,10 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+#define kDSMapBoxLegendManagerHideShowDuration       0.25f
+#define kDSMapBoxLegendManagerCollapseExpandDuration 0.25f
+#define kDSMapBoxLegendManagerPostInteractionDelay   2.0f
+
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
@@ -32,6 +36,10 @@
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
+- (void)showInterface;
+- (void)hideInterface;
+- (void)collapseInterfaceAnimated:(BOOL)animated;
+- (void)expandInterfaceAnimated:(BOOL)animated;
 
 @end
 
@@ -61,12 +69,20 @@
 
         dragHandle.layer.borderColor  = [[UIColor colorWithWhite:0.5 alpha:0.25] CGColor];
         dragHandle.layer.borderWidth  = 1.0;
-        dragHandle.layer.cornerRadius = 15.0;
 
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        
+        maskLayer.frame = dragHandle.bounds;
+        maskLayer.path  = [[UIBezierPath bezierPathWithRoundedRect:dragHandle.bounds
+                                                 byRoundingCorners:UIRectCornerTopRight | UIRectCornerBottomRight
+                                                       cornerRadii:CGSizeMake(15.0, 15.0)] CGPath];
+        
+        dragHandle.layer.mask = maskLayer;
+        
         label.layer.borderColor = [[UIColor blackColor] CGColor];
         label.layer.borderWidth = 1.0;
         
-        // make an L-shaped shadow on the edges of the main background
+        // make an L-shaped shadow on the (transparent) edges of the main background
         //
         UIGraphicsBeginImageContext(CGSizeMake(backgroundView.bounds.size.width, backgroundView.bounds.size.height));
         
@@ -139,14 +155,15 @@
         [self.dragHandle addGestureRecognizer:rightSwipe];
         rightSwipe.enabled = NO;
         
+        UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        tap.numberOfTapsRequired = 1;
+        [self.dragHandle addGestureRecognizer:tap];
+        tap.enabled = YES;
+        
+        // start collapsed if left that way
+        //
         if ([[NSUserDefaults standardUserDefaults] boolForKey:@"legendCollapsed"])
-        {
-            // hacky way to pass an argument to collapse routine to not animate
-            //
-            leftSwipe.numberOfTouchesRequired = 2;
-            [self handleGesture:leftSwipe];
-            leftSwipe.numberOfTouchesRequired = 1;
-        }
+            [self collapseInterfaceAnimated:NO];
     }
     
     return self;
@@ -238,9 +255,9 @@
                 
                 [webView loadHTMLString:legend baseURL:nil];
                 
-                webView.frame = CGRectMake([newLegendViews count] * self.scroller.frame.size.width, 
+                webView.frame = CGRectMake([newLegendViews count] * self.scroller.frame.size.width + 10, 
                                            0, 
-                                           webView.frame.size.width, 
+                                           webView.frame.size.width - 20, 
                                            webView.frame.size.height);
                 
                 webView.delegate = self;
@@ -253,7 +270,7 @@
                 webView.backgroundColor = [UIColor clearColor];
                 webView.opaque = NO;
                 
-                // add gesture for tap-to-toggle-label
+                // add gesture for tap-to-toggle mode
                 //
                 UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
                 
@@ -261,9 +278,6 @@
                 tap.delegate = self;
                 
                 [webView addGestureRecognizer:tap];
-                
-                if ( ! self.legendView.gestureRecognizers)
-                    [self.legendView addGestureRecognizer:tap];
                 
                 // remove scroller shadow
                 //
@@ -323,82 +337,225 @@
 {
     if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]])
     {
+        // handle swipe: expand/collapse interface
+        //
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)gesture;
         
         if (swipe.direction == UISwipeGestureRecognizerDirectionLeft)
         {
-            // left swipe in top or bottom to hide
-            //        
-            self.dragHandle.image = nil;
-
-            void (^centerBlock)(void) = ^
-            {
-                self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
-                                                     self.legendView.center.y);
-            };
-
-            void (^opacityBlock)(void) = ^
-            {
-                self.backgroundView.layer.shadowOpacity = 0.0;
-            };
-            
-            if (swipe.numberOfTouchesRequired == 2)
-            {
-                centerBlock();
-                opacityBlock();
-            }
-            else
-            {
-                [UIView animateWithDuration:0.25
-                                      delay:0.0
-                                    options:UIViewAnimationCurveEaseOut
-                                 animations:^(void)
-                                 {
-                                     centerBlock();
-                                 }
-                                 completion:^(BOOL finished)
-                                 {
-                                     opacityBlock();
-                                 }];
-            }
-            
-            [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self collapseInterfaceAnimated:YES];
         }
         else if (swipe.direction == UISwipeGestureRecognizerDirectionRight)
         {
-            // right swipe anywhere to show
-            //
-            self.backgroundView.layer.shadowOpacity = 1.0;
-            
-            self.dragHandle.image = [UIImage imageNamed:@"grabber.png"];
-
-            [UIView animateWithDuration:0.25
-                                  delay:0.0
-                                options:UIViewAnimationCurveEaseOut
-                             animations:^(void)
-                             {
-                                 self.legendView.center = CGPointMake(self.legendView.center.x + self.backgroundView.frame.size.width, 
-                                                                      self.legendView.center.y);
-                             }
-                             completion:nil];
-            
-            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"legendCollapsed"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
+            [self expandInterfaceAnimated:YES];
         }
         
+        // disable gesture that got us here
+        //
         [swipe.view.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
         
         swipe.enabled = NO;
     }
     else if ([gesture isKindOfClass:[UITapGestureRecognizer class]])
     {
-        // effectively show, then hide scroller
-        //
-        [self scrollViewDidScroll:self.scroller];
-
-        dispatch_delayed_ui_action(1.0, ^(void) { [self scrollViewDidEndDecelerating:self.scroller]; });
+        if ([gesture.view isEqual:self.dragHandle])
+        {
+            // handle tap: expand/collapse interface
+            //
+            if (self.dragHandle.image)
+                [self collapseInterfaceAnimated:YES];
+            
+            else
+                [self expandInterfaceAnimated:YES];
+        }
+        else
+        {
+            // legend tap: temporarily show interface
+            //
+            [self showInterface];
+            [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
+        }
     }
+}
+
+- (void)showInterface
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    // bring up management UI & move legends up
+    //
+    [UIView animateWithDuration:kDSMapBoxLegendManagerHideShowDuration
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^(void)
+                     {
+                         self.backgroundView.alpha = 1.0;
+                         self.label.alpha          = 1.0;
+                         self.pager.alpha          = 1.0;
+                         self.dragHandle.alpha     = 1.0;
+                         
+                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                                            self.legendView.superview.frame.size.height - 274, 
+                                                            self.legendView.frame.size.width, 
+                                                            274); // FIXME
+                         
+                         for (UIView *subview in self.scroller.subviews)
+                             subview.center = CGPointMake(subview.center.x, roundf(self.scroller.frame.size.height / 2));
+                     }
+                     completion:nil];
+    
+    // make sure we can page again
+    //
+    self.scroller.scrollEnabled = YES;
+    
+    // adjust shadows FIXME: animate these with CAAnimation
+    //
+    for (UIView *webView in self.scroller.subviews)
+        webView.layer.shadowOpacity = 0.0;
+    
+    backgroundView.layer.shadowOpacity = 1.0;
+}
+
+- (void)hideInterface
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
+    // determine which legend we are on
+    //
+    UIView *activeWebView = [self.scroller.subviews objectAtIndex:self.scroller.contentOffset.x / self.scroller.frame.size.width];
+    
+    // transition to minimal UI mode & move legends down 
+    //
+    [UIView animateWithDuration:kDSMapBoxLegendManagerHideShowDuration
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
+                     animations:^(void)
+                     {
+                         self.backgroundView.alpha = 0.0;
+                         self.label.alpha          = 0.0;
+                         self.pager.alpha          = 0.0;
+                         
+                         if (self.dragHandle.image)
+                             self.dragHandle.alpha = 0.0;
+                         
+                         CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height);
+                         
+                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                                            self.legendView.superview.frame.size.height - newOverallHeight, 
+                                                            self.legendView.frame.size.width, 
+                                                            newOverallHeight);
+                         
+                         activeWebView.center = CGPointMake(activeWebView.center.x, roundf(self.scroller.frame.size.height / 2));
+                     }
+                     completion:^(BOOL finished)
+                     {
+                         if (finished)
+                         {
+                             // disable paging between legends
+                             //
+                             self.scroller.scrollEnabled = NO;
+                             
+                             // re-add shadow to active legend
+                             //
+                             activeWebView.layer.shadowColor   = [[UIColor grayColor] CGColor];
+                             activeWebView.layer.shadowOffset  = CGSizeMake(0.0, 0.0);
+                             activeWebView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:activeWebView.bounds] CGPath];
+                             activeWebView.layer.shadowOpacity = 0.5;
+                         }
+                     }];
+    
+    // remove background shadow FIXME: animate with CAAnimation
+    //
+    backgroundView.layer.shadowOpacity = 0.0;
+    
+    // flash scrollers when possible as size hint
+    //
+    [((UIWebView *)activeWebView).scrollView flashScrollIndicators];
+}
+
+- (void)collapseInterfaceAnimated:(BOOL)animated
+{
+    self.dragHandle.image = nil;
+    
+    void (^centerBlock)(void) = ^
+    {
+        self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
+                                             self.legendView.center.y);
+    };
+    
+    void (^opacityBlock)(void) = ^
+    {
+        self.backgroundView.layer.shadowOpacity = 0.0;
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kDSMapBoxLegendManagerCollapseExpandDuration
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^(void)
+                         {
+                             centerBlock();
+                         }
+                         completion:^(BOOL finished)
+                         {
+                             opacityBlock();
+                         }];
+    }        
+    else
+    {
+        centerBlock();
+        opacityBlock();
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // make sure it goes away shown
+    //
+    [self showInterface];
+}
+
+- (void)expandInterfaceAnimated:(BOOL)animated
+{
+    self.dragHandle.image = [UIImage imageNamed:@"grabber.png"];
+    
+    void (^centerBlock)(void) = ^
+    {
+        self.legendView.center = CGPointMake(self.legendView.center.x + self.backgroundView.frame.size.width, 
+                                             self.legendView.center.y);
+    };
+    
+    void (^opacityBlock)(void) = ^
+    {
+        self.backgroundView.layer.shadowOpacity = 1.0;
+    };
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:kDSMapBoxLegendManagerCollapseExpandDuration
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseOut
+                         animations:^(void)
+                         {
+                             centerBlock();
+                             opacityBlock();
+                         }
+                         completion:nil];
+    }
+    else
+    {
+        centerBlock();
+        opacityBlock();
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"legendCollapsed"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    // show full interface, then hide it
+    //
+    [self showInterface];
+    [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
 }
 
 #pragma mark -
@@ -424,32 +581,18 @@
     // update label
     //
     self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
-
-    // show label & pager and hide drag handle
+    
+    // show interface
     //
-    self.label.alpha           = 1.0;
-    self.pager.alpha           = 1.0;
-    self.dragHandle.alpha      = 0.0;
+    [self showInterface];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // fade out label UI
+    // cancel show/hide requests & hide after a delay
     //
-    [UIView animateWithDuration:0.5
-                          delay:1.0
-                        options:UIViewAnimationCurveEaseInOut
-                     animations:^(void)
-                     {
-                         self.label.alpha           = 0.0;
-                         self.pager.alpha           = 0.0;
-                         self.dragHandle.alpha      = 1.0;
-                     }
-                     completion:nil];
-    
-    // flash scrollers when possible as size hint
-    //
-    [((UIWebView *)[scrollView.subviews objectAtIndex:scrollView.contentOffset.x / scrollView.frame.size.width]).scrollView flashScrollIndicators];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
 }
 
 #pragma mark -
@@ -485,24 +628,25 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    // size down if needed
+    // auto-size to content
     //
     CGFloat renderHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight;"] floatValue] + 2;
     
     if (renderHeight < webView.frame.size.height)
     {
         webView.frame  = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, renderHeight);
-        webView.center = CGPointMake(roundf(webView.center.x), roundf(webView.superview.frame.size.height / 2));
-        webView.scrollView.scrollEnabled = NO;
+        webView.center = CGPointMake(webView.center.x, roundf(webView.superview.frame.size.height / 2));
+
+        webView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
     }
     
-    // theme links
+    // theme link color
     //
     [webView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"links = document.getElementsByTagName('a'); \
                                                                                  for (i = 0; i < links.length; i++)          \
                                                                                      links[i].style.color = '#%@';", [kMapBoxBlue hexStringFromColor]]];
         
-    // fade in view
+    // fade in this loaded legend
     //
     [UIView animateWithDuration:0.25
                           delay:0.0
@@ -513,9 +657,10 @@
                      }
                      completion:nil];
     
-    // fade out label UI
+    // hide interface after a delay
     //
-    dispatch_delayed_ui_action(1.0, ^(void) { [self scrollViewDidEndDecelerating:self.scroller]; });
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
 }
 
 #pragma mark -

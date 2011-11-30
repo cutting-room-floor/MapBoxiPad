@@ -167,6 +167,7 @@
 		DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
+		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; };
 		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
 		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
 		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
@@ -179,7 +180,6 @@
 		DDBA88E71210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA88E51210E77F00E5B572 /* DSMapBoxDocumentLoadController.xib */; };
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
-		DDBB9831146CB88000A6C8D7 /* mapbox_relief.png in Resources */ = {isa = PBXBuildFile; fileRef = DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
@@ -510,6 +510,8 @@
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
 		DDACBCA0141FC6F4002704B7 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = "Externals/TestFlight SDK/TestFlight.h"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
+		DDB0FCA51485CD70003A4FD3 /* BALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BALabel.h; path = Externals/BaseAppKit/BALabel.h; sourceTree = "<group>"; };
+		DDB0FCA61485CD70003A4FD3 /* BALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BALabel.m; path = Externals/BaseAppKit/BALabel.m; sourceTree = "<group>"; };
 		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
 		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
 		DDB23A7D13BE86970090FEC6 /* plus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_button.png; sourceTree = SOURCE_ROOT; };
@@ -529,7 +531,6 @@
 		DDBA89861210EF4600E5B572 /* DSMapBoxDocumentSaveController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDocumentSaveController.h; sourceTree = "<group>"; };
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
-		DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_relief.png; path = ../mapbox_relief.png; sourceTree = "<group>"; };
 		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
 		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
@@ -1020,6 +1021,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1ACD0713CD1735001244D2 /* ASIHTTPRequest */,
+				DDB0FCA41485CD60003A4FD3 /* BaseAppKit */,
 				DD436528147C838400235F20 /* DirectoryWatcher */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
@@ -1235,7 +1237,6 @@
 				DD72C76211E6847C0030C637 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
 				DDAB24DD146C770600C14467 /* grabber.png */,
-				DDBB9830146CB88000A6C8D7 /* mapbox_relief.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1263,6 +1264,15 @@
 				DDACBC9F141FC6F4002704B7 /* libTestFlight.a */,
 			);
 			name = "TestFlight SDK";
+			sourceTree = "<group>";
+		};
+		DDB0FCA41485CD60003A4FD3 /* BaseAppKit */ = {
+			isa = PBXGroup;
+			children = (
+				DDB0FCA51485CD70003A4FD3 /* BALabel.h */,
+				DDB0FCA61485CD70003A4FD3 /* BALabel.m */,
+			);
+			name = BaseAppKit;
 			sourceTree = "<group>";
 		};
 		DDBA88E21210E71000E5B572 /* Document Management */ = {
@@ -1517,7 +1527,6 @@
 				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
 				DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */,
 				DDAB24DE146C770600C14467 /* grabber.png in Resources */,
-				DDBB9831146CB88000A6C8D7 /* mapbox_relief.png in Resources */,
 				DD4364DE147C3DAF00235F20 /* controls.css in Resources */,
 				DD4364DF147C3DAF00235F20 /* reset.css in Resources */,
 				DD680D56147DB66600BF32F2 /* white_clear.png in Resources */,
@@ -1677,6 +1686,7 @@
 				DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */,
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
+				DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

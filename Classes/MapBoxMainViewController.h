@@ -13,6 +13,7 @@
 #import <MessageUI/MessageUI.h>
 
 @class DSMapView;
+@class BALabel;
 
 @interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
                                                         DSMapBoxDocumentLoadControllerDelegate, 
@@ -22,7 +23,7 @@
                                                         DSMapBoxLayerControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet DSMapView *mapView;
-@property (nonatomic, retain) IBOutlet UILabel *attributionLabel;
+@property (nonatomic, retain) IBOutlet BALabel *attributionLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *clusteringButton;
