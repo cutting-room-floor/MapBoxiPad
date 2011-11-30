@@ -26,6 +26,33 @@
 #define kDSMapBoxLegendManagerCollapseExpandDuration 0.25f
 #define kDSMapBoxLegendManagerPostInteractionDelay   2.0f
 
+@interface CALayer (DSMapBoxLegendManager)
+
+- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration;
+
+@end
+
+@implementation CALayer (DSMapBoxLegendManager)
+
+- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration
+{
+    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+    
+    [shadowOpacityAnimation setDuration:duration];
+    [shadowOpacityAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [shadowOpacityAnimation setRemovedOnCompletion:NO];
+    [shadowOpacityAnimation setFromValue:[NSNumber numberWithFloat:self.shadowOpacity]];
+    [shadowOpacityAnimation setToValue:[NSNumber numberWithFloat:opacity]];
+    
+    [self addAnimation:shadowOpacityAnimation forKey:@"animateShadowOpacity"];
+    
+    self.shadowOpacity = opacity;
+}
+
+@end
+
+#pragma mark -
+
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
@@ -34,6 +61,7 @@
 @property (nonatomic, retain) IBOutlet UIScrollView *scroller;
 @property (nonatomic, retain) IBOutlet StyledPageControl *pager;
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
+@property (nonatomic, assign) CGFloat initialHeight;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
 - (void)showInterface;
@@ -54,6 +82,7 @@
 @synthesize scroller;
 @synthesize pager;
 @synthesize dragHandle;
+@synthesize initialHeight;
 
 - (id)initWithView:(UIView *)view
 {
@@ -67,6 +96,8 @@
         //
         [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxLegendView" owner:self options:nil];
 
+        initialHeight = legendView.frame.size.height;
+        
         dragHandle.layer.borderColor  = [[UIColor colorWithWhite:0.5 alpha:0.25] CGColor];
         dragHandle.layer.borderWidth  = 1.0;
 
@@ -270,6 +301,12 @@
                 webView.backgroundColor = [UIColor clearColor];
                 webView.opaque = NO;
                 
+                webView.layer.shadowColor   = [[UIColor grayColor] CGColor];
+                webView.layer.shadowOffset  = CGSizeMake(-1.0, 1.0);
+                webView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
+                webView.layer.shadowRadius  = 5.0;
+                webView.layer.shadowOpacity = 0.0;
+                
                 // add gesture for tap-to-toggle mode
                 //
                 UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
@@ -395,25 +432,26 @@
                          self.dragHandle.alpha     = 1.0;
                          
                          self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.superview.frame.size.height - 274, 
+                                                            self.legendView.superview.frame.size.height - self.initialHeight, 
                                                             self.legendView.frame.size.width, 
-                                                            274); // FIXME
+                                                            self.initialHeight);
                          
                          for (UIView *subview in self.scroller.subviews)
                              subview.center = CGPointMake(subview.center.x, roundf(self.scroller.frame.size.height / 2));
                      }
                      completion:nil];
+
+    
+    // adjust layer shadows
+    //
+    for (UIView *webView in self.scroller.subviews)
+        [webView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
+
+    [backgroundView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
     
     // make sure we can page again
     //
     self.scroller.scrollEnabled = YES;
-    
-    // adjust shadows FIXME: animate these with CAAnimation
-    //
-    for (UIView *webView in self.scroller.subviews)
-        webView.layer.shadowOpacity = 0.0;
-    
-    backgroundView.layer.shadowOpacity = 1.0;
 }
 
 - (void)hideInterface
@@ -438,7 +476,7 @@
                          if (self.dragHandle.image)
                              self.dragHandle.alpha = 0.0;
                          
-                         CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height);
+                         CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height) + 10;
                          
                          self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
                                                             self.legendView.superview.frame.size.height - newOverallHeight, 
@@ -454,19 +492,16 @@
                              // disable paging between legends
                              //
                              self.scroller.scrollEnabled = NO;
-                             
-                             // re-add shadow to active legend
-                             //
-                             activeWebView.layer.shadowColor   = [[UIColor grayColor] CGColor];
-                             activeWebView.layer.shadowOffset  = CGSizeMake(0.0, 0.0);
-                             activeWebView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:activeWebView.bounds] CGPath];
-                             activeWebView.layer.shadowOpacity = 0.5;
                          }
                      }];
     
-    // remove background shadow FIXME: animate with CAAnimation
+    // re-add shadow to active legend
     //
-    backgroundView.layer.shadowOpacity = 0.0;
+    [activeWebView.layer animateShadowOpacityTo:0.5 withDuration:kDSMapBoxLegendManagerHideShowDuration];
+
+    // remove background shadow
+    //
+    [backgroundView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
     
     // flash scrollers when possible as size hint
     //
