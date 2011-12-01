@@ -4,6 +4,8 @@ Libraries used under license:
 
  * ASIHTTPRequest, (c) 2007-2011 All-Seeing Interactive https://github.com/pokeb/asi-http-request
 
+ * BaseAppKit, (c) 2011 Dmitry Stadnik https://github.com/dimzzy/BaseAppKit
+
  * DirectoryWatcher, (c) 2011 Apple Inc. http://developer.apple.com/library/ios/#samplecode/AVPlayerDemo
 
  * Fingertips, (c) 2011 Development Seed, Inc. https://github.com/developmentseed/fingertips
