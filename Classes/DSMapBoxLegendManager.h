@@ -6,6 +6,10 @@
 //  Copyright (c) 2011 Development Seed. All rights reserved.
 //
 
+#define kDSMapBoxLegendManagerHideShowDuration       0.25f
+#define kDSMapBoxLegendManagerCollapseExpandDuration 0.25f
+#define kDSMapBoxLegendManagerPostInteractionDelay   2.0f
+
 @interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) NSArray *legendSources;

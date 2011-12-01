@@ -61,7 +61,7 @@
 					<object class="IBUIImageView" id="954110628">
 						<reference key="NSNextResponder" ref="766721923"/>
 						<int key="NSvFlags">268</int>
-						<string key="NSFrame">{{11, 715}, {80, 22}}</string>
+						<string key="NSFrame">{{6, 720}, {80, 22}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="685814082"/>
@@ -244,6 +244,14 @@
 						<reference key="destination" ref="685814082"/>
 					</object>
 					<int key="connectionID">73</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">watermarkImage</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="954110628"/>
+					</object>
+					<int key="connectionID">87</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -443,7 +451,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">86</int>
+			<int key="maxID">87</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -529,6 +537,7 @@
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
+							<string>watermarkImage</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -537,6 +546,7 @@
 							<string>UIBarButtonItem</string>
 							<string>DSMapView</string>
 							<string>UIToolbar</string>
+							<string>UIImageView</string>
 						</object>
 					</object>
 					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
@@ -548,6 +558,7 @@
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
+							<string>watermarkImage</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
@@ -570,6 +581,10 @@
 							<object class="IBToOneOutletInfo">
 								<string key="name">toolbar</string>
 								<string key="candidateClassName">UIToolbar</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">watermarkImage</string>
+								<string key="candidateClassName">UIImageView</string>
 							</object>
 						</object>
 					</object>

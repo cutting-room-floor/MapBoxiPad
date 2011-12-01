@@ -23,6 +23,7 @@
                                                         DSMapBoxLayerControllerDelegate>
 
 @property (nonatomic, retain) IBOutlet DSMapView *mapView;
+@property (nonatomic, retain) IBOutlet UIImageView *watermarkImage;
 @property (nonatomic, retain) IBOutlet BALabel *attributionLabel;
 @property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;

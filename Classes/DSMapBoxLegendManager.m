@@ -22,10 +22,6 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-#define kDSMapBoxLegendManagerHideShowDuration       0.25f
-#define kDSMapBoxLegendManagerCollapseExpandDuration 0.25f
-#define kDSMapBoxLegendManagerPostInteractionDelay   2.0f
-
 @interface CALayer (DSMapBoxLegendManager)
 
 - (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration;
