@@ -217,6 +217,8 @@
 {
     if ( ! [legendSources isEqualToArray:_legendSources])
     {
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        
         // swap out new sources
         //
         [_legendSources release];
@@ -432,7 +434,7 @@
                          self.dragHandle.alpha     = 1.0;
                          
                          self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.superview.frame.size.height - self.initialHeight, 
+                                                            self.legendView.frame.origin.y - (self.initialHeight - self.legendView.frame.size.height),
                                                             self.legendView.frame.size.width, 
                                                             self.initialHeight);
                          
@@ -480,7 +482,7 @@
                          CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height) + 10;
                          
                          self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.superview.frame.size.height - newOverallHeight, 
+                                                            self.legendView.frame.origin.y + (self.legendView.frame.size.height - newOverallHeight),
                                                             self.legendView.frame.size.width, 
                                                             newOverallHeight);
                          
@@ -699,7 +701,7 @@
     if (renderHeight < webView.frame.size.height)
     {
         webView.frame  = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, renderHeight);
-        webView.center = CGPointMake(webView.center.x, roundf(webView.superview.frame.size.height / 2));
+        webView.center = CGPointMake(webView.center.x, roundf(self.scroller.frame.size.height / 2));
 
         webView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
     }
