@@ -293,8 +293,10 @@
                 
                 webView.scrollView.alwaysBounceVertical   = YES;
                 webView.scrollView.alwaysBounceHorizontal = NO;
-                
+
                 webView.scrollView.directionalLockEnabled = YES;
+                
+                webView.scrollView.delegate = self;
                 
                 webView.backgroundColor = [UIColor clearColor];
                 webView.opaque = NO;
@@ -604,37 +606,57 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // update pager
-    //
-    self.pager.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
-    
-    // get active legends
-    //
-    NSMutableArray *activeLegendSources = [NSMutableArray array];
-    
-    for (id <RMTileSource>source in self.legendSources)
-        if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
-            [activeLegendSources addObject:source];
-    
-    // reverse as in legend stacking order
-    //
-    [activeLegendSources setArray:[[activeLegendSources reverseObjectEnumerator] allObjects]];
+    if ([scrollView isEqual:self.scroller])
+    {
+        // paging scroller - handle paging
+        //
+        self.pager.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
+        
+        // get active legends
+        //
+        NSMutableArray *activeLegendSources = [NSMutableArray array];
+        
+        for (id <RMTileSource>source in self.legendSources)
+            if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
+                [activeLegendSources addObject:source];
+        
+        // reverse as in legend stacking order
+        //
+        [activeLegendSources setArray:[[activeLegendSources reverseObjectEnumerator] allObjects]];
 
-    // update label
-    //
-    self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
-    
-    // show interface
-    //
-    [self showInterface];
+        // update label
+        //
+        self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
+        
+        // show interface
+        //
+        [self showInterface];
+    }
+    else
+    {
+        // individual webview scroller - if in hidden mode, hide visible webview shadow
+        //
+        if (self.backgroundView.alpha < 1.0)
+            [scrollView.superview.layer animateShadowOpacityTo:0.0 withDuration:0.25];
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // cancel show/hide requests & hide after a delay
-    //
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
+    if ([scrollView isEqual:self.scroller])
+    {
+        // paging scroller - cancel show/hide requests & hide after a delay
+        //
+        [NSObject cancelPreviousPerformRequestsWithTarget:self];
+        [self performSelector:@selector(hideInterface) withObject:nil afterDelay:kDSMapBoxLegendManagerPostInteractionDelay];
+    }
+    else
+    {
+        // individual webview scroller - bring webview shadow back
+        //
+        if (self.backgroundView.alpha < 1.0)
+            [scrollView.superview.layer animateShadowOpacityTo:0.5 withDuration:0.25];
+    }
 }
 
 #pragma mark -
