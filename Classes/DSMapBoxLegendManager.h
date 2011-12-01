@@ -10,7 +10,10 @@
 #define kDSMapBoxLegendManagerCollapseExpandDuration 0.25f
 #define kDSMapBoxLegendManagerPostInteractionDelay   2.0f
 
-@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate, UIGestureRecognizerDelegate>
+@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, 
+                                             UIWebViewDelegate, 
+                                             UIAlertViewDelegate, 
+                                             UIGestureRecognizerDelegate>
 
 @property (nonatomic, retain) NSArray *legendSources;
 

@@ -96,9 +96,6 @@
 
         initialHeight = legendView.frame.size.height;
         
-        dragHandle.layer.borderColor  = [[UIColor colorWithWhite:0.5 alpha:0.25] CGColor];
-        dragHandle.layer.borderWidth  = 1.0;
-
         CAShapeLayer *maskLayer = [CAShapeLayer layer];
         
         maskLayer.frame = dragHandle.bounds;
