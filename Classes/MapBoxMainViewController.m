@@ -177,16 +177,6 @@
                                                  name:DSMapBoxLayersAdded
                                                object:nil];
     
-    // watch for legend changes
-    //
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"legendCollapsed"] == NO)
-        self.watermarkImage.hidden = YES;
-    
-    [[NSUserDefaults standardUserDefaults] addObserver:self 
-                                            forKeyPath:@"legendCollapsed"
-                                               options:NSKeyValueObservingOptionNew
-                                               context:nil];
-    
     // restore app state
     //
     [self restoreState:self];
@@ -293,8 +283,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded              object:nil];
-    
-    [[NSUserDefaults standardUserDefaults] removeObserver:self forKeyPath:@"legendCollapsed"];
     
     [reachability stopNotifier];
     [reachability release];
@@ -1096,28 +1084,6 @@
                 [TESTFLIGHT passCheckpoint:@"prompted to import clipboard URL"];
             }
         }
-    }
-}
-
-#pragma mark -
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"legendCollapsed"])
-    {
-        CGFloat newOriginX = self.watermarkImage.frame.origin.x + self.watermarkImage.frame.size.width * (self.watermarkImage.frame.origin.x < 0.0 ? 2 : -2);
-
-        [UIView animateWithDuration:kDSMapBoxLegendManagerCollapseExpandDuration
-                              delay:kDSMapBoxLegendManagerCollapseExpandDuration / 2
-                            options:UIViewAnimationCurveEaseInOut
-                         animations:^(void)
-                         {
-                             self.watermarkImage.frame = CGRectMake(newOriginX, 
-                                                                    self.watermarkImage.frame.origin.y, 
-                                                                    self.watermarkImage.frame.size.width, 
-                                                                    self.watermarkImage.frame.size.height);
-                         }
-                         completion:nil];
     }
 }
 

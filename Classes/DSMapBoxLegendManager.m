@@ -16,8 +16,6 @@
 
 #import "UIApplication_Additions.h"
 
-#import "StyledPageControl.h"
-
 #import "UIColor-Expanded.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -52,12 +50,8 @@
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
-@property (nonatomic, retain) IBOutlet UIView *backgroundView;
-@property (nonatomic, retain) IBOutlet UILabel *label;
-@property (nonatomic, retain) IBOutlet UIScrollView *scroller;
-@property (nonatomic, retain) IBOutlet StyledPageControl *pager;
+@property (nonatomic, retain) IBOutlet UIWebView *contentWebView;
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
-@property (nonatomic, assign) CGFloat initialHeight;
 @property (nonatomic, assign) BOOL collapsed;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
@@ -74,12 +68,8 @@
 
 @synthesize legendSources=_legendSources;
 @synthesize legendView;
-@synthesize backgroundView;
-@synthesize label;
-@synthesize scroller;
-@synthesize pager;
+@synthesize contentWebView;
 @synthesize dragHandle;
-@synthesize initialHeight;
 @synthesize collapsed;
 
 - (id)initWithView:(UIView *)view
@@ -94,8 +84,6 @@
         //
         [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxLegendView" owner:self options:nil];
 
-        initialHeight = legendView.frame.size.height;
-        
         CAShapeLayer *maskLayer = [CAShapeLayer layer];
         
         maskLayer.frame = dragHandle.bounds;
@@ -104,66 +92,13 @@
                                                        cornerRadii:CGSizeMake(15.0, 15.0)] CGPath];
         
         dragHandle.layer.mask = maskLayer;
-        
-        label.layer.borderColor = [[UIColor blackColor] CGColor];
-        label.layer.borderWidth = 1.0;
-        
-        // make an L-shaped shadow on the (transparent) edges of the main background
-        //
-        UIGraphicsBeginImageContext(CGSizeMake(backgroundView.bounds.size.width, backgroundView.bounds.size.height));
-        
-        CGContextRef c = UIGraphicsGetCurrentContext();
-        
-        CGContextMoveToPoint(c, 0, 0);
-        CGContextAddLineToPoint(c, backgroundView.bounds.size.width, 0);
-        CGContextAddLineToPoint(c, backgroundView.bounds.size.width, backgroundView.bounds.size.height);
-        CGContextAddLineToPoint(c, backgroundView.bounds.size.width - 5, backgroundView.bounds.size.height);
-        CGContextAddLineToPoint(c, backgroundView.bounds.size.width - 5, 5);
-        CGContextAddLineToPoint(c, 0, 5);
-        CGContextClosePath(c);
-        
-        CGPathRef shadowPath = CGContextCopyPath(c);
-        
-        UIGraphicsEndImageContext();
-        
-        backgroundView.layer.shadowPath    = shadowPath;
-        backgroundView.layer.shadowColor   = [[UIColor blackColor] CGColor];
-        backgroundView.layer.shadowOpacity = 1.0;
-        backgroundView.layer.shadowRadius  = 10.0;
-        backgroundView.layer.shadowOffset  = CGSizeMake(3.0, -3.0);
-        
-        // swap in programmatic pager for unloadable XIB one
-        //
-        StyledPageControl *newPager = [[[StyledPageControl alloc] initWithFrame:pager.frame] autorelease];
 
-        [pager removeFromSuperview];
-        [legendView addSubview:newPager];
-        
-        [pager release];
-        pager = [newPager retain];
-        
-        pager.hidesForSinglePage = YES;
-        
-        pager.backgroundColor = label.backgroundColor;
-        
-        pager.pageControlStyle = PageControlStyleDefault;
-
-        pager.diameter = 10.0;
-        
-        pager.coreNormalColor   = [UIColor colorWithWhite:0.5 alpha:0.5];
-        pager.coreSelectedColor = [UIColor colorWithWhite:0.0 alpha:0.5];
-        
-        pager.gestureRecognizers = nil;
-        
-        pager.layer.borderColor = [[UIColor blackColor] CGColor];
-        pager.layer.borderWidth = 1.0;
-        
         // start with legend in lower-left, hidden by default
         //
-        legendView.frame = CGRectMake(view.frame.origin.x, 
-                                      view.frame.size.height - legendView.frame.size.height, 
-                                      legendView.frame.size.width, 
-                                      legendView.frame.size.height);
+        legendView.frame = CGRectMake(view.frame.origin.x + 5, 
+                                      44 + 5, //view.frame.size.height - 500, //legendView.frame.size.height, 
+                                      500, //legendView.frame.size.width, 
+                                      view.frame.size.height - 5); //500); //legendView.frame.size.height);
         
         [view addSubview:legendView];
         
@@ -173,23 +108,30 @@
         //
         UISwipeGestureRecognizer *leftSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.dragHandle addGestureRecognizer:leftSwipe];
-        leftSwipe.enabled = YES;
+//        [self.dragHandle addGestureRecognizer:leftSwipe];
+//        leftSwipe.enabled = YES;
         
         UISwipeGestureRecognizer *rightSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.dragHandle addGestureRecognizer:rightSwipe];
-        rightSwipe.enabled = NO;
+//        rightSwipe.enabled = NO;
         
         UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         tap.numberOfTapsRequired = 1;
         [self.dragHandle addGestureRecognizer:tap];
         tap.enabled = YES;
         
+        
+        
+        [contentWebView addGestureRecognizer:leftSwipe];
+//        [contentWebView addGestureRecognizer:rightSwipe];
+        
+        
+        
         // start collapsed if left that way
         //
-        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"legendCollapsed"])
-            [self collapseInterfaceAnimated:NO];
+//        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"legendCollapsed"])
+//            [self collapseInterfaceAnimated:NO];
     }
     
     return self;
@@ -199,10 +141,7 @@
 {
     [_legendSources release];
     [legendView release];
-    [backgroundView release];
-    [label release];
-    [scroller release];
-    [pager release];
+    [contentWebView release];
     [dragHandle release];
     
     [super dealloc];
@@ -221,7 +160,7 @@
         [_legendSources release];
         _legendSources = [legendSources retain];
         
-        // get TileMill CSS once for repeated use
+        // get TileMill CSS
         //
         NSString *controls = [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"controls" ofType:@"css"]
                                                        encoding:NSUTF8StringEncoding
@@ -237,17 +176,7 @@
         
         for (id <RMTileSource>source in _legendSources)
             if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
-                [legends addObject:[NSString stringWithFormat:@"<body style='background-color: transparent;'> \
-                                                                <div id='wax-legend' \
-                                                                  class='wax-legend' \
-                                                                  style='background-color: white;'> \
-                                                                    %@ \
-                                                                </div> \
-                                                                <style type='text/css'> \
-                                                                    %@ \
-                                                                    %@ \
-                                                                </style> \
-                                                                </body>", [source performSelector:@selector(legend)], controls, reset]];
+                [legends addObject:[source performSelector:@selector(legend)]];
 
         if ([legends count])
         {
@@ -255,11 +184,46 @@
             //
             [legends setArray:[[legends reverseObjectEnumerator] allObjects]];
             
+            // concatenate all legends together
+            //
+            NSString *legendContent = [NSString stringWithFormat:@"<body style='background-color: transparent;'> \
+                                                                   <div id='wax-legend' \
+                                                                     class='wax-legend' \
+                                                                     style='background-color: white;'> \
+                                                                       %@ \
+                                                                   </div> \
+                                                                   <style type='text/css'> \
+                                                                       %@ \
+                                                                       %@ \
+                                                                       .wax-legend { \
+                                                                         max-height: 1200px; \
+                                                                       } \
+                                                                   </style> \
+                                                                   </body>", [legends componentsJoinedByString:@""], controls, reset];
+            
             // show UI if needed
             //
             self.legendView.hidden = NO;
             
-            [self.legendView.superview bringSubviewToFront:self.legendView];
+            for (UIView *parentSubview in self.legendView.superview.subviews)
+            {
+                if ([parentSubview isKindOfClass:[UIToolbar class]])
+                {
+                    UIView *superview = self.legendView.superview;
+                    
+                    [self.legendView removeFromSuperview];
+                    
+                    [superview insertSubview:self.legendView belowSubview:parentSubview];
+
+                    break;
+                }
+            }
+            
+            
+//            [self.legendView.superview bringSubviewToFront:self.legendView];
+            
+            
+            
             
             if (self.legendView.alpha < 1.0)
             {
@@ -270,41 +234,48 @@
                                  {
                                      self.legendView.alpha = 1.0;
                                  }
-                                 completion:nil];
+                                 completion:NULL];
             }
+            
+            
+            
             
             // iterate legends, making web views
             //
-            NSMutableArray *newLegendViews = [NSMutableArray array];
+//            NSMutableArray *newLegendViews = [NSMutableArray array];
+//            
+//            for (NSString *legend in legends)
+//            {
+//                UIWebView *webView = [[[UIWebView alloc] initWithFrame:self.scroller.frame] autorelease];
+                
+//            self.legendView.frame = CGRectMake(0, contentWebView.superview.frame.size.height - 1, 1, 1);
             
-            for (NSString *legend in legends)
-            {
-                UIWebView *webView = [[[UIWebView alloc] initWithFrame:self.scroller.frame] autorelease];
+            
+                [contentWebView loadHTMLString:legendContent baseURL:nil];
                 
-                [webView loadHTMLString:legend baseURL:nil];
+//                webView.frame = CGRectMake([newLegendViews count] * self.scroller.frame.size.width + 10, 
+//                                           0, 
+//                                           webView.frame.size.width - 20, 
+//                                           webView.frame.size.height);
                 
-                webView.frame = CGRectMake([newLegendViews count] * self.scroller.frame.size.width + 10, 
-                                           0, 
-                                           webView.frame.size.width - 20, 
-                                           webView.frame.size.height);
+//                webView.delegate = self;
                 
-                webView.delegate = self;
-                
-                webView.scrollView.alwaysBounceVertical   = YES;
-                webView.scrollView.alwaysBounceHorizontal = NO;
+            contentWebView.scrollView.bounces = YES;
+            contentWebView.scrollView.alwaysBounceVertical   = YES;
+            contentWebView.scrollView.alwaysBounceHorizontal = NO;
 
-                webView.scrollView.directionalLockEnabled = YES;
+//                webView.scrollView.directionalLockEnabled = YES;
                 
-                webView.scrollView.delegate = self;
+                contentWebView.scrollView.delegate = self;
                 
-                webView.backgroundColor = [UIColor clearColor];
-                webView.opaque = NO;
+            contentWebView.backgroundColor = [UIColor clearColor]; //[UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.5];
+                contentWebView.opaque = NO;
                 
-                webView.layer.shadowColor   = [[UIColor grayColor] CGColor];
-                webView.layer.shadowOffset  = CGSizeMake(-1.0, 1.0);
-                webView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
-                webView.layer.shadowRadius  = 5.0;
-                webView.layer.shadowOpacity = 0.0;
+//                contentWebView.layer.shadowColor   = [[UIColor grayColor] CGColor];
+//                contentWebView.layer.shadowOffset  = CGSizeMake(-1.0, 1.0);
+//                contentWebView.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
+//                contentWebView.layer.shadowRadius  = 5.0;
+//                contentWebView.layer.shadowOpacity = 0.0;
                 
                 // add gesture for tap-to-toggle mode
                 //
@@ -313,40 +284,36 @@
                 tap.numberOfTapsRequired = 1;
                 tap.delegate = self;
                 
-                [webView addGestureRecognizer:tap];
+                [contentWebView addGestureRecognizer:tap];
                 
                 // remove scroller shadow
                 //
-                for (UIView *shadowView in webView.scrollView.subviews)
+                for (UIView *shadowView in contentWebView.scrollView.subviews)
                     if ([shadowView isKindOfClass:[UIImageView class]])
                         [shadowView setHidden:YES];
 
-                [newLegendViews addObject:webView];
+//                [newLegendViews addObject:webView];
                 
                 // hide until loaded
                 //
-                webView.alpha = 0.0;                
-            }
+                contentWebView.alpha = 0.0;                
+//            }
             
             // replace in view hierarchy
             //
-            [self.scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
-            for (UIWebView *webView in newLegendViews)
-                [self.scroller addSubview:webView];
+//            [self.scroller.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//
+//            for (UIWebView *webView in newLegendViews)
+//                [self.scroller addSubview:webView];
 
             // update scroller & pager
             //
-            self.scroller.contentSize = CGSizeMake([self.scroller.subviews count] * self.scroller.frame.size.width, 
-                                                   self.scroller.frame.size.height);
-            
-            [self.scroller scrollRectToVisible:CGRectMake(0, 0, 0, 0) animated:NO];
-            
-            self.pager.numberOfPages = [self.scroller.subviews count];
-            
-            self.pager.currentPage = 0;
-            
-            [self scrollViewDidScroll:self.scroller];
+//            self.scroller.contentSize = CGSizeMake([self.scroller.subviews count] * self.scroller.frame.size.width, 
+//                                                   self.scroller.frame.size.height);
+//            
+//            [self.scroller scrollRectToVisible:CGRectMake(0, 0, 0, 0) animated:NO];
+//            
+//            [self scrollViewDidScroll:self.scroller];
         }
         else
         {
@@ -388,9 +355,9 @@
         
         // disable gesture that got us here
         //
-        [swipe.view.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
-        
-        swipe.enabled = NO;
+//        [swipe.view.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
+//        
+//        swipe.enabled = NO;
     }
     else if ([gesture isKindOfClass:[UITapGestureRecognizer class]])
     {
@@ -425,32 +392,29 @@
                         options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                      animations:^(void)
                      {
-                         self.backgroundView.alpha = 1.0;
-                         self.label.alpha          = 1.0;
-                         self.pager.alpha          = 1.0;
-                         self.dragHandle.alpha     = 1.0;
+//                         self.contentWebView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:1.0 alpha:0.5];
+
+                         self.dragHandle.alpha = 1.0;
                          
-                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.frame.origin.y - (self.initialHeight - self.legendView.frame.size.height),
-                                                            self.legendView.frame.size.width, 
-                                                            self.initialHeight);
-                         
-                         for (UIView *subview in self.scroller.subviews)
-                             subview.center = CGPointMake(subview.center.x, roundf(self.scroller.frame.size.height / 2));
+//                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+//                                                            self.legendView.frame.origin.y - (self.initialHeight - self.legendView.frame.size.height),
+//                                                            self.legendView.frame.size.width, 
+//                                                            self.initialHeight);
+//                         
+//                         for (UIView *subview in self.scroller.subviews)
+//                             subview.center = CGPointMake(subview.center.x, roundf(self.scroller.frame.size.height / 2));
                      }
-                     completion:nil];
+                     completion:NULL];
 
     
     // adjust layer shadows
     //
-    for (UIView *webView in self.scroller.subviews)
-        [webView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
+//    for (UIView *webView in self.scroller.subviews)
+//        [webView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
 
-    [backgroundView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
-    
     // make sure we can page again
     //
-    self.scroller.scrollEnabled = YES;
+//    self.scroller.scrollEnabled = YES;
 }
 
 - (void)hideInterface
@@ -462,7 +426,7 @@
     
     // determine which legend we are on
     //
-    UIView *activeWebView = [self.scroller.subviews objectAtIndex:self.scroller.contentOffset.x / self.scroller.frame.size.width];
+//    UIView *activeWebView = [self.scroller.subviews objectAtIndex:self.scroller.contentOffset.x / self.scroller.frame.size.width];
     
     // transition to minimal UI mode & move legends down 
     //
@@ -471,19 +435,18 @@
                         options:UIViewAnimationCurveEaseInOut | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationOptionBeginFromCurrentState
                      animations:^(void)
                      {
-                         self.backgroundView.alpha = 0.0;
-                         self.label.alpha          = 0.0;
-                         self.pager.alpha          = 0.0;
-                         self.dragHandle.alpha     = 0.0;
+//                         self.contentWebView.backgroundColor = [UIColor colorWithWhite:1.0 alpha:0.2];
+
+                         self.dragHandle.alpha = 0.0;
                          
-                         CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height) + 10;
-                         
-                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.frame.origin.y + (self.legendView.frame.size.height - newOverallHeight),
-                                                            self.legendView.frame.size.width, 
-                                                            newOverallHeight);
-                         
-                         activeWebView.center = CGPointMake(activeWebView.center.x, roundf(self.scroller.frame.size.height / 2));
+//                         CGFloat newOverallHeight = activeWebView.frame.size.height + (self.legendView.frame.size.height - self.scroller.frame.size.height) + 10;
+//                         
+//                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+//                                                            self.legendView.frame.origin.y + (self.legendView.frame.size.height - newOverallHeight),
+//                                                            self.legendView.frame.size.width, 
+//                                                            newOverallHeight);
+//                         
+//                         activeWebView.center = CGPointMake(activeWebView.center.x, roundf(self.scroller.frame.size.height / 2));
                      }
                      completion:^(BOOL finished)
                      {
@@ -491,40 +454,30 @@
                          {
                              // disable paging between legends
                              //
-                             self.scroller.scrollEnabled = NO;
+//                             self.scroller.scrollEnabled = NO;
                          }
                      }];
     
     // re-add shadow to active legend
     //
-    [activeWebView.layer animateShadowOpacityTo:0.5 withDuration:kDSMapBoxLegendManagerHideShowDuration];
+//    [activeWebView.layer animateShadowOpacityTo:0.5 withDuration:kDSMapBoxLegendManagerHideShowDuration];
 
-    // remove background shadow
-    //
-    [backgroundView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerHideShowDuration];
-    
     // flash scrollers when possible as size hint
     //
-    [((UIWebView *)activeWebView).scrollView flashScrollIndicators];
+//    [((UIWebView *)activeWebView).scrollView flashScrollIndicators];
 }
 
 - (void)collapseInterfaceAnimated:(BOOL)animated
 {
     self.collapsed = YES;
 
+    self.dragHandle.hidden = NO;
+    
+    
     void (^centerBlock)(void) = ^
     {
-        self.legendView.center = CGPointMake(self.legendView.center.x - self.backgroundView.frame.size.width, 
+        self.legendView.center = CGPointMake(self.legendView.center.x - self.contentWebView.frame.size.width - 5, 
                                              self.legendView.center.y);
-    };
-    
-    void (^opacityBlock)(void) = ^
-    {
-        if (animated)
-            [self.backgroundView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerCollapseExpandDuration];
-
-        else
-            self.backgroundView.layer.shadowOpacity = 0.0;
     };
     
     if (animated)
@@ -536,15 +489,11 @@
                          {
                              centerBlock();
                          }
-                         completion:^(BOOL finished)
-                         {
-                             opacityBlock();
-                         }];
+                         completion:NULL];
     }        
     else
     {
         centerBlock();
-        opacityBlock();
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
@@ -559,19 +508,13 @@
 {
     self.collapsed = NO;
     
+    self.dragHandle.hidden = YES;
+    
+    
     void (^centerBlock)(void) = ^
     {
-        self.legendView.center = CGPointMake(self.legendView.center.x + self.backgroundView.frame.size.width, 
+        self.legendView.center = CGPointMake(self.legendView.center.x + self.contentWebView.frame.size.width + 5, 
                                              self.legendView.center.y);
-    };
-    
-    void (^opacityBlock)(void) = ^
-    {
-        if (animated)
-            [self.backgroundView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerCollapseExpandDuration];
-        
-        else
-            self.backgroundView.layer.shadowOpacity = 1.0;
     };
     
     if (animated)
@@ -582,14 +525,12 @@
                          animations:^(void)
                          {
                              centerBlock();
-                             opacityBlock();
                          }
-                         completion:nil];
+                         completion:NULL];
     }
     else
     {
         centerBlock();
-        opacityBlock();
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"legendCollapsed"];
@@ -605,27 +546,35 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if ([scrollView isEqual:self.scroller])
+    if ([scrollView isEqual:contentWebView.scrollView])
     {
-        // paging scroller - handle paging
-        //
-        self.pager.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
+//        NSLog(@"here");
         
-        // get active legends
-        //
-        NSMutableArray *activeLegendSources = [NSMutableArray array];
+        return;
+    }
         
-        for (id <RMTileSource>source in self.legendSources)
-            if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
-                [activeLegendSources addObject:source];
-        
-        // reverse as in legend stacking order
-        //
-        [activeLegendSources setArray:[[activeLegendSources reverseObjectEnumerator] allObjects]];
-
-        // update label
-        //
-        self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
+    
+    if (NO) //[scrollView isEqual:self.scroller])
+    {
+//        // paging scroller - handle paging
+//        //
+//        self.pager.currentPage = scrollView.contentOffset.x / scrollView.frame.size.width;
+//        
+//        // get active legends
+//        //
+//        NSMutableArray *activeLegendSources = [NSMutableArray array];
+//        
+//        for (id <RMTileSource>source in self.legendSources)
+//            if ([source respondsToSelector:@selector(legend)] && [[source performSelector:@selector(legend)] length])
+//                [activeLegendSources addObject:source];
+//        
+//        // reverse as in legend stacking order
+//        //
+//        [activeLegendSources setArray:[[activeLegendSources reverseObjectEnumerator] allObjects]];
+//
+//        // update label
+//        //
+//        self.label.text = ([activeLegendSources count] ? [((id <RMTileSource>)[activeLegendSources objectAtIndex:self.pager.currentPage]) shortName] : nil);
         
         // show interface
         //
@@ -635,14 +584,14 @@
     {
         // individual webview scroller - if in hidden mode, hide visible webview shadow
         //
-        if (self.backgroundView.alpha < 1.0)
-            [scrollView.superview.layer animateShadowOpacityTo:0.0 withDuration:0.25];
+//        if (self.backgroundView.alpha < 1.0)
+//            [scrollView.superview.layer animateShadowOpacityTo:0.0 withDuration:0.25];
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    if ([scrollView isEqual:self.scroller])
+    if ([scrollView isEqual:self.contentWebView.scrollView])
     {
         // paging scroller - cancel show/hide requests & hide after a delay
         //
@@ -653,8 +602,8 @@
     {
         // individual webview scroller - bring webview shadow back
         //
-        if (self.backgroundView.alpha < 1.0)
-            [scrollView.superview.layer animateShadowOpacityTo:0.5 withDuration:0.25];
+//        if (self.backgroundView.alpha < 1.0)
+//            [scrollView.superview.layer animateShadowOpacityTo:0.5 withDuration:0.25];
     }
 }
 
@@ -691,17 +640,84 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    
+//    NSLog(@"webview frame: %f x %f", webView.frame.size.width, webView.frame.size.height);
+//    NSLog(@"scroller frame: %f x %f", webView.scrollView.frame.size.width, webView.scrollView.frame.size.height);
+//    NSLog(@"body clientWidth/Height: %@ %@", [webView stringByEvaluatingJavaScriptFromString:@"document.body.clientWidth"], [webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight"]);
+//    NSLog(@"body offsetWidth/Height: %@ %@", [webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetWidth"], [webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"]);
+//    NSLog(@"div.wax-legend clientWidth/Height: %@ %@", [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientWidth"], [webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight"]);
+//    
+    
+    
+    
     // auto-size to content
     //
-    CGFloat renderHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight;"] floatValue] + 2;
     
-    if (renderHeight < webView.frame.size.height)
-    {
-        webView.frame  = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, renderHeight);
-        webView.center = CGPointMake(webView.center.x, roundf(self.scroller.frame.size.height / 2));
+//    CGSize size =[webView sizeThatFits:CGSizeZero];
+//    
+//    CGRect frame = webView.frame;
+//    frame.origin.y = frame.origin.y - (size.height - frame.size.height);
+//    frame.size.height = size.height;
+//    webView.frame = frame;
 
-        webView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
-    }
+    
+    
+//    CGRect frame = webView.frame;
+//    frame.size.height = 1;
+//    webView.frame = frame;
+//    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
+//    frame.size = fittingSize;
+//    webView.frame = frame;
+//    
+//    NSLog(@"size: %f, %f", fittingSize.width, fittingSize.height);
+//
+//    
+//    
+//    
+//    CGFloat renderHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.body.clientHeight"] floatValue]; //getElementsByClassName('wax-legend')[0].clientHeight;"] floatValue] + 2;
+//    
+//    
+//    //NSLog(@"scroll height is %f", webView.scrollView.contentSize.height);
+//    
+//    
+//    //NSLog(@"new height is %f", renderHeight);
+//    
+//    
+//    if (YES) //renderHeight < webView.frame.size.height)
+//    {
+    
+    CGFloat renderHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight"] floatValue];
+    CGFloat renderWidth  = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientWidth"]  floatValue];    
+        
+    self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                           self.legendView.superview.frame.size.height - renderHeight, // self.legendView.frame.origin.y - (renderHeight - self.legendView.frame.size.height), // - 44, 
+                                           renderWidth + 45, //self.legendView.frame.size.width, 
+                                           renderHeight);
+//        
+    
+    
+//    self.contentWebView.scrollView.scrollEnabled = NO;
+    
+    
+//    self.contentWebView.scrollView.layer.borderColor = [[UIColor purpleColor] CGColor];
+//    self.contentWebView.scrollView.layer.borderWidth = 5.0;
+    
+    
+//    NSLog(@"%f %f", self.contentWebView.scrollView.contentSize.width, self.contentWebView.scrollView.contentSize.height);
+    
+    
+    self.contentWebView.scrollView.contentSize = self.contentWebView.scrollView.bounds.size;
+    
+    
+    
+    
+//        NSLog(@"new overall height is %f", self.legendView.frame.size.height);
+//        
+////        webView.frame  = CGRectMake(webView.frame.origin.x, webView.frame.origin.y, webView.frame.size.width, renderHeight);
+////        webView.center = CGPointMake(webView.center.x, roundf(self.scroller.frame.size.height / 2));
+//
+//        webView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:webView.bounds] CGPath];
+//    }
     
     // theme link color
     //
@@ -718,7 +734,7 @@
                      {
                          webView.alpha = 1.0;
                      }
-                     completion:nil];
+                     completion:NULL];
     
     // hide interface after a delay
     //

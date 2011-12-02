@@ -16,7 +16,6 @@
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */ = {isa = PBXBuildFile; fileRef = DD01F5BE14634BBB00BD29C9 /* mustache.js */; };
-		DD051E481475D00C00072B0F /* StyledPageControl.m in Sources */ = {isa = PBXBuildFile; fileRef = DD051E471475D00C00072B0F /* StyledPageControl.m */; };
 		DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */; };
 		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */; };
@@ -163,7 +162,6 @@
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
 		DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */; };
-		DDAB24DE146C770600C14467 /* grabber.png in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24DD146C770600C14467 /* grabber.png */; };
 		DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
@@ -197,6 +195,7 @@
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE41E5E1443CABB00837C16 /* testflight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE41E5D1443CABB00837C16 /* testflight.png */; };
+		DDE4E1D3148979460040AFCD /* grabber.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE4E1D2148979460040AFCD /* grabber.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
@@ -257,8 +256,6 @@
 		D71ECDE911FE2D8D006A60EB /* iTunesArtwork */ = {isa = PBXFileReference; lastKnownFileType = file; path = iTunesArtwork; sourceTree = "<group>"; };
 		D7246FF01347B4D20069B3E2 /* Entitlements.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		DD01F5BE14634BBB00BD29C9 /* mustache.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = mustache.js; path = "Externals/route-me/MapView/Map/mustache.js/mustache.js"; sourceTree = "<group>"; };
-		DD051E461475D00C00072B0F /* StyledPageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StyledPageControl.h; path = Externals/StyledPageControl/StyledPageControlDemo/PageControlDemo/StyledPageControl.h; sourceTree = "<group>"; };
-		DD051E471475D00C00072B0F /* StyledPageControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = StyledPageControl.m; path = Externals/StyledPageControl/StyledPageControlDemo/PageControlDemo/StyledPageControl.m; sourceTree = "<group>"; };
 		DD051E4A1475F37F00072B0F /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor-Expanded.h"; path = "Externals/UIColor-Expanded/UIColor-Expanded.h"; sourceTree = "<group>"; };
 		DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor-Expanded.m"; path = "Externals/UIColor-Expanded/UIColor-Expanded.m"; sourceTree = "<group>"; };
 		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
@@ -504,7 +501,6 @@
 		DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLegendView.xib; sourceTree = "<group>"; };
 		DDAB24D6146B49C100C14467 /* DSMapBoxLegendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegendManager.h; sourceTree = "<group>"; };
 		DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegendManager.m; sourceTree = "<group>"; };
-		DDAB24DD146C770600C14467 /* grabber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grabber.png; sourceTree = SOURCE_ROOT; };
 		DDAB4E5C14313F9C00840F9C /* TestFlightDummy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlightDummy.h; sourceTree = "<group>"; };
 		DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestFlightDummy.m; sourceTree = "<group>"; };
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
@@ -553,6 +549,7 @@
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
 		DDE41E5D1443CABB00837C16 /* testflight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testflight.png; sourceTree = "<group>"; };
+		DDE4E1D2148979460040AFCD /* grabber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grabber.png; sourceTree = "<group>"; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
@@ -695,15 +692,6 @@
 				DD01F5BE14634BBB00BD29C9 /* mustache.js */,
 			);
 			name = mustache.js;
-			sourceTree = "<group>";
-		};
-		DD051E451475CFEF00072B0F /* StyledPageControl */ = {
-			isa = PBXGroup;
-			children = (
-				DD051E461475D00C00072B0F /* StyledPageControl.h */,
-				DD051E471475D00C00072B0F /* StyledPageControl.m */,
-			);
-			name = StyledPageControl;
 			sourceTree = "<group>";
 		};
 		DD051E491475F36E00072B0F /* UIColor-Expanded */ = {
@@ -1027,7 +1015,6 @@
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
-				DD051E451475CFEF00072B0F /* StyledPageControl */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
 				DD4364DB147C3D4400235F20 /* TileMill */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
@@ -1236,7 +1223,7 @@
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD72C76211E6847C0030C637 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
-				DDAB24DD146C770600C14467 /* grabber.png */,
+				DDE4E1D2148979460040AFCD /* grabber.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1526,10 +1513,10 @@
 				DDE41E5E1443CABB00837C16 /* testflight.png in Resources */,
 				DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */,
 				DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */,
-				DDAB24DE146C770600C14467 /* grabber.png in Resources */,
 				DD4364DE147C3DAF00235F20 /* controls.css in Resources */,
 				DD4364DF147C3DAF00235F20 /* reset.css in Resources */,
 				DD680D56147DB66600BF32F2 /* white_clear.png in Resources */,
+				DDE4E1D3148979460040AFCD /* grabber.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1682,7 +1669,6 @@
 				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
 				DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */,
 				DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */,
-				DD051E481475D00C00072B0F /* StyledPageControl.m in Sources */,
 				DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */,
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
