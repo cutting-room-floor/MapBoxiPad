@@ -391,15 +391,31 @@
         bottomTargetAlpha = 0.0;
     }
     
-    [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseInOut
-                     animations:^(void)
-                     {
-                         self.topScrollHint.alpha    = topTargetAlpha;
-                         self.bottomScrollHint.alpha = bottomTargetAlpha;
-                     }
-                     completion:NULL];
+    if (topTargetAlpha == 0.0)
+        self.topScrollHint.alpha = topTargetAlpha;
+    
+    else
+        [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseInOut
+                         animations:^(void)
+                         {
+                             self.topScrollHint.alpha = topTargetAlpha;
+                         }
+                         completion:NULL];
+    
+    if (bottomTargetAlpha == 0.0)
+        self.bottomScrollHint.alpha = bottomTargetAlpha;
+    
+    else
+        [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseInOut
+                         animations:^(void)
+                         {
+                             self.bottomScrollHint.alpha = bottomTargetAlpha;
+                         }
+                         completion:NULL];
 }
 
 #pragma mark -
