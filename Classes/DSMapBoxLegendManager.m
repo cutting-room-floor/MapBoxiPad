@@ -300,7 +300,9 @@
 
 - (void)collapseInterfaceAnimated:(BOOL)animated
 {
-    [self.legendView.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
+    // enable trough swipe
+    //
+    [[self.legendView.gestureRecognizers lastObject] setEnabled:YES];
     
     self.dragHandle.hidden = NO;
     
@@ -336,8 +338,10 @@
 
 - (void)expandInterfaceAnimated:(BOOL)animated
 {
-    [self.legendView.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:NO]];
-
+    // disable trough swipe
+    //
+    [[self.legendView.gestureRecognizers lastObject] setEnabled:NO];
+    
     void (^expand)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x + self.contentWebView.frame.size.width + 5, 
