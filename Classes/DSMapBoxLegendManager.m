@@ -191,6 +191,7 @@
                                                                        %@ \
                                                                        .wax-legend { \
                                                                          max-height: 5000px; \
+                                                                         max-width:   300px; \
                                                                        } \
                                                                    </style>", [legends componentsJoinedByString:@""], controls, reset];
             
