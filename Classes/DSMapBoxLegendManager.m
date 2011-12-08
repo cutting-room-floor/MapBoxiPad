@@ -22,33 +22,6 @@
 
 #define kDSMapBoxLegendManagerAnimationDuration 0.25f
 
-@interface CALayer (DSMapBoxLegendManager)
-
-- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration;
-
-@end
-
-@implementation CALayer (DSMapBoxLegendManager)
-
-- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration
-{
-    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
-    
-    [shadowOpacityAnimation setDuration:duration];
-    [shadowOpacityAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
-    [shadowOpacityAnimation setRemovedOnCompletion:NO];
-    [shadowOpacityAnimation setFromValue:[NSNumber numberWithFloat:self.shadowOpacity]];
-    [shadowOpacityAnimation setToValue:[NSNumber numberWithFloat:opacity]];
-    
-    [self addAnimation:shadowOpacityAnimation forKey:@"animateShadowOpacity"];
-    
-    self.shadowOpacity = opacity;
-}
-
-@end
-
-#pragma mark -
-
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
@@ -61,7 +34,7 @@
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
 - (void)collapseInterfaceAnimated:(BOOL)animated;
 - (void)expandInterfaceAnimated:(BOOL)animated;
-- (void)updateScrollHintsHiding:(BOOL)shouldHide;
+- (void)updateScrollHints;
 
 @end
 
@@ -101,10 +74,10 @@
         contentWebView.backgroundColor = [UIColor clearColor];
         contentWebView.opaque = NO;
         
-        contentWebView.layer.shadowColor   = [[UIColor grayColor] CGColor];
+        contentWebView.layer.shadowColor   = [[UIColor blackColor] CGColor];
         contentWebView.layer.shadowOffset  = CGSizeMake(0.0, 0.0);
         contentWebView.layer.shadowRadius  = 5.0;
-        contentWebView.layer.shadowOpacity = 0.5;
+        contentWebView.layer.shadowOpacity = 1.0;
 
         // remove web view scroller shadow image
         //
@@ -123,7 +96,7 @@
         
         dragHandle.layer.mask = maskLayer;
         
-        [self updateScrollHintsHiding:YES];
+        [self updateScrollHints];
 
         // setup initial legend size, hidden by default
         //
@@ -365,25 +338,17 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (void)updateScrollHintsHiding:(BOOL)shouldHide
+- (void)updateScrollHints
 {
     CGFloat topTargetAlpha;
     CGFloat bottomTargetAlpha;
     
     if (self.contentWebView.scrollView.scrollEnabled)
     {
-        if (shouldHide)
-        {
-            topTargetAlpha    = 0.0;
-            bottomTargetAlpha = 0.0;
-        }
-        else
-        {
-            UIScrollView *scroller = self.contentWebView.scrollView;
-            
-            topTargetAlpha    = (scroller.contentOffset.y <= 0 ? 0.0 : 1.0);
-            bottomTargetAlpha = (scroller.contentOffset.y + scroller.frame.size.height == scroller.contentSize.height ? 0.0 : 1.0);
-        }
+        UIScrollView *scroller = self.contentWebView.scrollView;
+        
+        topTargetAlpha    = (scroller.contentOffset.y <= 0 ? 0.0 : 1.0);
+        bottomTargetAlpha = (scroller.contentOffset.y + scroller.frame.size.height >= scroller.contentSize.height ? 0.0 : 1.0);
     }
     else
     {
@@ -422,29 +387,22 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    // hide shadows when scrolling
-    //
-    [self.contentWebView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerAnimationDuration];
-    [self updateScrollHintsHiding:YES];
+    [self updateScrollHints];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    // bring shadows back when stationary
-    //
-    [self.contentWebView.layer animateShadowOpacityTo:0.5 withDuration:kDSMapBoxLegendManagerAnimationDuration];
-    
-    // if not bouncing, update hints
+    // if not bouncing, bring shadows back
     //
     if ( ! decelerate)
-        [self updateScrollHintsHiding:NO];
+        [self updateScrollHints];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    // update hints after bouncing
+    // bring back shadows after bouncing
     //
-    [self updateScrollHintsHiding:NO];
+    [self updateScrollHints];
 }
 
 #pragma mark -
@@ -488,7 +446,7 @@
     scroller.contentSize   = CGSizeMake(renderWidth, renderHeight);
     scroller.scrollEnabled = (self.contentWebView.scrollView.contentSize.height <= self.contentWebView.scrollView.frame.size.height ? NO : YES);
 
-    [self updateScrollHintsHiding:NO];
+    [self updateScrollHints];
     
     // theme link color
     //
