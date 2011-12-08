@@ -42,6 +42,8 @@
 		DD0F615B11ED5A9F0050174D /* SimpleKMLStyleSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614511ED5A9F0050174D /* SimpleKMLStyleSelector.m */; };
 		DD0F615C11ED5A9F0050174D /* SimpleKMLSubStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
+		DD15A16E14904CD8004F7AFD /* scroll_hint_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */; };
+		DD15A16F14904CD8004F7AFD /* scroll_hint_top.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */; };
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
@@ -307,6 +309,8 @@
 		DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLSubStyle.m; path = "Externals/Simple KML/SimpleKMLSubStyle.m"; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
+		DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_bottom.png; sourceTree = SOURCE_ROOT; };
+		DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_top.png; sourceTree = SOURCE_ROOT; };
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -1224,6 +1228,8 @@
 				DD72C76211E6847C0030C637 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
 				DDE4E21014897AE70040AFCD /* grabber.png */,
+				DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */,
+				DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1517,6 +1523,8 @@
 				DD4364DF147C3DAF00235F20 /* reset.css in Resources */,
 				DD680D56147DB66600BF32F2 /* white_clear.png in Resources */,
 				DDE4E21114897AE70040AFCD /* grabber.png in Resources */,
+				DD15A16E14904CD8004F7AFD /* scroll_hint_bottom.png in Resources */,
+				DD15A16F14904CD8004F7AFD /* scroll_hint_top.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

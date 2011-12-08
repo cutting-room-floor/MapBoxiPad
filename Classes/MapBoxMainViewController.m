@@ -149,7 +149,11 @@
     self.mapView.interactivityDelegate = self.dataOverlayManager;
     self.layerManager = [[[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView] autorelease];
     self.layerManager.delegate = self;
-    self.legendManager = [[[DSMapBoxLegendManager alloc] initWithView:self.view] autorelease];
+    self.legendManager = [[[DSMapBoxLegendManager alloc] initWithFrame:CGRectMake(5, 
+                                                                                  self.toolbar.frame.size.height + 5, 
+                                                                                  500, 
+                                                                                  self.view.frame.size.height - self.toolbar.frame.size.height - 10)
+                                                            parentView:self.view] autorelease];
     
     // watch for net changes
     //
