@@ -150,9 +150,9 @@
     self.layerManager = [[[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView] autorelease];
     self.layerManager.delegate = self;
     self.legendManager = [[[DSMapBoxLegendManager alloc] initWithFrame:CGRectMake(5, 
-                                                                                  self.toolbar.frame.size.height + 5, 
-                                                                                  500, 
-                                                                                  self.view.frame.size.height - self.toolbar.frame.size.height - 10)
+                                                                                  self.view.frame.size.height - kDSMapBoxLegendManagerMaxHeight - 5, 
+                                                                                  kDSMapBoxLegendManagerMaxWidth, 
+                                                                                  kDSMapBoxLegendManagerMaxHeight)
                                                             parentView:self.view] autorelease];
     
     // watch for net changes

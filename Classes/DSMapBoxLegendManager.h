@@ -6,9 +6,10 @@
 //  Copyright (c) 2011 Development Seed. All rights reserved.
 //
 
-@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, 
-                                             UIWebViewDelegate, 
-                                             UIAlertViewDelegate>
+#define kDSMapBoxLegendManagerMaxWidth  350
+#define kDSMapBoxLegendManagerMaxHeight 650
+
+@interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, retain) NSArray *legendSources;
 

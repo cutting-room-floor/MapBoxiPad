@@ -22,6 +22,33 @@
 
 #define kDSMapBoxLegendManagerAnimationDuration 0.25f
 
+@interface CALayer (DSMapBoxLegendManager)
+
+- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration;
+
+@end
+
+@implementation CALayer (DSMapBoxLegendManager)
+
+- (void)animateShadowOpacityTo:(CGFloat)opacity withDuration:(CFTimeInterval)duration
+{
+    CABasicAnimation *shadowOpacityAnimation = [CABasicAnimation animationWithKeyPath:@"shadowOpacity"];
+    
+    [shadowOpacityAnimation setDuration:duration];
+    [shadowOpacityAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [shadowOpacityAnimation setRemovedOnCompletion:NO];
+    [shadowOpacityAnimation setFromValue:[NSNumber numberWithFloat:self.shadowOpacity]];
+    [shadowOpacityAnimation setToValue:[NSNumber numberWithFloat:opacity]];
+    
+    [self addAnimation:shadowOpacityAnimation forKey:@"animateShadowOpacity"];
+    
+    self.shadowOpacity = opacity;
+}
+
+@end
+
+#pragma mark -
+
 @interface DSMapBoxLegendManager ()
 
 @property (nonatomic, retain) IBOutlet UIView *legendView;
@@ -29,7 +56,6 @@
 @property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
 @property (nonatomic, retain) IBOutlet UIImageView *topScrollHint;
 @property (nonatomic, retain) IBOutlet UIImageView *bottomScrollHint;
-@property (nonatomic, assign) CGSize initialFrameSize;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
 - (void)collapseInterfaceAnimated:(BOOL)animated;
@@ -48,7 +74,6 @@
 @synthesize dragHandle;
 @synthesize topScrollHint;
 @synthesize bottomScrollHint;
-@synthesize initialFrameSize;
 
 - (id)initWithFrame:(CGRect)frame parentView:(UIView *)parentView;
 {
@@ -62,7 +87,7 @@
         //
         [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxLegendView" owner:self options:nil];
 
-        // configure web view
+        // configure web view & scroller
         //
         contentWebView.scrollView.bounces                = YES;
         contentWebView.scrollView.alwaysBounceVertical   = YES;
@@ -79,7 +104,7 @@
         contentWebView.layer.shadowRadius  = 5.0;
         contentWebView.layer.shadowOpacity = 1.0;
 
-        // remove web view scroller shadow image
+        // remove web view scroller background shadow image
         //
         for (UIView *shadowView in contentWebView.scrollView.subviews)
             if ([shadowView isKindOfClass:[UIImageView class]])
@@ -100,7 +125,6 @@
 
         // setup initial legend size, hidden by default
         //
-        initialFrameSize = frame.size;
         legendView.frame = frame;
         
         [parentView addSubview:legendView];
@@ -281,12 +305,17 @@
 
 - (void)collapseInterfaceAnimated:(BOOL)animated
 {
+    self.dragHandle.alpha  = 0.0;
     self.dragHandle.hidden = NO;
     
-    void (^movementBlock)(void) = ^
+    void (^collapseBlock)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x - self.contentWebView.frame.size.width - 5, 
                                              self.legendView.center.y);
+        
+        self.dragHandle.alpha = 1.0;
+        
+        [self.contentWebView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerAnimationDuration];
     };
     
     if (animated)
@@ -296,13 +325,13 @@
                             options:UIViewAnimationCurveEaseOut
                          animations:^(void)
                          {
-                             movementBlock();
+                             collapseBlock();
                          }
                          completion:NULL];
     }        
     else
     {
-        movementBlock();
+        collapseBlock();
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
@@ -311,12 +340,14 @@
 
 - (void)expandInterfaceAnimated:(BOOL)animated
 {
-    self.dragHandle.hidden = YES;
-    
-    void (^movementBlock)(void) = ^
+    void (^collapseBlock)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x + self.contentWebView.frame.size.width + 5, 
                                              self.legendView.center.y);
+        
+        self.dragHandle.alpha = 0.0;
+        
+        [self.contentWebView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerAnimationDuration];
     };
     
     if (animated)
@@ -326,13 +357,17 @@
                             options:UIViewAnimationCurveEaseOut
                          animations:^(void)
                          {
-                             movementBlock();
+                             collapseBlock();
                          }
-                         completion:NULL];
+                         completion:^(BOOL finished)
+                         {
+                             self.dragHandle.hidden = YES;
+                         }];
     }
     else
     {
-        movementBlock();
+        collapseBlock();
+        self.dragHandle.hidden = YES;
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"legendCollapsed"];
@@ -410,7 +445,7 @@
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    if ( ! [[request.URL absoluteString] isEqualToString:@"about:blank"])
+    if ( ! [[request.URL absoluteString] isEqualToString:@"about:blank"] && navigationType == UIWebViewNavigationTypeLinkClicked)
     {
         DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Open URL?"
                                                                      message:[request.URL absoluteString]
@@ -432,19 +467,25 @@
 {
     // update legend container frame & scrolling status
     //
-    CGFloat renderHeight = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight"] floatValue] + 2;
-    CGFloat renderWidth  = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientWidth"]  floatValue] + 2;    
+    CGFloat h = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight"] floatValue] + 2;
 
-    CGFloat newHeight = (renderHeight > initialFrameSize.height ? initialFrameSize.height : renderHeight);
+    CGFloat newHeight = (h > kDSMapBoxLegendManagerMaxHeight ? kDSMapBoxLegendManagerMaxHeight : h);
     
-    self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                       self.legendView.frame.origin.y + self.legendView.frame.size.height - newHeight,
-                                       renderWidth + self.dragHandle.frame.size.width,
-                                       newHeight);
+    [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                          delay:0.0
+                        options:UIViewAnimationCurveEaseInOut
+                     animations:^(void)
+                     {
+                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                                            self.legendView.frame.origin.y + self.legendView.frame.size.height - newHeight,
+                                                            self.legendView.frame.size.width,
+                                                            newHeight);
+                     }
+                     completion:NULL];
     
     UIScrollView *scroller = self.contentWebView.scrollView;
     
-    scroller.contentSize   = CGSizeMake(renderWidth, renderHeight);
+    scroller.contentSize   = CGSizeMake(self.contentWebView.scrollView.frame.size.width, h);
     scroller.scrollEnabled = (self.contentWebView.scrollView.contentSize.height <= self.contentWebView.scrollView.frame.size.height ? NO : YES);
 
     [self updateScrollHints];
