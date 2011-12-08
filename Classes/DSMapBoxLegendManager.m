@@ -121,6 +121,10 @@
         
         dragHandle.layer.mask = maskLayer;
         
+        // hide by default
+        //
+        dragHandle.layer.transform = CATransform3DMakeTranslation(-dragHandle.bounds.size.width, 0.0, 0.0);
+
         [self updateScrollHints];
 
         // setup initial legend size, hidden by default
@@ -140,6 +144,7 @@
         UISwipeGestureRecognizer *rightSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.dragHandle addGestureRecognizer:rightSwipe];
+        [self.legendView addGestureRecognizer:rightSwipe];
         
         UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
         tap.numberOfTapsRequired = 1;
@@ -219,9 +224,13 @@
                                                                        } \
                                                                    </style>", [legends componentsJoinedByString:@""], controls, reset];
             
-            // show UI if needed
+            // prepare to show UI if needed
             //
-            self.legendView.hidden = NO;
+            if (self.legendView.hidden)
+            {
+                self.legendView.alpha  = 0.0;
+                self.legendView.hidden = NO;
+            }
             
             // move to just below app toolbar
             //
@@ -239,20 +248,6 @@
                 }
             }
             
-            // fade in
-            //
-            if (self.legendView.alpha < 1.0)
-            {
-                [UIView animateWithDuration:0.1
-                                      delay:0.0
-                                    options:UIViewAnimationCurveEaseOut
-                                 animations:^(void)
-                                 {
-                                     self.legendView.alpha = 1.0;
-                                 }
-                                 completion:NULL];
-            }
-            
             // load the new content
             //
             [contentWebView loadHTMLString:legendContent baseURL:nil];
@@ -261,7 +256,7 @@
         {
             // otherwise, fade out the UI
             //
-            [UIView animateWithDuration:0.1
+            [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
                                   delay:0.0
                                 options:UIViewAnimationCurveEaseOut
                              animations:^(void)
@@ -282,7 +277,7 @@
 {
     if ([gesture isKindOfClass:[UISwipeGestureRecognizer class]])
     {
-        // left swipe main view or right swipe handle - collapse/expand
+        // left swipe main view or right swipe handle or trough - collapse/expand
         //
         UISwipeGestureRecognizer *swipe = (UISwipeGestureRecognizer *)gesture;
         
@@ -305,17 +300,18 @@
 
 - (void)collapseInterfaceAnimated:(BOOL)animated
 {
-    self.dragHandle.alpha  = 0.0;
+    [self.legendView.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:YES]];
+    
     self.dragHandle.hidden = NO;
     
-    void (^collapseBlock)(void) = ^
+    void (^collapse)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x - self.contentWebView.frame.size.width - 5, 
                                              self.legendView.center.y);
         
-        self.dragHandle.alpha = 1.0;
-        
         [self.contentWebView.layer animateShadowOpacityTo:0.0 withDuration:kDSMapBoxLegendManagerAnimationDuration];
+        
+        self.dragHandle.layer.transform = CATransform3DTranslate(self.dragHandle.layer.transform, self.dragHandle.bounds.size.width, 0.0, 0.0);
     };
     
     if (animated)
@@ -325,13 +321,13 @@
                             options:UIViewAnimationCurveEaseOut
                          animations:^(void)
                          {
-                             collapseBlock();
+                             collapse();
                          }
                          completion:NULL];
     }        
     else
     {
-        collapseBlock();
+        collapse();
     }
     
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"legendCollapsed"];
@@ -340,14 +336,16 @@
 
 - (void)expandInterfaceAnimated:(BOOL)animated
 {
-    void (^collapseBlock)(void) = ^
+    [self.legendView.gestureRecognizers makeObjectsPerformSelector:@selector(setEnabled:) withObject:[NSNumber numberWithBool:NO]];
+
+    void (^expand)(void) = ^
     {
         self.legendView.center = CGPointMake(self.legendView.center.x + self.contentWebView.frame.size.width + 5, 
                                              self.legendView.center.y);
         
-        self.dragHandle.alpha = 0.0;
-        
         [self.contentWebView.layer animateShadowOpacityTo:1.0 withDuration:kDSMapBoxLegendManagerAnimationDuration];
+        
+        self.dragHandle.layer.transform = CATransform3DTranslate(self.dragHandle.layer.transform, -self.dragHandle.bounds.size.width, 0.0, 0.0);
     };
     
     if (animated)
@@ -357,7 +355,7 @@
                             options:UIViewAnimationCurveEaseOut
                          animations:^(void)
                          {
-                             collapseBlock();
+                             expand();
                          }
                          completion:^(BOOL finished)
                          {
@@ -366,7 +364,7 @@
     }
     else
     {
-        collapseBlock();
+        expand();
         self.dragHandle.hidden = YES;
     }
     
@@ -465,28 +463,97 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    // update legend container frame & scrolling status
+    // prepare fade-in animation
+    //
+    void (^fadeIn)(void) = ^
+    {
+        if (self.legendView.alpha < 1.0)
+        {
+            [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseOut
+                             animations:^(void)
+                             {
+                                 self.legendView.alpha = 1.0;
+                             }
+                             completion:NULL];
+        }
+    };
+    
+    // determine render height of new content
     //
     CGFloat h = [[webView stringByEvaluatingJavaScriptFromString:@"document.getElementsByClassName('wax-legend')[0].clientHeight"] floatValue] + 2;
 
+    // clamp to max legend height
+    //
     CGFloat newHeight = (h > kDSMapBoxLegendManagerMaxHeight ? kDSMapBoxLegendManagerMaxHeight : h);
     
-    [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseInOut
-                     animations:^(void)
-                     {
-                         self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
-                                                            self.legendView.frame.origin.y + self.legendView.frame.size.height - newHeight,
-                                                            self.legendView.frame.size.width,
-                                                            newHeight);
-                     }
-                     completion:NULL];
+    // determine if we're growing or shrinking in size
+    //
+    CGFloat heightDelta = self.legendView.frame.size.height - newHeight;
     
-    UIScrollView *scroller = self.contentWebView.scrollView;
+    if (heightDelta != 0)
+    {
+        void (^move)(void) = ^
+        {
+            self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                               self.legendView.frame.origin.y + heightDelta,
+                                               self.legendView.frame.size.width,
+                                               self.legendView.frame.size.height);
+        };
+        
+        void (^resize)(void) = ^
+        {
+            self.legendView.frame = CGRectMake(self.legendView.frame.origin.x, 
+                                               self.legendView.frame.origin.y,
+                                               self.legendView.frame.size.width,
+                                               newHeight);
+        };
+        
+        if (heightDelta > 0)
+        {
+            // shrinking - move down, then resize
+            //
+            [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseInOut
+                             animations:^(void)
+                             {
+                                 move();
+                                 resize();
+                             }
+                             completion:^(BOOL finished)
+                             {
+                                 fadeIn();
+                             }];
+        }
+        else
+        {
+            // growing - resize, then move up
+            //
+            [UIView animateWithDuration:kDSMapBoxLegendManagerAnimationDuration
+                                  delay:0.0
+                                options:UIViewAnimationCurveEaseInOut
+                             animations:^(void)
+                             {
+                                 resize();
+                                 move();
+                             }
+                             completion:^(BOOL finished)
+                             {
+                                 fadeIn();
+                             }];
+        }
+    }
+    else
+    {
+        fadeIn();
+    }
     
-    scroller.contentSize   = CGSizeMake(self.contentWebView.scrollView.frame.size.width, h);
-    scroller.scrollEnabled = (self.contentWebView.scrollView.contentSize.height <= self.contentWebView.scrollView.frame.size.height ? NO : YES);
+    // update scroll behavior
+    //
+    self.contentWebView.scrollView.contentSize   = CGSizeMake(self.contentWebView.scrollView.frame.size.width, h);
+    self.contentWebView.scrollView.scrollEnabled = (self.contentWebView.scrollView.contentSize.height <= self.contentWebView.scrollView.frame.size.height ? NO : YES);
 
     [self updateScrollHints];
     
