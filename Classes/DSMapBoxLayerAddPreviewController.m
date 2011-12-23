@@ -17,7 +17,7 @@
 
 @interface DSMapBoxLayerAddPreviewController ()
 
-@property (nonatomic, retain) DSMapBoxDataOverlayManager *overlayManager;
+@property (nonatomic, strong) DSMapBoxDataOverlayManager *overlayManager;
 
 @end
 
@@ -36,9 +36,9 @@
     
     self.navigationItem.title = [NSString stringWithFormat:@"Preview %@", [info objectForKey:@"name"]];
     
-    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                          target:self
-                                                                                          action:@selector(dismissPreview:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                         target:self
+                                                                                         action:@selector(dismissPreview:)];
     
     // map view
     //
@@ -46,15 +46,15 @@
     
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[centerParts objectAtIndex:1] floatValue], [[centerParts objectAtIndex:0] floatValue]);
     
-    RMTileStreamSource *source = [[[RMTileStreamSource alloc] initWithInfo:self.info] autorelease];
+    RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithInfo:self.info];
     
-    [[[DSMapContents alloc] initWithView:self.mapView 
-                              tilesource:source
-                            centerLatLon:center
-                               zoomLevel:([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds)
-                            maxZoomLevel:[source maxZoom]
-                            minZoomLevel:[source minZoom]
-                         backgroundImage:nil] autorelease];
+    [[DSMapContents alloc] initWithView:self.mapView 
+                             tilesource:source
+                           centerLatLon:center
+                              zoomLevel:([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds)
+                           maxZoomLevel:[source maxZoom]
+                           minZoomLevel:[source minZoom]
+                        backgroundImage:nil];
     
     self.mapView.enableRotate = NO;
     self.mapView.deceleration = NO;
@@ -90,16 +90,6 @@
     self.metadataLabel.text = metadata;
     
     [TESTFLIGHT passCheckpoint:@"previewed TileStream layer"];
-}
-
-- (void)dealloc
-{
-    [mapView release];
-    [metadataLabel release];
-    [info release];
-    [overlayManager release];
-    
-    [super dealloc];
 }
 
 #pragma mark -

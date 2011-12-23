@@ -24,8 +24,8 @@
 
 @interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxInteractivityDelegate>
 
-@property (nonatomic, retain) DSMapView *mapView;
-@property (nonatomic, retain) NSMutableArray *overlays;
+@property (nonatomic, strong) DSMapView *mapView;
+@property (nonatomic, strong) NSMutableArray *overlays;
 
 - (id)initWithMapView:(DSMapView *)inMapView;
 - (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;

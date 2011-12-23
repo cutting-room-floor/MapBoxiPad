@@ -23,8 +23,8 @@
 
 @interface DSMapView : RMMapView
 
-@property (nonatomic, assign) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
-@property (nonatomic, readonly, retain) DSMapView *topMostMapView;
+@property (nonatomic, weak) id <DSMapBoxInteractivityDelegate>interactivityDelegate;
+@property (nonatomic, readonly, strong) DSMapView *topMostMapView;
 
 - (void)insertLayerMapView:(DSMapBoxTiledLayerMapView *)layerMapView;
 

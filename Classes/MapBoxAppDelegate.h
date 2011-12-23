@@ -12,8 +12,8 @@
 
 @interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, DirectoryWatcherDelegate>
 
-@property (nonatomic, retain) IBOutlet UIWindow *window;
-@property (nonatomic, retain) IBOutlet MapBoxMainViewController *viewController;
+@property (nonatomic, strong) IBOutlet UIWindow *window;
+@property (nonatomic, strong) IBOutlet MapBoxMainViewController *viewController;
 @property (nonatomic, assign) BOOL openingExternalFile;
 
 - (BOOL)openExternalURL:(NSURL *)externalURL;

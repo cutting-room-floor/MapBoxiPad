@@ -12,7 +12,7 @@
 
 @interface DSMapBoxDarkTextField ()
 
-@property (nonatomic, retain) UIView *backgroundView;
+@property (nonatomic, strong) UIView *backgroundView;
 
 - (void)DSMapBoxDarkTextField_commonInit;
 
@@ -80,13 +80,6 @@
     self.rightView = customClearButton;
 }
 
-- (void)dealloc
-{
-    [backgroundView release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)setText:(NSString *)inText
@@ -95,10 +88,10 @@
     //
     if ( ! self.backgroundView)
     {
-        self.backgroundView = [[[UIView alloc] initWithFrame:CGRectMake(self.frame.origin.x, 
-                                                                        self.frame.origin.y    + 1, 
-                                                                        self.frame.size.width  + 20, 
-                                                                        self.frame.size.height + 10)] autorelease];
+        self.backgroundView = [[UIView alloc] initWithFrame:CGRectMake(self.frame.origin.x, 
+                                                                       self.frame.origin.y    + 1, 
+                                                                       self.frame.size.width  + 20, 
+                                                                       self.frame.size.height + 10)];
         
         self.backgroundView.backgroundColor    = [UIColor blackColor];
         self.backgroundView.layer.cornerRadius = 10.0;

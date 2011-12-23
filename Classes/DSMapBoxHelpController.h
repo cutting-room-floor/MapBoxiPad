@@ -11,10 +11,10 @@
 
 @interface DSMapBoxHelpController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-@property (nonatomic, retain) IBOutlet UIButton *moviePlayButton;
-@property (nonatomic, retain) MPMoviePlayerController *moviePlayer;
-@property (nonatomic, retain) IBOutlet UITableView *helpTableView;
-@property (nonatomic, retain) IBOutlet UILabel *versionInfoLabel;
+@property (nonatomic, strong) IBOutlet UIButton *moviePlayButton;
+@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
+@property (nonatomic, strong) IBOutlet UITableView *helpTableView;
+@property (nonatomic, strong) IBOutlet UILabel *versionInfoLabel;
 
 - (IBAction)tappedVideoButton:(id)sender;
 

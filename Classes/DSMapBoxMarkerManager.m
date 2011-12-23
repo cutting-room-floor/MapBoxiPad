@@ -16,6 +16,7 @@
 
 #import "RMProjection.h"
 #import "RMMercatorToScreenProjection.h"
+#import "RMLayerCollection.h"
 
 #define kDSMapBoxMarkerClusterPixels 50.0f
 #define kDSClusterAlpha               0.7f
@@ -23,7 +24,7 @@
 @interface DSMapBoxMarkerManager ()
 
 - (void)addBaseMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point;
-- (void)clusterMarker:(RMMarker *)marker inClusters:(NSMutableArray **)inClusters;
+- (void)clusterMarker:(RMMarker *)marker inClusters:(NSMutableArray * __strong *)inClusters;
 - (void)redrawClusters;
 
 @end
@@ -43,17 +44,10 @@
     {
         clusteringEnabled = YES;
         
-        clusters = [[NSMutableArray array] retain];
+        clusters = [NSMutableArray array];
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [clusters release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -158,7 +152,7 @@
 
 #pragma mark -
 
-- (void)clusterMarker:(RMMarker *)marker inClusters:(NSMutableArray **)inClusters
+- (void)clusterMarker:(RMMarker *)marker inClusters:(NSMutableArray * __strong *)inClusters
 {
     NSAssert(*inClusters, @"Invalid clusters passed to cluster routine");
     
@@ -182,32 +176,26 @@
             
             if ([clusterLocation distanceFromLocation:markerLocation] <= threshold)
             {
-                [clusterLocation release];
-                
                 [cluster addMarker:marker];
                 
                 clustered = YES;
                 
                 break;
             }
-
-            [clusterLocation release];
         }
         
         if ( ! clustered)
         {
-            DSMapBoxMarkerCluster *cluster = [[[DSMapBoxMarkerCluster alloc] init] autorelease];
+            DSMapBoxMarkerCluster *cluster = [[DSMapBoxMarkerCluster alloc] init];
             
             [cluster addMarker:marker];
             
             [*inClusters addObject:cluster];
         }
-        
-        [markerLocation release];
     }
     else
     {
-        DSMapBoxMarkerCluster *cluster = [[[DSMapBoxMarkerCluster alloc] init] autorelease];
+        DSMapBoxMarkerCluster *cluster = [[DSMapBoxMarkerCluster alloc] init];
         
         [cluster addMarker:marker];
         
@@ -274,7 +262,7 @@
                 //
                 UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:kDSClusterAlpha] imageWithWidth:size height:size];
                 
-                marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+                marker = [[RMMarker alloc] initWithUIImage:image];
                 
                 labelText      = [NSString stringWithFormat:@"%i",        [[cluster markers] count]];
                 touchLabelText = [NSString stringWithFormat:@"%i Points", [[cluster markers] count]];
@@ -302,7 +290,7 @@
                 
                 // build the cluster marker
                 //
-                CLLocation *center = [[[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude] autorelease];
+                CLLocation *center = [[CLLocation alloc] initWithLatitude:cluster.center.latitude longitude:cluster.center.longitude];
                 
                 marker.data = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                     @"title",
                                                                          [descriptions componentsJoinedByString:@", "],      @"description",

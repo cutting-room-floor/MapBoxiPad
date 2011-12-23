@@ -9,6 +9,7 @@
 #import "DSMapView.h"
 
 #import "RMMarker.h"
+#import "RMLayerCollection.h"
 
 @interface DSMapView ()
 

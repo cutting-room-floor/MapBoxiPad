@@ -59,17 +59,17 @@
 - (void)layerImportAlertWithName:(NSString *)name;
 - (void)setClusteringOn:(BOOL)clusteringOn;
 
-@property (nonatomic, retain) UIPopoverController *layersPopover;
-@property (nonatomic, retain) DSMapBoxDataOverlayManager *dataOverlayManager;
-@property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
-@property (nonatomic, retain) DSMapBoxDocumentSaveController *saveController;
-@property (nonatomic, retain) DSMapBoxDocumentLoadController *loadController;
-@property (nonatomic, retain) DSMapBoxLegendManager *legendManager;
-@property (nonatomic, retain) UIActionSheet *documentsActionSheet;
-@property (nonatomic, retain) UIActionSheet *shareActionSheet;
-@property (nonatomic, retain) Reachability *reachability;
-@property (nonatomic, retain) NSURL *badParseURL;
-@property (nonatomic, retain) NSDate *lastLayerAlertDate;
+@property (nonatomic, strong) UIPopoverController *layersPopover;
+@property (nonatomic, strong) DSMapBoxDataOverlayManager *dataOverlayManager;
+@property (nonatomic, strong) DSMapBoxLayerManager *layerManager;
+@property (nonatomic, strong) DSMapBoxDocumentSaveController *saveController;
+@property (nonatomic, strong) DSMapBoxDocumentLoadController *loadController;
+@property (nonatomic, strong) DSMapBoxLegendManager *legendManager;
+@property (nonatomic, strong) UIActionSheet *documentsActionSheet;
+@property (nonatomic, strong) UIActionSheet *shareActionSheet;
+@property (nonatomic, strong) Reachability *reachability;
+@property (nonatomic, strong) NSURL *badParseURL;
+@property (nonatomic, strong) NSDate *lastLayerAlertDate;
 @property (nonatomic, assign) CLLocationCoordinate2D postRotationMapCenter;
 
 @end
@@ -112,15 +112,15 @@
     //
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     
-    RMMBTilesTileSource *source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]] autorelease];
+    RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]];
     
-	[[[DSMapContents alloc] initWithView:self.mapView 
-                              tilesource:source
-                            centerLatLon:startingPoint
-                               zoomLevel:kStartingZoom
-                            maxZoomLevel:[source maxZoom]
-                            minZoomLevel:[source minZoom]
-                         backgroundImage:nil] autorelease];
+	[[DSMapContents alloc] initWithView:self.mapView 
+                             tilesource:source
+                           centerLatLon:startingPoint
+                              zoomLevel:kStartingZoom
+                           maxZoomLevel:[source maxZoom]
+                           minZoomLevel:[source minZoom]
+                        backgroundImage:nil];
     
     self.mapView.enableRotate = NO;
     self.mapView.deceleration = NO;
@@ -143,17 +143,17 @@
     
     // data overlay, layer, and legend managers
     //
-    self.dataOverlayManager = [[[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView] autorelease];
+    self.dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
     self.dataOverlayManager.mapView = self.mapView;
     self.mapView.delegate = self.dataOverlayManager;
     self.mapView.interactivityDelegate = self.dataOverlayManager;
-    self.layerManager = [[[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView] autorelease];
+    self.layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
     self.layerManager.delegate = self;
-    self.legendManager = [[[DSMapBoxLegendManager alloc] initWithFrame:CGRectMake(5, 
-                                                                                  self.view.frame.size.height - kDSMapBoxLegendManagerMaxHeight - 5, 
-                                                                                  kDSMapBoxLegendManagerMaxWidth, 
-                                                                                  kDSMapBoxLegendManagerMaxHeight)
-                                                            parentView:self.view] autorelease];
+    self.legendManager = [[DSMapBoxLegendManager alloc] initWithFrame:CGRectMake(5, 
+                                                                                 self.view.frame.size.height - kDSMapBoxLegendManagerMaxHeight - 5, 
+                                                                                 kDSMapBoxLegendManagerMaxWidth, 
+                                                                                 kDSMapBoxLegendManagerMaxHeight)
+                                                           parentView:self.view];
     
     // watch for net changes
     //
@@ -207,12 +207,12 @@
             
             [seenZips addObject:zippedTile];
             
-            UIAlertView *zipAlert = [[[UIAlertView alloc] initWithTitle:@"Zipped Tiles Found"
+            UIAlertView *zipAlert = [[UIAlertView alloc] initWithTitle:@"Zipped Tiles Found"
 
-                                                                message:[NSString stringWithFormat:@"Your %@ documents contain zipped tiles. Please unzip these tiles first in order to use them in %@.", appName, appName] 
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:@"OK", nil] autorelease];
+                                                               message:[NSString stringWithFormat:@"Your %@ documents contain zipped tiles. Please unzip these tiles first in order to use them in %@.", appName, appName] 
+                                                              delegate:nil
+                                                     cancelButtonTitle:nil
+                                                     otherButtonTitles:@"OK", nil];
             
             [zipAlert show];
             
@@ -289,26 +289,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded              object:nil];
     
     [reachability stopNotifier];
-    [reachability release];
-    
-    [mapView release];
-    [watermarkImage release];
-    [attributionLabel release];
-    [toolbar release];
-    [layersButton release];
-    [clusteringButton release];
-    [layersPopover release];
-    [dataOverlayManager release];
-    [layerManager release];
-    [saveController release];
-    [loadController release];
-    [legendManager release];
-    [documentsActionSheet release];
-    [shareActionSheet release];
-    [badParseURL release];
-    [lastLayerAlertDate release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -370,7 +350,7 @@
         //
         BOOL warnedOffline = NO;
         
-        for (NSString *tileOverlayURLString in tileOverlayState)
+        for (__strong NSString *tileOverlayURLString in tileOverlayState)
         {
             if ( ! [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSOpenStreetMapURL] &&
                  ! [[NSURL fileURLWithPath:tileOverlayURLString] isEqual:kDSMapQuestOSMURL])
@@ -394,11 +374,11 @@
                 ! warnedOffline && 
                 [self.reachability currentReachabilityStatus] == NotReachable)
             {
-                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                                 message:@"At least one layer requires an internet connection, so it may not appear reliably."
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"OK", nil] autorelease];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                                message:@"At least one layer requires an internet connection, so it may not appear reliably."
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil];
                 
                 [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
                 
@@ -420,7 +400,7 @@
 
         // toggle new ones
         //
-        for (NSString *dataOverlayURLString in dataOverlayState)
+        for (__strong NSString *dataOverlayURLString in dataOverlayState)
         {
             dataOverlayURLString = [[[[UIApplication sharedApplication] applicationSandboxFolderPath] stringByAppendingString:@"/"] stringByAppendingString:dataOverlayURLString];
 
@@ -521,11 +501,11 @@
 {
     if ( ! self.documentsActionSheet || ! self.documentsActionSheet.visible)
     {
-        self.documentsActionSheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                                 delegate:self
-                                                        cancelButtonTitle:nil
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:@"Load Map", @"Save Map", nil] autorelease];
+        self.documentsActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                delegate:self
+                                                       cancelButtonTitle:nil
+                                                  destructiveButtonTitle:nil
+                                                       otherButtonTitles:@"Load Map", @"Save Map", nil];
         
         [self.documentsActionSheet showFromBarButtonItem:sender animated:YES];
         
@@ -627,14 +607,14 @@
 {
     if ( ! self.layersPopover)
     {
-        DSMapBoxLayerController *layerController = [[[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil] autorelease];
+        DSMapBoxLayerController *layerController = [[DSMapBoxLayerController alloc] initWithNibName:nil bundle:nil];
         
         layerController.layerManager = self.layerManager;
         layerController.delegate     = self;
         
-        UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:layerController] autorelease];
+        UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:layerController];
         
-        self.layersPopover = [[[UIPopoverController alloc] initWithContentViewController:wrapper] autorelease];
+        self.layersPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
         
         [self.layersPopover setPopoverContentSize:CGSizeMake(450, wrapper.view.bounds.size.height)];
         
@@ -673,9 +653,9 @@
     
     [self manageExclusiveItem:sender];
     
-    DSMapBoxHelpController *helpController = [[[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxHelpController *helpController = [[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil];
     
-    DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController] autorelease];
+    DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController];
     
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
     {
@@ -685,9 +665,9 @@
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
     
-    helpController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                                    target:helpController
-                                                                                                    action:@selector(tappedHelpDoneButton:)] autorelease];
+    helpController.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
+                                                                                                   target:helpController
+                                                                                                   action:@selector(tappedHelpDoneButton:)];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
@@ -699,11 +679,11 @@
 {
     if ( ! self.shareActionSheet || ! self.shareActionSheet.visible)
     {
-        self.shareActionSheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:@"Email Snapshot", nil] autorelease];
+        self.shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                            delegate:self
+                                                   cancelButtonTitle:nil
+                                              destructiveButtonTitle:nil
+                                                   otherButtonTitles:@"Email Snapshot", nil];
         
         [self.shareActionSheet showFromBarButtonItem:sender animated:YES];
         
@@ -757,11 +737,11 @@
 
 - (void)offlineAlert
 {
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Now Offline"
-                                                     message:@"You are now offline. At least one active layer requires an internet connection, so it may not appear reliably."
-                                                    delegate:nil
-                                           cancelButtonTitle:nil
-                                           otherButtonTitles:@"OK", nil] autorelease];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Now Offline"
+                                                    message:@"You are now offline. At least one active layer requires an internet connection, so it may not appear reliably."
+                                                   delegate:nil
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"OK", nil];
 
     [alert performSelector:@selector(show) withObject:nil afterDelay:0.0];
 }
@@ -814,11 +794,11 @@
         {
             NSString *message = [NSString stringWithFormat:@"All layers have built-in zoom limits. %@ lets you continue to zoom, but layers that don't support the current zoom level won't always appear reliably. %@ is now out of range.", [[NSProcessInfo processInfo] processName], [[notification object] valueForKeyPath:@"tileSource.shortName"]];
             
-            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
-                                                                         message:message 
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"Don't Warn"
-                                                               otherButtonTitles:@"OK", nil] autorelease];
+            DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Layer Zoom Exceeded"
+                                                                        message:message 
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Don't Warn"
+                                                              otherButtonTitles:@"OK", nil];
             
             alert.context = @"zoom warning";
             
@@ -829,11 +809,11 @@
 
 - (void)layerImportAlertWithName:(NSString *)name
 {
-    UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Layer Imported"
-                                                     message:[NSString stringWithFormat:@"The new layer %@ was imported successfully. You may now find it in the layers menu.", name]
-                                                    delegate:nil
-                                           cancelButtonTitle:nil
-                                           otherButtonTitles:@"OK", nil] autorelease];
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Layer Imported"
+                                                    message:[NSString stringWithFormat:@"The new layer %@ was imported successfully. You may now find it in the layers menu.", name]
+                                                   delegate:nil
+                                          cancelButtonTitle:nil
+                                          otherButtonTitles:@"OK", nil];
     
     [alert show];
 }
@@ -900,7 +880,7 @@
     {
         // create tile image view
         //
-        UIImageView *imageView = [[[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] transparentBorderImage:1]] autorelease];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] transparentBorderImage:1]];
         
         imageView.layer.shadowOpacity = 0.5;
         imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
@@ -1064,7 +1044,7 @@
                 if ([type isEqualToString:(NSString *)kUTTypeURL])
                     pasteboardURL = (NSURL *)[pasteboard valueForPasteboardType:(NSString *)kUTTypeURL];
 
-                else if (UTTypeConformsTo((CFStringRef)type, kUTTypeText))
+                else if (UTTypeConformsTo((__bridge CFStringRef)type, kUTTypeText))
                     pasteboardURL = [NSURL URLWithString:(NSString *)[pasteboard valueForPasteboardType:type]];
             }
         }
@@ -1075,11 +1055,11 @@
             {
                 NSString *message = [NSString stringWithFormat:@"You have recently copied the URL %@. Would you like to import the URL into %@?", pasteboardURL, [[NSProcessInfo processInfo] processName]];
                 
-                DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
-                                                                             message:message  
-                                                                            delegate:self
-                                                                   cancelButtonTitle:@"Don't Import"
-                                                                   otherButtonTitles:@"Import", @"Don't Ask Again", nil] autorelease];
+                DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Copied URL"
+                                                                            message:message  
+                                                                           delegate:self
+                                                                  cancelButtonTitle:@"Don't Import"
+                                                                  otherButtonTitles:@"Import", @"Don't Ask Again", nil];
                 
                 alert.context = pasteboardURL;
                 
@@ -1099,17 +1079,17 @@
     {
         if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
-            self.loadController = [[[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil] autorelease];
+            self.loadController = [[DSMapBoxDocumentLoadController alloc] initWithNibName:nil bundle:nil];
 
-            UINavigationController *wrapper = [[[UINavigationController alloc] initWithRootViewController:loadController] autorelease];
+            UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:loadController];
             
             wrapper.navigationBar.barStyle    = UIBarStyleBlack;
             wrapper.navigationBar.translucent = YES;
             
-            self.loadController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                      style:UIBarButtonItemStyleBordered
-                                                                                                     target:self
-                                                                                                     action:@selector(dismissModal)] autorelease];
+            self.loadController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                     style:UIBarButtonItemStyleBordered
+                                                                                                    target:self
+                                                                                                    action:@selector(dismissModal)];
             
             self.loadController.delegate = self;
             
@@ -1120,7 +1100,7 @@
         }
         else if (buttonIndex > -1)
         {
-            self.saveController = [[[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil] autorelease];
+            self.saveController = [[DSMapBoxDocumentSaveController alloc] initWithNibName:nil bundle:nil];
             
             self.saveController.snapshot = [self mapSnapshot];
             
@@ -1139,16 +1119,16 @@
             
             self.saveController.name = docName;
             
-            DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController] autorelease];
+            DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController];
             
-            self.saveController.navigationItem.leftBarButtonItem  = [[[UIBarButtonItem alloc] initWithTitle:@"Cancel"
-                                                                                                      style:UIBarButtonItemStyleBordered
-                                                                                                     target:self
-                                                                                                     action:@selector(dismissModal)] autorelease];
+            self.saveController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
+                                                                                                     style:UIBarButtonItemStyleBordered
+                                                                                                    target:self
+                                                                                                    action:@selector(dismissModal)];
             
-            self.saveController.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
-                                                                                                                 target:self
-                                                                                                                 action:@selector(saveState:)] autorelease];
+            self.saveController.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
+                                                                                                                target:self
+                                                                                                                action:@selector(saveState:)];
             
             wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
@@ -1166,7 +1146,7 @@
             //
             if ([MFMailComposeViewController canSendMail])
             {
-                MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+                MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
                 
                 mailer.mailComposeDelegate = self;
                 
@@ -1183,11 +1163,11 @@
             }
             else
             {
-                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                                 message:@"Please setup Mail first."
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"OK", nil] autorelease];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                                message:@"Please setup Mail first."
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil];
                 
                 [alert show];
             }
@@ -1201,13 +1181,13 @@
 {
     // put up dimmer & spinner (these will release when the load controller modal goes away)
     //
-    UIView *dimmer = [[[UIView alloc] initWithFrame:controller.view.frame] autorelease];
+    UIView *dimmer = [[UIView alloc] initWithFrame:controller.view.frame];
     
     dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
     [controller.view addSubview:dimmer];
     
-    UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
     [spinner startAnimating];
     
@@ -1283,11 +1263,11 @@
     
     NSString *message = [NSString stringWithFormat:@"%@ was unable to handle the layer file. Please contact us with a copy of the file in order to request support for it.", [[NSProcessInfo processInfo] processName]];
     
-    DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Layer Problem"
-                                                                 message:message
-                                                                delegate:self
-                                                       cancelButtonTitle:@"Don't Send"
-                                                       otherButtonTitles:@"Send Mail", nil] autorelease];
+    DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Layer Problem"
+                                                                message:message
+                                                               delegate:self
+                                                      cancelButtonTitle:@"Don't Send"
+                                                      otherButtonTitles:@"Send Mail", nil];
     
     alert.context = @"layer problem";
     
@@ -1306,7 +1286,7 @@
         {
             if ([MFMailComposeViewController canSendMail])
             {
-                MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+                MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
                 
                 mailer.mailComposeDelegate = self;
                 
@@ -1362,11 +1342,11 @@
             }
             else
             {
-                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                                 message:@"Please setup Mail first."
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"OK", nil] autorelease];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                                message:@"Please setup Mail first."
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil];
                 
                 [alert show];
             }
@@ -1407,22 +1387,23 @@
     switch (result)
     {
         case MFMailComposeResultFailed:
-            
+        {
             [self dismissModalViewControllerAnimated:NO];
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
-                                                             message:@"There was a problem sending the mail."
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"OK", nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Failed"
+                                                            message:@"There was a problem sending the mail."
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", nil];
             
             [alert show];
             
             break;
-            
+        }
         default:
-            
+        {
             [self dismissModalViewControllerAnimated:YES];
+        }
     }
 }
 
@@ -1435,10 +1416,10 @@
     id source = nil;
     
     if ([layerURL isMBTilesURL])
-        source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL] autorelease];
+        source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
 
     else if ([layerURL isTileStreamURL])
-        source = [[[RMTileStreamSource alloc] initWithReferenceURL:layerURL] autorelease];
+        source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
     
     if ( ! source)
         return;
@@ -1462,11 +1443,11 @@
 {
     if ([self.reachability currentReachabilityStatus] == NotReachable)
     {
-        UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                         message:@"Adding a layer requires an active internet connection."
-                                                        delegate:nil
-                                               cancelButtonTitle:nil
-                                               otherButtonTitles:@"OK", nil] autorelease];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                        message:@"Adding a layer requires an active internet connection."
+                                                       delegate:nil
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:@"OK", nil];
         
         [alert show];
         
@@ -1477,8 +1458,8 @@
     //
     [self tappedLayersButton:self];
 
-    DSMapBoxLayerAddTileStreamAlbumController *albumController = [[[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil] autorelease];
-    DSMapBoxAlphaModalNavigationController *wrapper  = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController] autorelease];
+    DSMapBoxLayerAddTileStreamAlbumController *albumController = [[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil];
+    DSMapBoxAlphaModalNavigationController *wrapper  = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

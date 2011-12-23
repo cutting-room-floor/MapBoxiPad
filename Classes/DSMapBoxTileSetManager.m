@@ -43,18 +43,10 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *path = [[bundledTileSets sortedArrayUsingSelector:@selector(compare:)] objectAtIndex:0];
         
-        defaultTileSetURL = [[NSURL fileURLWithPath:path] retain];
+        defaultTileSetURL = [NSURL fileURLWithPath:path];
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [defaultTileSetURL release];
-    [defaultTileSetName release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -118,8 +110,6 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *name = [source shortName];
         
-        [source release];
-        
         return name;
     }
     
@@ -128,8 +118,6 @@ static DSMapBoxTileSetManager *defaultManager;
         RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
         
         NSString *name = [source shortName];
-        
-        [source release];
         
         return name;
     }
@@ -151,8 +139,6 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *description = [source longDescription];
         
-        [source release];
-        
         return description;
     }
     
@@ -161,8 +147,6 @@ static DSMapBoxTileSetManager *defaultManager;
         RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
         
         NSString *description = [source longDescription];
-        
-        [source release];
         
         return description;
     }
@@ -186,8 +170,6 @@ static DSMapBoxTileSetManager *defaultManager;
         
         NSString *attribution = [source shortAttribution];
         
-        [source release];
-        
         return attribution;
     }
 
@@ -196,8 +178,6 @@ static DSMapBoxTileSetManager *defaultManager;
         RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
         
         NSString *attribution = [source shortAttribution];
-        
-        [source release];
         
         return attribution;        
     }
@@ -225,7 +205,7 @@ static DSMapBoxTileSetManager *defaultManager;
     // do the actual lookup once
     //
     if ( ! defaultTileSetName)
-        defaultTileSetName = [[self displayNameForTileSetAtURL:self.defaultTileSetURL] retain];
+        defaultTileSetName = [self displayNameForTileSetAtURL:self.defaultTileSetURL];
     
     return defaultTileSetName;
 }

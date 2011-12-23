@@ -18,11 +18,11 @@
 
 @interface DSMapBoxLayerAddAccountView ()
 
-@property (nonatomic, retain) NSArray *previewImageURLs;
-@property (nonatomic, retain) UIImageView *imageView;
-@property (nonatomic, retain) UILabel *label;
-@property (nonatomic, retain) ASIHTTPRequest *primaryImageRequest;
-@property (nonatomic, retain) NSMutableArray *secondaryImageRequests;
+@property (nonatomic, strong) NSArray *previewImageURLs;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) ASIHTTPRequest *primaryImageRequest;
+@property (nonatomic, strong) NSMutableArray *secondaryImageRequests;
 @property (nonatomic, assign) CGPoint originalCenter;
 @property (nonatomic, assign) CGSize originalSize;
 @property (nonatomic, assign) BOOL flicked;
@@ -79,14 +79,14 @@
         
         // attach flick open gesture
         //
-        UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
+        UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
         [self addGestureRecognizer:pinch];
 
         // fire off primary image download request
         //
         [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
         
-        primaryImageRequest = [[ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]] retain];
+        primaryImageRequest = [ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]];
         
         primaryImageRequest.timeOutSeconds = 10;
         primaryImageRequest.delegate = self;
@@ -97,9 +97,9 @@
         //
         NSMutableArray *downloadURLs = [NSMutableArray arrayWithArray:imageURLs];
         [downloadURLs removeObjectAtIndex:0];
-        previewImageURLs = [[NSArray arrayWithArray:downloadURLs] retain];
+        previewImageURLs = [NSArray arrayWithArray:downloadURLs];
         
-        secondaryImageRequests = [[NSMutableArray array] retain];
+        secondaryImageRequests = [NSMutableArray array];
         
         // add preview views underneath
         //
@@ -107,7 +107,7 @@
         
         for (int i = 0; i < 3; i++)
         {
-            UIImageView *preview = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]] autorelease];
+            UIImageView *preview = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"placeholder.png"]];
             
             preview.frame = imageView.frame;
             
@@ -130,25 +130,10 @@
 
 - (void)dealloc
 {
-    [imageView release];
-    [label release];
-    [previewImageURLs release];
-    
     [primaryImageRequest clearDelegatesAndCancel];
-    [primaryImageRequest release];
     
-    if ([secondaryImageRequests count])
-    {
-        for (ASIHTTPRequest *request in secondaryImageRequests)
-        {
-            [request clearDelegatesAndCancel];
-            [request release];
-        }
-    }
-    
-    [secondaryImageRequests release];
-    
-    [super dealloc];
+    for (ASIHTTPRequest *request in secondaryImageRequests)
+        [request clearDelegatesAndCancel];
 }
 
 #pragma mark -
@@ -426,7 +411,7 @@
     //
     for (int i = 0; i < [self.previewImageURLs count]; i++)
     {
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[self.previewImageURLs objectAtIndex:i]];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[self.previewImageURLs objectAtIndex:i]];
         
         request.timeOutSeconds = 10;
         
@@ -534,7 +519,7 @@
 
         // add image view for corner graphic
         //
-        UIImageView *cornerImageView = [[[UIImageView alloc] initWithImage:cornerImage] autorelease];
+        UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
         
         cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
         
@@ -557,7 +542,7 @@
         //
         cornerImageView.hidden = YES;
         
-        UIImageView *coverView = [[[UIImageView alloc] initWithFrame:self.bounds] autorelease];
+        UIImageView *coverView = [[UIImageView alloc] initWithFrame:self.bounds];
         
         coverView.image = self.imageView.image;
         

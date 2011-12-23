@@ -23,8 +23,8 @@
 
 @interface DSMapBoxLayerAddTileView : UIView <ASIHTTPRequestDelegate>
 
-@property (nonatomic, assign) id <DSMapBoxLayerAddTileViewDelegate>delegate;
-@property (nonatomic, readonly, retain) UIImage *image;
+@property (nonatomic, weak) id <DSMapBoxLayerAddTileViewDelegate>delegate;
+@property (nonatomic, readonly, strong) UIImage *image;
 
 - (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText;
 

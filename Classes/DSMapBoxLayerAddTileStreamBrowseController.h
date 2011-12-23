@@ -16,11 +16,11 @@ extern NSString *const DSMapBoxLayersAdded;
                                                                           DSMapBoxLayerAddTileViewDelegate,
                                                                           ASIHTTPRequestDelegate>
 
-@property (nonatomic, retain) IBOutlet UILabel *helpLabel;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UIScrollView *tileScrollView;
-@property (nonatomic, retain) IBOutlet UIPageControl *tilePageControl;
-@property (nonatomic, retain) NSString *serverName;
-@property (nonatomic, retain) NSURL *serverURL;
+@property (nonatomic, strong) IBOutlet UILabel *helpLabel;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) IBOutlet UIScrollView *tileScrollView;
+@property (nonatomic, strong) IBOutlet UIPageControl *tilePageControl;
+@property (nonatomic, strong) NSString *serverName;
+@property (nonatomic, strong) NSURL *serverURL;
 
 @end

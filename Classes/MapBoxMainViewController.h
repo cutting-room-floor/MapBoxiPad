@@ -22,12 +22,12 @@
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate>
 
-@property (nonatomic, retain) IBOutlet DSMapView *mapView;
-@property (nonatomic, retain) IBOutlet UIImageView *watermarkImage;
-@property (nonatomic, retain) IBOutlet BALabel *attributionLabel;
-@property (nonatomic, retain) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *layersButton;
-@property (nonatomic, retain) IBOutlet UIBarButtonItem *clusteringButton;
+@property (nonatomic, strong) IBOutlet DSMapView *mapView;
+@property (nonatomic, strong) IBOutlet UIImageView *watermarkImage;
+@property (nonatomic, strong) IBOutlet BALabel *attributionLabel;
+@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *layersButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem *clusteringButton;
 
 - (void)restoreState:(id)sender;
 - (void)saveState:(id)sender;

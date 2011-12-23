@@ -14,7 +14,7 @@
 }
 
 @property (nonatomic, assign) BOOL clusteringEnabled;
-@property (nonatomic, readonly, retain) NSArray *clusters;
+@property (nonatomic, readonly, strong) NSArray *clusters;
 
 - (void)addMarker:(RMMarker *)marker AtLatLong:(CLLocationCoordinate2D)point recalculatingImmediately:(BOOL)flag;
 - (void)removeMarkersAndClusters;

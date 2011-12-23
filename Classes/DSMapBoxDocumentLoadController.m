@@ -16,9 +16,9 @@
 - (NSArray *)saveFilesReloadingFromDisk:(BOOL)shouldReloadFromDisk;
 - (void)updateMetadata;
 
-@property (nonatomic, retain) NSArray *saveFiles;
-@property (nonatomic, retain) UIView *dimmer;
-@property (nonatomic, retain) UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) NSArray *saveFiles;
+@property (nonatomic, strong) UIView *dimmer;
+@property (nonatomic, strong) UIActivityIndicatorView *spinner;
 
 @end
 
@@ -47,13 +47,13 @@
     
     // put up dimmer & spinner while loading
     //
-    self.dimmer = [[[UIView alloc] initWithFrame:self.view.frame] autorelease];
+    self.dimmer = [[UIView alloc] initWithFrame:self.view.frame];
     
     self.dimmer.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
     
     [self.view addSubview:self.dimmer];
     
-    self.spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge] autorelease];
+    self.spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     
     [self.spinner startAnimating];
     
@@ -81,21 +81,6 @@
     return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
-- (void)dealloc
-{
-    [noDocsView release];
-    [scroller release];
-    [nameLabel release];
-    [dateLabel release];
-    [actionButton release];
-    [trashButton release];
-    [saveFiles release];
-    [dimmer release];
-    [spinner release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)reload
@@ -113,7 +98,7 @@
         
         // create & add snapshot view
         //
-        DSMapBoxLargeSnapshotView *snapshotView = [[[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot] autorelease];
+        DSMapBoxLargeSnapshotView *snapshotView = [[DSMapBoxLargeSnapshotView alloc] initWithSnapshot:snapshot];
         snapshotView.snapshotName = [saveFile valueForKey:@"name"];
         snapshotView.delegate = self;
         [self.scroller addSubview:snapshotView];
@@ -158,7 +143,7 @@
             }
         }
         
-        [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO] autorelease]]];
+        [filesWithDates sortUsingDescriptors:[NSArray arrayWithObject:[[NSSortDescriptor alloc] initWithKey:@"date" ascending:NO]]];
         
         self.saveFiles = [NSArray arrayWithArray:filesWithDates];
     }
@@ -189,7 +174,7 @@
         
         self.nameLabel.text = [[currentFile valueForKey:@"name"] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
         
-        NSDateFormatter *dateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
 
         [dateFormatter setDateStyle:NSDateFormatterMediumStyle];
         [dateFormatter setTimeStyle:NSDateFormatterShortStyle];
@@ -240,11 +225,11 @@
 
 - (IBAction)tappedSendButton:(id)sender
 {
-    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                        delegate:self
-                                               cancelButtonTitle:nil
-                                          destructiveButtonTitle:nil
-                                               otherButtonTitles:@"Email Snapshot", nil] autorelease];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:@"Email Snapshot", nil];
     
     sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     sheet.tag = 0;
@@ -254,11 +239,11 @@
 
 - (IBAction)tappedTrashButton:(id)sender
 {
-    UIActionSheet *sheet = [[[UIActionSheet alloc] initWithTitle:nil
-                                                        delegate:self
-                                               cancelButtonTitle:nil
-                                          destructiveButtonTitle:@"Delete Map"
-                                               otherButtonTitles:nil] autorelease];
+    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                         destructiveButtonTitle:@"Delete Map"
+                                              otherButtonTitles:nil];
     
     sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     sheet.tag = 1;
@@ -286,7 +271,7 @@
             
             // configure & present mailer
             //
-            MFMailComposeViewController *mailer = [[[MFMailComposeViewController alloc] init] autorelease];
+            MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
             
             mailer.mailComposeDelegate = self;
             
@@ -303,11 +288,11 @@
         }
         else
         {
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                             message:@"Please setup Mail before trying to send map snapshots."
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"OK", nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                            message:@"Please setup Mail before trying to send map snapshots."
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", nil];
             
             [alert show];
         }
@@ -350,24 +335,25 @@
     switch (result)
     {
         case MFMailComposeResultFailed:
-            
+        {
             [self dismissModalViewControllerAnimated:NO];
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Mail Failed"
-                                                             message:@"There was a problem sending the mail. Try again?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Cancel"
-                                                   otherButtonTitles:@"Try Again", nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Failed"
+                                                            message:@"There was a problem sending the mail. Try again?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Cancel"
+                                                  otherButtonTitles:@"Try Again", nil];
             
             [alert show];
             
             break;
-            
+        }
         default:
-            
+        {
             [self dismissModalViewControllerAnimated:YES];
             
             [TESTFLIGHT passCheckpoint:@"shared snapshot from document loader"];
+        }
     }
 }
 

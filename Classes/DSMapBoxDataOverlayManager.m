@@ -49,7 +49,7 @@
 
 @interface DSMapBoxDataOverlayManager ()
 
-@property (nonatomic, retain) DSMapBoxPopoverController *balloon;
+@property (nonatomic, strong) DSMapBoxPopoverController *balloon;
 @property (nonatomic, assign) float lastKnownZoom;
 
 @end
@@ -69,21 +69,13 @@
 
     if (self != nil)
     {
-        mapView  = [inMapView retain];
-        overlays = [[NSMutableArray array] retain];
+        mapView  = inMapView;
+        overlays = [NSMutableArray array];
         
         lastKnownZoom = mapView.contents.zoom;
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [mapView release];
-    [overlays release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -117,8 +109,7 @@
             [layer setValue:inMapView.contents forKey:@"mapContents"];
     }
     
-    [mapView release];
-    mapView = [inMapView retain];
+    mapView = inMapView;
 }
 
 #pragma mark -
@@ -151,15 +142,15 @@
                 
                 RMMarker *marker;
                 
-                CLLocation *location = [[[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
-                                                                   longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude] autorelease];
+                CLLocation *location = [[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
+                                                                  longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude];
 
                 if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
                 {
                     // TODO: style the balloon according to the given style
                 }
                 
-                marker = [[[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]] autorelease];
+                marker = [[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]];
 
                 marker.data = [NSDictionary dictionaryWithObjectsAndKeys:feature,  @"placemark",
                                                                          location, @"location",
@@ -191,7 +182,7 @@
                      ((SimpleKMLPlacemark *)feature).style              && 
                      ((SimpleKMLPlacemark *)feature).style.lineStyle)
             {
-                RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
+                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
                 
                 path.lineColor    = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
                 path.lineWidth    = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
@@ -243,7 +234,7 @@
                      ((SimpleKMLPlacemark *)feature).style              &&
                      ((SimpleKMLPlacemark *)feature).style.polyStyle)
             {
-                RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
+                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
                 
                 path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
                 
@@ -410,13 +401,13 @@
         if ([[item objectForKey:@"link"] length])
             balloonBlurb = [NSString stringWithFormat:@"%@<br/><br/><a href=\"%@\">more</a>", balloonBlurb, [item objectForKey:@"link"]];
         
-        RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+        RMMarker *marker = [[RMMarker alloc] initWithUIImage:image];
         
         CLLocationCoordinate2D coordinate;
         coordinate.latitude  = [[item objectForKey:@"latitude"]  floatValue];
         coordinate.longitude = [[item objectForKey:@"longitude"] floatValue];
 
-        CLLocation *location = [[[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
+        CLLocation *location = [[CLLocation alloc] initWithLatitude:coordinate.latitude longitude:coordinate.longitude];
         
         // create a generic point with the RSS item's attributes plus location for clustering
         //
@@ -493,7 +484,7 @@
             for (NSString *key in [[item objectForKey:@"properties"] allKeys])
                 [balloonBlurb appendString:[NSString stringWithFormat:@"%@: %@<br/>", key, [[item objectForKey:@"properties"] objectForKey:key]]];
             
-            RMMarker *marker = [[[RMMarker alloc] initWithUIImage:image] autorelease];
+            RMMarker *marker = [[RMMarker alloc] initWithUIImage:image];
             
             CLLocation *location = [[item objectForKey:@"geometries"] objectAtIndex:0];
             
@@ -524,7 +515,7 @@
         }
         else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypeLineString)
         {
-            RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
+            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
             
             path.lineColor    = kMapBoxBlue;
             path.fillColor    = [UIColor clearColor];
@@ -555,7 +546,7 @@
         {
             for (NSArray *linearRing in [item objectForKey:@"geometries"])
             {
-                RMPath *path = [[[RMPath alloc] initWithContents:self.mapView.contents] autorelease];
+                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
                 
                 path.lineColor    = kMapBoxBlue;
                 path.fillColor    = [UIColor clearColor];
@@ -721,9 +712,9 @@
             if (self.balloon)
                 [self.balloon dismissPopoverAnimated:NO];
             
-            DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+            DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
             
-            self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
+            self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
             
             self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
             self.balloon.delegate = self;
@@ -765,12 +756,12 @@
     
     NSDictionary *markerData = ((NSDictionary *)marker.data);
     
-    DSMapBoxBalloonController *balloonController = [[[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
     CGRect attachPoint;
     
     // init with generic view controller
     //
-    self.balloon = [[[DSMapBoxPopoverController alloc] initWithContentViewController:[[[UIViewController alloc] initWithNibName:nil bundle:nil] autorelease]] autorelease];
+    self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
     
     self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
     self.balloon.delegate = self;

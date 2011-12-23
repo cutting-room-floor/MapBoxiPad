@@ -10,7 +10,7 @@
 
 @interface DSMapBoxBalloonController ()
 
-@property (nonatomic, retain) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
 
 @end
 
@@ -28,8 +28,8 @@
 
     if (self != nil)
     {
-        name        = [[NSString stringWithString:@""] retain];
-        description = [[NSString stringWithString:@""] retain];
+        name        = [NSString stringWithString:@""];
+        description = [NSString stringWithString:@""];
     }
     
     return self;
@@ -65,36 +65,26 @@
     [webView stopLoading];
 
     webView.delegate = nil;
-    
-    [name release];
-    [description release];
-    [webView release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
 
 - (void)setName:(NSString *)inName
 {
-    [name release];
-    
     if ( ! inName)
-        name = [[NSString stringWithString:@"Untitled"] retain];
+        name = [NSString stringWithString:@"Untitled"];
     
     else
-        name = [inName retain];
+        name = inName;
 }
 
 - (void)setDescription:(NSString *)inDescription
 {
-    [description release];
-    
     if ( ! inDescription)
-        description = [[NSString stringWithString:@"(no description)"] retain];
+        description = [NSString stringWithString:@"(no description)"];
     
     else
-        description = [inDescription retain];
+        description = inDescription;
 }
 
 #pragma mark -

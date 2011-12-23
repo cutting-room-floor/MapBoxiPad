@@ -13,8 +13,8 @@
                                                                       UITableViewDataSource,
                                                                       ASIHTTPRequestDelegate>
 
-@property (nonatomic, retain) IBOutlet UITextField *entryField;
-@property (nonatomic, retain) IBOutlet UITableView *recentServersTableView;
+@property (nonatomic, strong) IBOutlet UITextField *entryField;
+@property (nonatomic, strong) IBOutlet UITableView *recentServersTableView;
 
 - (IBAction)tappedNextButton:(id)sender;
 

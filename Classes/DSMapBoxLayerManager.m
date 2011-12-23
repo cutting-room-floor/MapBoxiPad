@@ -24,15 +24,16 @@
 #import "RMTileStreamSource.h"
 #import "RMCachedTileSource.h"
 #import "RMMarker.h"
+#import "RMLayerCollection.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerManager ()
 
-@property (nonatomic, retain) DSMapBoxDataOverlayManager *dataOverlayManager;
-@property (nonatomic, retain) DSMapView *baseMapView;
-@property (nonatomic, retain) NSArray *tileLayers;
-@property (nonatomic, retain) NSArray *dataLayers;
+@property (nonatomic, strong) DSMapBoxDataOverlayManager *dataOverlayManager;
+@property (nonatomic, strong) DSMapView *baseMapView;
+@property (nonatomic, strong) NSArray *tileLayers;
+@property (nonatomic, strong) NSArray *dataLayers;
 
 - (void)reloadLayersFromDisk;
 
@@ -54,11 +55,11 @@
 
     if (self != nil)
     {
-        dataOverlayManager = [overlayManager retain];
-        baseMapView        = [mapView retain];
+        dataOverlayManager = overlayManager;
+        baseMapView        = mapView;
         
-        tileLayers = [[NSArray array] retain];
-        dataLayers = [[NSArray array] retain];
+        tileLayers = [NSArray array];
+        dataLayers = [NSArray array];
         
         [self reloadLayersFromDisk];
         
@@ -101,13 +102,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDocumentsChangedNotification object:nil];
-
-    [dataOverlayManager release];
-    [baseMapView release];
-    [tileLayers release];
-    [dataLayers release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -199,7 +193,7 @@
     
     // pick up any new data layers on disk
     //
-    for (NSString *path in docs)
+    for (__strong NSString *path in docs)
     {
         path = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], path];
         
@@ -391,7 +385,7 @@
     switch (fromIndexPath.section)
     {
         case DSMapBoxLayerSectionTile:
-            
+        {
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
 
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
@@ -402,9 +396,9 @@
             self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
             
             break;
-            
+        }
         case DSMapBoxLayerSectionData:
-            
+        {
             layer = [self.dataLayers objectAtIndex:fromIndexPath.row];
             
             NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
@@ -415,6 +409,7 @@
             self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
             break;
+        }
     }
     
     [self reloadLayersFromDisk];
@@ -428,7 +423,7 @@
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionTile:
-            
+        {
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
@@ -443,9 +438,9 @@
             self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
             
             break;
-            
+        }
         case DSMapBoxLayerSectionData:
-            
+        {
             layer = [self.dataLayers objectAtIndex:indexPath.row];
 
             if ([[layer objectForKey:@"selected"] boolValue])
@@ -460,6 +455,7 @@
             self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
             break;
+        }
     }
 }
 
@@ -507,20 +503,20 @@
                 id <RMTileSource>source;
                 
                 if ([tileSetURL isEqual:kDSOpenStreetMapURL])
-                    source = [[[RMOpenStreetMapSource alloc] init] autorelease];
+                    source = [[RMOpenStreetMapSource alloc] init];
 
                 else if ([tileSetURL isEqual:kDSMapQuestOSMURL])
-                    source = [[[RMMapQuestOSMSource alloc] init] autorelease];
+                    source = [[RMMapQuestOSMSource alloc] init];
 
                 else if ([tileSetURL isTileStreamURL])
-                    source = [[[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL] autorelease];
+                    source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
                 
                 else
-                    source = [[[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL] autorelease];
+                    source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
                 
                 // create the overlay map view
                 //
-                DSMapBoxTiledLayerMapView *layerMapView = [[[DSMapBoxTiledLayerMapView alloc] initWithFrame:self.baseMapView.frame] autorelease];
+                DSMapBoxTiledLayerMapView *layerMapView = [[DSMapBoxTiledLayerMapView alloc] initWithFrame:self.baseMapView.frame];
                 
                 layerMapView.tileSetURL = tileSetURL;
                 
@@ -534,13 +530,13 @@
                 layerMapView.enableRotate     = self.baseMapView.enableRotate;
                 layerMapView.deceleration     = self.baseMapView.deceleration;
 
-                [[[DSMapContents alloc] initWithView:layerMapView 
-                                          tilesource:source
-                                        centerLatLon:self.baseMapView.contents.mapCenter
-                                           zoomLevel:self.baseMapView.contents.zoom
-                                        maxZoomLevel:[source maxZoom]
-                                        minZoomLevel:[source minZoom]
-                                     backgroundImage:nil] autorelease];
+                [[DSMapContents alloc] initWithView:layerMapView 
+                                         tilesource:source
+                                       centerLatLon:self.baseMapView.contents.mapCenter
+                                          zoomLevel:self.baseMapView.contents.zoom
+                                       maxZoomLevel:[source maxZoom]
+                                       minZoomLevel:[source minZoom]
+                                    backgroundImage:nil];
                 
                 // get peer layer map views
                 //

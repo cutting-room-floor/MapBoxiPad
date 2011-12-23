@@ -10,7 +10,7 @@
 
 @interface DSMapBoxPopoverController : UIPopoverController
 
-@property (nonatomic, assign) UIView *presentingView;
+@property (nonatomic, weak) UIView *presentingView;
 @property (nonatomic, assign) UIPopoverArrowDirection arrowDirection;
 @property (nonatomic, assign) RMProjectedPoint projectedPoint;
 

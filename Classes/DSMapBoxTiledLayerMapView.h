@@ -20,7 +20,7 @@
  * to own the markers & their touch events, but to pass pan/zoom events to the 
  * master who will move us implicitly.
  */
-@property (nonatomic, retain) DSMapView *masterView;
-@property (nonatomic, retain) NSURL *tileSetURL;
+@property (nonatomic, strong) DSMapView *masterView;
+@property (nonatomic, strong) NSURL *tileSetURL;
 
 @end

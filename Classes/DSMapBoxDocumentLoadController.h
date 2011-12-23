@@ -30,13 +30,13 @@
                                                               MFMailComposeViewControllerDelegate,
                                                               UIAlertViewDelegate>
 
-@property (nonatomic, assign) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
-@property (nonatomic, retain) IBOutlet UIView *noDocsView;
-@property (nonatomic, retain) IBOutlet UIScrollView *scroller;
-@property (nonatomic, retain) IBOutlet UILabel *nameLabel;
-@property (nonatomic, retain) IBOutlet UILabel *dateLabel;
-@property (nonatomic, retain) IBOutlet UIButton *actionButton;
-@property (nonatomic, retain) IBOutlet UIButton *trashButton;
+@property (nonatomic, weak) id <NSObject, DSMapBoxDocumentLoadControllerDelegate>delegate;
+@property (nonatomic, strong) IBOutlet UIView *noDocsView;
+@property (nonatomic, strong) IBOutlet UIScrollView *scroller;
+@property (nonatomic, strong) IBOutlet UILabel *nameLabel;
+@property (nonatomic, strong) IBOutlet UILabel *dateLabel;
+@property (nonatomic, strong) IBOutlet UIButton *actionButton;
+@property (nonatomic, strong) IBOutlet UIButton *trashButton;
 
 + (NSString *)saveFolderPath;
 

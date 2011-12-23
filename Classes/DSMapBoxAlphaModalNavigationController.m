@@ -12,9 +12,9 @@
 
 @interface DSMapBoxAlphaModalNavigationController ()
 
-@property (nonatomic, retain) UIView *baseView;
-@property (nonatomic, retain) UIImageView *backgroundImageView;
-@property (nonatomic, retain) UITapGestureRecognizer *outsideTapRecognizer;
+@property (nonatomic, strong) UIView *baseView;
+@property (nonatomic, strong) UIImageView *backgroundImageView;
+@property (nonatomic, strong) UITapGestureRecognizer *outsideTapRecognizer;
 
 @end
 
@@ -35,7 +35,7 @@
 
     // image background with poor man's blur
     //
-    self.backgroundImageView = [[[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)] autorelease];
+    self.backgroundImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 540, 620)];
     
     self.backgroundImageView.contentMode = UIViewContentModeBottom;
     self.backgroundImageView.alpha       = 0.5;
@@ -108,7 +108,7 @@
     
     if (self.modalPresentationStyle == UIModalPresentationFormSheet)
     {
-        self.outsideTapRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        self.outsideTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         
         [self.outsideTapRecognizer setNumberOfTapsRequired:1];
         
@@ -132,14 +132,8 @@
 
 - (void)dealloc
 {
-    [baseView release];
-    [backgroundImageView release];
-    [outsideTapRecognizer release];
-    
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:self.view.window];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:self.view.window];
-    
-    [super dealloc];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:self.view.window];    
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

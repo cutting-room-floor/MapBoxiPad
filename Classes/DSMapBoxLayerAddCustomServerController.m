@@ -25,8 +25,8 @@
 - (void)indicateFailure;
 - (void)updateRecentServersAppearance;
 
-@property (nonatomic, retain) ASIHTTPRequest *validationRequest;
-@property (nonatomic, retain) NSURL *finalURL;
+@property (nonatomic, strong) ASIHTTPRequest *validationRequest;
+@property (nonatomic, strong) NSURL *finalURL;
 
 @end
 
@@ -45,15 +45,15 @@
     
     self.navigationItem.title = @"Custom Source";
 
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Custom Source"
-                                                                              style:UIBarButtonItemStyleBordered
-                                                                             target:nil 
-                                                                             action:nil] autorelease];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Custom Source"
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:nil 
+                                                                            action:nil];
 
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Browse"
-                                                                               style:UIBarButtonItemStyleBordered
-                                                                              target:self
-                                                                              action:@selector(tappedNextButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Browse"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(tappedNextButton:)];
     
     // text field styling
     //
@@ -97,19 +97,9 @@
 
 - (void)dealloc
 {
-    [entryField release];
-    [recentServersTableView release];;
-    [finalURL release];
-
     if (validationRequest)
-    {
         [validationRequest clearDelegatesAndCancel];
-        [validationRequest release];
-    }
-    
-    [super dealloc];
 }
-
 
 #pragma mark -
 
@@ -130,7 +120,7 @@
     self.navigationItem.rightBarButtonItem.enabled = NO;
 
     if ( ! [self.entryField.rightView isKindOfClass:[UIActivityIndicatorView class]])
-        self.entryField.rightView = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+        self.entryField.rightView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     
     ((UIActivityIndicatorView *)self.entryField.rightView).hidesWhenStopped = YES;
     
@@ -144,7 +134,7 @@
     if ([self.entryField.rightView isKindOfClass:[UIActivityIndicatorView class]])
         [(UIActivityIndicatorView *)self.entryField.rightView stopAnimating];
     
-    self.entryField.rightView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]] autorelease];
+    self.entryField.rightView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"check.png"]];
     
     self.navigationItem.rightBarButtonItem.enabled = YES;
 }
@@ -255,7 +245,7 @@
 
     // browse the server
     //
-    DSMapBoxLayerAddTileStreamBrowseController *controller = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxLayerAddTileStreamBrowseController *controller = [[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil];
 
     if ([[self.finalURL absoluteString] hasPrefix:[DSMapBoxTileStreamCommon serverHostnamePrefix]])
     {
@@ -356,15 +346,15 @@
     
     if ( ! cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RecentServerCellIdentifier];
         
         // white chevron, unlike black default
         //
-        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]] autorelease];
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]];
         
         // background view for color highlighting
         //
-        cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+        cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
         
         // normal text & background colors

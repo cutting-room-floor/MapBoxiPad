@@ -9,6 +9,7 @@
 #import "DSMapBoxTiledLayerMapView.h"
 
 #import "RMMarker.h"
+#import "RMLayerCollection.h"
 
 @interface RMMapView (DSMapBoxTiledLayerMapView)
 
@@ -31,22 +32,13 @@
 @synthesize masterView;
 @synthesize tileSetURL;
 
-- (void)dealloc
-{
-    [masterView release];
-    [tileSetURL release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)setMasterView:(DSMapView *)mapView
 {
     NSAssert(([mapView isMemberOfClass:[DSMapView class]] || ! mapView), @"Master view must be an instance of DSMapView or nil");
     
-    [masterView release];
-    masterView = [mapView retain];
+    masterView = mapView;
     
     if (mapView)
         self.userInteractionEnabled = YES;

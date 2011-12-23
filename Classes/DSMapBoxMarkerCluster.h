@@ -15,7 +15,7 @@
     NSMutableArray *markers;
 }
 
-@property (nonatomic, readonly, retain) NSArray *markers;
+@property (nonatomic, readonly, strong) NSArray *markers;
 @property (nonatomic, readonly, assign) CLLocationCoordinate2D center;
 
 - (void)addMarker:(RMMarker *)marker;

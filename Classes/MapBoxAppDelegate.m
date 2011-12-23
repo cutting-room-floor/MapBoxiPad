@@ -21,7 +21,7 @@
 
 @interface MapBoxAppDelegate ()
 
-@property (nonatomic, retain) DirectoryWatcher *directoryWatcher;
+@property (nonatomic, strong) DirectoryWatcher *directoryWatcher;
 
 @end
 
@@ -36,12 +36,7 @@
 
 - (void)dealloc
 {
-    [directoryWatcher invalidate];
-    [directoryWatcher release];
-    [viewController release];
-    [window release];
-    
-    [super dealloc];
+    [directoryWatcher invalidate];    
 }
 
 #pragma mark -
@@ -164,7 +159,7 @@
 {
     // settings-based defaults resets
     //
-    for (NSString *prefKey in [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys])
+    for (__strong NSString *prefKey in [[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] allKeys])
     {
         if ([prefKey hasPrefix:@"reset"] && [[NSUserDefaults standardUserDefaults] boolForKey:prefKey])
         {
@@ -272,7 +267,7 @@
     {
         // we'll do this in the background to avoid blocking
         //
-        __block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:externalURL];
+        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:externalURL];
         
         // download to disk
         //
@@ -289,11 +284,11 @@
         //
         [request setFailedBlock:^(void)
         {
-            DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Download Problem"
-                                                                         message:[NSString stringWithFormat:@"There was a problem downloading %@. Would you like to try again?", externalURL]
-                                                                        delegate:self
-                                                               cancelButtonTitle:@"Cancel"
-                                                               otherButtonTitles:@"Retry", nil] autorelease];
+            DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Download Problem"
+                                                                        message:[NSString stringWithFormat:@"There was a problem downloading %@. Would you like to try again?", externalURL]
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Cancel"
+                                                              otherButtonTitles:@"Retry", nil];
             
             alert.context = externalURL;
             

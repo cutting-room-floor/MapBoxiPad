@@ -28,11 +28,11 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @interface DSMapBoxLayerAddTileStreamBrowseController ()
 
-@property (nonatomic, retain) NSArray *layers;
-@property (nonatomic, retain) NSMutableArray *selectedLayers;
-@property (nonatomic, retain) NSMutableArray *selectedImages;
-@property (nonatomic, retain) ASIHTTPRequest *layersRequest;
-@property (nonatomic, retain) UIView *animatedTileView;
+@property (nonatomic, strong) NSArray *layers;
+@property (nonatomic, strong) NSMutableArray *selectedLayers;
+@property (nonatomic, strong) NSMutableArray *selectedImages;
+@property (nonatomic, strong) ASIHTTPRequest *layersRequest;
+@property (nonatomic, strong) UIView *animatedTileView;
 @property (nonatomic, assign) CGPoint originalTileViewCenter;
 @property (nonatomic, assign) CGSize originalTileViewSize;
 
@@ -75,9 +75,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     else
         self.navigationItem.title = [NSString stringWithFormat:@"Browse %@%@ Maps", self.serverName, ([self.serverName hasSuffix:@"s"] ? @"'" : @"'s")];
     
-    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
-                                                                                          target:self 
-                                                                                          action:@selector(tappedDoneButton:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
+                                                                                         target:self 
+                                                                                         action:@selector(tappedDoneButton:)];
 
     self.navigationItem.rightBarButtonItem.enabled = NO;
     
@@ -135,23 +135,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)dealloc
 {
-    [helpLabel release];
-    [spinner release];
-    [tileScrollView release];
-    [tilePageControl release];
-    [serverName release];
-    [serverURL release];
-    [layers release];
-    [selectedLayers release];
-    [selectedImages release];
-    [animatedTileView release];
-    
     [layersRequest clearDelegatesAndCancel];
-    [layersRequest release];
-    
-    [super dealloc];
 }
-
 
 #pragma mark -
 
@@ -227,7 +212,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     //
     dispatch_delayed_ui_action(0.25, ^(void)
     {
-        DSMapBoxLayerAddPreviewController *preview = [[[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil] autorelease];                         
+        DSMapBoxLayerAddPreviewController *preview = [[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil];                         
         
         NSDictionary *layer = [self.layers objectAtIndex:tileView.tag];
         
@@ -245,7 +230,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                            [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
-        DSMapBoxAlphaModalNavigationController *wrapper = [[[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview] autorelease];
+        DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview];
         
         wrapper.navigationBar.translucent = YES;
         
@@ -375,7 +360,7 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
             
             for (int i = 0; i < pageCount; i++)
             {
-                UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * self.tileScrollView.frame.size.width, 0, self.tileScrollView.frame.size.width, self.tileScrollView.frame.size.height)] autorelease];
+                UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * self.tileScrollView.frame.size.width, 0, self.tileScrollView.frame.size.width, self.tileScrollView.frame.size.height)];
                 
                 containerView.backgroundColor = [UIColor clearColor];
                 
@@ -399,9 +384,9 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
                         else if (col == 2)
                             x = containerView.frame.size.width - 148 - 32;
                         
-                        DSMapBoxLayerAddTileView *tileView = [[[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
-                                                                                                     imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                    labelText:[[self.layers objectAtIndex:index] valueForKey:@"name"]] autorelease];
+                        DSMapBoxLayerAddTileView *tileView = [[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
+                                                                                                    imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                   labelText:[[self.layers objectAtIndex:index] valueForKey:@"name"]];
                         
                         tileView.delegate = self;
                         tileView.tag = index;

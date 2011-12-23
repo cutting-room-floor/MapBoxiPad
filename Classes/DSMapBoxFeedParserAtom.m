@@ -18,7 +18,7 @@
 
     NSError *error = nil;
     
-    CXMLDocument *doc = [[[CXMLDocument alloc] initWithXMLString:feed options:0 error:&error] autorelease];
+    CXMLDocument *doc = [[CXMLDocument alloc] initWithXMLString:feed options:0 error:&error];
     
     if ( ! error)
     {

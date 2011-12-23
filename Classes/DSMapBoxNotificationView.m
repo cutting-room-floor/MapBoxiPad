@@ -12,8 +12,8 @@
 
 @interface DSMapBoxNotificationView ()
 
-@property (nonatomic, retain) NSString *message;
-@property (nonatomic, retain) UILabel *label;
+@property (nonatomic, strong) NSString *message;
+@property (nonatomic, strong) UILabel *label;
 
 @end
 
@@ -26,7 +26,7 @@
 
 + (id)notificationWithMessage:(NSString *)message
 {
-    DSMapBoxNotificationView *newView = [[[DSMapBoxNotificationView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)] autorelease];
+    DSMapBoxNotificationView *newView = [[DSMapBoxNotificationView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)];
     
     newView.message = message;
     
@@ -47,7 +47,7 @@
         self.layer.shadowOffset     = CGSizeMake(0, 1);
         self.layer.shadowOpacity    = 0.5;
         
-        label = [[[UILabel alloc] initWithFrame:CGRectMake(10, 4, 480, 20)] autorelease];
+        label = [[UILabel alloc] initWithFrame:CGRectMake(10, 4, 480, 20)];
         
         label.textColor        = [UIColor whiteColor];
         label.backgroundColor  = [UIColor clearColor];
@@ -60,21 +60,13 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [label release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)setMessage:(NSString *)inMessage
 {
     // swap it out
     //
-    [message release];
-    message = [inMessage retain];
+    message = inMessage;
     
     // update label
     //

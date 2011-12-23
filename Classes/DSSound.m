@@ -32,9 +32,9 @@ void DSSound_SoundCompletionProc(SystemSoundID sound, void *clientData);
 
     SystemSoundID sound;
     
-    AudioServicesCreateSystemSoundID((CFURLRef)soundURL, &sound);
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)soundURL, &sound);
     
-    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, DSSound_SoundCompletionProc, self);
+    AudioServicesAddSystemSoundCompletion(sound, NULL, NULL, DSSound_SoundCompletionProc, (__bridge void *)(self));
     
     AudioServicesPlaySystemSound(sound);
 }

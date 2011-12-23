@@ -14,9 +14,9 @@
                                                                          DSMapBoxLayerAddAccountViewDelegate,
                                                                          ASIHTTPRequestDelegate>
 
-@property (nonatomic, retain) IBOutlet UILabel *helpLabel;
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *spinner;
-@property (nonatomic, retain) IBOutlet UIScrollView *accountScrollView;
-@property (nonatomic, retain) IBOutlet UIPageControl *accountPageControl;
+@property (nonatomic, strong) IBOutlet UILabel *helpLabel;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
+@property (nonatomic, strong) IBOutlet UIScrollView *accountScrollView;
+@property (nonatomic, strong) IBOutlet UIPageControl *accountPageControl;
 
 @end

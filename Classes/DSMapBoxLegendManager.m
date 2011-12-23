@@ -51,11 +51,11 @@
 
 @interface DSMapBoxLegendManager ()
 
-@property (nonatomic, retain) IBOutlet UIView *legendView;
-@property (nonatomic, retain) IBOutlet UIWebView *contentWebView;
-@property (nonatomic, retain) IBOutlet UIImageView *dragHandle;
-@property (nonatomic, retain) IBOutlet UIImageView *topScrollHint;
-@property (nonatomic, retain) IBOutlet UIImageView *bottomScrollHint;
+@property (nonatomic, strong) IBOutlet UIView *legendView;
+@property (nonatomic, strong) IBOutlet UIWebView *contentWebView;
+@property (nonatomic, strong) IBOutlet UIImageView *dragHandle;
+@property (nonatomic, strong) IBOutlet UIImageView *topScrollHint;
+@property (nonatomic, strong) IBOutlet UIImageView *bottomScrollHint;
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture;
 - (void)collapseInterfaceAnimated:(BOOL)animated;
@@ -81,7 +81,7 @@
     
     if (self)
     {
-        _legendSources = [[NSArray array] retain];
+        _legendSources = [NSArray array];
 
         // load UI
         //
@@ -137,16 +137,16 @@
         
         // attach hide & show gestures
         //
-        UISwipeGestureRecognizer *leftSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
         [contentWebView addGestureRecognizer:leftSwipe];
 
-        UISwipeGestureRecognizer *rightSwipe = [[[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
         [self.dragHandle addGestureRecognizer:rightSwipe];
         [self.legendView addGestureRecognizer:rightSwipe];
         
-        UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
         tap.numberOfTapsRequired = 1;
         [self.dragHandle addGestureRecognizer:tap];
         
@@ -159,18 +159,6 @@
     return self;
 }
 
-- (void)dealloc
-{
-    [_legendSources release];
-    [legendView release];
-    [contentWebView release];
-    [dragHandle release];
-    [topScrollHint release];
-    [bottomScrollHint release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)setLegendSources:(NSArray *)legendSources
@@ -181,8 +169,7 @@
         
         // swap out new sources
         //
-        [_legendSources release];
-        _legendSources = [legendSources retain];
+        _legendSources = legendSources;
         
         // get TileMill CSS
         //
@@ -449,11 +436,11 @@
 {
     if ( ! [[request.URL absoluteString] isEqualToString:@"about:blank"] && navigationType == UIWebViewNavigationTypeLinkClicked)
     {
-        DSMapBoxAlertView *alert = [[[DSMapBoxAlertView alloc] initWithTitle:@"Open URL?"
-                                                                     message:[request.URL absoluteString]
-                                                                    delegate:self
-                                                           cancelButtonTitle:@"Cancel"
-                                                           otherButtonTitles:@"Open", nil] autorelease];
+        DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Open URL?"
+                                                                    message:[request.URL absoluteString]
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Cancel"
+                                                          otherButtonTitles:@"Open", nil];
         
         alert.context = request.URL;
         

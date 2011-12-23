@@ -14,10 +14,10 @@
 
 @interface DSMapBoxLayerAddTileView ()
 
-@property (nonatomic, retain) UIImageView *imageView;
-@property (nonatomic, retain) UILabel *label;
-@property (nonatomic, retain) ASIHTTPRequest *imageRequest;
-@property (nonatomic, retain) UIImage *image;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) ASIHTTPRequest *imageRequest;
+@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, assign) CGSize originalSize;
 @property (nonatomic, assign) BOOL selected;
 @property (nonatomic, assign) BOOL touched;
@@ -60,7 +60,7 @@
 
         [self addSubview:imageView];
 
-        image = [imageView.image retain];
+        image = imageView.image;
         
         // create label
         //
@@ -77,14 +77,14 @@
         {
             // attach pinch preview gesture
             //
-            UIPinchGestureRecognizer *pinch = [[[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)] autorelease];
+            UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
             [self addGestureRecognizer:pinch];
 
             // fire off image download request
             //
             [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
             
-            imageRequest = [[ASIHTTPRequest requestWithURL:imageURL] retain];
+            imageRequest = [ASIHTTPRequest requestWithURL:imageURL];
             
             imageRequest.timeOutSeconds = 10;
             imageRequest.delegate = self;
@@ -95,7 +95,7 @@
         {
             // add empty image
             //
-            UIImageView *emptyView = [[[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)] autorelease];
+            UIImageView *emptyView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, rect.size.width - 20, rect.size.height - 20)];
             
             emptyView.image = [UIImage imageNamed:@"empty.png"];
 
@@ -128,12 +128,6 @@
 - (void)dealloc
 {
     [imageRequest clearDelegatesAndCancel];
-    
-    [imageRequest release];
-    [image release];
-    [label release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -327,7 +321,7 @@
 
         // add image view for corner graphic
         //
-        UIImageView *cornerImageView = [[[UIImageView alloc] initWithImage:cornerImage] autorelease];
+        UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
         
         cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
         

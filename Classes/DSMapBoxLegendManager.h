@@ -11,7 +11,7 @@
 
 @interface DSMapBoxLegendManager : NSObject <UIScrollViewDelegate, UIWebViewDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, retain) NSArray *legendSources;
+@property (nonatomic, strong) NSArray *legendSources;
 
 - (id)initWithFrame:(CGRect)frame parentView:(UIView *)view;
 

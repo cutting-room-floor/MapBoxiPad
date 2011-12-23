@@ -19,8 +19,8 @@
 
 @interface DSMapBoxLayerAddTileStreamAlbumController ()
 
-@property (nonatomic, retain) ASIHTTPRequest *albumRequest;
-@property (nonatomic, retain) NSArray *servers;
+@property (nonatomic, strong) ASIHTTPRequest *albumRequest;
+@property (nonatomic, strong) NSArray *servers;
 
 @end
 
@@ -47,19 +47,19 @@
     //
     self.navigationItem.title = @"Choose Hosting Account";
     
-    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Choose Account"
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Choose Account"
+                                                                             style:UIBarButtonItemStyleBordered
+                                                                            target:nil 
+                                                                            action:nil];
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
+                                                                                          target:self
+                                                                                          action:@selector(dismissModal)];
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"More Options"
                                                                               style:UIBarButtonItemStyleBordered
-                                                                             target:nil 
-                                                                             action:nil] autorelease];
-    
-    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel 
-                                                                                           target:self
-                                                                                           action:@selector(dismissModal)] autorelease];
-    
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"More Options"
-                                                                               style:UIBarButtonItemStyleBordered
-                                                                              target:self
-                                                                              action:@selector(tappedCustomButton:)] autorelease];
+                                                                             target:self
+                                                                             action:@selector(tappedCustomButton:)];
 
     // setup progress indication
     //
@@ -88,22 +88,13 @@
 - (void)dealloc
 {
     [albumRequest clearDelegatesAndCancel];
-
-    [helpLabel release];
-    [spinner release];
-    [accountScrollView release];
-    [accountPageControl release];
-    [albumRequest release];
-    [servers release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
 
 - (void)tappedCustomButton:(id)sender
 {
-    DSMapBoxLayerAddCustomServerController *customController = [[[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxLayerAddCustomServerController *customController = [[DSMapBoxLayerAddCustomServerController alloc] initWithNibName:nil bundle:nil];
     
     [(UINavigationController *)self.parentViewController pushViewController:customController animated:YES];
 }
@@ -121,7 +112,7 @@
     
     NSString *serverURLString = [NSString stringWithFormat:@"%@/%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], [account valueForKey:@"id"]];
     
-    DSMapBoxLayerAddTileStreamBrowseController *browseController = [[[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil] autorelease];
+    DSMapBoxLayerAddTileStreamBrowseController *browseController = [[DSMapBoxLayerAddTileStreamBrowseController alloc] initWithNibName:nil bundle:nil];
     
     browseController.serverName = ([account objectForKey:@"name"] ? [account objectForKey:@"name"] : [account objectForKey:@"id"]);
     browseController.serverURL  = [NSURL URLWithString:serverURLString];
@@ -220,7 +211,7 @@
 
         for (int i = 0; i < pageCount; i++)
         {
-            UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(i * self.accountScrollView.frame.size.width, 0, self.accountScrollView.frame.size.width, self.accountScrollView.frame.size.height)] autorelease];
+            UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * self.accountScrollView.frame.size.width, 0, self.accountScrollView.frame.size.width, self.accountScrollView.frame.size.height)];
             
             containerView.backgroundColor = [UIColor clearColor];
             
@@ -250,9 +241,9 @@
                     NSString *accountName = ([[server objectForKey:@"name"] length] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
                     NSString *layerCount  = [server valueForKey:@"mapCount"];
 
-                    DSMapBoxLayerAddAccountView *accountView = [[[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
-                                                                                                         imageURLs:[imagesToDownload objectAtIndex:index]
-                                                                                                         labelText:[NSString stringWithFormat:@"%@ (%@)", accountName, layerCount]] autorelease];
+                    DSMapBoxLayerAddAccountView *accountView = [[DSMapBoxLayerAddAccountView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
+                                                                                                        imageURLs:[imagesToDownload objectAtIndex:index]
+                                                                                                        labelText:[NSString stringWithFormat:@"%@ (%@)", accountName, layerCount]];
                     
                     accountView.delegate = self;
                     accountView.tag = index;

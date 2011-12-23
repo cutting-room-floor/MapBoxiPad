@@ -23,7 +23,7 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
 @interface DSMapContents ()
 
-@property (nonatomic, assign) RMMapView *mapView;
+@property (nonatomic, weak) RMMapView *mapView;
 
 - (void)recalculateClustersIfNeeded;
 - (void)stopRecalculatingClusters;
@@ -58,7 +58,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     {
         // swap out the marker manager with our custom, clustering one
         //
-        [markerManager release];
         markerManager = [[DSMapBoxMarkerManager alloc] initWithContents:self];
         
         mapView = (RMMapView *)newView;
@@ -71,13 +70,6 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [layerMapViews release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -294,25 +286,21 @@ NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReache
 
     if ([newTileSource isKindOfClass:[RMMBTilesTileSource class]] || ! [[NSUserDefaults standardUserDefaults] boolForKey:@"cacheNetworkTiles"])
     {
-        [tileSource release];
-        tileSource = [newTileSource retain];
+        tileSource = newTileSource;
     }
     else
     {
         RMCachedTileSource *newCachedTileSource = [RMCachedTileSource cachedTileSourceWithSource:newTileSource];
         
-        [tileSource release];
-        tileSource = [newCachedTileSource retain];
+        tileSource = newCachedTileSource;
     }
 
     [self setMinZoom:[newTileSource minZoom]];
     [self setMaxZoom:[newTileSource maxZoom]];
     
-    [projection release];
-    projection = [[tileSource projection] retain];
+    projection = [tileSource projection];
 	
-    [mercatorToTileProjection release];
-    mercatorToTileProjection = [[tileSource mercatorToTileProjection] retain];
+    mercatorToTileProjection = [tileSource mercatorToTileProjection];
     
     [imagesOnScreen setTileSource:tileSource];
     

@@ -32,7 +32,7 @@ static NSString *UIViewControllerButtonInfo    = @"UIViewControllerButtonInfo";
 
     // store new item for dismissal later
     //
-    objc_setAssociatedObject(self, UIViewControllerExclusiveItem, item, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    objc_setAssociatedObject(self, (__bridge void *)UIViewControllerExclusiveItem, item, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     
     // for UIBarButtonItems, become a target/action proxy (if not already)
     //
@@ -42,13 +42,13 @@ static NSString *UIViewControllerButtonInfo    = @"UIViewControllerButtonInfo";
          ! [((UIBarButtonItem *)item).target isEqual:self] &&
         ((UIBarButtonItem *)item).action != @selector(actionProxy:))
     {
-        NSMutableDictionary *info = objc_getAssociatedObject(item, UIViewControllerButtonInfo);
+        NSMutableDictionary *info = objc_getAssociatedObject(item, (__bridge void *)UIViewControllerButtonInfo);
         
         if ( ! info)
         {
             info = [NSMutableDictionary dictionary];
             
-            objc_setAssociatedObject(item, UIViewControllerButtonInfo, info, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+            objc_setAssociatedObject(item, (__bridge void *)UIViewControllerButtonInfo, info, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
         }
         
         [info setObject:((UIBarButtonItem *)item).target forKey:@"target"];
@@ -63,7 +63,7 @@ static NSString *UIViewControllerButtonInfo    = @"UIViewControllerButtonInfo";
 
 - (void)showExclusiveItem:(id)item
 {
-    id activeItem = objc_getAssociatedObject(self, UIViewControllerExclusiveItem);
+    id activeItem = objc_getAssociatedObject(self, (__bridge void *)UIViewControllerExclusiveItem);
 
     if ([activeItem isKindOfClass:[UIPopoverController class]] && ! [activeItem isEqual:item])
         [(UIPopoverController *)activeItem dismissPopoverAnimated:NO];
@@ -76,7 +76,7 @@ static NSString *UIViewControllerButtonInfo    = @"UIViewControllerButtonInfo";
 {    
     [self showExclusiveItem:sender];
 
-    NSMutableDictionary *info = objc_getAssociatedObject(sender, UIViewControllerButtonInfo);
+    NSMutableDictionary *info = objc_getAssociatedObject(sender, (__bridge void *)UIViewControllerButtonInfo);
     
     if (info)
     {

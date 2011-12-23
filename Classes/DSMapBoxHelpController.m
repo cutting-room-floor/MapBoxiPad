@@ -38,13 +38,6 @@
                                                   object:nil];
     
     [moviePlayer stop];
-    
-    [moviePlayButton release];
-    [moviePlayer release];
-    [helpTableView release];
-    [versionInfoLabel release];
-    
-    [super dealloc];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -60,7 +53,7 @@
     {
         NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"intro" ofType:@"mov"]];
         
-        self.moviePlayer = [[[MPMoviePlayerController alloc] initWithContentURL:movieURL] autorelease];
+        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
         
         self.moviePlayer.view.frame = self.moviePlayButton.frame;
         [self.view insertSubview:self.moviePlayer.view aboveSubview:self.moviePlayButton];
@@ -101,15 +94,15 @@
     
     if ( ! cell)
     {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HelpCellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:HelpCellIdentifier];
         
         // white chevron, unlike black default
         //
-        cell.accessoryView = [[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]] autorelease];
+        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"chevron.png"]];
         
         // background view for color highlighting
         //
-        cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+        cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
         
         // normal text & background colors
@@ -174,7 +167,7 @@
             break;
             
         case 2:
-            alert = [[[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]]
+            alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]]
                                                 message:[NSString stringWithFormat:@"%@\n\n%@", 
                                                          self.versionInfoLabel.text, 
                                                          [NSString stringWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"about" ofType:@"txt"]
@@ -182,7 +175,7 @@
                                                                                       error:NULL]]
                                                delegate:nil
                                       cancelButtonTitle:nil
-                                      otherButtonTitles:@"OK", nil] autorelease];
+                                      otherButtonTitles:@"OK", nil];
             
             [alert show];
             

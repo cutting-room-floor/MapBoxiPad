@@ -10,8 +10,8 @@
 
 @interface DSMapBoxLayerAddPreviewController : UIViewController
 
-@property (nonatomic, retain) IBOutlet DSMapView *mapView;
-@property (nonatomic, retain) IBOutlet UILabel *metadataLabel;
-@property (nonatomic, retain) NSDictionary *info;
+@property (nonatomic, strong) IBOutlet DSMapView *mapView;
+@property (nonatomic, strong) IBOutlet UILabel *metadataLabel;
+@property (nonatomic, strong) NSDictionary *info;
 
 @end

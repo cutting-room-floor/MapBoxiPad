@@ -16,9 +16,9 @@
 
 - (void)DSMapBoxErrorView_commonInit;
 
-@property (nonatomic, retain) UIImageView *imageView;
-@property (nonatomic, retain) UITextField *textField;
-@property (nonatomic, retain) NSString *message;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) UITextField *textField;
+@property (nonatomic, strong) NSString *message;
 
 @end
 
@@ -32,7 +32,7 @@
 
 + (id)errorViewWithMessage:(NSString *)inMessage
 {
-    return [[[self alloc] initWithMessage:inMessage] autorelease];
+    return [[self alloc] initWithMessage:inMessage];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder
@@ -88,15 +88,6 @@
     textField.adjustsFontSizeToFitWidth = NO;
     
     [self addSubview:textField];
-}
-
-- (void)dealloc
-{
-    [imageView release];
-    [textField release];
-    [message release];
-    
-    [super dealloc];
 }
 
 #pragma mark -

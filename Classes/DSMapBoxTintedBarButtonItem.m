@@ -14,7 +14,7 @@
 
 - (void)setTitleResizing:(NSString *)title;
 
-@property (nonatomic, retain) UIButton *tintedButton;
+@property (nonatomic, strong) UIButton *tintedButton;
 
 @end
 

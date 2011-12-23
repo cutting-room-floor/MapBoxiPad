@@ -19,7 +19,7 @@
 
 @interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, retain) DSMapBoxLayerManager *layerManager;
-@property (nonatomic, assign) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
+@property (nonatomic, strong) DSMapBoxLayerManager *layerManager;
+@property (nonatomic, weak) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;
 
 @end

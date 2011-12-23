@@ -12,11 +12,4 @@
 
 @synthesize context;
 
-- (void)dealloc
-{
-    [context release];
-    
-    [super dealloc];
-}
-
 @end

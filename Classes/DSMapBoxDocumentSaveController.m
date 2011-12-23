@@ -52,11 +52,6 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidChangeNotification object:nameTextField];
-    
-    [snapshot release];
-    [name release];
-    
-    [super dealloc];
 }
 
 #pragma mark -

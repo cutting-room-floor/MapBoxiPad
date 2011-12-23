@@ -30,19 +30,12 @@
     
     if (self != nil)
     {
-        markers = [[NSArray array] retain];
+        markers = [NSArray array];
 
         center = CLLocationCoordinate2DMake(0.0, 0.0);
     }
 
     return self;
-}
-
-- (void)dealloc
-{
-    [markers release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -53,8 +46,7 @@
     
     [mutableMarkers addObject:marker];
     
-    [markers release];
-    markers = [[NSArray arrayWithArray:mutableMarkers] retain];
+    markers = [NSArray arrayWithArray:mutableMarkers];
     
     [self recalculateCenter];
 }
@@ -65,8 +57,7 @@
     
     [mutableMarkers removeObject:marker];
     
-    [markers release];
-    markers = [[NSArray arrayWithArray:mutableMarkers] retain];
+    markers = [NSArray arrayWithArray:mutableMarkers];
     
     [self recalculateCenter];
 }

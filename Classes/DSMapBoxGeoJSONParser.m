@@ -38,13 +38,13 @@
         
         RMLatLong latLong = [[RMProjection googleProjection] pointToLatLong:point];
         
-        return [[[CLLocation alloc] initWithLatitude:latLong.latitude longitude:latLong.longitude] autorelease];
+        return [[CLLocation alloc] initWithLatitude:latLong.latitude longitude:latLong.longitude];
     }
     
     else
-        return [[[CLLocation alloc] initWithLatitude:b longitude:a] autorelease];
+        return [[CLLocation alloc] initWithLatitude:b longitude:a];
 
-    return [[[CLLocation alloc] initWithLatitude:0 longitude:0] autorelease];
+    return [[CLLocation alloc] initWithLatitude:0 longitude:0];
 }
 
 + (NSArray *)itemsForGeoJSON:(NSString *)geojson

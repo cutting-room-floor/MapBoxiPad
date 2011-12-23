@@ -8,6 +8,6 @@
 
 @interface DSMapBoxAlertView : UIAlertView
 
-@property (nonatomic, retain) id context;
+@property (nonatomic, strong) id context;
 
 @end

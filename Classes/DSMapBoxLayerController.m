@@ -25,7 +25,7 @@
 
 @interface DSMapBoxLayerController ()
 
-@property (nonatomic, retain) NSIndexPath *indexPathToDelete;
+@property (nonatomic, strong) NSIndexPath *indexPathToDelete;
 @property (nonatomic, assign) BOOL showActiveLayersOnly;
 
 - (void)toggleShowActiveLayersOnly:(id)sender;
@@ -53,8 +53,8 @@
     
     self.navigationItem.title = @"Layers";
 
-    self.navigationItem.leftBarButtonItem = [[[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
-                                                                                     action:@selector(presentAddLayerHelper)] autorelease];
+    self.navigationItem.leftBarButtonItem = [[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
+                                                                                    action:@selector(presentAddLayerHelper)];
     
     self.showActiveLayersOnly = YES;
     
@@ -80,14 +80,6 @@
     [self updateLayersButton];
 }
 
-- (void)dealloc
-{
-    [layerManager release];
-    [indexPathToDelete release];
-    
-    [super dealloc];
-}
-
 #pragma mark -
 
 - (void)toggleShowActiveLayersOnly:(id)sender
@@ -105,10 +97,10 @@
         self.navigationItem.rightBarButtonItem = nil;
     
     else
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:self.showActiveLayersOnly ? @"Show All" : @"Show Active" 
-                                                                                   style:UIBarButtonItemStyleBordered 
-                                                                                  target:self
-                                                                                  action:@selector(toggleShowActiveLayersOnly:)] autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.showActiveLayersOnly ? @"Show All" : @"Show Active" 
+                                                                                  style:UIBarButtonItemStyleBordered 
+                                                                                 target:self
+                                                                                 action:@selector(toggleShowActiveLayersOnly:)];
 }
 
 - (IBAction)tappedLayerButton:(id)sender event:(id)event
@@ -157,11 +149,11 @@
         {
             self.indexPathToDelete = [self.tableView indexPathForCell:cell];
             
-            UIActionSheet *actionSheet = [[[UIActionSheet alloc] initWithTitle:cell.textLabel.text
-                                                                      delegate:self
-                                                             cancelButtonTitle:@"Cancel"
-                                                        destructiveButtonTitle:@"Delete Layer"
-                                                             otherButtonTitles:nil] autorelease];
+            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:cell.textLabel.text
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Cancel"
+                                                       destructiveButtonTitle:@"Delete Layer"
+                                                            otherButtonTitles:nil];
             
             [actionSheet showFromRect:cell.frame inView:cell animated:YES];
             
@@ -182,8 +174,6 @@
         
         if ( ! [source coversFullWorld])
             shouldShowCrosshairs = YES;
-        
-        [source release];
     }
     else if ([layerURL isTileStreamURL])
     {
@@ -191,8 +181,6 @@
         
         if ( ! [source coversFullWorld])
             shouldShowCrosshairs = YES;
-        
-        [source release];
     }
 
     return shouldShowCrosshairs;
@@ -304,11 +292,11 @@
         {
             self.indexPathToDelete = indexPath;
             
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Delete Layer?"
-                                                             message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Don't Delete"
-                                                   otherButtonTitles:@"Delete", nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Layer?"
+                                                            message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+                                                           delegate:self
+                                                  cancelButtonTitle:@"Don't Delete"
+                                                  otherButtonTitles:@"Delete", nil];
             
             [alert show];
             
@@ -365,7 +353,7 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:LayerCellIdentifier];
 
     if ( ! cell)
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:LayerCellIdentifier] autorelease];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:LayerCellIdentifier];
     
     NSDictionary *layer = nil;
     
@@ -453,7 +441,7 @@
     
     if ( ! cell.gestureRecognizers)
     {
-        UILongPressGestureRecognizer *gesture = [[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)] autorelease];
+        UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
 
         gesture.minimumPressDuration = 1.0;
 
@@ -519,7 +507,7 @@
                 cell.hidden = YES;
     }
 
-    cell.selectedBackgroundView = [[[UIView alloc] initWithFrame:cell.frame] autorelease];
+    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
     cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
 }
 
@@ -549,11 +537,11 @@
         {
             [tableView deselectRowAtIndexPath:indexPath animated:NO];
 
-            UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                             message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
-                                                            delegate:nil
-                                                   cancelButtonTitle:nil
-                                                   otherButtonTitles:@"OK", nil] autorelease];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection"
+                                                            message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
+                                                           delegate:nil
+                                                  cancelButtonTitle:nil
+                                                  otherButtonTitles:@"OK", nil];
 
             [alert show];
             
@@ -571,15 +559,15 @@
         
         if ([[[layer valueForKey:@"URL"] pathExtension] isEqualToString:@"mbtiles"])
         {
-            if ([[[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] autorelease] maxZoomNative] < kLowerZoomBounds)
+            if ([[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] maxZoomNative] < kLowerZoomBounds)
             {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
                 
-                UIAlertView *alert = [[[UIAlertView alloc] initWithTitle:@"Unable To Zoom"
-                                                                 message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
-                                                                delegate:nil
-                                                       cancelButtonTitle:nil
-                                                       otherButtonTitles:@"OK", nil] autorelease];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable To Zoom"
+                                                                message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil];
                 
                 [alert show];
                 
@@ -597,7 +585,7 @@
      * animation and re-setting selected state. 
      */
     
-    UIActivityIndicatorView *spinner = [[[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite] autorelease];
+    UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     [self.tableView cellForRowAtIndexPath:indexPath].accessoryView = spinner;
     [spinner startAnimating];
     

@@ -27,7 +27,7 @@
     {
         // setup image view
         //
-        UIImageView *imageView = [[[UIImageView alloc] initWithImage:snapshot] autorelease];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:snapshot];
         
         [self addSubview:imageView];
 
@@ -68,7 +68,7 @@
         
         // setup dimming overlay
         //
-        UIView *dimmer = [[[UIView alloc] initWithFrame:CGRectZero] autorelease];
+        UIView *dimmer = [[UIView alloc] initWithFrame:CGRectZero];
         
         dimmer.frame = CGRectMake(0,
                                   0, 

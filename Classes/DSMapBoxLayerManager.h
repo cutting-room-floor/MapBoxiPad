@@ -57,10 +57,10 @@ typedef enum {
 
 @interface DSMapBoxLayerManager : NSObject
 
-@property (nonatomic, readonly, retain) DSMapView *baseMapView;
-@property (nonatomic, readonly, retain) NSArray *tileLayers;
-@property (nonatomic, readonly, retain) NSArray *dataLayers;
-@property (nonatomic, assign) id <NSObject, DSMapBoxDataLayerHandlerDelegate>delegate;
+@property (nonatomic, readonly, strong) DSMapView *baseMapView;
+@property (nonatomic, readonly, strong) NSArray *tileLayers;
+@property (nonatomic, readonly, strong) NSArray *dataLayers;
+@property (nonatomic, weak) id <NSObject, DSMapBoxDataLayerHandlerDelegate>delegate;
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
