@@ -245,10 +245,10 @@
     //
     UIImage *testFlightImage = [UIImage imageNamed:@"testflight.png"];
     
-    UIButton *feedbackButton = [[[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width  - testFlightImage.size.width  - 10,
-                                                                           self.view.bounds.size.height - testFlightImage.size.height - 10, 
-                                                                           testFlightImage.size.width, 
-                                                                           testFlightImage.size.height)] autorelease];
+    UIButton *feedbackButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width  - testFlightImage.size.width  - 10,
+                                                                          self.view.bounds.size.height - testFlightImage.size.height - 10, 
+                                                                          testFlightImage.size.width, 
+                                                                          testFlightImage.size.height)];
     
     [feedbackButton setImage:testFlightImage forState:UIControlStateNormal];
     
