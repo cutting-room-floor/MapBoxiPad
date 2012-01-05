@@ -10,7 +10,7 @@
 
 #import "ASIHTTPRequestDelegate.h"
 
-extern NSString *const DSMapBoxLayersAdded;
+static NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 @interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, 
                                                                           DSMapBoxLayerAddTileViewDelegate,

@@ -25,8 +25,6 @@
 
 #import "UIApplication_Additions.h"
 
-NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
-
 @interface DSMapBoxLayerAddTileStreamBrowseController ()
 
 @property (nonatomic, strong) NSArray *layers;
