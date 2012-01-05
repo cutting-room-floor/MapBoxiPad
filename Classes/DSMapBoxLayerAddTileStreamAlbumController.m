@@ -12,6 +12,7 @@
 #import "DSMapBoxLayerAddCustomServerController.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
+#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -73,8 +74,6 @@
     //
     NSString *fullURLString = [NSString stringWithFormat:@"%@%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], kTileStreamAlbumAPIPath];
     
-    [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-
     self.albumRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
     self.albumRequest.timeOutSeconds = 10;
@@ -82,11 +81,15 @@
 
     [self.albumRequest startAsynchronous];
     
+    [DSMapBoxNetworkActivityIndicator addJob:self.albumRequest];
+    
     [TESTFLIGHT passCheckpoint:@"browsed TileStream accounts"];
 }
 
 - (void)dealloc
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:albumRequest];
+    
     [albumRequest clearDelegatesAndCancel];
 }
 
@@ -124,6 +127,8 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     [self.spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to connect"];
@@ -135,6 +140,8 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     [self.spinner stopAnimating];
     
     id newServersReceived = [request.responseData mutableObjectFromJSONData];

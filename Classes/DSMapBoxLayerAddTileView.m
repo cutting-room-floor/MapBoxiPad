@@ -8,6 +8,8 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
+#import "DSMapBoxNetworkActivityIndicator.h"
+
 #import "ASIHTTPRequest.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -82,14 +84,14 @@
 
             // fire off image download request
             //
-            [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-            
             imageRequest = [ASIHTTPRequest requestWithURL:imageURL];
             
             imageRequest.timeOutSeconds = 10;
             imageRequest.delegate = self;
             
             [imageRequest startAsynchronous];
+            
+            [DSMapBoxNetworkActivityIndicator addJob:imageRequest];
         }
         else
         {
@@ -127,6 +129,8 @@
 
 - (void)dealloc
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:imageRequest];
+    
     [imageRequest clearDelegatesAndCancel];
 }
 
@@ -261,6 +265,8 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     UIImage *tileImage = [UIImage imageWithData:request.responseData];
     
     if (tileImage)
@@ -355,6 +361,11 @@
 
         [UIView commitAnimations];
     }
+}
+
+- (void)requestFailed:(ASIHTTPRequest *)request
+{
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
 }
 
 @end
