@@ -286,8 +286,6 @@
 
 #pragma mark -
 
-// TODO: if scrolling too fast, doesn't update
-//
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.accountPageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
