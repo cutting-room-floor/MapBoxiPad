@@ -12,17 +12,14 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
-static DSMapBoxLegacyMigrationManager *defaultManager;
-
 @implementation DSMapBoxLegacyMigrationManager
 
 + (DSMapBoxLegacyMigrationManager *)defaultManager
 {
-    @synchronized(@"DSMapBoxLegacyMigrationManager")
-    {
-        if ( ! defaultManager)
-            defaultManager = [[self alloc] init];
-    }
+    static dispatch_once_t token;
+    static DSMapBoxLegacyMigrationManager *defaultManager = nil;
+    
+    dispatch_once(&token, ^{ defaultManager = [[self alloc] init]; });
     
     return defaultManager;
 }
