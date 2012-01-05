@@ -26,6 +26,7 @@
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxLegendManager.h"
+#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "UIViewController_Additions.h"
 #import "UIApplication_Additions.h"
@@ -181,6 +182,23 @@
                                                  name:DSMapBoxLayersAdded
                                                object:nil];
     
+    // watch for web tile loads
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestStart:)
+                                                 name:RMTileRequested
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestEnd:)
+                                                 name:RMTileRetrieved
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestEnd:)
+                                                 name:RMTileError
+                                               object:nil];
+    
     // restore app state
     //
     [self restoreState:self];
@@ -287,6 +305,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached   object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded              object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRequested                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRetrieved                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileError                      object:nil];
     
     [reachability stopNotifier];
 }
@@ -1069,6 +1090,16 @@
             }
         }
     }
+}
+
+- (void)webTileRequestStart:(NSNotification *)notification
+{
+    [DSMapBoxNetworkActivityIndicator addJob:[notification object]];
+}
+
+- (void)webTileRequestEnd:(NSNotification *)notification
+{
+    [DSMapBoxNetworkActivityIndicator removeJob:[notification object]];
 }
 
 #pragma mark -
