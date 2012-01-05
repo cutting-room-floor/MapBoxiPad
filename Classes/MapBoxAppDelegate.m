@@ -10,10 +10,13 @@
 
 #import "MapBoxMainViewController.h"
 
+#import "MapBoxConstants.h"
+
 #import "UIApplication_Additions.h"
 
 #import "DSMapBoxLegacyMigrationManager.h"
 #import "DSMapBoxAlertView.h"
+#import "DSMapBoxDownloadManager.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -31,7 +34,6 @@
 
 @synthesize window;
 @synthesize viewController;
-@synthesize openingExternalFile;
 @synthesize directoryWatcher;
 
 - (void)dealloc
@@ -118,15 +120,35 @@
     //
     self.directoryWatcher = [DirectoryWatcher watchFolderWithPath:[[UIApplication sharedApplication] documentsFolderPath] delegate:self];
     
+    // handle launch files & URLs
+    //
     if (launchOptions && [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey])
     {
-        // Note that we are opening a file so that application:openURL:sourceApplication:annotation:
-        // doesn't also get called on 4.2+ for this file.
-        //
-        self.openingExternalFile = YES;
-
-        return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
+        NSURL *launchURL = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+        
+        if ([[launchURL scheme] hasPrefix:kMBTilesURLSchemePrefix])
+        {
+            // in-app MBTiles download remote URLs
+            //
+            return YES;
+        }
+        else if ([[NSArray arrayWithObjects:@"kml", @"kmz", @"xml", @"rss", @"geojson", @"json", @"mbtiles", nil] containsObject:[[launchURL pathExtension] lowercaseString]])
+        {
+            // supported file types
+            //
+            return YES;
+        }
+        else
+        {
+            // unsupported launch URL
+            //
+            return NO;
+        }
     }
+    
+    // kick off downloads (including any just-passed ones)
+    //
+    [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:1.0];
     
 #if BETA_TESTING
     // track number of saved maps
@@ -149,10 +171,6 @@
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     [self.viewController saveState:self];
-    
-    // For 4.2+, mark that we are no longer processing an external file.
-    //
-    self.openingExternalFile = NO;
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -188,20 +206,15 @@
     // check pasteboard for supported URLs
     //
     [self.viewController checkPasteboardForURL];
+    
+    // resume downloads
+    //
+    [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-    if ( ! self.openingExternalFile)
-    {
-        // For 4.2+, mark that we've already got this file. This shouldn't be necessary, but why chance it.
-        //
-        self.openingExternalFile = YES;
-
-        return [self openExternalURL:url];
-    }
-    
-    return YES;
+    return [self openExternalURL:url];
 }
 
 #pragma mark -
@@ -249,17 +262,30 @@
 
 - (BOOL)openExternalURL:(NSURL *)externalURL
 {
-    // convert mbhttp/mbhttps as necessary
+    // handle in-app MBTiles downloads
     //
-    if ([[externalURL scheme] hasPrefix:@"mbhttp"])
+    if ([[[externalURL scheme] lowercaseString] hasPrefix:kMBTilesURLSchemePrefix] && [[[externalURL pathExtension] lowercaseString] isEqualToString:@"mbtiles"])
     {
-        externalURL = [NSURL URLWithString:[[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb"
-                                                                                                   withString:@""
-                                                                                                      options:NSAnchoredSearch
-                                                                                                        range:NSMakeRange(0, 10)]];
+        // remove prefix, leaving normal http: or https: URL
+        //
+        NSString *downloadURLString = [[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb" 
+                                                                                              withString:@""
+                                                                                                 options:NSAnchoredSearch & NSCaseInsensitiveSearch
+                                                                                                   range:NSMakeRange(0, [kMBTilesURLSchemePrefix length])];
         
-        [TESTFLIGHT passCheckpoint:@"opened mbhttp: URL"];
-    }    
+        // write a unique download file
+        //
+        NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@/%@.plist", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName, [[NSProcessInfo processInfo] globallyUniqueString]];
+        
+        NSDictionary *downloadStubContents = [NSDictionary dictionaryWithObject:downloadURLString forKey:@"URL"];
+        BOOL success = [downloadStubContents writeToFile:downloadStubFile atomically:NO];
+        
+        [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
+        
+        [TESTFLIGHT passCheckpoint:@"opened in-app MBTiles download URL"];
+
+        return success;
+    }
     
     // download external sources first to prepare for opening locally
     //
@@ -304,25 +330,27 @@
     
     // open the local file
     //
-    if ([[[externalURL path] lastPathComponent] hasSuffix:@"kml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"kmz"])
+    NSString *lowercaseFilename = [[[externalURL path] lastPathComponent] lowercaseString];
+    
+    if ([lowercaseFilename hasSuffix:@"kml"] || [lowercaseFilename hasSuffix:@"kmz"])
     {
         [self.viewController openKMLFile:externalURL];
 
         return YES;
     }
-    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"xml"] || [[[externalURL path] lastPathComponent] hasSuffix:@"rss"])
+    else if ([lowercaseFilename hasSuffix:@"xml"] || [lowercaseFilename hasSuffix:@"rss"])
     {
         [self.viewController openRSSFile:externalURL];
         
         return YES;
     }
-    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"geojson"] || [[[externalURL path] lastPathComponent] hasSuffix:@"json"])
+    else if ([lowercaseFilename hasSuffix:@"geojson"] || [lowercaseFilename hasSuffix:@"json"])
     {
         [self.viewController openGeoJSONFile:externalURL];
         
         return YES;
     }
-    else if ([[[externalURL path] lastPathComponent] hasSuffix:@"mbtiles"])
+    else if ([lowercaseFilename hasSuffix:@"mbtiles"])
     {
         [self.viewController openMBTilesFile:externalURL];
         

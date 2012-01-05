@@ -22,6 +22,8 @@ Libraries used under license:
 
  * Simple KML, (c) 2010 Code Sorcery Workshop, LLC and Development Seed, Inc. https://github.com/incanus/Simple-KML
 
+ * SSToolkit, (c) 2008-2011 Sam Soffes https://github.com/samsoffes/sstoolkit
+
  * TileMill, (c) 2011 Development Seed, Inc. https://github.com/mapbox/tilemill
 
  * TouchXML, (c) 2008 Jonathan Wight https://github.com/TouchCode/TouchXML

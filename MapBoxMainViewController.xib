@@ -161,6 +161,12 @@
 								<reference key="IBUIToolbar" ref="459560094"/>
 								<int key="IBUISystemItemIdentifier">5</int>
 							</object>
+							<object class="IBUIBarButtonItem" id="186036506">
+								<string key="IBUITitle">Downloads</string>
+								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+								<int key="IBUIStyle">1</int>
+								<reference key="IBUIToolbar" ref="459560094"/>
+							</object>
 							<object class="IBUIBarButtonItem" id="245884156">
 								<string key="IBUITitle">Clustering</string>
 								<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -254,6 +260,14 @@
 					<int key="connectionID">87</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">downloadsButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="186036506"/>
+					</object>
+					<int key="connectionID">90</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">tappedLayersButton:</string>
 						<reference key="source" ref="294852452"/>
@@ -292,6 +306,14 @@
 						<reference key="destination" ref="841351856"/>
 					</object>
 					<int key="connectionID">86</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">tappedDownloadsButton:</string>
+						<reference key="source" ref="186036506"/>
+						<reference key="destination" ref="841351856"/>
+					</object>
+					<int key="connectionID">91</int>
 				</object>
 			</object>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -347,6 +369,7 @@
 							<reference ref="245884156"/>
 							<reference ref="619403507"/>
 							<reference ref="197939595"/>
+							<reference ref="186036506"/>
 						</object>
 						<reference key="parent" ref="766721923"/>
 					</object>
@@ -394,6 +417,11 @@
 						<reference key="parent" ref="459560094"/>
 						<string key="objectName">Bar Button Item</string>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">88</int>
+						<reference key="object" ref="186036506"/>
+						<reference key="parent" ref="459560094"/>
+					</object>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="flattenedProperties">
@@ -417,6 +445,7 @@
 					<string>72.IBPluginDependency</string>
 					<string>74.IBPluginDependency</string>
 					<string>84.IBPluginDependency</string>
+					<string>88.IBPluginDependency</string>
 				</object>
 				<object class="NSMutableArray" key="dict.values">
 					<bool key="EncodedWithXMLCoder">YES</bool>
@@ -437,6 +466,7 @@
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+					<string>com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				</object>
 			</object>
 			<object class="NSMutableDictionary" key="unlocalizedProperties">
@@ -451,7 +481,7 @@
 				<reference key="dict.values" ref="0"/>
 			</object>
 			<nil key="sourceID"/>
-			<int key="maxID">87</int>
+			<int key="maxID">91</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<object class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -481,12 +511,14 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedDownloadsButton:</string>
 							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedShareButton:</string>
 						</object>
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
+							<string>id</string>
 							<string>id</string>
 							<string>id</string>
 							<string>id</string>
@@ -500,6 +532,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>tappedClusteringButton:</string>
 							<string>tappedDocumentsButton:</string>
+							<string>tappedDownloadsButton:</string>
 							<string>tappedHelpButton:</string>
 							<string>tappedLayersButton:</string>
 							<string>tappedShareButton:</string>
@@ -512,6 +545,10 @@
 							</object>
 							<object class="IBActionInfo">
 								<string key="name">tappedDocumentsButton:</string>
+								<string key="candidateClassName">id</string>
+							</object>
+							<object class="IBActionInfo">
+								<string key="name">tappedDownloadsButton:</string>
 								<string key="candidateClassName">id</string>
 							</object>
 							<object class="IBActionInfo">
@@ -534,6 +571,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>attributionLabel</string>
 							<string>clusteringButton</string>
+							<string>downloadsButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
@@ -542,6 +580,7 @@
 						<object class="NSMutableArray" key="dict.values">
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>BALabel</string>
+							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>UIBarButtonItem</string>
 							<string>DSMapView</string>
@@ -555,6 +594,7 @@
 							<bool key="EncodedWithXMLCoder">YES</bool>
 							<string>attributionLabel</string>
 							<string>clusteringButton</string>
+							<string>downloadsButton</string>
 							<string>layersButton</string>
 							<string>mapView</string>
 							<string>toolbar</string>
@@ -568,6 +608,10 @@
 							</object>
 							<object class="IBToOneOutletInfo">
 								<string key="name">clusteringButton</string>
+								<string key="candidateClassName">UIBarButtonItem</string>
+							</object>
+							<object class="IBToOneOutletInfo">
+								<string key="name">downloadsButton</string>
 								<string key="candidateClassName">UIBarButtonItem</string>
 							</object>
 							<object class="IBToOneOutletInfo">

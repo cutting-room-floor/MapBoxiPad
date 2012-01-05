@@ -25,3 +25,6 @@
 [submodule "Externals/BaseAppKit"]
 	path = Externals/BaseAppKit
 	url = https://github.com/dimzzy/BaseAppKit.git
+[submodule "Externals/SSToolkit"]
+	path = Externals/SSToolkit
+	url = https://github.com/samsoffes/sstoolkit.git

@@ -26,6 +26,9 @@
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxLegendManager.h"
+#import "DSMapBoxDownloadManager.h"
+#import "DSMapBoxDownloadViewController.h"
+#import "DSMapBoxNotificationView.h"
 
 #import "UIViewController_Additions.h"
 #import "UIApplication_Additions.h"
@@ -60,6 +63,7 @@
 - (void)setClusteringOn:(BOOL)clusteringOn;
 
 @property (nonatomic, strong) UIPopoverController *layersPopover;
+@property (nonatomic, strong) UIPopoverController *downloadsPopover;
 @property (nonatomic, strong) DSMapBoxDataOverlayManager *dataOverlayManager;
 @property (nonatomic, strong) DSMapBoxLayerManager *layerManager;
 @property (nonatomic, strong) DSMapBoxDocumentSaveController *saveController;
@@ -84,7 +88,9 @@
 @synthesize toolbar;
 @synthesize layersButton;
 @synthesize clusteringButton;
+@synthesize downloadsButton;
 @synthesize layersPopover;
+@synthesize downloadsPopover;
 @synthesize dataOverlayManager;
 @synthesize layerManager;
 @synthesize saveController;
@@ -131,10 +137,10 @@
 
     self.attributionLabel.verticalAlignment = BAVerticalAlignmentBottom;
     
-    // hide cluster button to start
+    // hide cluster & download buttons to start
     //
-    [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", self.clusteringButton]] animated:NO];
-    
+    [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@ AND NOT SELF = %@", self.clusteringButton, self.downloadsButton]] animated:NO];
+
     // setup toolbar items as exclusive actions
     //
     for (id item in self.toolbar.items)
@@ -179,6 +185,27 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(layersAdded:)
                                                  name:DSMapBoxLayersAdded
+                                               object:nil];
+    
+    // watch for download queue
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadQueueChanged:)
+                                                 name:DSMapBoxDownloadQueueNotification
+                                               object:nil];
+    
+    // watch for download progress
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadProgressChanged:)
+                                                 name:DSMapBoxDownloadProgressNotification
+                                               object:nil];
+    
+    // watch for download completion
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadCompleted:)
+                                                 name:DSMapBoxDownloadCompleteNotification
                                                object:nil];
     
     // restore app state
@@ -284,10 +311,13 @@
 
 - (void)dealloc
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached   object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded              object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification     object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached       object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
+
     [reachability stopNotifier];
 }
 
@@ -694,6 +724,31 @@
         [self.shareActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
 }
 
+- (IBAction)tappedDownloadsButton:(id)sender
+{
+    if ( ! self.downloadsPopover)
+    {
+        DSMapBoxDownloadViewController *downloadsController = [[DSMapBoxDownloadViewController alloc] initWithNibName:nil bundle:nil];
+        
+        UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:downloadsController];
+        
+        self.downloadsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
+        
+        self.downloadsPopover.passthroughViews = nil;
+        self.downloadsPopover.delegate = self;
+    }
+    
+    self.downloadsPopover.popoverContentSize = self.downloadsPopover.contentViewController.contentSizeForViewInPopover;
+
+    [self manageExclusiveItem:self.downloadsPopover];
+    
+    if (self.downloadsPopover.popoverVisible)
+        [self.downloadsPopover dismissPopoverAnimated:YES];
+    
+    else
+        [self.downloadsPopover presentPopoverFromBarButtonItem:self.downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+}
+
 - (void)setClusteringOn:(BOOL)clusteringOn
 {
     UIButton *button;
@@ -715,6 +770,69 @@
     button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
 
     [button setImage:stateImage forState:UIControlStateNormal];
+}
+
+#pragma mark -
+
+- (void)downloadQueueChanged:(NSNotification *)notification
+{
+    BOOL queueActive = [((NSNumber *)[notification object]) boolValue];
+    
+    if (queueActive && ! [self.toolbar.items containsObject:self.downloadsButton])
+    {
+        UIButton *button = (UIButton *)self.downloadsButton.customView;
+        
+        if ( ! button)
+        {
+            button = [UIButton buttonWithType:UIButtonTypeCustom];
+            
+            [button addTarget:self action:@selector(tappedDownloadsButton:) forControlEvents:UIControlEventTouchUpInside];
+            
+            self.downloadsButton.customView = button;
+        }
+        
+        UIImage *stateImage = [UIImage imageNamed:@"downloads0.png"];
+        
+        button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
+        
+        [button setImage:stateImage forState:UIControlStateNormal];
+        
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
+        
+        [newItems insertObject:self.downloadsButton atIndex:4];
+        
+        [self.toolbar setItems:newItems animated:YES];
+    }
+    else if ( ! queueActive && [self.toolbar.items containsObject:self.downloadsButton] && ! self.downloadsPopover.popoverVisible)
+    {
+        // Don't remove the downloads button when the popover is attached.
+        // That's taken care of by the popover delegate call when it closes.
+        //
+        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
+        
+        [newItems removeObject:self.downloadsButton];
+        
+        [self.toolbar setItems:newItems animated:YES];
+    }
+}
+
+- (void)downloadProgressChanged:(NSNotification *)notification
+{
+    float progress = [[notification object] floatValue];
+    
+    int index = round(8 * progress);
+    
+    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
+    
+    if ( ! [[((UIButton *)self.downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
+        [((UIButton *)self.downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+}
+
+- (void)downloadCompleted:(NSNotification *)notification
+{
+    ASIHTTPRequest *download = (ASIHTTPRequest *)[notification object];
+    
+    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [[download userInfo] objectForKey:@"name"]]];
 }
 
 #pragma mark -
@@ -1404,6 +1522,23 @@
         {
             [self dismissModalViewControllerAnimated:YES];
         }
+    }
+}
+
+#pragma mark -
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    if ([popoverController isEqual:self.downloadsPopover] && ! [((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads count])
+    {
+        dispatch_delayed_ui_action(1.0, ^(void)
+        {
+            NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
+            
+            [newItems removeObject:self.downloadsButton];
+            
+            [toolbar setItems:newItems animated:YES];
+        });
     }
 }
 

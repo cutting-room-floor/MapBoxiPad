@@ -146,6 +146,20 @@
 		DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */; };
 		DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD7E1C6A140D97DD008F52C6 /* Settings.bundle */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
+		DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD91C34714B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34214B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib */; };
+		DD91C34814B51E3200330326 /* DSMapBoxDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD91C35314B51E5000330326 /* downloads0.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34A14B51E5000330326 /* downloads0.png */; };
+		DD91C35414B51E5000330326 /* downloads1.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34B14B51E5000330326 /* downloads1.png */; };
+		DD91C35514B51E5000330326 /* downloads2.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34C14B51E5000330326 /* downloads2.png */; };
+		DD91C35614B51E5000330326 /* downloads3.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34D14B51E5000330326 /* downloads3.png */; };
+		DD91C35714B51E5000330326 /* downloads4.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34E14B51E5000330326 /* downloads4.png */; };
+		DD91C35814B51E5000330326 /* downloads5.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34F14B51E5000330326 /* downloads5.png */; };
+		DD91C35914B51E5000330326 /* downloads6.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C35014B51E5000330326 /* downloads6.png */; };
+		DD91C35A14B51E5000330326 /* downloads7.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C35114B51E5000330326 /* downloads7.png */; };
+		DD91C35B14B51E5000330326 /* downloads8.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C35214B51E5000330326 /* downloads8.png */; };
+		DD91C35F14B51FD700330326 /* SSPieProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C35E14B51FD700330326 /* SSPieProgressView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD92F642121C9B84008CF88F /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD92F641121C9B84008CF88F /* MessageUI.framework */; };
 		DDA0745A11E79E170049865F /* DSMapBoxFeedParser.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */; };
 		DDA0745D11E79F8D0049865F /* DSMapBoxFeedParserRSS.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA0745C11E79F8D0049865F /* DSMapBoxFeedParserRSS.m */; };
@@ -480,6 +494,24 @@
 		DD7E1C6A140D97DD008F52C6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
+		DD91C33E14B51E3200330326 /* DSMapBoxDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadManager.h; sourceTree = "<group>"; };
+		DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadManager.m; sourceTree = "<group>"; };
+		DD91C34014B51E3200330326 /* DSMapBoxDownloadTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadTableViewCell.h; sourceTree = "<group>"; };
+		DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadTableViewCell.m; sourceTree = "<group>"; };
+		DD91C34214B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxDownloadTableViewCell.xib; sourceTree = "<group>"; };
+		DD91C34314B51E3200330326 /* DSMapBoxDownloadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadViewController.h; sourceTree = "<group>"; };
+		DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDownloadViewController.m; sourceTree = "<group>"; };
+		DD91C34A14B51E5000330326 /* downloads0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads0.png; sourceTree = SOURCE_ROOT; };
+		DD91C34B14B51E5000330326 /* downloads1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads1.png; sourceTree = SOURCE_ROOT; };
+		DD91C34C14B51E5000330326 /* downloads2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads2.png; sourceTree = SOURCE_ROOT; };
+		DD91C34D14B51E5000330326 /* downloads3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads3.png; sourceTree = SOURCE_ROOT; };
+		DD91C34E14B51E5000330326 /* downloads4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads4.png; sourceTree = SOURCE_ROOT; };
+		DD91C34F14B51E5000330326 /* downloads5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads5.png; sourceTree = SOURCE_ROOT; };
+		DD91C35014B51E5000330326 /* downloads6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads6.png; sourceTree = SOURCE_ROOT; };
+		DD91C35114B51E5000330326 /* downloads7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads7.png; sourceTree = SOURCE_ROOT; };
+		DD91C35214B51E5000330326 /* downloads8.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = downloads8.png; sourceTree = SOURCE_ROOT; };
+		DD91C35D14B51FD700330326 /* SSPieProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SSPieProgressView.h; path = Externals/SSToolkit/SSToolkit/SSPieProgressView.h; sourceTree = "<group>"; };
+		DD91C35E14B51FD700330326 /* SSPieProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SSPieProgressView.m; path = Externals/SSToolkit/SSToolkit/SSPieProgressView.m; sourceTree = "<group>"; };
 		DD92F641121C9B84008CF88F /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		DDA0745811E79E170049865F /* DSMapBoxFeedParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxFeedParser.h; sourceTree = "<group>"; };
 		DDA0745911E79E170049865F /* DSMapBoxFeedParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxFeedParser.m; sourceTree = "<group>"; };
@@ -1019,6 +1051,7 @@
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
+				DD91C35C14B51FBD00330326 /* SSToolkit */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
 				DD4364DB147C3D4400235F20 /* TileMill */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
@@ -1152,6 +1185,47 @@
 			name = TouchXML;
 			sourceTree = "<group>";
 		};
+		DD91C33D14B51E0700330326 /* Layer Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				DD91C33E14B51E3200330326 /* DSMapBoxDownloadManager.h */,
+				DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */,
+				DD91C34014B51E3200330326 /* DSMapBoxDownloadTableViewCell.h */,
+				DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */,
+				DD91C34214B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib */,
+				DD91C34314B51E3200330326 /* DSMapBoxDownloadViewController.h */,
+				DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */,
+				DD91C34914B51E3C00330326 /* Resources */,
+			);
+			name = "Layer Downloads";
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		DD91C34914B51E3C00330326 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DD91C34A14B51E5000330326 /* downloads0.png */,
+				DD91C34B14B51E5000330326 /* downloads1.png */,
+				DD91C34C14B51E5000330326 /* downloads2.png */,
+				DD91C34D14B51E5000330326 /* downloads3.png */,
+				DD91C34E14B51E5000330326 /* downloads4.png */,
+				DD91C34F14B51E5000330326 /* downloads5.png */,
+				DD91C35014B51E5000330326 /* downloads6.png */,
+				DD91C35114B51E5000330326 /* downloads7.png */,
+				DD91C35214B51E5000330326 /* downloads8.png */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		DD91C35C14B51FBD00330326 /* SSToolkit */ = {
+			isa = PBXGroup;
+			children = (
+				DD91C35D14B51FD700330326 /* SSPieProgressView.h */,
+				DD91C35E14B51FD700330326 /* SSPieProgressView.m */,
+			);
+			name = SSToolkit;
+			sourceTree = "<group>";
+		};
 		DDA291D611F8AD41000FFFF4 /* Categories & Additions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1242,6 +1316,7 @@
 				DDA291D911F8AD87000FFFF4 /* Tile Overlays */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
 				DDEF900F13831D7A00FF148C /* TileStream Integration */,
+				DD91C33D14B51E0700330326 /* Layer Downloads */,
 				DDBA88E21210E71000E5B572 /* Document Management */,
 				DD2F015913BD189600A72513 /* Custom UI */,
 				DDEEAD81136F7BBD0058BA90 /* Minor Functionality */,
@@ -1525,6 +1600,16 @@
 				DDE4E21114897AE70040AFCD /* grabber.png in Resources */,
 				DD15A16E14904CD8004F7AFD /* scroll_hint_bottom.png in Resources */,
 				DD15A16F14904CD8004F7AFD /* scroll_hint_top.png in Resources */,
+				DD91C34714B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib in Resources */,
+				DD91C35314B51E5000330326 /* downloads0.png in Resources */,
+				DD91C35414B51E5000330326 /* downloads1.png in Resources */,
+				DD91C35514B51E5000330326 /* downloads2.png in Resources */,
+				DD91C35614B51E5000330326 /* downloads3.png in Resources */,
+				DD91C35714B51E5000330326 /* downloads4.png in Resources */,
+				DD91C35814B51E5000330326 /* downloads5.png in Resources */,
+				DD91C35914B51E5000330326 /* downloads6.png in Resources */,
+				DD91C35A14B51E5000330326 /* downloads7.png in Resources */,
+				DD91C35B14B51E5000330326 /* downloads8.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1681,6 +1766,10 @@
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
 				DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */,
+				DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */,
+				DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */,
+				DD91C34814B51E3200330326 /* DSMapBoxDownloadViewController.m in Sources */,
+				DD91C35F14B51FD700330326 /* SSPieProgressView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
