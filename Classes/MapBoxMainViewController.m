@@ -746,7 +746,11 @@
         [self.downloadsPopover dismissPopoverAnimated:YES];
     
     else
+    {
         [self.downloadsPopover presentPopoverFromBarButtonItem:self.downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+        [TESTFLIGHT passCheckpoint:@"opened downloads list"];
+    }
 }
 
 - (void)setClusteringOn:(BOOL)clusteringOn
