@@ -8,7 +8,7 @@
 
 #import "RMMapContents.h"
 
-extern NSString *const DSMapContentsZoomBoundsReached;
+static NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";
 
 @interface DSMapContents : RMMapContents
 

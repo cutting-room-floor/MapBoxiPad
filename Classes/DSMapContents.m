@@ -19,8 +19,6 @@
 #import "RMMBTilesTileSource.h"
 #import "RMCachedTileSource.h"
 
-NSString *const DSMapContentsZoomBoundsReached = @"DSMapContentsZoomBoundsReached";
-
 @interface DSMapContents ()
 
 @property (nonatomic, weak) RMMapView *mapView;
