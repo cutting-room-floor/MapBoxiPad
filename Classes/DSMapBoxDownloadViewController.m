@@ -16,7 +16,7 @@
 
 #import "SSPieProgressView.h"
 
-@interface DSMapBoxDownloadViewController (DSMapBoxDownloadViewControllerPrivate)
+@interface DSMapBoxDownloadViewController ()
 
 - (void)reloadTableView;
 
@@ -32,22 +32,14 @@
     
     self.navigationItem.title = @"Downloads";
     
-    self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                            target:self
-                                                                                            action:@selector(editButtonTapped:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                           target:self
+                                                                                           action:@selector(editButtonTapped:)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self reloadTableView];
-}
-
-- (void)dealloc
-{
-    for (int i = 0; i < [self.tableView numberOfRowsInSection:0]; i++)
-        [[self tableView:self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:i inSection:0]] release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -62,9 +54,9 @@
     {
         self.tableView.editing = NO;
         
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                                target:self
-                                                                                                action:@selector(editButtonTapped:)] autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                               target:self
+                                                                                               action:@selector(editButtonTapped:)];
     }
     else
     {
@@ -78,9 +70,9 @@
 {
     self.tableView.editing = YES;
     
-    self.navigationItem.rightBarButtonItem = [[[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
-                                                                                          target:self
-                                                                                          action:@selector(doneButtonTapped:)] autorelease];
+    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
+                                                                                         target:self
+                                                                                         action:@selector(doneButtonTapped:)];
 }
 
 - (void)doneButtonTapped:(id)sender
@@ -89,9 +81,9 @@
     
     if ([self.tableView numberOfRowsInSection:0])
     {
-        self.navigationItem.rightBarButtonItem = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                                target:self
-                                                                                                action:@selector(editButtonTapped:)] autorelease];
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                                               target:self
+                                                                                               action:@selector(editButtonTapped:)];
     }
     else
     {
@@ -112,7 +104,7 @@
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxDownloadTableViewCell" owner:self options:nil];
     
-    DSMapBoxDownloadTableViewCell *cell = [(DSMapBoxDownloadTableViewCell *)[nib objectAtIndex:0] retain];
+    DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[nib objectAtIndex:0];
     
     NSURL *downloadURL = request.originalURL;
     

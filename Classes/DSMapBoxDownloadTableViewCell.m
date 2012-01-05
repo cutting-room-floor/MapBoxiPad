@@ -14,32 +14,33 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxDownloadTableViewCell ()
+
+@property (nonatomic, strong) UIColor *originalPrimaryLabelTextColor;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxDownloadTableViewCell
 
 @synthesize pie;
 @synthesize primaryLabel;
 @synthesize secondaryLabel;
 @synthesize isPaused;
+@synthesize originalPrimaryLabelTextColor;
 
 - (void)awakeFromNib
 {
-    self.backgroundColor          = [UIColor whiteColor];
+    self.backgroundColor        = [UIColor whiteColor];
     
-    self.pie.pieFillColor         = [UIColor colorWithCGColor:CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.5)];
-    self.pie.pieBackgroundColor   = [UIColor clearColor];
-    self.pie.pieBorderColor       = kMapBoxBlue;
+    self.pie.pieFillColor       = [UIColor colorWithCGColor:CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.5)];
+    self.pie.pieBackgroundColor = [UIColor clearColor];
+    self.pie.pieBorderColor     = kMapBoxBlue;
  
-    self.pie.pieBorderWidth       = 2.0;
+    self.pie.pieBorderWidth     = 2.0;
     
-    originalPrimaryLabelTextColor = [self.primaryLabel.textColor retain];
-}
-
-- (void)dealloc
-{
-    [originalPrimaryLabelTextColor release];
-    [pie release];
-    
-    [super dealloc];
+    self.originalPrimaryLabelTextColor = self.primaryLabel.textColor;
 }
 
 #pragma mark -
@@ -79,7 +80,7 @@
         
         UIGraphicsEndImageContext();
         
-        UIView *pulseView = [[[UIView alloc] initWithFrame:self.pie.frame] autorelease];
+        UIView *pulseView = [[UIView alloc] initWithFrame:self.pie.frame];
         
         pulseView.layer.contents = (id)[image CGImage];
         
@@ -99,7 +100,7 @@
     {
         // revert primary label
         //
-        self.primaryLabel.textColor = originalPrimaryLabelTextColor;
+        self.primaryLabel.textColor = self.originalPrimaryLabelTextColor;
         
         // remove pulsing view
         //

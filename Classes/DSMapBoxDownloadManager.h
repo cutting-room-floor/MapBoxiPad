@@ -6,8 +6,6 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "ASIHTTPRequest.h"
 
 @class ASINetworkQueue;
@@ -17,10 +15,8 @@ static NSString *const DSMapBoxDownloadProgressNotification = @"DSMapBoxDownload
 static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownloadCompleteNotification";
 
 @interface DSMapBoxDownloadManager : NSObject
-{
-}
 
-@property (nonatomic, readonly, retain) NSMutableArray *downloads;
+@property (nonatomic, readonly, strong) NSMutableArray *downloads;
 
 + (id)sharedManager;
 

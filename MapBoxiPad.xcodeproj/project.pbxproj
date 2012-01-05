@@ -146,10 +146,10 @@
 		DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */; };
 		DD7E1C6B140D97DD008F52C6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DD7E1C6A140D97DD008F52C6 /* Settings.bundle */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
-		DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */; };
+		DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */; };
 		DD91C34714B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34214B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib */; };
-		DD91C34814B51E3200330326 /* DSMapBoxDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DD91C34814B51E3200330326 /* DSMapBoxDownloadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */; };
 		DD91C35314B51E5000330326 /* downloads0.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34A14B51E5000330326 /* downloads0.png */; };
 		DD91C35414B51E5000330326 /* downloads1.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34B14B51E5000330326 /* downloads1.png */; };
 		DD91C35514B51E5000330326 /* downloads2.png in Resources */ = {isa = PBXBuildFile; fileRef = DD91C34C14B51E5000330326 /* downloads2.png */; };

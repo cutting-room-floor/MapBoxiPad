@@ -18,8 +18,8 @@
 
 @interface DSMapBoxDownloadManager ()
 
-@property (nonatomic, retain) ASINetworkQueue *activeDownloadQueue;
-@property (nonatomic, retain) NSMutableArray *downloads;
+@property (nonatomic, strong) ASINetworkQueue *activeDownloadQueue;
+@property (nonatomic, strong) NSMutableArray *downloads;
 
 - (NSArray *)pendingDownloads;
 
@@ -51,7 +51,7 @@ static DSMapBoxDownloadManager *sharedManager;
 
     if (self)
     {
-        downloads = [[NSMutableArray array] retain];
+        downloads = [NSMutableArray array];
         
         NSString *downloadPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
 
@@ -69,14 +69,6 @@ static DSMapBoxDownloadManager *sharedManager;
     }
     
     return self;
-}
-
-- (void)dealloc
-{
-    [activeDownloadQueue release];
-    [downloads release];
-    
-    [super dealloc];
 }
 
 #pragma mark -
@@ -160,7 +152,7 @@ static DSMapBoxDownloadManager *sharedManager;
     //
     NSLog(@"pausing %@ (%@)", download, [[download userInfo] objectForKey:@"name"]);
 
-    ASIHTTPRequest *newDownload = [[download copy] autorelease];
+    ASIHTTPRequest *newDownload = [download copy];
 
     [download clearDelegatesAndCancel];
 
