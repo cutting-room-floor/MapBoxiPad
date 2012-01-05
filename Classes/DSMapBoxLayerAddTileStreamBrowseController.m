@@ -13,6 +13,7 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
+#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -99,14 +100,14 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
     else
         fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
     
-    [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-    
     self.layersRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
     self.layersRequest.timeOutSeconds = 10;
     self.layersRequest.delegate = self;
     
     [self.layersRequest startAsynchronous];
+      
+    [DSMapBoxNetworkActivityIndicator addJob:self.layersRequest];
     
     [TESTFLIGHT passCheckpoint:@"browsed TileStream server"];
 }
@@ -135,6 +136,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)dealloc
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:layersRequest];
+    
     [layersRequest clearDelegatesAndCancel];
 }
 
@@ -245,6 +248,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     [self.spinner stopAnimating];
     
     DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
@@ -256,6 +261,8 @@ NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     [self.spinner stopAnimating];
     
     id newLayersReceived = [request.responseData mutableObjectFromJSONData];

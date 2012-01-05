@@ -8,6 +8,8 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
+#import "DSMapBoxNetworkActivityIndicator.h"
+
 #import "ASIHTTPRequest.h"
 
 #import "UIImage+Alpha.h"
@@ -84,14 +86,14 @@
 
         // fire off primary image download request
         //
-        [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-        
         primaryImageRequest = [ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]];
         
         primaryImageRequest.timeOutSeconds = 10;
         primaryImageRequest.delegate = self;
         
         [primaryImageRequest startAsynchronous];
+        
+        [DSMapBoxNetworkActivityIndicator addJob:primaryImageRequest];
         
         // save secondary image URLs for later
         //
@@ -130,10 +132,15 @@
 
 - (void)dealloc
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:primaryImageRequest];
+    
     [primaryImageRequest clearDelegatesAndCancel];
     
     for (ASIHTTPRequest *request in secondaryImageRequests)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:request];
         [request clearDelegatesAndCancel];
+    }
 }
 
 #pragma mark -
@@ -419,6 +426,8 @@
         
         [request setCompletionBlock:^(void)
         {
+            [DSMapBoxNetworkActivityIndicator removeJob:request];
+
             UIImageView *preview = ((UIImageView *)[[self subviews] objectAtIndex:i]);
             
             UIImage *image = [UIImage imageWithData:request.responseData];
@@ -454,7 +463,14 @@
             preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
         }];
         
+        [request setFailedBlock:^(void)
+        {
+            [DSMapBoxNetworkActivityIndicator removeJob:request];
+        }];
+        
         [request startAsynchronous];
+        
+        [DSMapBoxNetworkActivityIndicator addJob:request];
     }
 }
 
@@ -462,6 +478,8 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     // we can still try for the secondaries
     //
     [self downloadSecondaryImages];
@@ -469,6 +487,8 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+
     UIImage *tileImage = [UIImage imageWithData:request.responseData];
 
     [self downloadSecondaryImages];

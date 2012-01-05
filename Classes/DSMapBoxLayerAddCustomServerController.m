@@ -10,6 +10,7 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTileStreamCommon.h"
+#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -98,7 +99,10 @@
 - (void)dealloc
 {
     if (validationRequest)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:validationRequest];
         [validationRequest clearDelegatesAndCancel];
+    }
 }
 
 #pragma mark -
@@ -190,8 +194,6 @@
         
         if (self.finalURL)
         {
-            [ASIHTTPRequest setShouldUpdateNetworkActivityIndicator:NO];
-            
             self.validationRequest = [ASIHTTPRequest requestWithURL:self.finalURL];
 
             self.validationRequest.timeOutSeconds = 10;
@@ -200,6 +202,8 @@
             [self.validationRequest startAsynchronous];
             
             [self startActivity];
+            
+            [DSMapBoxNetworkActivityIndicator addJob:self.validationRequest];
         }
         
         else
@@ -305,11 +309,15 @@
 
 - (void)requestFailed:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     [self indicateFailure];
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:request];
+    
     id layers = [request.responseData objectFromJSONData];
 
     if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
