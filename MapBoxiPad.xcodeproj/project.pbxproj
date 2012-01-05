@@ -184,6 +184,7 @@
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
+		DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */; };
 		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
@@ -538,6 +539,8 @@
 		DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSourceInfiniteZoom.m; sourceTree = "<group>"; };
 		DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileSourceInfiniteZoom.h; sourceTree = "<group>"; };
+		DDCE0EFD14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNetworkActivityIndicator.h; sourceTree = "<group>"; };
+		DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
 		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
 		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
@@ -1294,6 +1297,15 @@
 			name = Fingertips;
 			sourceTree = "<group>";
 		};
+		DDCE0EFC14B61C3E006438AE /* Network Activity Indicator */ = {
+			isa = PBXGroup;
+			children = (
+				DDCE0EFD14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.h */,
+				DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */,
+			);
+			name = "Network Activity Indicator";
+			sourceTree = "<group>";
+		};
 		DDCE299412B6E707008A1257 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1336,6 +1348,7 @@
 				DD506C1913FD8F44008EB626 /* GeoJSON Parsing */,
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
+				DDCE0EFC14B61C3E006438AE /* Network Activity Indicator */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
@@ -1681,6 +1694,7 @@
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
 				DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */,
+				DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
