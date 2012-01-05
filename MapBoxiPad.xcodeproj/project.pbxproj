@@ -1779,11 +1779,11 @@
 				DD436532147C8E0A00235F20 /* DirectoryWatcher.m in Sources */,
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
 				DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */,
+				DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */,
 				DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */,
 				DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */,
 				DD91C34814B51E3200330326 /* DSMapBoxDownloadViewController.m in Sources */,
 				DD91C35F14B51FD700330326 /* SSPieProgressView.m in Sources */,
-				DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

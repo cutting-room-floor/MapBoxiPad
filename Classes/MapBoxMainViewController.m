@@ -26,6 +26,7 @@
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxLegendManager.h"
+#import "DSMapBoxNetworkActivityIndicator.h"
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadViewController.h"
 #import "DSMapBoxNotificationView.h"
@@ -187,6 +188,23 @@
                                                  name:DSMapBoxLayersAdded
                                                object:nil];
     
+    // watch for web tile loads
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestStart:)
+                                                 name:RMTileRequested
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestEnd:)
+                                                 name:RMTileRetrieved
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webTileRequestEnd:)
+                                                 name:RMTileError
+                                               object:nil];
+
     // watch for download queue
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -314,6 +332,9 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification     object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached       object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRequested                      object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRetrieved                      object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileError                          object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
@@ -1191,6 +1212,16 @@
             }
         }
     }
+}
+
+- (void)webTileRequestStart:(NSNotification *)notification
+{
+    [DSMapBoxNetworkActivityIndicator addJob:[notification object]];
+}
+
+- (void)webTileRequestEnd:(NSNotification *)notification
+{
+    [DSMapBoxNetworkActivityIndicator removeJob:[notification object]];
 }
 
 #pragma mark -
