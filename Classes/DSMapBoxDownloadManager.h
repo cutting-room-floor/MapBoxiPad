@@ -18,7 +18,7 @@ static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownload
 
 @property (nonatomic, readonly, strong) NSMutableArray *downloads;
 
-+ (id)sharedManager;
++ (DSMapBoxDownloadManager *)sharedManager;
 
 - (void)resumeDownloads;
 - (void)pauseDownload:(ASIHTTPRequest *)download;

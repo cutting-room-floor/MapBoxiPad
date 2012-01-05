@@ -29,18 +29,15 @@
 
 @implementation DSMapBoxDownloadManager
 
-static DSMapBoxDownloadManager *sharedManager;
-
 @synthesize activeDownloadQueue;
 @synthesize downloads;
 
 + (DSMapBoxDownloadManager *)sharedManager
 {
-    @synchronized(@"DSMapBoxDownloadManager")
-    {
-        if ( ! sharedManager)
-            sharedManager = [[self alloc] init];
-    }
+    static dispatch_once_t token;
+    static DSMapBoxDownloadManager *sharedManager = nil;
+    
+    dispatch_once(&token, ^{ sharedManager = [[self alloc] init]; });
     
     return sharedManager;
 }
