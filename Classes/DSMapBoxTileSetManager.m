@@ -15,18 +15,15 @@
 
 @implementation DSMapBoxTileSetManager
 
-static DSMapBoxTileSetManager *defaultManager;
-
 @synthesize defaultTileSetURL;
 @synthesize defaultTileSetName;
 
 + (DSMapBoxTileSetManager *)defaultManager
 {
-    @synchronized(@"DSMapBoxTileSetManager")
-    {
-        if ( ! defaultManager)
-            defaultManager = [[self alloc] init];
-    }
+    static dispatch_once_t token;
+    static DSMapBoxTileSetManager *defaultManager = nil;
+    
+    dispatch_once(&token, ^{ defaultManager = [[self alloc] init]; });
     
     return defaultManager;
 }
