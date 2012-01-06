@@ -9,6 +9,7 @@
 static NSString *const DSMapBoxDownloadQueueNotification    = @"DSMapBoxDownloadQueueNotification";
 static NSString *const DSMapBoxDownloadProgressNotification = @"DSMapBoxDownloadProgressNotification";
 static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownloadCompleteNotification";
+static NSString *const DSMapBoxDownloadProgressKey          = @"DSMapBoxDownloadProgressKey";
 
 @interface DSMapBoxDownloadManager : NSObject <NSURLConnectionDelegate>
 

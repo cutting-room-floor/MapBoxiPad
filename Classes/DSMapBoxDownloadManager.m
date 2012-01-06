@@ -18,6 +18,7 @@
 
 @property (nonatomic, strong) NSMutableArray *downloads;
 @property (nonatomic, strong) NSMutableArray *pausedDownloads;
+@property (nonatomic, strong) NSMutableArray *progresses;
 
 - (NSString *)downloadsPath;
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
@@ -31,6 +32,7 @@
 
 @synthesize downloads;
 @synthesize pausedDownloads;
+@synthesize progresses;
 
 + (DSMapBoxDownloadManager *)sharedManager
 {
@@ -50,6 +52,7 @@
     {
         downloads       = [NSMutableArray array];
         pausedDownloads = [NSMutableArray array];
+        progresses      = [NSMutableArray array];
         
         BOOL isDir;
         
@@ -111,6 +114,13 @@
         
         if ( ! [[self.downloads valueForKeyPath:@"originalRequest.URL"] containsObject:downloadURL])
         {
+            
+            
+            
+            
+            
+            
+            
             NSURLConnection *download = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:downloadURL] 
                                                                         delegate:self
                                                                 startImmediately:NO];
@@ -139,7 +149,8 @@
             
             
             
-            [self.downloads addObject:download];
+            [self.downloads  addObject:download];
+            [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
             
             [download scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
             
@@ -147,7 +158,13 @@
         }
     }
     
+    
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:([[self downloads] count] ? YES : NO)]];
+    
+    
+    
+    
 }
 
 #pragma mark -
@@ -190,7 +207,8 @@
     
     [download cancel];
 
-    [self.downloads removeObject:download];
+    [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:download]];
+    [self.downloads  removeObject:download];
 
     NSString *identifier = [self identifierForDownload:download];
     
@@ -219,7 +237,17 @@
     NSLog(@"connected %@ with HTTP %i", connection.originalRequest.URL, webResponse.statusCode);
     
     
-    // read size header & save to plist for reference
+    
+    NSInteger length = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue];
+    
+    NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], [self identifierForDownload:connection]];
+    
+    NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:downloadStubFile];
+    
+    [info setObject:[NSNumber numberWithInteger:length] forKey:@"Size"];
+    
+    [info writeToFile:downloadStubFile atomically:YES];
+    
     
     
     // check for resume
@@ -252,15 +280,39 @@
     if ( ! [self.downloads containsObject:connection])
         return;
 
-    NSLog(@"received %i bytes for %@", [data length], connection.originalRequest.URL);
+//    NSLog(@"received %i bytes for %@", [data length], connection.originalRequest.URL);
     
     // append to disk
     
-    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], [self identifierForDownload:connection], kPartialDownloadExtension];
+    NSString *identifier = [self identifierForDownload:connection];
+    
+    
+    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], identifier, kPartialDownloadExtension];
 
     NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:downloadPath];
     
     [handle seekToEndOfFile];
+    
+    
+    unsigned long long totalDownloaded = [handle offsetInFile] + [data length];
+
+    
+    NSInteger totalSize = [[[NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], identifier]] objectForKey:@"Size"] integerValue];
+    
+    CGFloat thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
+    
+    [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
+                                                        object:connection
+                                                      userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:thisProgress] 
+                                                                                           forKey:DSMapBoxDownloadProgressKey]];
+
+    
+    
+    
+    
+    
     
     [handle writeData:data];
     
@@ -268,7 +320,25 @@
     
     
     
-    // calc percent individual & aggregate
+    CGFloat overallProgress = 0.0;
+    
+    for (NSNumber *progress in self.progresses)
+        overallProgress += [progress floatValue];
+    
+    overallProgress = overallProgress / [self.progresses count];
+    
+    
+    
+    
+    
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
+                                                        object:self
+                                                      userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:overallProgress]
+                                                                                           forKey:DSMapBoxDownloadProgressKey]];
+
+    
+    
     
     
     
@@ -291,7 +361,8 @@
         if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[connection.originalRequest.URL absoluteString]])
             [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
     
-    [self.downloads removeObject:connection];
+    [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:connection]];
+    [self.downloads  removeObject:connection];
     
     [TestFlight passCheckpoint:@"completed MBTiles download"];
     

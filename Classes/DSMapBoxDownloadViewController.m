@@ -17,6 +17,7 @@
 @interface DSMapBoxDownloadViewController ()
 
 - (void)reloadTableView;
+- (void)downloadProgressUpdated:(NSNotification *)notification;
 
 @end
 
@@ -33,11 +34,21 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                                            target:self
                                                                                            action:@selector(editButtonTapped:)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadProgressUpdated:) 
+                                                 name:DSMapBoxDownloadProgressNotification
+                                               object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self reloadTableView];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
 }
 
 #pragma mark -
@@ -59,6 +70,22 @@
     else
     {
         self.navigationItem.rightBarButtonItem = nil;
+    }
+}
+
+- (void)downloadProgressUpdated:(NSNotification *)notification
+{
+    if ( ! [[notification object] isEqual:[DSMapBoxDownloadManager sharedManager]])
+    {
+        NSURLConnection *download = [notification object];
+        
+        CGFloat progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
+        
+        int row = [[DSMapBoxDownloadManager sharedManager].downloads indexOfObject:download];
+        
+        DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+        
+        cell.pie.progress = progress;
     }
 }
 
@@ -108,10 +135,6 @@
     
     cell.primaryLabel.text   = [download.originalRequest.URL lastPathComponent];
     cell.secondaryLabel.text = [download.originalRequest.URL host];
-    
-//    request.downloadProgressDelegate = cell.pie;
-    
-//    [request updateDownloadProgress];
     
     cell.isPaused = [manager downloadIsPaused:download];
     

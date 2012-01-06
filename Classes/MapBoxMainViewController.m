@@ -843,20 +843,17 @@
 
 - (void)downloadProgressChanged:(NSNotification *)notification
 {
-    float progress = [[notification object] floatValue];
-    
-    int index = round(8 * progress);
-    
-    UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
-    
-    if ( ! [[((UIButton *)self.downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
-        [((UIButton *)self.downloadsButton.customView) setImage:image forState:UIControlStateNormal];
-    
-    
-    
-    // FIXME
-    
-    
+    if ([[notification object] isEqual:[DSMapBoxDownloadManager sharedManager]])
+    {
+        float progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
+        
+        int index = round(8 * progress);
+        
+        UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"downloads%i.png", index]];
+        
+        if ( ! [[((UIButton *)self.downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
+            [((UIButton *)self.downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+    }
 }
 
 - (void)downloadCompleted:(NSNotification *)notification
