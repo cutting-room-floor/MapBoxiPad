@@ -8,6 +8,6 @@
 
 @interface DSMapBoxNotificationView : UIView
 
-+ (id)notificationWithMessage:(NSString *)message;
++ (DSMapBoxNotificationView *)notificationWithMessage:(NSString *)message;
 
 @end

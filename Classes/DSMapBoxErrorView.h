@@ -8,7 +8,7 @@
 
 @interface DSMapBoxErrorView : UIView
 
-+ (id)errorViewWithMessage:(NSString *)inMessage;
++ (DSMapBoxErrorView *)errorViewWithMessage:(NSString *)inMessage;
 
 - (id)initWithMessage:(NSString *)inMessage;
 

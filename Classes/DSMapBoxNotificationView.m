@@ -24,9 +24,9 @@
 @synthesize message;
 @synthesize label;
 
-+ (id)notificationWithMessage:(NSString *)message
++ (DSMapBoxNotificationView *)notificationWithMessage:(NSString *)message
 {
-    DSMapBoxNotificationView *newView = [[DSMapBoxNotificationView alloc] initWithFrame:CGRectMake(0, 44, 500, 30)];
+    DSMapBoxNotificationView *newView = [[self alloc] initWithFrame:CGRectMake(0, 44, 500, 30)];
     
     newView.message = message;
     

@@ -30,7 +30,7 @@
 @synthesize textField;
 @synthesize message;
 
-+ (id)errorViewWithMessage:(NSString *)inMessage
++ (DSMapBoxErrorView *)errorViewWithMessage:(NSString *)inMessage
 {
     return [[self alloc] initWithMessage:inMessage];
 }
