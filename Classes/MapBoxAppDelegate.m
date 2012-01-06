@@ -148,7 +148,7 @@
     
     // kick off downloads (including any just-passed ones)
     //
-    [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:1.0];
+    [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:5.0];
     
 #if BETA_TESTING
     // track number of saved maps
