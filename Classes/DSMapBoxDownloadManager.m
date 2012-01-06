@@ -10,6 +10,8 @@
 
 #import "MapBoxConstants.h"
 
+#import "DSMapBoxNetworkActivityIndicator.h"
+
 #import "UIApplication_Additions.h"
 
 #import "TestFlight.h"
@@ -154,6 +156,8 @@
             [download scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
             
             [download start];
+            
+            [DSMapBoxNetworkActivityIndicator addJob:download];
         }
     }
     
@@ -179,6 +183,8 @@
 
     [download cancel];
     
+    [DSMapBoxNetworkActivityIndicator removeJob:download];
+    
     [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
 
@@ -200,6 +206,8 @@
     
     [download cancel];
     
+    [DSMapBoxNetworkActivityIndicator addJob:replacementDownload];
+    
     [TestFlight passCheckpoint:@"resumed MBTiles download"];
 }
 
@@ -209,6 +217,8 @@
     
     [download cancel];
 
+    [DSMapBoxNetworkActivityIndicator removeJob:download];
+    
     [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:download]];
     [self.downloads  removeObject:download];
 
@@ -265,6 +275,8 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:connection];
+    
     if ( ! [self.downloads containsObject:connection])
         return;
 
@@ -350,6 +362,8 @@
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
+    [DSMapBoxNetworkActivityIndicator removeJob:connection];
+
     if ( ! [self.downloads containsObject:connection])
         return;
 
