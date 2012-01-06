@@ -24,6 +24,7 @@
 
 - (NSString *)downloadsPath;
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
+- (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload;
 - (NSArray *)pendingDownloads;
 
 @end
@@ -91,6 +92,53 @@
     return nil;
 }
 
+- (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload
+{
+    NSURLConnection *download = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:downloadURL] 
+                                                                delegate:self
+                                                        startImmediately:NO];
+    
+    // add resume header
+    
+
+    // background task
+    
+    //			backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+    //				// Synchronize the cleanup call on the main thread in case
+    //				// the task actually finishes at around the same time.
+    //				dispatch_async(dispatch_get_main_queue(), ^{
+    //					if (backgroundTask != UIBackgroundTaskInvalid)
+    //					{
+    //						[[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
+    //						backgroundTask = UIBackgroundTaskInvalid;
+    //						[self cancel];
+    //					}
+    //				});
+    //			}];
+    
+    
+    
+    if (pausedDownload)
+    {
+        [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:pausedDownload] withObject:download];
+        
+        [pausedDownload cancel];
+        
+        [DSMapBoxNetworkActivityIndicator removeJob:pausedDownload];
+    }
+    else
+    {
+        [self.downloads  addObject:download];
+        [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
+    }
+    
+    [download scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
+    
+    [download start];
+    
+    [DSMapBoxNetworkActivityIndicator addJob:download];
+}
+
 - (NSArray *)pendingDownloads
 {
     NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
@@ -122,42 +170,7 @@
         }
         else
         {
-            NSURLConnection *download = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:downloadURL] 
-                                                                        delegate:self
-                                                                startImmediately:NO];
-                    
-            
-            
-
-            // add resume header
-            
-            
-            
-            
-//			backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-//				// Synchronize the cleanup call on the main thread in case
-//				// the task actually finishes at around the same time.
-//				dispatch_async(dispatch_get_main_queue(), ^{
-//					if (backgroundTask != UIBackgroundTaskInvalid)
-//					{
-//						[[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
-//						backgroundTask = UIBackgroundTaskInvalid;
-//						[self cancel];
-//					}
-//				});
-//			}];
-
-            
-            
-            
-            [self.downloads  addObject:download];
-            [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
-            
-            [download scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
-            
-            [download start];
-            
-            [DSMapBoxNetworkActivityIndicator addJob:download];
+            [self downloadURL:downloadURL resumingDownload:nil];
         }
     }
     
@@ -194,19 +207,7 @@
    
     [self.pausedDownloads removeObject:download];
     
-    NSURLConnection *replacementDownload = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:download.originalRequest.URL] 
-                                                                           delegate:self
-                                                                   startImmediately:NO];
-    
-    [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:download] withObject:replacementDownload];
-    
-    [replacementDownload scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
-    
-    [replacementDownload start];
-    
-    [download cancel];
-    
-    [DSMapBoxNetworkActivityIndicator addJob:replacementDownload];
+    [self downloadURL:download.originalRequest.URL resumingDownload:download];
     
     [TestFlight passCheckpoint:@"resumed MBTiles download"];
 }
