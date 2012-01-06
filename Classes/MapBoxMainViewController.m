@@ -851,13 +851,19 @@
     
     if ( ! [[((UIButton *)self.downloadsButton.customView) imageForState:UIControlStateNormal] isEqual:image])
         [((UIButton *)self.downloadsButton.customView) setImage:image forState:UIControlStateNormal];
+    
+    
+    
+    // FIXME
+    
+    
 }
 
 - (void)downloadCompleted:(NSNotification *)notification
 {
-    ASIHTTPRequest *download = (ASIHTTPRequest *)[notification object];
+    NSURLConnection *download = [notification object];
     
-    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [[download userInfo] objectForKey:@"name"]]];
+    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
 }
 
 #pragma mark -

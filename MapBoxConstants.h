@@ -16,6 +16,7 @@
 #define kTileStreamFolderName      @"Online Layers"
 #define kDownloadsFolderName       @"Downloads"
 #define kMBTilesURLSchemePrefix    @"mbhttp"
+#define kPartialDownloadExtension  @"mbdownload"
 #define kTestFlightTeamToken       @"e801c1913c6812d34c0c7764f6bf406a_OTIwOA"
 #define kMapBoxBlue                [UIColor colorWithRed:0.116 green:0.550 blue:0.670 alpha:1.000]
 #define kDSOpenStreetMapURL        [NSURL URLWithString:@"file://localhost/tmp/OpenStreetMap"]

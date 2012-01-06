@@ -12,8 +12,6 @@
 #import "DSMapBoxDownloadTableViewCell.h"
 #import "DSMapBoxTintedBarButtonItem.h"
 
-#import "ASIHTTPRequest.h"
-
 #import "SSPieProgressView.h"
 
 @interface DSMapBoxDownloadViewController ()
@@ -95,30 +93,27 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads count];
+    return [[DSMapBoxDownloadManager sharedManager].downloads count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[((DSMapBoxDownloadManager *)[DSMapBoxDownloadManager sharedManager]).downloads objectAtIndex:indexPath.row];
+    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
+
+    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
     
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxDownloadTableViewCell" owner:self options:nil];
     
     DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[nib objectAtIndex:0];
     
-    NSURL *downloadURL = request.originalURL;
+    cell.primaryLabel.text   = [download.originalRequest.URL lastPathComponent];
+    cell.secondaryLabel.text = [download.originalRequest.URL host];
     
-    if ( ! downloadURL)
-        downloadURL = request.url;
+//    request.downloadProgressDelegate = cell.pie;
     
-    cell.primaryLabel.text   = [downloadURL lastPathComponent];
-    cell.secondaryLabel.text = [downloadURL host];
+//    [request updateDownloadProgress];
     
-    request.downloadProgressDelegate = cell.pie;
-    
-    [request updateDownloadProgress];
-    
-    cell.isPaused = ! request.inProgress;
+    cell.isPaused = [manager downloadIsPaused:download];
     
     return (UITableViewCell *)cell;
 }
@@ -132,9 +127,9 @@
 {
     DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
     
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[manager.downloads objectAtIndex:indexPath.row];
+    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
     
-    [manager cancelDownload:request];
+    [manager cancelDownload:download];
     
     [self reloadTableView];
 }
@@ -152,14 +147,14 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     
-    ASIHTTPRequest *request = (ASIHTTPRequest *)[manager.downloads objectAtIndex:indexPath.row];
+    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
 
-    if (request.inProgress)
-        [manager pauseDownload:request];
+    if (((DSMapBoxDownloadTableViewCell *)[tableView cellForRowAtIndexPath:indexPath]).isPaused)
+        [manager resumeDownload:download];
 
     else
-        [manager resumeDownload:request];
-    
+        [manager pauseDownload:download];
+
     [self reloadTableView];
 }
 
