@@ -106,21 +106,20 @@
 
 - (void)resumeDownloads
 {
+    NSMutableArray *duplicates = [NSMutableArray array];
+    
     for (NSString *downloadStubFile in [self pendingDownloads])
     {
         NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:downloadStubFile];
         
         NSURL *downloadURL = [NSURL URLWithString:[info objectForKey:@"URL"]];        
         
-        if ( ! [[self.downloads valueForKeyPath:@"originalRequest.URL"] containsObject:downloadURL])
+        if ([[self.downloads valueForKeyPath:@"originalRequest.URL"] containsObject:downloadURL])
         {
-            
-            
-            
-            
-            
-            
-            
+            [duplicates addObject:downloadStubFile];
+        }
+        else
+        {
             NSURLConnection *download = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:downloadURL] 
                                                                         delegate:self
                                                                 startImmediately:NO];
@@ -158,7 +157,10 @@
         }
     }
     
+    for (NSString *dupe in duplicates)
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], dupe] error:NULL];
     
+
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:([[self downloads] count] ? YES : NO)]];
     
