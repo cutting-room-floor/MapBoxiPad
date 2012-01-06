@@ -264,9 +264,9 @@
 {
     // handle in-app MBTiles downloads
     //
-    if ([[[externalURL scheme] lowercaseString] hasPrefix:kMBTilesURLSchemePrefix] && [[[externalURL pathExtension] lowercaseString] isEqualToString:@"mbtiles"])
+    if ([[[externalURL pathExtension] lowercaseString] isEqualToString:@"mbtiles"] && ! [externalURL isFileURL])
     {
-        // remove prefix, leaving normal http: or https: URL
+        // remove any prefix, leaving normal http: or https: URL
         //
         NSString *downloadURLString = [[externalURL absoluteString] stringByReplacingOccurrencesOfString:@"mb" 
                                                                                               withString:@""
