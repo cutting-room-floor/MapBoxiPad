@@ -35,9 +35,25 @@
                                                                                            target:self
                                                                                            action:@selector(editButtonTapped:)];
     
+    // watch for download queue
+    //
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(downloadProgressUpdated:) 
+                                             selector:@selector(downloadQueueChanged:)
+                                                 name:DSMapBoxDownloadQueueNotification
+                                               object:nil];
+    
+    // watch for download progress
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadProgressUpdated:)
                                                  name:DSMapBoxDownloadProgressNotification
+                                               object:nil];
+    
+    // watch for download completion
+    //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadCompleted:)
+                                                 name:DSMapBoxDownloadCompleteNotification
                                                object:nil];
 }
 
@@ -48,7 +64,9 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
 }
 
 #pragma mark -
@@ -73,6 +91,11 @@
     }
 }
 
+- (void)downloadQueueChanged:(NSNotification *)notification
+{
+    [self reloadTableView];
+}
+
 - (void)downloadProgressUpdated:(NSNotification *)notification
 {
     if ( ! [[notification object] isEqual:[DSMapBoxDownloadManager sharedManager]])
@@ -87,6 +110,11 @@
         
         cell.pie.progress = progress;
     }
+}
+
+- (void)downloadCompleted:(NSNotification *)notification
+{
+    [self reloadTableView];
 }
 
 #pragma mark -
