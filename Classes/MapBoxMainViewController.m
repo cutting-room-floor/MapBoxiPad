@@ -29,7 +29,7 @@
 #import "DSMapBoxNetworkActivityIndicator.h"
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadViewController.h"
-#import "DSMapBoxNotificationView.h"
+#import "DSMapBoxNotificationCenter.h"
 
 #import "UIViewController_Additions.h"
 #import "UIApplication_Additions.h"
@@ -860,7 +860,7 @@
 {
     NSURLConnection *download = [notification object];
     
-    [DSMapBoxNotificationView notificationWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
+    [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
 }
 
 #pragma mark -

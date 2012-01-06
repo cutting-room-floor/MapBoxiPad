@@ -215,7 +215,7 @@
 		DDE4E21114897AE70040AFCD /* grabber.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE4E21014897AE70040AFCD /* grabber.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
-		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */; };
+		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationCenter.m */; };
 		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
 		DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */; };
 		DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */; };
@@ -591,8 +591,8 @@
 		DDE4E21014897AE70040AFCD /* grabber.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grabber.png; sourceTree = SOURCE_ROOT; };
 		DDE77E501212138B00201ACE /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = SOURCE_ROOT; };
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
-		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationView.h; sourceTree = "<group>"; };
-		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationView.m; sourceTree = "<group>"; };
+		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DSMapBoxNotificationCenter.h; sourceTree = "<group>"; };
+		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationCenter.m; sourceTree = "<group>"; };
 		DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalNavigationController.h; sourceTree = "<group>"; };
 		DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalNavigationController.m; sourceTree = "<group>"; };
 		DDEF901013831DA800FF148C /* DSMapBoxLayerAddCustomServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddCustomServerController.h; sourceTree = "<group>"; };
@@ -984,8 +984,8 @@
 				DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */,
 				DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */,
 				DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */,
-				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationView.h */,
-				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationView.m */,
+				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationCenter.h */,
+				DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationCenter.m */,
 				DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */,
 				DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */,
 				DD680D57147DBA3300BF32F2 /* DSMapBoxDarkTextField.h */,
@@ -1742,7 +1742,7 @@
 				DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */,
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
-				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationView.m in Sources */,
+				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationCenter.m in Sources */,
 				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
 				DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
