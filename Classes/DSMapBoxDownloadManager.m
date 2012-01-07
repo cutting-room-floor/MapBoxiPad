@@ -20,12 +20,14 @@
 
 @property (nonatomic, strong) NSMutableArray *downloads;
 @property (nonatomic, strong) NSMutableArray *pausedDownloads;
+@property (nonatomic, strong) NSMutableArray *backgroundDownloads;
 @property (nonatomic, strong) NSMutableArray *progresses;
 
 - (NSString *)downloadsPath;
+- (NSArray *)pendingDownloads;
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload;
-- (NSArray *)pendingDownloads;
+- (void)unregisterBackgroundDownload:(NSURLConnection *)download;
 
 @end
 
@@ -35,6 +37,7 @@
 
 @synthesize downloads;
 @synthesize pausedDownloads;
+@synthesize backgroundDownloads;
 @synthesize progresses;
 
 + (DSMapBoxDownloadManager *)sharedManager
@@ -53,9 +56,10 @@
 
     if (self)
     {
-        downloads       = [NSMutableArray array];
-        pausedDownloads = [NSMutableArray array];
-        progresses      = [NSMutableArray array];
+        downloads           = [NSMutableArray array];
+        pausedDownloads     = [NSMutableArray array];
+        backgroundDownloads = [NSMutableArray array];
+        progresses          = [NSMutableArray array];
         
         BOOL isDir;
         
@@ -80,6 +84,19 @@
     return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
 }
 
+- (NSArray *)pendingDownloads
+{
+    NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
+    
+    NSMutableArray *fullPaths = [NSMutableArray array];
+    
+    for (NSString *path in paths)
+        if ([[path pathExtension] isEqualToString:@"plist"])
+            [fullPaths addObject:[NSString stringWithFormat:@"%@/%@", [self downloadsPath], path]];
+    
+    return [NSArray arrayWithArray:fullPaths];
+}
+
 - (NSString *)identifierForDownload:(NSURLConnection *)download
 {
     NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
@@ -98,37 +115,23 @@
                                                                 delegate:self
                                                         startImmediately:NO];
     
-    // add resume header
-    
+    // TODO: add resume header
 
-    // background task
-    
-    //			backgroundTask = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-    //				// Synchronize the cleanup call on the main thread in case
-    //				// the task actually finishes at around the same time.
-    //				dispatch_async(dispatch_get_main_queue(), ^{
-    //					if (backgroundTask != UIBackgroundTaskInvalid)
-    //					{
-    //						[[UIApplication sharedApplication] endBackgroundTask:backgroundTask];
-    //						backgroundTask = UIBackgroundTaskInvalid;
-    //						[self cancel];
-    //					}
-    //				});
-    //			}];
-    
-    
-    
     if (pausedDownload)
     {
-        [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:pausedDownload] withObject:download];
+        [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:pausedDownload] 
+                                  withObject:download];
         
         [pausedDownload cancel];
         
         [DSMapBoxNetworkActivityIndicator removeJob:pausedDownload];
+        
+        [self unregisterBackgroundDownload:pausedDownload];
     }
     else
     {
-        [self.downloads  addObject:download];
+        [self.downloads addObject:download];
+        [self.backgroundDownloads addObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
         [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
     }
     
@@ -137,19 +140,37 @@
     [download start];
     
     [DSMapBoxNetworkActivityIndicator addJob:download];
+    
+    UIBackgroundTaskIdentifier taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
+                                        {
+                                            int i;
+                                            
+                                            for (i = 0; i < [self.backgroundDownloads count]; i++)
+                                                if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] == taskID)
+                                                    break;
+                                            
+                                            [self pauseDownload:[self.downloads objectAtIndex:i]]; // handles background unregistration
+                                        }];
+    
+    [self.backgroundDownloads replaceObjectAtIndex:[self.downloads indexOfObject:download] 
+                                        withObject:[NSNumber numberWithUnsignedInteger:taskID]];
 }
 
-- (NSArray *)pendingDownloads
+- (void)unregisterBackgroundDownload:(NSURLConnection *)download
 {
-    NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
+    // TODO: fix race condition
     
-    NSMutableArray *fullPaths = [NSMutableArray array];
-    
-    for (NSString *path in paths)
-        if ([[path pathExtension] isEqualToString:@"plist"])
-            [fullPaths addObject:[NSString stringWithFormat:@"%@/%@", [self downloadsPath], path]];
-    
-    return [NSArray arrayWithArray:fullPaths];
+    if ([self.downloads containsObject:download])
+    {
+        int i = [self.downloads indexOfObject:download];
+        
+        if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] != UIBackgroundTaskInvalid)
+        {
+            [[UIApplication sharedApplication] endBackgroundTask:[[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue]];
+            
+            [self.backgroundDownloads replaceObjectAtIndex:i withObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
+        }
+    }
 }
 
 #pragma mark -
@@ -198,6 +219,8 @@
     
     [DSMapBoxNetworkActivityIndicator removeJob:download];
     
+    [self unregisterBackgroundDownload:download];
+    
     [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
 
@@ -219,6 +242,8 @@
     [download cancel];
 
     [DSMapBoxNetworkActivityIndicator removeJob:download];
+    
+    [self unregisterBackgroundDownload:download];
     
     [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:download]];
     [self.downloads  removeObject:download];
@@ -277,6 +302,8 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
+    
+    [self unregisterBackgroundDownload:connection];
     
     if ( ! [self.downloads containsObject:connection])
         return;
@@ -365,6 +392,8 @@
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
 
+    [self unregisterBackgroundDownload:connection];
+    
     if ( ! [self.downloads containsObject:connection])
         return;
 
@@ -380,6 +409,10 @@
     
     [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:connection]];
     [self.downloads  removeObject:connection];
+    
+    
+    // TODO: move to documents
+    
     
     [TestFlight passCheckpoint:@"completed MBTiles download"];
     
