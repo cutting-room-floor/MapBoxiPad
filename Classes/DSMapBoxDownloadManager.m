@@ -219,9 +219,9 @@
     
     [DSMapBoxNetworkActivityIndicator removeJob:download];
     
-    [self unregisterBackgroundDownload:download];
-    
     [TestFlight passCheckpoint:@"paused MBTiles download"];
+
+    [self unregisterBackgroundDownload:download];
 }
 
 - (void)resumeDownload:(NSURLConnection *)download
@@ -302,8 +302,6 @@
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
-    
-    [self unregisterBackgroundDownload:connection];
     
     if ( ! [self.downloads containsObject:connection])
         return;
@@ -392,8 +390,6 @@
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
 
-    [self unregisterBackgroundDownload:connection];
-    
     if ( ! [self.downloads containsObject:connection])
         return;
 
@@ -431,7 +427,10 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
     }
     
-    
+    dispatch_delayed_ui_action(1.0, ^(void)
+    {
+        [self unregisterBackgroundDownload:connection];
+    });
 }
 
 @end
