@@ -141,19 +141,22 @@
     
     [DSMapBoxNetworkActivityIndicator addJob:download];
     
-    UIBackgroundTaskIdentifier taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
-                                        {
-                                            int i;
-                                            
-                                            for (i = 0; i < [self.backgroundDownloads count]; i++)
-                                                if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] == taskID)
-                                                    break;
-                                            
-                                            [self pauseDownload:[self.downloads objectAtIndex:i]]; // handles background unregistration
-                                        }];
-    
-    [self.backgroundDownloads replaceObjectAtIndex:[self.downloads indexOfObject:download] 
-                                        withObject:[NSNumber numberWithUnsignedInteger:taskID]];
+    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"noBackgroundDownloads"] || ! [[NSUserDefaults standardUserDefaults] boolForKey:@"noBackgroundDownloads"])
+    {
+        UIBackgroundTaskIdentifier taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
+                                            {
+                                                int i;
+                                                
+                                                for (i = 0; i < [self.backgroundDownloads count]; i++)
+                                                    if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] == taskID)
+                                                        break;
+                                                
+                                                [self pauseDownload:[self.downloads objectAtIndex:i]]; // handles background unregistration
+                                            }];
+        
+        [self.backgroundDownloads replaceObjectAtIndex:[self.downloads indexOfObject:download] 
+                                            withObject:[NSNumber numberWithUnsignedInteger:taskID]];
+    }
 }
 
 - (void)unregisterBackgroundDownload:(NSURLConnection *)download
