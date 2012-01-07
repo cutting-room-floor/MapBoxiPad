@@ -410,7 +410,24 @@
     [self.downloads  removeObject:connection];
     
     
-    NSString *destinationPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], [connection.originalRequest.URL lastPathComponent]];
+    
+    NSString *filename  = [connection.originalRequest.URL lastPathComponent];
+    NSString *extension = [filename pathExtension];
+    NSString *basename  = [filename stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", extension] 
+                                                              withString:@""
+                                                                 options:NSAnchoredSearch & NSBackwardsSearch 
+                                                                   range:NSMakeRange(0, [filename length])]; 
+    
+    NSString *destinationPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], filename];
+    
+    int i = 2;
+    
+    while ([[NSFileManager defaultManager] fileExistsAtPath:destinationPath])
+    {
+        destinationPath = [NSString stringWithFormat:@"%@/%@ %i.%@", [[UIApplication sharedApplication] documentsFolderPath], basename, i, extension];
+        
+        i++;
+    }
     
     [[NSFileManager defaultManager] moveItemAtPath:downloadedFile 
                                             toPath:destinationPath
