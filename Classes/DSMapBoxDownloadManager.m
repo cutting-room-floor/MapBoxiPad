@@ -410,8 +410,11 @@
     [self.downloads  removeObject:connection];
     
     
-    // TODO: move to documents
+    NSString *destinationPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] documentsFolderPath], [connection.originalRequest.URL lastPathComponent]];
     
+    [[NSFileManager defaultManager] moveItemAtPath:downloadedFile 
+                                            toPath:destinationPath
+                                             error:NULL];
     
     [TestFlight passCheckpoint:@"completed MBTiles download"];
     
