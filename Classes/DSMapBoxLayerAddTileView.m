@@ -234,6 +234,7 @@
 - (void)dealloc
 {
     [DSMapBoxNetworkActivityIndicator removeJob:imageDownload];
+    [imageDownload cancel];
 }
 
 #pragma mark -

@@ -91,11 +91,9 @@
     [super viewWillDisappear:animated];
     
     [self.entryField resignFirstResponder];
-}
-
-- (void)dealloc
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:validationDownload];
+    
+    [DSMapBoxNetworkActivityIndicator removeJob:self.validationDownload];
+    [self.validationDownload cancel];
 }
 
 #pragma mark -

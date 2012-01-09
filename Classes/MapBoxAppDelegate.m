@@ -32,7 +32,7 @@
 
 - (void)dealloc
 {
-    [directoryWatcher invalidate];    
+    [directoryWatcher invalidate];
 }
 
 #pragma mark -

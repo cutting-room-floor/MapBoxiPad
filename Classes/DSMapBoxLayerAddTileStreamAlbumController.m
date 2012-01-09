@@ -252,9 +252,12 @@
     [TESTFLIGHT passCheckpoint:@"browsed TileStream accounts"];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:albumDownload];
+    [super viewDidDisappear:animated];
+    
+    [DSMapBoxNetworkActivityIndicator removeJob:self.albumDownload];
+    [self.albumDownload cancel];
 }
 
 #pragma mark -

@@ -247,9 +247,13 @@
 - (void)dealloc
 {
     [DSMapBoxNetworkActivityIndicator removeJob:primaryImageDownload];
+    [primaryImageDownload cancel];
     
     for (NSURLConnection *download in secondaryImageDownloads)
+    {
         [DSMapBoxNetworkActivityIndicator removeJob:download];
+        [download cancel];
+    }
 }
 
 #pragma mark -

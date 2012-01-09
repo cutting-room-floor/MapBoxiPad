@@ -308,9 +308,12 @@
     }
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:layersDownload];
+    [super viewDidDisappear:animated];
+    
+    [DSMapBoxNetworkActivityIndicator removeJob:self.layersDownload];
+    [self.layersDownload cancel];
 }
 
 #pragma mark -
