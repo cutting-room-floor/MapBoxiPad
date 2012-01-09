@@ -173,13 +173,16 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
-    
-    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
-    
-    [manager cancelDownload:download];
-    
-    [self reloadTableView];
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
+        
+        NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
+        
+        [manager cancelDownload:download];
+        
+        [self reloadTableView];
+    }
 }
 
 #pragma mark -
