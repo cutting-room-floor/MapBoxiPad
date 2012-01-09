@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLegacyMigrationManager.h"
 
-#import "UIApplication_Additions.h"
-
 #import "DSMapBoxDocumentLoadController.h"
 
 @implementation DSMapBoxLegacyMigrationManager

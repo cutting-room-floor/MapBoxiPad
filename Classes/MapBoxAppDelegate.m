@@ -10,15 +10,9 @@
 
 #import "MapBoxMainViewController.h"
 
-#import "MapBoxConstants.h"
-
-#import "UIApplication_Additions.h"
-
 #import "DSMapBoxLegacyMigrationManager.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxDownloadManager.h"
-
-#import "ASIHTTPRequest.h"
 
 #include <sys/xattr.h>
 
@@ -38,7 +32,7 @@
 
 - (void)dealloc
 {
-    [directoryWatcher invalidate];    
+    [directoryWatcher invalidate];
 }
 
 #pragma mark -
@@ -219,18 +213,6 @@
 
 #pragma mark -
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.firstOtherButtonIndex)
-    {
-        NSURL *externalURL = (NSURL *)((DSMapBoxAlertView *)alertView).context;
-        
-        [self openExternalURL:externalURL];
-    }
-}
-
-#pragma mark -
-
 - (void)directoryDidChange:(DirectoryWatcher *)folderWatcher;
 {
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"excludeiCloudBackup"])
@@ -291,37 +273,39 @@
     //
     if ( ! [externalURL isFileURL])
     {
-        // we'll do this in the background to avoid blocking
+        // download in the background to avoid blocking
         //
-        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:externalURL];
+        NSURLConnection *download = [NSURLConnection connectionWithRequest:[DSMapBoxURLRequest requestWithURL:externalURL]];
         
-        // download to disk
-        //
-        [request setDownloadDestinationPath:[NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [externalURL lastPathComponent]]];
-        
-        // retry as local file when complete
-        //
-        [request setCompletionBlock:^(void)
+        download.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
         {
-            [self openExternalURL:[NSURL fileURLWithPath:request.downloadDestinationPath]];
-        }];
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            
+            NSString *downloadPath = [NSString stringWithFormat:@"%@%@", NSTemporaryDirectory(), [externalURL lastPathComponent]];
+            
+            [responseData writeToFile:downloadPath atomically:YES];
+            
+            [self openExternalURL:[NSURL fileURLWithPath:downloadPath]];
+        };
         
-        // re-prompt on failure
-        //
-        [request setFailedBlock:^(void)
+        download.failureBlock = ^(NSURLConnection *connection, NSError *error)
         {
-            DSMapBoxAlertView *alert = [[DSMapBoxAlertView alloc] initWithTitle:@"Download Problem"
-                                                                        message:[NSString stringWithFormat:@"There was a problem downloading %@. Would you like to try again?", externalURL]
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Cancel"
-                                                              otherButtonTitles:@"Retry", nil];
-            
-            alert.context = externalURL;
-            
-            [alert show];
-        }];
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+
+            [UIAlertView showAlertViewWithTitle:@"Download Problem"
+                                        message:[NSString stringWithFormat:@"There was a problem downloading %@. Would you like to try again?", externalURL]
+                              cancelButtonTitle:@"Cancel"
+                              otherButtonTitles:[NSArray arrayWithObject:@"Retry"]
+                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+                                        {
+                                            if (buttonIndex == alertView.firstOtherButtonIndex)
+                                                [self openExternalURL:externalURL];
+                                        }];
+        };
         
-        [request startAsynchronous];
+        [DSMapBoxNetworkActivityIndicator addJob:download];
+        
+        [download start];
         
         [TESTFLIGHT passCheckpoint:@"opened network URL"];
         

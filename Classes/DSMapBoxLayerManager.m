@@ -14,8 +14,6 @@
 #import "DSMapContents.h"
 #import "DSMapView.h"
 
-#import "UIApplication_Additions.h"
-
 #import "SimpleKML.h"
 
 #import "RMOpenStreetMapSource.h"

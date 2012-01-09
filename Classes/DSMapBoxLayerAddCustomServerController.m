@@ -10,9 +10,6 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTileStreamCommon.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
-
-#import "ASIHTTPRequest.h"
 
 #import "JSONKit.h"
 
@@ -26,7 +23,7 @@
 - (void)indicateFailure;
 - (void)updateRecentServersAppearance;
 
-@property (nonatomic, strong) ASIHTTPRequest *validationRequest;
+@property (nonatomic, strong) NSURLConnection *validationDownload;
 @property (nonatomic, strong) NSURL *finalURL;
 
 @end
@@ -37,7 +34,7 @@
 
 @synthesize entryField;
 @synthesize recentServersTableView;
-@synthesize validationRequest;
+@synthesize validationDownload;
 @synthesize finalURL;
 
 - (void)viewDidLoad
@@ -94,15 +91,9 @@
     [super viewWillDisappear:animated];
     
     [self.entryField resignFirstResponder];
-}
-
-- (void)dealloc
-{
-    if (validationRequest)
-    {
-        [DSMapBoxNetworkActivityIndicator removeJob:validationRequest];
-        [validationRequest clearDelegatesAndCancel];
-    }
+    
+    [DSMapBoxNetworkActivityIndicator removeJob:self.validationDownload];
+    [self.validationDownload cancel];
 }
 
 #pragma mark -
@@ -194,16 +185,43 @@
         
         if (self.finalURL)
         {
-            self.validationRequest = [ASIHTTPRequest requestWithURL:self.finalURL];
-
-            self.validationRequest.timeOutSeconds = 10;
-            self.validationRequest.delegate = self;
+            DSMapBoxURLRequest *validationRequest = [DSMapBoxURLRequest requestWithURL:self.finalURL];
             
-            [self.validationRequest startAsynchronous];
+            validationRequest.timeoutInterval = 10;
+            
+            self.validationDownload = [NSURLConnection connectionWithRequest:validationRequest];
+            
+            __weak DSMapBoxLayerAddCustomServerController *selfCopy = self;
+            
+            self.validationDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
+            {
+                [DSMapBoxNetworkActivityIndicator removeJob:connection];
+                
+                id layers = [responseData objectFromJSONData];
+                
+                if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
+                {
+                    selfCopy.finalURL = [NSURL URLWithString:[[selfCopy.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
+                    
+                    [selfCopy indicateSuccess];
+                }
+                
+                else
+                    [selfCopy indicateFailure];
+            };
+            
+            self.validationDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
+            {
+                [DSMapBoxNetworkActivityIndicator removeJob:connection];
+                
+                [selfCopy indicateFailure];
+            };
+            
+            [DSMapBoxNetworkActivityIndicator addJob:self.validationDownload];
             
             [self startActivity];
             
-            [DSMapBoxNetworkActivityIndicator addJob:self.validationRequest];
+            [self.validationDownload start];
         }
         
         else
@@ -282,11 +300,8 @@
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
-    if (self.validationRequest)
-    {
-        [self.validationRequest clearDelegatesAndCancel];
-        self.validationRequest = nil;
-    }
+    if (self.validationDownload)
+        [validationDownload cancel];
 
     [self startActivity];
     
@@ -303,32 +318,6 @@
         [self tappedNextButton:self];
     
     return NO;
-}
-
-#pragma mark -
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    [self indicateFailure];
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    id layers = [request.responseData objectFromJSONData];
-
-    if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
-    {
-        self.finalURL = [NSURL URLWithString:[[self.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
-        
-        [self indicateSuccess];
-    }
-
-    else
-        [self indicateFailure];
 }
 
 #pragma mark -

@@ -8,17 +8,13 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
-#import "DSMapBoxNetworkActivityIndicator.h"
-
-#import "ASIHTTPRequest.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerAddTileView ()
 
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) ASIHTTPRequest *imageRequest;
+@property (nonatomic, strong) NSURLConnection *imageDownload;
 @property (nonatomic, strong) UIImage *image;
 @property (nonatomic, assign) CGSize originalSize;
 @property (nonatomic, assign) BOOL selected;
@@ -34,7 +30,7 @@
 @synthesize image;
 @synthesize imageView;
 @synthesize label;
-@synthesize imageRequest;
+@synthesize imageDownload;
 @synthesize originalSize;
 @synthesize selected;
 @synthesize touched;
@@ -84,14 +80,122 @@
 
             // fire off image download request
             //
-            imageRequest = [ASIHTTPRequest requestWithURL:imageURL];
+            DSMapBoxURLRequest *imageRequest = [DSMapBoxURLRequest requestWithURL:imageURL];
             
-            imageRequest.timeOutSeconds = 10;
-            imageRequest.delegate = self;
+            imageRequest.timeoutInterval = 10;
             
-            [imageRequest startAsynchronous];
+            imageDownload = [NSURLConnection connectionWithRequest:imageRequest];
             
-            [DSMapBoxNetworkActivityIndicator addJob:imageRequest];
+            __weak DSMapBoxLayerAddTileView *selfCopy = self;
+            
+            imageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
+            {
+                [DSMapBoxNetworkActivityIndicator removeJob:connection];
+                
+                UIImage *tileImage = [UIImage imageWithData:responseData];
+                
+                if (tileImage)
+                {
+                    // get corner image
+                    //
+                    UIImage *cornerImage = [UIImage imageNamed:@"corner_fold_preview.png"];
+                    
+                    // create cornered path
+                    //
+                    UIBezierPath *corneredPath = [UIBezierPath bezierPath];
+                    
+                    [corneredPath moveToPoint:CGPointMake(0, 0)];
+                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width - cornerImage.size.width, 0)];
+                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, cornerImage.size.height)];
+                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, selfCopy.imageView.bounds.size.height)];
+                    [corneredPath addLineToPoint:CGPointMake(0, selfCopy.imageView.bounds.size.height)];
+                    [corneredPath closePath];
+                    
+                    // begin image mods
+                    //
+                    UIGraphicsBeginImageContext(selfCopy.imageView.bounds.size);
+                    
+                    CGContextRef c = UIGraphicsGetCurrentContext();
+                    
+                    // fill background with white
+                    //
+                    CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:selfCopy.imageView.bounds] CGPath]);
+                    CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+                    CGContextFillPath(c);
+                    
+                    // store unclipped version for later & reset context
+                    //
+                    [tileImage drawInRect:selfCopy.imageView.bounds];
+                    
+                    selfCopy.image = UIGraphicsGetImageFromCurrentImageContext();
+                    
+                    CGContextClearRect(c, selfCopy.imageView.bounds);
+                    
+                    // fill background with white again, but cornered
+                    //
+                    CGContextAddPath(c, [corneredPath CGPath]);
+                    CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+                    CGContextFillPath(c);
+                    
+                    // clip corner of drawing
+                    //
+                    CGContextAddPath(c, [corneredPath CGPath]);
+                    CGContextClip(c);
+                    
+                    // draw again for our display
+                    //
+                    [tileImage drawInRect:selfCopy.imageView.bounds];
+                    
+                    UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
+                    
+                    UIGraphicsEndImageContext();
+                    
+                    // add image view for corner graphic
+                    //
+                    UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
+                    
+                    cornerImageView.frame = CGRectMake(selfCopy.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+                    
+                    // add shadow to corner image
+                    //
+                    UIBezierPath *cornerPath = [UIBezierPath bezierPath];
+                    
+                    [cornerPath moveToPoint:CGPointMake(0, 0)];
+                    [cornerPath addLineToPoint:CGPointMake(cornerImage.size.width, cornerImage.size.height)];
+                    [cornerPath addLineToPoint:CGPointMake(0, cornerImage.size.height)];
+                    [cornerPath closePath];
+                    
+                    cornerImageView.layer.shadowOpacity = 0.5;
+                    cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
+                    cornerImageView.layer.shadowPath    = [cornerPath CGPath];
+                    
+                    [selfCopy.imageView addSubview:cornerImageView];
+                    
+                    // update tile
+                    //
+                    selfCopy.imageView.image = clippedImage;
+                    
+                    // animate cover removal
+                    //
+                    [UIView beginAnimations:nil context:nil];
+                    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+                    [UIView setAnimationDuration:0.1];
+                    
+                    selfCopy.imageView.layer.shadowPath = [corneredPath CGPath];
+                    cornerImageView.hidden = NO;
+                    
+                    [UIView commitAnimations];
+                }
+            };
+
+            imageDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
+            {
+                [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            };
+            
+            [DSMapBoxNetworkActivityIndicator addJob:imageDownload];
+            
+            [imageDownload start];
         }
         else
         {
@@ -129,9 +233,8 @@
 
 - (void)dealloc
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:imageRequest];
-    
-    [imageRequest clearDelegatesAndCancel];
+    [DSMapBoxNetworkActivityIndicator removeJob:imageDownload];
+    [imageDownload cancel];
 }
 
 #pragma mark -
@@ -259,113 +362,6 @@
         
         [TESTFLIGHT passCheckpoint:@"used pinch gesture to preview TileStream layer"];
     }
-}
-
-#pragma mark -
-
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    UIImage *tileImage = [UIImage imageWithData:request.responseData];
-    
-    if (tileImage)
-    {
-        // get corner image
-        //
-        UIImage *cornerImage = [UIImage imageNamed:@"corner_fold_preview.png"];
-        
-        // create cornered path
-        //
-        UIBezierPath *corneredPath = [UIBezierPath bezierPath];
-        
-        [corneredPath moveToPoint:CGPointMake(0, 0)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width - cornerImage.size.width, 0)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, cornerImage.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, self.imageView.bounds.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(0, self.imageView.bounds.size.height)];
-        [corneredPath closePath];
-
-        // begin image mods
-        //
-        UIGraphicsBeginImageContext(self.imageView.bounds.size);
-        
-        CGContextRef c = UIGraphicsGetCurrentContext();
-        
-        // fill background with white
-        //
-        CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:self.imageView.bounds] CGPath]);
-        CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
-        CGContextFillPath(c);
-        
-        // store unclipped version for later & reset context
-        //
-        [tileImage drawInRect:self.imageView.bounds];
-        
-        self.image = UIGraphicsGetImageFromCurrentImageContext();
-        
-        CGContextClearRect(c, self.imageView.bounds);
-        
-        // fill background with white again, but cornered
-        //
-        CGContextAddPath(c, [corneredPath CGPath]);
-        CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
-        CGContextFillPath(c);
-
-        // clip corner of drawing
-        //
-        CGContextAddPath(c, [corneredPath CGPath]);
-        CGContextClip(c);
-
-        // draw again for our display
-        //
-        [tileImage drawInRect:self.imageView.bounds];
-
-        UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-
-        // add image view for corner graphic
-        //
-        UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
-        
-        cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
-        
-        // add shadow to corner image
-        //
-        UIBezierPath *cornerPath = [UIBezierPath bezierPath];
-        
-        [cornerPath moveToPoint:CGPointMake(0, 0)];
-        [cornerPath addLineToPoint:CGPointMake(cornerImage.size.width, cornerImage.size.height)];
-        [cornerPath addLineToPoint:CGPointMake(0, cornerImage.size.height)];
-        [cornerPath closePath];
-        
-        cornerImageView.layer.shadowOpacity = 0.5;
-        cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
-        cornerImageView.layer.shadowPath    = [cornerPath CGPath];
-        
-        [self.imageView addSubview:cornerImageView];
-        
-        // update tile
-        //
-        self.imageView.image = clippedImage;
-        
-        // animate cover removal
-        //
-        [UIView beginAnimations:nil context:nil];
-        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-        [UIView setAnimationDuration:0.1];
-        
-        self.imageView.layer.shadowPath = [corneredPath CGPath];
-        cornerImageView.hidden = NO;
-
-        [UIView commitAnimations];
-    }
-}
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
 }
 
 @end

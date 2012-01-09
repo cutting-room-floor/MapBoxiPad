@@ -13,9 +13,6 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
-
-#import "ASIHTTPRequest.h"
 
 #import "JSONKit.h"
 
@@ -23,14 +20,12 @@
 
 #import <CoreLocation/CoreLocation.h>
 
-#import "UIApplication_Additions.h"
-
 @interface DSMapBoxLayerAddTileStreamBrowseController ()
 
 @property (nonatomic, strong) NSArray *layers;
 @property (nonatomic, strong) NSMutableArray *selectedLayers;
 @property (nonatomic, strong) NSMutableArray *selectedImages;
-@property (nonatomic, strong) ASIHTTPRequest *layersRequest;
+@property (nonatomic, strong) NSURLConnection *layersDownload;
 @property (nonatomic, strong) UIView *animatedTileView;
 @property (nonatomic, assign) CGPoint originalTileViewCenter;
 @property (nonatomic, assign) CGSize originalTileViewSize;
@@ -50,7 +45,7 @@
 @synthesize layers;
 @synthesize selectedLayers;
 @synthesize selectedImages;
-@synthesize layersRequest;
+@synthesize layersDownload;
 @synthesize animatedTileView;
 @synthesize originalTileViewCenter;
 @synthesize originalTileViewSize;
@@ -98,14 +93,195 @@
     else
         fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
     
-    self.layersRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:fullURLString]];
+    DSMapBoxURLRequest *layersRequest = [DSMapBoxURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
-    self.layersRequest.timeOutSeconds = 10;
-    self.layersRequest.delegate = self;
+    layersRequest.timeoutInterval = 10;
     
-    [self.layersRequest startAsynchronous];
-      
-    [DSMapBoxNetworkActivityIndicator addJob:self.layersRequest];
+    self.layersDownload = [NSURLConnection connectionWithRequest:layersRequest];
+    
+    __weak DSMapBoxLayerAddTileStreamBrowseController *selfCopy = self;
+    
+    self.layersDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:connection];
+        
+        [selfCopy.spinner stopAnimating];
+        
+        id newLayersReceived = [responseData mutableObjectFromJSONData];
+        
+        if (newLayersReceived && [newLayersReceived isKindOfClass:[NSMutableArray class]])
+        {
+            // Grab parsed objects for safekeeping. Previously, accessing the response 
+            // objects directly was unreliably available in memory.
+            //
+            NSMutableArray *newLayers = [NSMutableArray arrayWithArray:[newLayersReceived allObjects]];
+            
+            if ([newLayers count])
+            {
+                NSMutableArray *updatedLayers    = [NSMutableArray array];
+                NSMutableArray *imagesToDownload = [NSMutableArray array];
+                
+                for (int i = 0; i < [newLayers count]; i++)
+                {
+                    NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
+                    
+                    // determine center tile to download
+                    //
+                    CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
+                                                                               [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
+                    
+                    int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
+                    
+                    int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
+                    int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
+                                                       cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
+                    
+                    tileY = pow(2.0, tileZoom) - tileY - 1.0;
+                    
+                    RMTile tile = {
+                        .zoom = tileZoom,
+                        .x    = tileX,
+                        .y    = tileY,
+                    };
+                    
+                    if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
+                    {
+                        NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
+                        
+                        // update layer for server-wide variables
+                        //
+                        [layer setValue:[selfCopy.serverURL scheme]                                                           forKey:@"apiScheme"];
+                        [layer setValue:[selfCopy.serverURL host]                                                             forKey:@"apiHostname"];
+                        [layer setValue:([selfCopy.serverURL port] ? [selfCopy.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                        [layer setValue:([selfCopy.serverURL path] ? [selfCopy.serverURL path] : @"")                         forKey:@"apiPath"];
+                        [layer setValue:tileURLString                                                                         forKey:@"tileURL"];
+                        
+                        // set size for downloadable tiles
+                        //
+                        [layer setValue:[NSNumber numberWithInt:([[layer objectForKey:@"size"] isKindOfClass:[NSString class]] ? [[layer objectForKey:@"size"] intValue] : 0)] forKey:@"size"];
+                        
+                        // handle null that needs to be serialized later
+                        //
+                        // see https://github.com/developmentseed/tilestream-pro/issues/230
+                        //
+                        for (NSString *key in [layer allKeys])
+                            if ([[layer objectForKey:key] isKindOfClass:[NSNull class]])
+                                [layer setObject:@"" forKey:key];
+                        
+                        // pull out first grid URL
+                        //
+                        if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
+                            [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
+                        
+                        // swap in x/y/z
+                        //
+                        tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
+                        tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[NSString stringWithFormat:@"%d", tile.x]];
+                        tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[NSString stringWithFormat:@"%d", tile.y]];
+                        
+                        // queue up center tile download
+                        //
+                        [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
+                    }
+                    else
+                    {
+                        [imagesToDownload addObject:[NSNull null]];
+                    }
+                    
+                    [updatedLayers addObject:layer];
+                }
+                
+                selfCopy.helpLabel.hidden      = NO;
+                selfCopy.tileScrollView.hidden = NO;
+                
+                if ([updatedLayers count] > 9)
+                    selfCopy.tilePageControl.hidden = NO;
+                
+                selfCopy.layers = [NSArray arrayWithArray:updatedLayers];
+                
+                // layout preview tiles
+                //
+                int pageCount = ([selfCopy.layers count] / 9) + ([selfCopy.layers count] % 9 ? 1 : 0);
+                
+                selfCopy.tileScrollView.contentSize = CGSizeMake((selfCopy.tileScrollView.frame.size.width * pageCount), selfCopy.tileScrollView.frame.size.height);
+                
+                selfCopy.tilePageControl.numberOfPages = pageCount;
+                
+                for (int i = 0; i < pageCount; i++)
+                {
+                    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * selfCopy.tileScrollView.frame.size.width, 0, selfCopy.tileScrollView.frame.size.width, selfCopy.tileScrollView.frame.size.height)];
+                    
+                    containerView.backgroundColor = [UIColor clearColor];
+                    
+                    for (int j = 0; j < 9; j++)
+                    {
+                        int index = i * 9 + j;
+                        
+                        if (index < [selfCopy.layers count])
+                        {
+                            int row = j / 3;
+                            int col = j - (row * 3);
+                            
+                            CGFloat x;
+                            
+                            if (col == 0)
+                                x = 32;
+                            
+                            else if (col == 1)
+                                x = containerView.frame.size.width / 2 - 74;
+                            
+                            else if (col == 2)
+                                x = containerView.frame.size.width - 148 - 32;
+                            
+                            DSMapBoxLayerAddTileView *tileView = [[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
+                                                                                                        imageURL:[imagesToDownload objectAtIndex:index]
+                                                                                                       labelText:[[selfCopy.layers objectAtIndex:index] valueForKey:@"name"]];
+                            
+                            tileView.delegate = selfCopy;
+                            tileView.tag = index;
+                            
+                            [containerView addSubview:tileView];
+                        }
+                    }
+                    
+                    [selfCopy.tileScrollView addSubview:containerView];
+                }
+            }
+            else
+            {
+                DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"No layers available"];
+                
+                [selfCopy.view addSubview:errorView];
+                
+                errorView.center = selfCopy.view.center;
+            }
+        }
+        else
+        {
+            DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
+            
+            [selfCopy.view addSubview:errorView];
+            
+            errorView.center = selfCopy.view.center;
+        }
+    };
+    
+    self.layersDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:connection];
+        
+        [selfCopy.spinner stopAnimating];
+        
+        DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
+        
+        [selfCopy.view addSubview:errorView];
+        
+        errorView.center = selfCopy.view.center;
+    };
+    
+    [DSMapBoxNetworkActivityIndicator addJob:self.layersDownload];
+    
+    [self.layersDownload start];
     
     [TESTFLIGHT passCheckpoint:@"browsed TileStream server"];
 }
@@ -132,11 +308,12 @@
     }
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:layersRequest];
+    [super viewDidDisappear:animated];
     
-    [layersRequest clearDelegatesAndCancel];
+    [DSMapBoxNetworkActivityIndicator removeJob:self.layersDownload];
+    [self.layersDownload cancel];
 }
 
 #pragma mark -
@@ -240,186 +417,6 @@
         
         [self presentModalViewController:wrapper animated:YES];
     });
-}
-
-#pragma mark -
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    [self.spinner stopAnimating];
-    
-    DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
-    
-    [self.view addSubview:errorView];
-    
-    errorView.center = self.view.center;
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    [self.spinner stopAnimating];
-    
-    id newLayersReceived = [request.responseData mutableObjectFromJSONData];
-
-    if (newLayersReceived && [newLayersReceived isKindOfClass:[NSMutableArray class]])
-    {
-        // Grab parsed objects for safekeeping. Previously, accessing the response 
-        // objects directly was unreliably available in memory.
-        //
-        NSMutableArray *newLayers = [NSMutableArray arrayWithArray:[newLayersReceived allObjects]];
-
-        if ([newLayers count])
-        {
-            NSMutableArray *updatedLayers    = [NSMutableArray array];
-            NSMutableArray *imagesToDownload = [NSMutableArray array];
-            
-            for (int i = 0; i < [newLayers count]; i++)
-            {
-                NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
-                
-                // determine center tile to download
-                //
-                CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
-                                                                           [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
-                
-                int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
-                
-                int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
-                int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
-                                                   cos(center.latitude * M_PI / 180.0)) / M_PI) / 2.0 * pow(2.0, tileZoom)));
-                
-                tileY = pow(2.0, tileZoom) - tileY - 1.0;
-                
-                RMTile tile = {
-                    .zoom = tileZoom,
-                    .x    = tileX,
-                    .y    = tileY,
-                };
-                
-                if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
-                {
-                    NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
-                    
-                    // update layer for server-wide variables
-                    //
-                    [layer setValue:[self.serverURL scheme]                                                       forKey:@"apiScheme"];
-                    [layer setValue:[self.serverURL host]                                                         forKey:@"apiHostname"];
-                    [layer setValue:([self.serverURL port] ? [self.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-                    [layer setValue:([self.serverURL path] ? [self.serverURL path] : @"")                         forKey:@"apiPath"];
-                    [layer setValue:tileURLString                                                                 forKey:@"tileURL"];
-
-                    // set size for downloadable tiles
-                    //
-                    [layer setValue:[NSNumber numberWithInt:([[layer objectForKey:@"size"] isKindOfClass:[NSString class]] ? [[layer objectForKey:@"size"] intValue] : 0)] forKey:@"size"];
-                    
-                    // handle null that needs to be serialized later
-                    //
-                    // see https://github.com/developmentseed/tilestream-pro/issues/230
-                    //
-                    for (NSString *key in [layer allKeys])
-                        if ([[layer objectForKey:key] isKindOfClass:[NSNull class]])
-                            [layer setObject:@"" forKey:key];
-                    
-                    // pull out first grid URL
-                    //
-                    if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
-                        [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
-                    
-                    // swap in x/y/z
-                    //
-                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{z}" withString:[NSString stringWithFormat:@"%d", tile.zoom]];
-                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{x}" withString:[NSString stringWithFormat:@"%d", tile.x]];
-                    tileURLString = [tileURLString stringByReplacingOccurrencesOfString:@"{y}" withString:[NSString stringWithFormat:@"%d", tile.y]];
-
-                    // queue up center tile download
-                    //
-                    [imagesToDownload addObject:[NSURL URLWithString:tileURLString]];
-                }
-                else
-                {
-                    [imagesToDownload addObject:[NSNull null]];
-                }
-
-                [updatedLayers addObject:layer];
-            }
-            
-            self.helpLabel.hidden       = NO;
-            self.tileScrollView.hidden  = NO;
-            
-            if ([updatedLayers count] > 9)
-                self.tilePageControl.hidden = NO;
-
-            self.layers = [NSArray arrayWithArray:updatedLayers];
-            
-            // layout preview tiles
-            //
-            int pageCount = ([self.layers count] / 9) + ([self.layers count] % 9 ? 1 : 0);
-            
-            self.tileScrollView.contentSize = CGSizeMake((self.tileScrollView.frame.size.width * pageCount), self.tileScrollView.frame.size.height);
-            
-            self.tilePageControl.numberOfPages = pageCount;
-            
-            for (int i = 0; i < pageCount; i++)
-            {
-                UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * self.tileScrollView.frame.size.width, 0, self.tileScrollView.frame.size.width, self.tileScrollView.frame.size.height)];
-                
-                containerView.backgroundColor = [UIColor clearColor];
-                
-                for (int j = 0; j < 9; j++)
-                {
-                    int index = i * 9 + j;
-                    
-                    if (index < [self.layers count])
-                    {
-                        int row = j / 3;
-                        int col = j - (row * 3);
-                        
-                        CGFloat x;
-                        
-                        if (col == 0)
-                            x = 32;
-                        
-                        else if (col == 1)
-                            x = containerView.frame.size.width / 2 - 74;
-                        
-                        else if (col == 2)
-                            x = containerView.frame.size.width - 148 - 32;
-                        
-                        DSMapBoxLayerAddTileView *tileView = [[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
-                                                                                                    imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                   labelText:[[self.layers objectAtIndex:index] valueForKey:@"name"]];
-                        
-                        tileView.delegate = self;
-                        tileView.tag = index;
-                        
-                        [containerView addSubview:tileView];
-                    }
-                }
-                
-                [self.tileScrollView addSubview:containerView];
-            }
-        }
-        else
-        {
-            DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"No layers available"];
-            
-            [self.view addSubview:errorView];
-            
-            errorView.center = self.view.center;
-        }
-    }
-    else
-    {
-        DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
-        
-        [self.view addSubview:errorView];
-        
-        errorView.center = self.view.center;
-    }
 }
 
 #pragma mark -

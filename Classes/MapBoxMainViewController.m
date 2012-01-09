@@ -26,13 +26,10 @@
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxLegendManager.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadViewController.h"
 #import "DSMapBoxNotificationCenter.h"
 
-#import "UIViewController_Additions.h"
-#import "UIApplication_Additions.h"
 #import "DSSound.h"
 
 #import "SimpleKML.h"

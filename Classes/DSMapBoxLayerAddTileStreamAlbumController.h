@@ -8,11 +8,7 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-#import "ASIHTTPRequestDelegate.h"
-
-@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, 
-                                                                         DSMapBoxLayerAddAccountViewDelegate,
-                                                                         ASIHTTPRequestDelegate>
+@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddAccountViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *helpLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;

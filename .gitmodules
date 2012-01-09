@@ -10,9 +10,6 @@
 [submodule "Externals/Simple KML"]
 	path = Externals/Simple KML
 	url = git@github.com:mapbox/Simple-KML.git
-[submodule "Externals/ASIHTTPRequest"]
-	path = Externals/ASIHTTPRequest
-	url = https://github.com/pokeb/asi-http-request.git
 [submodule "Externals/StyledPageControl"]
 	path = Externals/StyledPageControl
 	url = https://github.com/honcheng/iOS-StyledPageControl.git
@@ -28,3 +25,6 @@
 [submodule "Externals/SSToolkit"]
 	path = Externals/SSToolkit
 	url = https://github.com/samsoffes/sstoolkit.git
+[submodule "Externals/BlocksKit"]
+	path = Externals/BlocksKit
+	url = https://github.com/zwaldowski/BlocksKit.git

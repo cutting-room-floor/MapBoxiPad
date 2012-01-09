@@ -8,8 +8,6 @@
 
 #import "DSMapBoxTileSetManager.h"
 
-#import "UIApplication_Additions.h"
-
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 

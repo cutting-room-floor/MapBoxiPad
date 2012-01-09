@@ -2,9 +2,9 @@ MapBox (c) 2010-2011 Development Seed, Inc.
 
 Libraries used under license: 
 
- * ASIHTTPRequest, (c) 2007-2011 All-Seeing Interactive https://github.com/pokeb/asi-http-request
-
  * BaseAppKit, (c) 2011 Dmitry Stadnik https://github.com/dimzzy/BaseAppKit
+ 
+ * BlocksKit, (c) 2011 Zachary Waldowski and the BlocksKit Contributors
 
  * DirectoryWatcher, (c) 2011 Apple Inc. http://developer.apple.com/library/ios/#samplecode/AVPlayerDemo
 
@@ -17,6 +17,8 @@ Libraries used under license:
  * JSONKit, (c) 2011 John Engelhart https://github.com/johnezang/JSONKit
 
  * mustache.js, (c) 2010 Jan Lehnardt https://github.com/janl/mustache.js
+
+ * Reachability, (c) 2010 Apple Inc. http://developer.apple.com/library/ios/#samplecode/Reachability/
 
  * Route-Me, (c) 2008-2011 Route-Me Contributors https://github.com/route-me/route-me
 

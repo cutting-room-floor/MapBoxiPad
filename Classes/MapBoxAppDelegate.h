@@ -10,7 +10,7 @@
 
 @class MapBoxMainViewController;
 
-@interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, UIAlertViewDelegate, DirectoryWatcherDelegate>
+@interface MapBoxAppDelegate : NSObject <UIApplicationDelegate, DirectoryWatcherDelegate>
 
 @property (nonatomic, strong) IBOutlet UIWindow *window;
 @property (nonatomic, strong) IBOutlet MapBoxMainViewController *viewController;

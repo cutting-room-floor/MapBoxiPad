@@ -14,8 +14,6 @@
 #import "RMTileStreamSource.h"
 #import "RMCachedTileSource.h"
 
-#import "UIApplication_Additions.h"
-
 #import "UIColor-Expanded.h"
 
 #import <QuartzCore/QuartzCore.h>

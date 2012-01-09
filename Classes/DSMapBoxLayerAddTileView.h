@@ -6,8 +6,6 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "ASIHTTPRequestDelegate.h"
-
 @class DSMapBoxLayerAddTileView;
 
 @protocol DSMapBoxLayerAddTileViewDelegate
@@ -21,7 +19,7 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerAddTileView : UIView <ASIHTTPRequestDelegate>
+@interface DSMapBoxLayerAddTileView : UIView
 
 @property (nonatomic, weak) id <DSMapBoxLayerAddTileViewDelegate>delegate;
 @property (nonatomic, readonly, strong) UIImage *image;
