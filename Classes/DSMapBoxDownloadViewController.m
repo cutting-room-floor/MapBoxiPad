@@ -16,6 +16,9 @@
 
 @interface DSMapBoxDownloadViewController ()
 
+@property (nonatomic, strong) UIBarButtonItem *editButton;
+@property (nonatomic, strong) UIBarButtonItem *doneButton;
+
 - (void)reloadTableView;
 - (void)downloadProgressUpdated:(NSNotification *)notification;
 
@@ -25,15 +28,24 @@
 
 @implementation DSMapBoxDownloadViewController
 
+@synthesize editButton;
+@synthesize doneButton;
+
 - (void)viewDidLoad
 {
     [self reloadTableView];
     
     self.navigationItem.title = @"Downloads";
     
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                           target:self
-                                                                                           action:@selector(editButtonTapped:)];
+    self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
+                                                                    target:self
+                                                                    action:@selector(editButtonTapped:)];
+    
+    self.doneButton = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
+                                                                  target:self
+                                                                  action:@selector(doneButtonTapped:)];
+
+    self.navigationItem.rightBarButtonItem = self.editButton;
     
     // watch for download queue
     //
@@ -77,13 +89,11 @@
     
     self.contentSizeForViewInPopover = CGSizeMake(self.contentSizeForViewInPopover.width, 200);
     
-    if ([self.tableView numberOfRowsInSection:0])
+    if ([self.tableView numberOfRowsInSection:0] != 0)
     {
         self.tableView.editing = NO;
         
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                               target:self
-                                                                                               action:@selector(editButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = self.editButton;
     }
     else
     {
@@ -123,25 +133,12 @@
 {
     self.tableView.editing = YES;
     
-    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
-                                                                                         target:self
-                                                                                         action:@selector(doneButtonTapped:)];
+    self.navigationItem.rightBarButtonItem = self.doneButton;
 }
 
 - (void)doneButtonTapped:(id)sender
 {
-    self.tableView.editing = NO;
-    
-    if ([self.tableView numberOfRowsInSection:0])
-    {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
-                                                                                               target:self
-                                                                                               action:@selector(editButtonTapped:)];
-    }
-    else
-    {
-        self.navigationItem.rightBarButtonItem = nil;
-    }
+    [self reloadTableView];
 }
 
 #pragma mark -
