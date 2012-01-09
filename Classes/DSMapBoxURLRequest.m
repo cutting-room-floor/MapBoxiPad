@@ -16,8 +16,6 @@
     
     if (self)
     {
-        NSLog(@"got here");
-        
         NSString *info = [NSString stringWithFormat:@"%@ for %@ %@.%@", 
                              [[NSProcessInfo processInfo] processName],
                              [UIDevice currentDevice].model,

@@ -10,4 +10,5 @@
     #import "UIViewController_Additions.h"
     #import "DSMapBoxNetworkActivityIndicator.h"
     #import "DSMapBoxURLRequest.h"
+    #import <BlocksKit/BlocksKit.h>
 #endif

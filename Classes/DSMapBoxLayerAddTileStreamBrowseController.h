@@ -8,13 +8,9 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
-#import "ASIHTTPRequestDelegate.h"
-
 static NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
-@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, 
-                                                                          DSMapBoxLayerAddTileViewDelegate,
-                                                                          ASIHTTPRequestDelegate>
+@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddTileViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *helpLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;

@@ -6,8 +6,6 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "ASIHTTPRequestDelegate.h"
-
 @class DSMapBoxLayerAddAccountView;
 
 @protocol DSMapBoxLayerAddAccountViewDelegate
@@ -20,7 +18,7 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerAddAccountView : UIView <ASIHTTPRequestDelegate>
+@interface DSMapBoxLayerAddAccountView : UIView
 
 @property (nonatomic, weak) id <DSMapBoxLayerAddAccountViewDelegate>delegate;
 @property (nonatomic, assign) BOOL featured;

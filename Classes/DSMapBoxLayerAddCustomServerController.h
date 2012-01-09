@@ -6,12 +6,7 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "ASIHTTPRequestDelegate.h"
-
-@interface DSMapBoxLayerAddCustomServerController : UIViewController <UITextFieldDelegate, 
-                                                                      UITableViewDelegate, 
-                                                                      UITableViewDataSource,
-                                                                      ASIHTTPRequestDelegate>
+@interface DSMapBoxLayerAddCustomServerController : UIViewController <UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) IBOutlet UITextField *entryField;
 @property (nonatomic, strong) IBOutlet UITableView *recentServersTableView;

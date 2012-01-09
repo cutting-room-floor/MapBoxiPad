@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-#import "ASIHTTPRequest.h"
-
 #import "UIImage+Alpha.h"
 
 #import <QuartzCore/QuartzCore.h>
@@ -19,12 +17,14 @@
 @property (nonatomic, strong) NSArray *previewImageURLs;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *label;
-@property (nonatomic, strong) ASIHTTPRequest *primaryImageRequest;
-@property (nonatomic, strong) NSMutableArray *secondaryImageRequests;
+@property (nonatomic, strong) NSURLConnection *primaryImageDownload;
+@property (nonatomic, strong) NSMutableArray *secondaryImageDownloads;
 @property (nonatomic, assign) CGPoint originalCenter;
 @property (nonatomic, assign) CGSize originalSize;
 @property (nonatomic, assign) BOOL flicked;
 @property (nonatomic, assign) BOOL touched;
+
+- (void)downloadSecondaryImages;
 
 @end
 
@@ -37,8 +37,8 @@
 @synthesize previewImageURLs;
 @synthesize imageView;
 @synthesize label;
-@synthesize primaryImageRequest;
-@synthesize secondaryImageRequests;
+@synthesize primaryImageDownload;
+@synthesize secondaryImageDownloads;
 @synthesize originalCenter;
 @synthesize originalSize;
 @synthesize flicked;
@@ -82,14 +82,128 @@
 
         // fire off primary image download request
         //
-        primaryImageRequest = [ASIHTTPRequest requestWithURL:[imageURLs objectAtIndex:0]];
+        DSMapBoxURLRequest *primaryImageRequest = [DSMapBoxURLRequest requestWithURL:[imageURLs objectAtIndex:0]];
         
-        primaryImageRequest.timeOutSeconds = 10;
-        primaryImageRequest.delegate = self;
+        primaryImageRequest.timeoutInterval = 10;
         
-        [primaryImageRequest startAsynchronous];
+        primaryImageDownload = [NSURLConnection connectionWithRequest:primaryImageRequest];
         
-        [DSMapBoxNetworkActivityIndicator addJob:primaryImageRequest];
+        __weak DSMapBoxLayerAddAccountView *selfCopy = self;
+        
+        primaryImageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
+        {
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            
+            UIImage *tileImage = [UIImage imageWithData:responseData];
+            
+            [selfCopy downloadSecondaryImages];
+            
+            // process & update primary image
+            //
+            if (tileImage)
+            {
+                // get corner image
+                //
+                UIImage *cornerImage = [UIImage imageNamed:@"corner_fold.png"];
+                
+                // create cornered path
+                //
+                UIBezierPath *corneredPath = [UIBezierPath bezierPath];
+                
+                [corneredPath moveToPoint:CGPointMake(0, 0)];
+                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width - cornerImage.size.width, 0)];
+                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, cornerImage.size.height)];
+                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, selfCopy.imageView.bounds.size.height)];
+                [corneredPath addLineToPoint:CGPointMake(0, selfCopy.imageView.bounds.size.height)];
+                [corneredPath closePath];
+                
+                // begin image mods
+                //
+                UIGraphicsBeginImageContext(selfCopy.imageView.bounds.size);
+                
+                CGContextRef c = UIGraphicsGetCurrentContext();
+                
+                // fill background with white
+                //
+                CGContextAddPath(c, [corneredPath CGPath]);
+                CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
+                CGContextFillPath(c);
+                
+                // clip corner of drawing
+                //
+                CGContextAddPath(c, [corneredPath CGPath]);
+                CGContextClip(c);
+                
+                // draw tile
+                //
+                [tileImage drawInRect:selfCopy.imageView.bounds];
+                
+                UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
+                
+                UIGraphicsEndImageContext();
+                
+                // add image view for corner graphic
+                //
+                UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
+                
+                cornerImageView.frame = CGRectMake(selfCopy.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+                
+                // add shadow to corner image
+                //
+                UIBezierPath *cornerPath = [UIBezierPath bezierPath];
+                
+                [cornerPath moveToPoint:CGPointMake(0, 0)];
+                [cornerPath addLineToPoint:CGPointMake(cornerImage.size.width, cornerImage.size.height)];
+                [cornerPath addLineToPoint:CGPointMake(0, cornerImage.size.height)];
+                [cornerPath closePath];
+                
+                cornerImageView.layer.shadowOpacity = 0.5;
+                cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
+                cornerImageView.layer.shadowPath    = [cornerPath CGPath];
+                
+                [selfCopy.imageView addSubview:cornerImageView];
+                
+                // cover tile for animated reveal
+                //
+                cornerImageView.hidden = YES;
+                
+                UIImageView *coverView = [[UIImageView alloc] initWithFrame:selfCopy.bounds];
+                
+                coverView.image = selfCopy.imageView.image;
+                
+                [selfCopy addSubview:coverView];
+                
+                // update tile
+                //
+                selfCopy.imageView.image = [clippedImage transparentBorderImage:1];
+                
+                // animate cover removal
+                //
+                [UIView animateWithDuration:0.1
+                                      delay:0.0
+                                    options:UIViewAnimationOptionCurveEaseOut
+                                 animations:^(void)
+                                 {
+                                     selfCopy.imageView.layer.shadowPath = [corneredPath CGPath];
+                                     
+                                     cornerImageView.hidden = NO;
+                                     coverView.hidden       = YES;
+                                 }
+                                 completion:^(BOOL finished)
+                                 {
+                                     [coverView removeFromSuperview];
+                                 }];
+            }
+        };
+        
+        primaryImageDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
+        {
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            
+            // we can still try for the secondaries
+            //
+            [selfCopy downloadSecondaryImages];
+        };
         
         // save secondary image URLs for later
         //
@@ -97,7 +211,7 @@
         [downloadURLs removeObjectAtIndex:0];
         previewImageURLs = [NSArray arrayWithArray:downloadURLs];
         
-        secondaryImageRequests = [NSMutableArray array];
+        secondaryImageDownloads = [NSMutableArray array];
         
         // add preview views underneath
         //
@@ -121,6 +235,10 @@
         }
         
         originalSize = rect.size;
+        
+        [DSMapBoxNetworkActivityIndicator addJob:primaryImageDownload];
+        
+        [primaryImageDownload start];
     }
     
     return self;
@@ -128,15 +246,10 @@
 
 - (void)dealloc
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:primaryImageRequest];
+    [DSMapBoxNetworkActivityIndicator removeJob:primaryImageDownload];
     
-    [primaryImageRequest clearDelegatesAndCancel];
-    
-    for (ASIHTTPRequest *request in secondaryImageRequests)
-    {
-        [DSMapBoxNetworkActivityIndicator removeJob:request];
-        [request clearDelegatesAndCancel];
-    }
+    for (NSURLConnection *download in secondaryImageDownloads)
+        [DSMapBoxNetworkActivityIndicator removeJob:download];
 }
 
 #pragma mark -
@@ -414,19 +527,21 @@
     //
     for (int i = 0; i < [self.previewImageURLs count]; i++)
     {
-        __weak ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[self.previewImageURLs objectAtIndex:i]];
+        DSMapBoxURLRequest *request = [DSMapBoxURLRequest requestWithURL:[self.previewImageURLs objectAtIndex:i]];
         
-        request.timeOutSeconds = 10;
+        request.timeoutInterval = 10;
         
-        [self.secondaryImageRequests addObject:request];
+        NSURLConnection *download = [NSURLConnection connectionWithRequest:request];
         
-        [request setCompletionBlock:^(void)
+        [self.secondaryImageDownloads addObject:download];
+        
+        download.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
         {
-            [DSMapBoxNetworkActivityIndicator removeJob:request];
-
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            
             UIImageView *preview = ((UIImageView *)[[self subviews] objectAtIndex:i]);
             
-            UIImage *image = [UIImage imageWithData:request.responseData];
+            UIImage *image = [UIImage imageWithData:responseData];
             
             // begin image mods
             //
@@ -457,133 +572,16 @@
             preview.layer.shadowOpacity = 0.5;
             preview.layer.shadowOffset  = CGSizeMake(-1, 1);
             preview.layer.shadowPath    = [[UIBezierPath bezierPathWithRect:preview.bounds] CGPath];
-        }];
+        };
         
-        [request setFailedBlock:^(void)
+        download.failureBlock = ^(NSURLConnection *connection, NSError *error)
         {
-            [DSMapBoxNetworkActivityIndicator removeJob:request];
-        }];
+            [DSMapBoxNetworkActivityIndicator removeJob:connection];
+        };
         
-        [request startAsynchronous];
+        [DSMapBoxNetworkActivityIndicator addJob:download];
         
-        [DSMapBoxNetworkActivityIndicator addJob:request];
-    }
-}
-
-#pragma mark -
-
-- (void)requestFailed:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-    
-    // we can still try for the secondaries
-    //
-    [self downloadSecondaryImages];
-}
-
-- (void)requestFinished:(ASIHTTPRequest *)request
-{
-    [DSMapBoxNetworkActivityIndicator removeJob:request];
-
-    UIImage *tileImage = [UIImage imageWithData:request.responseData];
-
-    [self downloadSecondaryImages];
-    
-    // process & update primary image
-    //
-    if (tileImage)
-    {
-        // get corner image
-        //
-        UIImage *cornerImage = [UIImage imageNamed:@"corner_fold.png"];
-        
-        // create cornered path
-        //
-        UIBezierPath *corneredPath = [UIBezierPath bezierPath];
-        
-        [corneredPath moveToPoint:CGPointMake(0, 0)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width - cornerImage.size.width, 0)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, cornerImage.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(self.imageView.bounds.size.width, self.imageView.bounds.size.height)];
-        [corneredPath addLineToPoint:CGPointMake(0, self.imageView.bounds.size.height)];
-        [corneredPath closePath];
-
-        // begin image mods
-        //
-        UIGraphicsBeginImageContext(self.imageView.bounds.size);
-        
-        CGContextRef c = UIGraphicsGetCurrentContext();
-        
-        // fill background with white
-        //
-        CGContextAddPath(c, [corneredPath CGPath]);
-        CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
-        CGContextFillPath(c);
-        
-        // clip corner of drawing
-        //
-        CGContextAddPath(c, [corneredPath CGPath]);
-        CGContextClip(c);
-
-        // draw tile
-        //
-        [tileImage drawInRect:self.imageView.bounds];
-
-        UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
-        
-        UIGraphicsEndImageContext();
-
-        // add image view for corner graphic
-        //
-        UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
-        
-        cornerImageView.frame = CGRectMake(self.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
-        
-        // add shadow to corner image
-        //
-        UIBezierPath *cornerPath = [UIBezierPath bezierPath];
-        
-        [cornerPath moveToPoint:CGPointMake(0, 0)];
-        [cornerPath addLineToPoint:CGPointMake(cornerImage.size.width, cornerImage.size.height)];
-        [cornerPath addLineToPoint:CGPointMake(0, cornerImage.size.height)];
-        [cornerPath closePath];
-        
-        cornerImageView.layer.shadowOpacity = 0.5;
-        cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
-        cornerImageView.layer.shadowPath    = [cornerPath CGPath];
-        
-        [self.imageView addSubview:cornerImageView];
-        
-        // cover tile for animated reveal
-        //
-        cornerImageView.hidden = YES;
-        
-        UIImageView *coverView = [[UIImageView alloc] initWithFrame:self.bounds];
-        
-        coverView.image = self.imageView.image;
-        
-        [self addSubview:coverView];
-        
-        // update tile
-        //
-        self.imageView.image = [clippedImage transparentBorderImage:1];
-        
-        // animate cover removal
-        //
-        [UIView animateWithDuration:0.1
-                              delay:0.0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^(void)
-                         {
-                             self.imageView.layer.shadowPath = [corneredPath CGPath];
-                             
-                             cornerImageView.hidden = NO;
-                             coverView.hidden       = YES;
-                         }
-                         completion:^(BOOL finished)
-                         {
-                             [coverView removeFromSuperview];
-                         }];
+        [download start];
     }
 }
 
