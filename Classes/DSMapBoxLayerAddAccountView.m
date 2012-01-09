@@ -8,15 +8,11 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-#import "DSMapBoxNetworkActivityIndicator.h"
-
 #import "ASIHTTPRequest.h"
 
 #import "UIImage+Alpha.h"
 
 #import <QuartzCore/QuartzCore.h>
-
-#import "UIApplication_Additions.h"
 
 @interface DSMapBoxLayerAddAccountView ()
 

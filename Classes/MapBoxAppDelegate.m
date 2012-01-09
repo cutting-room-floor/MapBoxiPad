@@ -10,8 +10,6 @@
 
 #import "MapBoxMainViewController.h"
 
-#import "UIApplication_Additions.h"
-
 #import "DSMapBoxLegacyMigrationManager.h"
 #import "DSMapBoxAlertView.h"
 

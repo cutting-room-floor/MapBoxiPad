@@ -6,4 +6,8 @@
     #import <Foundation/Foundation.h>
     #import <UIKit/UIKit.h>
     #import "MapBoxConstants.h"
+    #import "UIApplication_Additions.h"
+    #import "UIViewController_Additions.h"
+    #import "DSMapBoxNetworkActivityIndicator.h"
+    #import "DSMapBoxURLRequest.h"
 #endif

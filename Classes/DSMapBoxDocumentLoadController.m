@@ -8,8 +8,6 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
-#import "UIApplication_Additions.h"
-
 @interface DSMapBoxDocumentLoadController ()
 
 - (void)reload;

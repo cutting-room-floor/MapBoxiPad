@@ -8,8 +8,6 @@
 
 #import "DSMapBoxLayerAddTileView.h"
 
-#import "DSMapBoxNetworkActivityIndicator.h"
-
 #import "ASIHTTPRequest.h"
 
 #import <QuartzCore/QuartzCore.h>

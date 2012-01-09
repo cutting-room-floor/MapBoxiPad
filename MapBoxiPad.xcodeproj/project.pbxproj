@@ -189,6 +189,7 @@
 		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
 		DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */; };
+		DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
 		DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6413D75EEC00DDEA58 /* layers.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
@@ -547,6 +548,8 @@
 		DDCFC9491427F15A0089E2EB /* transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparent.png; sourceTree = SOURCE_ROOT; };
 		DDD0E062146DE41500FC4342 /* DSMapBoxTileStreamCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileStreamCommon.h; sourceTree = "<group>"; };
 		DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileStreamCommon.m; sourceTree = "<group>"; };
+		DDD7F81114BB57BB00B6840E /* DSMapBoxURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxURLRequest.h; sourceTree = "<group>"; };
+		DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxURLRequest.m; sourceTree = "<group>"; };
 		DDDA3C6313D75EEC00DDEA58 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		DDDA3C6413D75EEC00DDEA58 /* layers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layers.png; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
@@ -1316,6 +1319,15 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		DDD7F81014BB579900B6840E /* URL Requests */ = {
+			isa = PBXGroup;
+			children = (
+				DDD7F81114BB57BB00B6840E /* DSMapBoxURLRequest.h */,
+				DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */,
+			);
+			name = "URL Requests";
+			sourceTree = "<group>";
+		};
 		DDE1C4731342711E0049C325 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1349,6 +1361,7 @@
 				DD56786612AEEB4B00B73C8A /* Help */,
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
 				DDCE0EFC14B61C3E006438AE /* Network Activity Indicator */,
+				DDD7F81014BB579900B6840E /* URL Requests */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
@@ -1695,6 +1708,7 @@
 				DD680D59147DBA3300BF32F2 /* DSMapBoxDarkTextField.m in Sources */,
 				DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */,
 				DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */,
+				DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

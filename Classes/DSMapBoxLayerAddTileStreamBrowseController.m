@@ -13,7 +13,6 @@
 #import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 
@@ -22,8 +21,6 @@
 #import "RMTile.h"
 
 #import <CoreLocation/CoreLocation.h>
-
-#import "UIApplication_Additions.h"
 
 @interface DSMapBoxLayerAddTileStreamBrowseController ()
 

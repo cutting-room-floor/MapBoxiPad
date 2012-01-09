@@ -10,7 +10,6 @@
 
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTileStreamCommon.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 

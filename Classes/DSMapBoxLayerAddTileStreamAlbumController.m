@@ -12,7 +12,6 @@
 #import "DSMapBoxLayerAddCustomServerController.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
-#import "DSMapBoxNetworkActivityIndicator.h"
 
 #import "ASIHTTPRequest.h"
 
