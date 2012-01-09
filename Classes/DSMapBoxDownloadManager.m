@@ -18,13 +18,13 @@
 
 @interface DSMapBoxDownloadManager ()
 
-@property (nonatomic, strong) NSMutableArray *downloads;
-@property (nonatomic, strong) NSMutableArray *pausedDownloads;
-@property (nonatomic, strong) NSMutableArray *backgroundDownloads;
-@property (nonatomic, strong) NSMutableArray *progresses;
+@property (nonatomic, strong) NSMutableArray *downloads;           // all NSURLConnection objects
+@property (nonatomic, strong) NSMutableArray *pausedDownloads;     // paused NSURLConnection objects
+@property (nonatomic, strong) NSMutableArray *backgroundDownloads; // NSNumber objects containing background task IDs
+@property (nonatomic, strong) NSMutableArray *progresses;          // NSNumber objects tracking download progress (floats)
+@property (nonatomic, readonly, strong) NSString *downloadsPath;   // path to download folder on disk
+@property (nonatomic, readonly, strong) NSArray *pendingDownloads; // full paths to download stub plists left on disk
 
-- (NSString *)downloadsPath;
-- (NSArray *)pendingDownloads;
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload;
 - (void)unregisterBackgroundDownload:(NSURLConnection *)download;
@@ -39,6 +39,7 @@
 @synthesize pausedDownloads;
 @synthesize backgroundDownloads;
 @synthesize progresses;
+@synthesize downloadsPath;
 
 + (DSMapBoxDownloadManager *)sharedManager
 {
@@ -61,13 +62,15 @@
         backgroundDownloads = [NSMutableArray array];
         progresses          = [NSMutableArray array];
         
+        downloadsPath       = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
+        
         BOOL isDir;
         
-        if ( ! [[NSFileManager defaultManager] fileExistsAtPath:[self downloadsPath] isDirectory:&isDir] || ! isDir)
+        if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadsPath isDirectory:&isDir] || ! isDir)
         {
-            [[NSFileManager defaultManager] removeItemAtPath:[self downloadsPath] error:NULL];
+            [[NSFileManager defaultManager] removeItemAtPath:downloadsPath error:NULL];
             
-            [[NSFileManager defaultManager] createDirectoryAtPath:[self downloadsPath]
+            [[NSFileManager defaultManager] createDirectoryAtPath:downloadsPath
                                       withIntermediateDirectories:NO 
                                                        attributes:nil
                                                             error:NULL];
@@ -79,96 +82,114 @@
 
 #pragma mark -
 
-- (NSString *)downloadsPath
-{
-    return [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
-}
-
 - (NSArray *)pendingDownloads
 {
-    NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
+    NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.downloadsPath error:NULL];
     
     NSMutableArray *fullPaths = [NSMutableArray array];
     
     for (NSString *path in paths)
         if ([[path pathExtension] isEqualToString:@"plist"])
-            [fullPaths addObject:[NSString stringWithFormat:@"%@/%@", [self downloadsPath], path]];
+            [fullPaths addObject:[NSString stringWithFormat:@"%@/%@", self.downloadsPath, path]];
     
     return [NSArray arrayWithArray:fullPaths];
 }
 
 - (NSString *)identifierForDownload:(NSURLConnection *)download
 {
-    NSArray *paths = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:[self downloadsPath] error:NULL];
+    NSString *path = [self.pendingDownloads match:^(id obj)
+                     {
+                         return [[[NSDictionary dictionaryWithContentsOfFile:obj] objectForKey:@"URL"] isEqualToString:[download.originalRequest.URL absoluteString]];
+                     }];
     
-    for (NSString *path in paths)
-        if ([[path pathExtension] isEqualToString:@"plist"])
-            if ([[[NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@", [self downloadsPath], path]] objectForKey:@"URL"] isEqualToString:[download.originalRequest.URL absoluteString]])
-                return [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
-
-    return nil;
+    return [[path lastPathComponent] stringByReplacingOccurrencesOfString:@".plist" withString:@""];
 }
 
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload
 {
-    NSURLConnection *download = [[NSURLConnection alloc] initWithRequest:[NSURLRequest requestWithURL:downloadURL] 
-                                                                delegate:self
-                                                        startImmediately:NO];
+    // setup the connection
+    //
+    NSURLConnection *download = [NSURLConnection connectionWithRequest:[DSMapBoxURLRequest requestWithURL:downloadURL]];
     
-    // TODO: add resume header
+    download.delegate = self;
+    
+    // TODO: add HTTP resume header
 
     if (pausedDownload)
     {
+        // replace old download in master downloads list
+        //
         [self.downloads replaceObjectAtIndex:[self.downloads indexOfObject:pausedDownload] 
                                   withObject:download];
         
+        // cancel & cleanup old download (progress tracking will just get updated in place by new download)
+        //
         [pausedDownload cancel];
-        
         [DSMapBoxNetworkActivityIndicator removeJob:pausedDownload];
-        
         [self unregisterBackgroundDownload:pausedDownload];
     }
     else
     {
+        // add new download to master downloads list, background jobs, and progress tracking
+        //
         [self.downloads addObject:download];
         [self.backgroundDownloads addObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
         [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
     }
     
-    [download scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:[[NSRunLoop currentRunLoop] currentMode]];
-    
-    [download start];
-    
+    // start tracking new download in UI
+    //
     [DSMapBoxNetworkActivityIndicator addJob:download];
-    
+
+    // create background task with its cleanup handler
+    //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"noBackgroundDownloads"] || ! [[NSUserDefaults standardUserDefaults] boolForKey:@"noBackgroundDownloads"])
     {
         UIBackgroundTaskIdentifier taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
                                             {
+                                                // find the task ID amongst the active background ones
+                                                //
+                                                int match = -1;
                                                 int i;
                                                 
                                                 for (i = 0; i < [self.backgroundDownloads count]; i++)
+                                                {
                                                     if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] == taskID)
+                                                    {
+                                                        match = i;
                                                         break;
+                                                    }
+                                                }
                                                 
-                                                [self pauseDownload:[self.downloads objectAtIndex:i]]; // handles background unregistration
+                                                // find & pause the download corresponding to the same index in the downloads list (if we found it)
+                                                //
+                                                if (match >= 0)
+                                                    [self pauseDownload:[self.downloads objectAtIndex:match]]; // also handles background task cleanup
                                             }];
         
+        // update background task list with new ID
+        //
         [self.backgroundDownloads replaceObjectAtIndex:[self.downloads indexOfObject:download] 
                                             withObject:[NSNumber numberWithUnsignedInteger:taskID]];
     }
+    
+    // start the new download
+    //
+    [download start];
 }
 
 - (void)unregisterBackgroundDownload:(NSURLConnection *)download
 {
-    // TODO: fix race condition
-    
     if ([self.downloads containsObject:download])
     {
+        // proceed only for active downloads
+        //
         int i = [self.downloads indexOfObject:download];
         
         if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] != UIBackgroundTaskInvalid)
         {
+            // proceed only for valid background tasks
+            //
             [[UIApplication sharedApplication] endBackgroundTask:[[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue]];
             
             [self.backgroundDownloads replaceObjectAtIndex:i withObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
@@ -180,9 +201,11 @@
 
 - (void)resumeDownloads
 {
+    // find stub files with duplicate URLs
+    //
     NSMutableArray *duplicates = [NSMutableArray array];
     
-    for (NSString *downloadStubFile in [self pendingDownloads])
+    for (NSString *downloadStubFile in self.pendingDownloads)
     {
         NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:downloadStubFile];
         
@@ -194,20 +217,20 @@
         }
         else
         {
-            [self downloadURL:downloadURL resumingDownload:nil];
+            // TODO: also resume paused downloads
+            
+            [self downloadURL:downloadURL resumingDownload:nil]; 
         }
     }
     
+    // delete duplicate stub files
+    //
     for (NSString *dupe in duplicates)
-        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], dupe] error:NULL];
+        [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, dupe] error:NULL];
     
-
-    
-    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:([[self downloads] count] ? YES : NO)]];
-    
-    
-    
-    
+    // notify that download queue has changed
+    //
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
 }
 
 #pragma mark -
@@ -222,9 +245,9 @@
     
     [DSMapBoxNetworkActivityIndicator removeJob:download];
     
-    [TestFlight passCheckpoint:@"paused MBTiles download"];
-
     [self unregisterBackgroundDownload:download];
+
+    [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
 
 - (void)resumeDownload:(NSURLConnection *)download
@@ -253,8 +276,8 @@
 
     NSString *identifier = [self identifierForDownload:download];
     
-    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], identifier, kPartialDownloadExtension] error:NULL];
-    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], identifier] error:NULL];
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension] error:NULL];
+    [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier] error:NULL];
     
     [TestFlight passCheckpoint:@"cancelled MBTiles download"];
 }
@@ -270,33 +293,30 @@
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
-    if ( ! [self.downloads containsObject:connection])
-        return;
-    
     NSHTTPURLResponse *webResponse = (NSHTTPURLResponse *)response;
     
     NSLog(@"connected %@ with HTTP %i", connection.originalRequest.URL, webResponse.statusCode);
     
+    if ([[webResponse allHeaderFields] objectForKey:@"Content-Length"])
+    {
+        // update expected size if given
+        //
+        NSInteger length = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue];
+        
+        NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
+        
+        NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:downloadStubFile];
+        
+        [info setObject:[NSNumber numberWithInteger:length] forKey:@"Size"];
+        
+        [info writeToFile:downloadStubFile atomically:YES];
+    }
     
+    // TODO: resume
     
-    NSInteger length = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue];
+    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
     
-    NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], [self identifierForDownload:connection]];
-    
-    NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:downloadStubFile];
-    
-    [info setObject:[NSNumber numberWithInteger:length] forKey:@"Size"];
-    
-    [info writeToFile:downloadStubFile atomically:YES];
-    
-    
-    
-    // check for resume
-    
-    
-    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], [self identifierForDownload:connection], kPartialDownloadExtension];
-    
-    [[NSFileManager defaultManager] removeItemAtPath:downloadPath error:NULL]; // FIXME resume
+    [[NSFileManager defaultManager] removeItemAtPath:downloadPath error:NULL]; // FIXME
     
     if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadPath])
         [[NSFileManager defaultManager] createFileAtPath:downloadPath contents:[NSData data] attributes:nil];
@@ -304,65 +324,50 @@
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:connection];
-    
-    if ( ! [self.downloads containsObject:connection])
-        return;
-
     NSLog(@"failed %@: %@", connection.originalRequest.URL, error);
 
-    // don't remove the stub file so resumes can possibly pick it up
-    
-    [TestFlight passCheckpoint:@"failed MBTiles download"];
-    
+    [DSMapBoxNetworkActivityIndicator removeJob:connection];
+
+    // pause, leaving partial file to possibly resume
+    //
     [self pauseDownload:connection];
+
+    [TestFlight passCheckpoint:@"failed MBTiles download"];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    if ( ! [self.downloads containsObject:connection])
-        return;
-
-//    NSLog(@"received %i bytes for %@", [data length], connection.originalRequest.URL);
-    
-    // append to disk
-    
+    // find partial download & prepare to append
+    //
     NSString *identifier = [self identifierForDownload:connection];
     
-    
-    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], identifier, kPartialDownloadExtension];
+    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension];
 
     NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:downloadPath];
     
     [handle seekToEndOfFile];
     
-    
     unsigned long long totalDownloaded = [handle offsetInFile] + [data length];
-
     
-    NSInteger totalSize = [[[NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", [self downloadsPath], identifier]] objectForKey:@"Size"] integerValue];
+    // update progress tracking
+    //
+    // FIXME: need indetermine progress indication
+    //
+    NSInteger totalSize = [[[NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier]] objectForKey:@"Size"] integerValue];
     
     CGFloat thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
     
     [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
     
+    // post individual progress
+    //
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
                                                         object:connection
                                                       userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:thisProgress] 
                                                                                            forKey:DSMapBoxDownloadProgressKey]];
-
     
-    
-    
-    
-    
-    
-    [handle writeData:data];
-    
-    [handle closeFile];
-    
-    
-    
+    // post aggregate progress
+    //
     CGFloat overallProgress = 0.0;
     
     for (NSNumber *progress in self.progresses)
@@ -370,47 +375,38 @@
     
     overallProgress = overallProgress / [self.progresses count];
     
-    
-    
-    
-    
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
                                                         object:self
                                                       userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:overallProgress]
                                                                                            forKey:DSMapBoxDownloadProgressKey]];
-
-    
-    
-    
-    
-    
-    
-    
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
 
-    if ( ! [self.downloads containsObject:connection])
-        return;
-
-    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", [self downloadsPath], [self identifierForDownload:connection], kPartialDownloadExtension];
+    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
     
     NSDictionary *info = [[NSFileManager defaultManager] attributesOfItemAtPath:downloadedFile error:NULL];
     
     NSLog(@"finished %@ to %@ at size %@", connection.originalRequest.URL, downloadedFile, [info objectForKey:NSFileSize]);
 
-    for (NSString *path in [self pendingDownloads])
-        if ([[[NSDictionary dictionaryWithContentsOfFile:path] objectForKey:@"URL"] isEqualToString:[connection.originalRequest.URL absoluteString]])
-            [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+    // remove stub file since we're done with it
+    //
+    NSString *path = [self.pendingDownloads match:^(id obj)
+                     {
+                         return [[[NSDictionary dictionaryWithContentsOfFile:obj] objectForKey:@"URL"] isEqualToString:[connection.originalRequest.URL absoluteString]];
+                     }];
     
+    [[NSFileManager defaultManager] removeItemAtPath:path error:NULL];
+    
+    // clean up progress & downloads lists
+    //
     [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:connection]];
     [self.downloads  removeObject:connection];
     
-    
-    
+    // move completed download into place, accounting for duplicate(s)
+    //
     NSString *filename  = [connection.originalRequest.URL lastPathComponent];
     NSString *extension = [filename pathExtension];
     NSString *basename  = [filename stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@", extension] 
@@ -433,27 +429,23 @@
                                             toPath:destinationPath
                                              error:NULL];
     
-    [TestFlight passCheckpoint:@"completed MBTiles download"];
-    
+    // post notification of completion
+    //
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadCompleteNotification object:connection];
     
-    
-    
-    
-    
-    // check queue
-    
+    // check if we're the last pending download & post queue update
+    //
     if ([self.downloads count] == 0)
-    {
-        NSLog(@"queue finished");
-        
         [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
-    }
     
+    // give a sec for UI to update, then invalidate background job
+    //
     dispatch_delayed_ui_action(1.0, ^(void)
     {
         [self unregisterBackgroundDownload:connection];
     });
+    
+    [TestFlight passCheckpoint:@"completed MBTiles download"];
 }
 
 @end
