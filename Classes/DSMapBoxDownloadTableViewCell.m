@@ -8,8 +8,6 @@
 
 #import "DSMapBoxDownloadTableViewCell.h"
 
-#import "MapBoxConstants.h"
-
 #import "SSPieProgressView.h"
 
 #import <QuartzCore/QuartzCore.h>

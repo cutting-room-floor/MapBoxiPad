@@ -8,14 +8,6 @@
 
 #import "DSMapBoxDownloadManager.h"
 
-#import "MapBoxConstants.h"
-
-#import "DSMapBoxNetworkActivityIndicator.h"
-
-#import "UIApplication_Additions.h"
-
-#import "TestFlight.h"
-
 @interface DSMapBoxDownloadManager ()
 
 @property (nonatomic, strong) NSMutableArray *downloads;           // all NSURLConnection objects
@@ -247,7 +239,7 @@
     
     [self unregisterBackgroundDownload:download];
 
-    [TestFlight passCheckpoint:@"paused MBTiles download"];
+    [TESTFLIGHT passCheckpoint:@"paused MBTiles download"];
 }
 
 - (void)resumeDownload:(NSURLConnection *)download
@@ -258,7 +250,7 @@
     
     [self downloadURL:download.originalRequest.URL resumingDownload:download];
     
-    [TestFlight passCheckpoint:@"resumed MBTiles download"];
+    [TESTFLIGHT passCheckpoint:@"resumed MBTiles download"];
 }
 
 - (void)cancelDownload:(NSURLConnection *)download
@@ -279,7 +271,7 @@
     [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension] error:NULL];
     [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier] error:NULL];
     
-    [TestFlight passCheckpoint:@"cancelled MBTiles download"];
+    [TESTFLIGHT passCheckpoint:@"cancelled MBTiles download"];
 }
 
 - (BOOL)downloadIsPaused:(NSURLConnection *)download
@@ -332,7 +324,7 @@
     //
     [self pauseDownload:connection];
 
-    [TestFlight passCheckpoint:@"failed MBTiles download"];
+    [TESTFLIGHT passCheckpoint:@"failed MBTiles download"];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -445,7 +437,7 @@
         [self unregisterBackgroundDownload:connection];
     });
     
-    [TestFlight passCheckpoint:@"completed MBTiles download"];
+    [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
 }
 
 @end
