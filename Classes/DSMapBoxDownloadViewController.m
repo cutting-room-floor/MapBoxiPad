@@ -112,19 +112,30 @@
     {
         NSURLConnection *download = [notification object];
         
-        CGFloat progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
-        
-        int row = [[DSMapBoxDownloadManager sharedManager].downloads indexOfObject:download];
-        
-        DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
-        
-        cell.pie.progress = progress;
+        if ( ! download.isPaused)
+        {
+            CGFloat progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
+            
+            NSUInteger totalDownloaded = [[[notification userInfo] objectForKey:DSMapBoxDownloadTotalDownloadedKey] unsignedIntegerValue];
+            NSUInteger totalSize       = [[[notification userInfo] objectForKey:DSMapBoxDownloadTotalSizeKey]       unsignedIntegerValue];
+            
+            NSString *totalDownloadedString = [NSString stringWithFormat:@"%i", (totalDownloaded / (1024 * 1024))];
+            NSString *totalSizeString       = (download.isIndeterminate ? @"?" : [NSString stringWithFormat:@"%i", (totalSize / (1024 * 1024))]);
+            
+            int row = [[DSMapBoxDownloadManager sharedManager].downloads indexOfObject:download];
+            
+            DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:0]];
+            
+            cell.progress = progress;
+            
+            cell.secondaryLabel.text = [NSString stringWithFormat:@"%@ (%@ of %@ MB)", [download.originalRequest.URL host], totalDownloadedString, totalSizeString];
+        }
     }
 }
 
 - (void)downloadCompleted:(NSNotification *)notification
 {
-    [self reloadTableView];
+    [self performBlock:^(id sender) { [self reloadTableView]; } afterDelay:1.0];
 }
 
 #pragma mark -
@@ -150,20 +161,21 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
-
-    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
-    
     NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"DSMapBoxDownloadTableViewCell" owner:self options:nil];
     
     DSMapBoxDownloadTableViewCell *cell = (DSMapBoxDownloadTableViewCell *)[nib objectAtIndex:0];
     
+    DSMapBoxDownloadManager *manager = [DSMapBoxDownloadManager sharedManager];
+    
+    NSURLConnection *download = [manager.downloads objectAtIndex:indexPath.row];
+    
     cell.primaryLabel.text   = [download.originalRequest.URL lastPathComponent];
-    cell.secondaryLabel.text = [download.originalRequest.URL host];
+    cell.secondaryLabel.text = [NSString stringWithFormat:@"%@%@", [download.originalRequest.URL host], (download.isPaused ? @" (paused)" : @"")];
     
-    cell.isPaused = [manager downloadIsPaused:download];
-    
-    return (UITableViewCell *)cell;
+    cell.isIndeterminate     = download.isIndeterminate;
+    cell.isPaused            = download.isPaused;
+
+    return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath

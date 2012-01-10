@@ -10,6 +10,17 @@ static NSString *const DSMapBoxDownloadQueueNotification    = @"DSMapBoxDownload
 static NSString *const DSMapBoxDownloadProgressNotification = @"DSMapBoxDownloadProgressNotification";
 static NSString *const DSMapBoxDownloadCompleteNotification = @"DSMapBoxDownloadCompleteNotification";
 static NSString *const DSMapBoxDownloadProgressKey          = @"DSMapBoxDownloadProgressKey";
+static NSString *const DSMapBoxDownloadTotalDownloadedKey   = @"DSMapBoxDownloadTotalDownloadedKey";
+static NSString *const DSMapBoxDownloadTotalSizeKey         = @"DSMapBoxDownloadTotalSizeKey";
+
+@interface NSURLConnection (DSMapBoxDownloadManager)
+
+- (BOOL)isPaused;
+- (BOOL)isIndeterminate;
+
+@end
+
+#pragma mark -
 
 @interface DSMapBoxDownloadManager : NSObject <NSURLConnectionDelegate>
 
@@ -21,6 +32,5 @@ static NSString *const DSMapBoxDownloadProgressKey          = @"DSMapBoxDownload
 - (void)pauseDownload:(NSURLConnection *)download;
 - (void)resumeDownload:(NSURLConnection *)download;
 - (void)cancelDownload:(NSURLConnection *)download;
-- (BOOL)downloadIsPaused:(NSURLConnection *)download;
 
 @end

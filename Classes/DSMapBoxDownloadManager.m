@@ -8,10 +8,47 @@
 
 #import "DSMapBoxDownloadManager.h"
 
+static const char *DSMapBoxDownloadManagerDownloadIsPaused        = "DSMapBoxDownloadManagerDownloadIsPaused";
+static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDownloadManagerDownloadIsIndeterminate";
+
+@interface NSURLConnection (DSMapBoxDownloadManagerPrivate)
+
+- (void)setIsPaused:(BOOL)flag;
+- (void)setIsIndeterminate:(BOOL)flag;
+
+@end
+
+#pragma mark -
+
+@implementation NSURLConnection (DSMapBoxDownloadManager)
+
+- (BOOL)isPaused
+{
+    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsPaused] boolValue];
+}
+
+- (void)setIsPaused:(BOOL)flag
+{
+    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsPaused];
+}
+
+- (BOOL)isIndeterminate
+{
+    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsIndeterminate] boolValue];
+}
+
+- (void)setIsIndeterminate:(BOOL)flag
+{
+    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsIndeterminate];
+}
+
+@end
+
+#pragma mark -
+
 @interface DSMapBoxDownloadManager ()
 
-@property (nonatomic, strong) NSMutableArray *downloads;           // all NSURLConnection objects
-@property (nonatomic, strong) NSMutableArray *pausedDownloads;     // paused NSURLConnection objects
+@property (nonatomic, strong) NSMutableArray *downloads;           // NSURLConnection objects
 @property (nonatomic, strong) NSMutableArray *backgroundDownloads; // NSNumber objects containing background task IDs
 @property (nonatomic, strong) NSMutableArray *progresses;          // NSNumber objects tracking download progress (floats)
 @property (nonatomic, readonly, strong) NSString *downloadsPath;   // path to download folder on disk
@@ -28,7 +65,6 @@
 @implementation DSMapBoxDownloadManager
 
 @synthesize downloads;
-@synthesize pausedDownloads;
 @synthesize backgroundDownloads;
 @synthesize progresses;
 @synthesize downloadsPath;
@@ -50,7 +86,6 @@
     if (self)
     {
         downloads           = [NSMutableArray array];
-        pausedDownloads     = [NSMutableArray array];
         backgroundDownloads = [NSMutableArray array];
         progresses          = [NSMutableArray array];
         
@@ -231,7 +266,7 @@
 {
     NSLog(@"pausing %@", download.originalRequest.URL);
     
-    [self.pausedDownloads addObject:download];
+    download.isPaused = YES;
 
     [download cancel];
     
@@ -246,7 +281,7 @@
 {
     NSLog(@"resuming %@", download.originalRequest.URL);
    
-    [self.pausedDownloads removeObject:download];
+    download.isPaused = NO;
     
     [self downloadURL:download.originalRequest.URL resumingDownload:download];
     
@@ -274,13 +309,6 @@
     [TESTFLIGHT passCheckpoint:@"cancelled MBTiles download"];
 }
 
-- (BOOL)downloadIsPaused:(NSURLConnection *)download
-{
-    NSLog(@"checking pause status for %@", download.originalRequest.URL);
-    
-    return [self.pausedDownloads containsObject:download];
-}
-
 #pragma mark -
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
@@ -303,6 +331,8 @@
         
         [info writeToFile:downloadStubFile atomically:YES];
     }
+    else
+        connection.isIndeterminate = YES;
     
     // TODO: resume
     
@@ -341,23 +371,38 @@
     
     unsigned long long totalDownloaded = [handle offsetInFile] + [data length];
     
-    // update progress tracking
+    // append data & close
     //
-    // FIXME: need indetermine progress indication
+    [handle writeData:data];
+    [handle closeFile];
+    
+    // update progress tracking if possible
     //
-    NSInteger totalSize = [[[NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier]] objectForKey:@"Size"] integerValue];
+    CGFloat thisProgress = 0.0;
+    NSUInteger totalSize = 0.0;
     
-    CGFloat thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
+    NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier]];
     
-    [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
+    if ( ! connection.isIndeterminate)
+    {
+        totalSize = [[info objectForKey:@"Size"] integerValue];
+        
+        thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
+        
+        [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
+    }
     
     // post individual progress
     //
+    NSDictionary *progressDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:thisProgress], DSMapBoxDownloadProgressKey,
+                                                                                  [NSNumber numberWithUnsignedInteger:totalDownloaded], DSMapBoxDownloadTotalDownloadedKey, 
+                                                                                  [NSNumber numberWithUnsignedInteger:totalSize], DSMapBoxDownloadTotalSizeKey,
+                                                                                  nil];
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
                                                         object:connection
-                                                      userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:thisProgress] 
-                                                                                           forKey:DSMapBoxDownloadProgressKey]];
-    
+                                                      userInfo:progressDictionary];
+
     // post aggregate progress
     //
     CGFloat overallProgress = 0.0;
@@ -377,12 +422,13 @@
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
 
-    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
+    // post individual progress completion
+    //
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
+                                                        object:connection
+                                                      userInfo:[NSDictionary dictionaryWithObject:[NSNumber numberWithFloat:1.0] 
+                                                                                           forKey:DSMapBoxDownloadProgressKey]];
     
-    NSDictionary *info = [[NSFileManager defaultManager] attributesOfItemAtPath:downloadedFile error:NULL];
-    
-    NSLog(@"finished %@ to %@ at size %@", connection.originalRequest.URL, downloadedFile, [info objectForKey:NSFileSize]);
-
     // remove stub file since we're done with it
     //
     NSString *path = [self.pendingDownloads match:^(id obj)
@@ -417,6 +463,8 @@
         i++;
     }
     
+    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
+
     [[NSFileManager defaultManager] moveItemAtPath:downloadedFile 
                                             toPath:destinationPath
                                              error:NULL];
@@ -432,10 +480,7 @@
     
     // give a sec for UI to update, then invalidate background job
     //
-    dispatch_delayed_ui_action(1.0, ^(void)
-    {
-        [self unregisterBackgroundDownload:connection];
-    });
+    [self performBlock:^(id sender) { [self unregisterBackgroundDownload:connection]; } afterDelay:1.0];
     
     [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
 }

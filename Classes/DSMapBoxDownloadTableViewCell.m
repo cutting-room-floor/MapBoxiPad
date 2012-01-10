@@ -14,6 +14,7 @@
 
 @interface DSMapBoxDownloadTableViewCell ()
 
+@property (nonatomic, strong) IBOutlet SSPieProgressView *pie;
 @property (nonatomic, strong) UIColor *originalPrimaryLabelTextColor;
 
 @end
@@ -22,10 +23,12 @@
 
 @implementation DSMapBoxDownloadTableViewCell
 
-@synthesize pie;
 @synthesize primaryLabel;
 @synthesize secondaryLabel;
+@synthesize progress;
+@synthesize isIndeterminate;
 @synthesize isPaused;
+@synthesize pie;
 @synthesize originalPrimaryLabelTextColor;
 
 - (void)awakeFromNib
@@ -42,6 +45,45 @@
 }
 
 #pragma mark -
+
+- (void)setProgress:(CGFloat)newProgress
+{
+    if (self.isIndeterminate && newProgress < 1.0)
+        return;
+    
+    self.pie.progress = newProgress;
+}
+
+- (CGFloat)progress
+{
+    if (self.isIndeterminate && self.pie.progress < 1.0)
+        return 0.0;
+    
+    return self.pie.progress;
+}
+
+- (void)setIsIndeterminate:(BOOL)flag
+{
+    if (flag == isIndeterminate)
+        return;
+    
+    isIndeterminate = flag;
+    
+    if (flag)
+    {
+        self.pie.progress = 1.0;
+        
+        [UIView beginAnimations:nil context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+        [UIView setAnimationRepeatAutoreverses:YES];
+        [UIView setAnimationRepeatCount:MAXFLOAT];
+        [UIView setAnimationDuration:1.0];
+        
+        self.pie.alpha = 0.5;
+        
+        [UIView commitAnimations];
+    }
+}
 
 - (void)setIsPaused:(BOOL)flag
 {

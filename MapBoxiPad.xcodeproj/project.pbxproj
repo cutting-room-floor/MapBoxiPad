@@ -1253,11 +1253,11 @@
 			children = (
 				DD91C33E14B51E3200330326 /* DSMapBoxDownloadManager.h */,
 				DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */,
+				DD91C34314B51E3200330326 /* DSMapBoxDownloadViewController.h */,
+				DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */,
 				DD91C34014B51E3200330326 /* DSMapBoxDownloadTableViewCell.h */,
 				DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */,
 				DD91C34214B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib */,
-				DD91C34314B51E3200330326 /* DSMapBoxDownloadViewController.h */,
-				DD91C34414B51E3200330326 /* DSMapBoxDownloadViewController.m */,
 				DD91C34914B51E3C00330326 /* Resources */,
 			);
 			name = "Layer Downloads";

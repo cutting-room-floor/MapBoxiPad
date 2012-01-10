@@ -6,13 +6,12 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-@class SSPieProgressView;
-
 @interface DSMapBoxDownloadTableViewCell : UITableViewCell
 
-@property (nonatomic, readonly, strong) IBOutlet SSPieProgressView *pie;
-@property (nonatomic, readonly, strong) IBOutlet UILabel *primaryLabel;
-@property (nonatomic, readonly, strong) IBOutlet UILabel *secondaryLabel;
+@property (nonatomic, strong) IBOutlet UILabel *primaryLabel;
+@property (nonatomic, strong) IBOutlet UILabel *secondaryLabel;
+@property (nonatomic, assign) CGFloat progress;
+@property (nonatomic, assign) BOOL isIndeterminate;
 @property (nonatomic, assign) BOOL isPaused;
 
 @end
