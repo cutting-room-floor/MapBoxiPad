@@ -134,14 +134,34 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload
 {
-    // setup the connection
+    // create the new request & download
     //
-    NSURLConnection *download = [NSURLConnection connectionWithRequest:[DSMapBoxURLRequest requestWithURL:downloadURL]];
+    DSMapBoxURLRequest *request = [DSMapBoxURLRequest requestWithURL:downloadURL];
+    NSURLConnection *download   = [NSURLConnection connectionWithRequest:request];
+    NSString *identifier        = [self identifierForDownload:download];
+
+    // figure out if we'll try to resume a previous download
+    //
+    NSString *existingFilePath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension];
+    
+    if ([[NSFileManager defaultManager] fileExistsAtPath:existingFilePath])
+    {
+        NSDictionary *info = [[NSFileManager defaultManager] attributesOfItemAtPath:existingFilePath error:NULL];
+        
+        if ([info objectForKey:NSFileSize])
+        {
+            // replace the request & download with resuming versions
+            //
+            [request setValue:[NSString stringWithFormat:@"bytes=%i-", [[info objectForKey:NSFileSize] unsignedIntegerValue]] forHTTPHeaderField:@"Range"];
+    
+            download = [NSURLConnection connectionWithRequest:request];
+        }
+    }
     
     download.delegate = self;
     
-    // TODO: add HTTP resume header
-
+    // update internal tracking for download
+    //
     if (pausedDownload)
     {
         // replace old download in master downloads list
@@ -246,7 +266,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
         {
             // TODO: also resume paused downloads
             
-            [self downloadURL:downloadURL resumingDownload:nil]; 
+            [self downloadURL:downloadURL resumingDownload:nil];
         }
     }
     
@@ -317,30 +337,49 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
     
     NSLog(@"connected %@ with HTTP %i", connection.originalRequest.URL, webResponse.statusCode);
     
-    if ([[webResponse allHeaderFields] objectForKey:@"Content-Length"])
-    {
-        // update expected size if given
-        //
-        NSInteger length = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue];
-        
-        NSString *downloadStubFile = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
-        
-        NSMutableDictionary *info = [NSMutableDictionary dictionaryWithContentsOfFile:downloadStubFile];
-        
-        [info setObject:[NSNumber numberWithInteger:length] forKey:@"Size"];
-        
-        [info writeToFile:downloadStubFile atomically:YES];
-    }
-    else
-        connection.isIndeterminate = YES;
-    
-    // TODO: resume
-    
+    // determine if resuming partial download
+    //
     NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
+    NSString *stubFile     = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
+
+    NSMutableDictionary *stubInfo = [NSMutableDictionary dictionaryWithContentsOfFile:stubFile];
+
+    BOOL resuming = NO;
     
-    [[NSFileManager defaultManager] removeItemAtPath:downloadPath error:NULL]; // FIXME
+    if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) // we have a partial download
+    {
+        if ([[[webResponse allHeaderFields] objectForKey:@"Accept-Ranges"] isEqualToString:@"bytes"]) // server allows resumes
+        {
+            if ([[webResponse allHeaderFields] objectForKey:@"Content-Length"]) // we're told how much we're getting
+            {
+                NSDictionary *downloadInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:downloadPath error:NULL];
+                
+                NSUInteger expectedSize   = [[stubInfo objectForKey:@"Size"] unsignedIntegerValue];
+                NSUInteger downloadedSize = [[downloadInfo objectForKey:NSFileSize] unsignedIntegerValue];
+                NSUInteger reportedSize   = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] intValue];
+                
+                if (expectedSize - downloadedSize == reportedSize) // ranges match up
+                    resuming = YES;
+            }
+        }
+    }
     
-    if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadPath])
+    // determine if we need have the full size recorded yet
+    //
+    if ( ! [stubInfo objectForKey:@"Size"] && [[webResponse allHeaderFields] objectForKey:@"Content-Length"])
+    {
+        [stubInfo setObject:[NSNumber numberWithInteger:[[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue]] forKey:@"Size"];
+        [stubInfo writeToFile:stubFile atomically:YES];
+    }
+    
+    // determine if known size
+    //
+    if ( ! [[webResponse allHeaderFields] objectForKey:@"Content-Length"])
+        connection.isIndeterminate = YES;
+
+    // zero file if not resuming
+    //
+    if ( ! resuming)
         [[NSFileManager defaultManager] createFileAtPath:downloadPath contents:[NSData data] attributes:nil];
 }
 
@@ -359,34 +398,34 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
 {
-    // find partial download & prepare to append
+    // append data to file
     //
-    NSString *identifier = [self identifierForDownload:connection];
-    
+    NSString *identifier   = [self identifierForDownload:connection];
     NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension];
 
     NSFileHandle *handle = [NSFileHandle fileHandleForWritingAtPath:downloadPath];
     
     [handle seekToEndOfFile];
     
+    // figure out how much data this gives us
+    //
     unsigned long long totalDownloaded = [handle offsetInFile] + [data length];
     
-    // append data & close
+    // append data & close file
     //
     [handle writeData:data];
     [handle closeFile];
     
     // update progress tracking if possible
     //
-    CGFloat thisProgress = 0.0;
     NSUInteger totalSize = 0.0;
-    
-    NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier]];
+    CGFloat thisProgress = 0.0;
     
     if ( ! connection.isIndeterminate)
     {
-        totalSize = [[info objectForKey:@"Size"] integerValue];
-        
+        NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, identifier]];
+
+        totalSize    = [[info objectForKey:@"Size"] integerValue];
         thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
         
         [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
@@ -422,6 +461,8 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 {
     [DSMapBoxNetworkActivityIndicator removeJob:connection];
 
+    NSString *identifier = [self identifierForDownload:connection];
+    
     // post individual progress completion
     //
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 
@@ -463,7 +504,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
         i++;
     }
     
-    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
+    NSString *downloadedFile = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, identifier, kPartialDownloadExtension];
 
     [[NSFileManager defaultManager] moveItemAtPath:downloadedFile 
                                             toPath:destinationPath
@@ -473,14 +514,14 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
     //
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadCompleteNotification object:connection];
     
-    // check if we're the last pending download & post queue update
+    // check if we're the last pending download & post queue update if so
     //
     if ([self.downloads count] == 0)
         [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
     
-    // give a sec for UI to update, then invalidate background job
+    // wait a sec for UI to update, then invalidate background job
     //
-    [self performBlock:^(id sender) { [self unregisterBackgroundDownload:connection]; } afterDelay:1.0];
+    [self performBlock:^(id sender) { [self unregisterBackgroundTaskForDownload:connection]; } afterDelay:1.0];
     
     [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
 }
