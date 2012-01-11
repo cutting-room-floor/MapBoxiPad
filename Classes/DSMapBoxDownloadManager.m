@@ -8,65 +8,15 @@
 
 #import "DSMapBoxDownloadManager.h"
 
-static const char *DSMapBoxDownloadManagerDownloadIsPaused        = "DSMapBoxDownloadManagerDownloadIsPaused";
-static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDownloadManagerDownloadIsIndeterminate";
-static const char *DSMapBoxDownloadManagerDownloadIdentifier      = "DSMapBoxDownloadManagerDownloadIdentifier";
-static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDownloadManagerDownloadFileHandle";
-
 @interface NSURLConnection (DSMapBoxDownloadManagerPrivate)
 
 - (void)setIsPaused:(BOOL)flag;
 - (void)setIsIndeterminate:(BOOL)flag;
 - (void)setIdentifier:(NSString *)newIdentifier;
 - (NSString *)identifier;
+- (NSString *)downloadPath;
 - (void)setFileHandle:(NSFileHandle *)newFileHandle;
 - (NSFileHandle *)fileHandle;
-
-@end
-
-#pragma mark -
-
-@implementation NSURLConnection (DSMapBoxDownloadManager)
-
-- (BOOL)isPaused
-{
-    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsPaused] boolValue];
-}
-
-- (void)setIsPaused:(BOOL)flag
-{
-    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsPaused];
-}
-
-- (BOOL)isIndeterminate
-{
-    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsIndeterminate] boolValue];
-}
-
-- (void)setIsIndeterminate:(BOOL)flag
-{
-    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsIndeterminate];
-}
-
-- (void)setIdentifier:(NSString *)newIdentifier
-{
-    [self associateValue:newIdentifier withKey:DSMapBoxDownloadManagerDownloadIdentifier];
-}
-
-- (NSString *)identifier
-{
-    return [self associatedValueForKey:DSMapBoxDownloadManagerDownloadIdentifier];
-}
-
-- (void)setFileHandle:(NSFileHandle *)newFileHandle
-{
-    [self associateValue:newFileHandle withKey:DSMapBoxDownloadManagerDownloadFileHandle];
-}
-
-- (NSFileHandle *)fileHandle
-{
-    return [self associatedValueForKey:DSMapBoxDownloadManagerDownloadFileHandle];
-}
 
 @end
 
@@ -115,7 +65,7 @@ static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDow
         backgroundTasks = [NSMutableArray array];
         progresses      = [NSMutableArray array];
         
-        downloadsPath       = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
+        downloadsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
         
         BOOL isDir;
         
@@ -371,20 +321,19 @@ static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDow
     
     // determine if resuming partial download
     //
-    NSString *downloadPath = [NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:connection], kPartialDownloadExtension];
-    NSString *stubFile     = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
+    NSString *stubFile = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
 
     NSMutableDictionary *stubInfo = [NSMutableDictionary dictionaryWithContentsOfFile:stubFile];
 
     BOOL resuming = NO;
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:downloadPath]) // we have a partial download
+    if ([[NSFileManager defaultManager] fileExistsAtPath:connection.downloadPath]) // we have a partial download
     {
         if ([[[webResponse allHeaderFields] objectForKey:@"Accept-Ranges"] isEqualToString:@"bytes"]) // server allows resumes
         {
             if ([[webResponse allHeaderFields] objectForKey:@"Content-Length"]) // we're told how much we're getting
             {
-                NSDictionary *downloadInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:downloadPath error:NULL];
+                NSDictionary *downloadInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:connection.downloadPath error:NULL];
                 
                 NSUInteger expectedSize   = [[stubInfo objectForKey:@"Size"] unsignedIntegerValue];
                 NSUInteger downloadedSize = [[downloadInfo objectForKey:NSFileSize] unsignedIntegerValue];
@@ -411,12 +360,12 @@ static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDow
 
     // create file if needed
     //
-    if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadPath])
-        [[NSFileManager defaultManager] createFileAtPath:downloadPath contents:nil attributes:nil];
+    if ( ! [[NSFileManager defaultManager] fileExistsAtPath:connection.downloadPath])
+        [[NSFileManager defaultManager] createFileAtPath:connection.downloadPath contents:nil attributes:nil];
     
     // open file handle
     //
-    connection.fileHandle = [NSFileHandle fileHandleForWritingAtPath:downloadPath];
+    connection.fileHandle = [NSFileHandle fileHandleForWritingAtPath:connection.downloadPath];
     
     // zero file if not resuming
     //
@@ -561,6 +510,62 @@ static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDow
     [self performBlock:^(id sender) { [self unregisterBackgroundTaskForDownload:connection]; } afterDelay:1.0];
     
     [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
+}
+
+@end
+
+#pragma mark -
+
+@implementation NSURLConnection (DSMapBoxDownloadManager)
+
+static const char *DSMapBoxDownloadManagerDownloadIsPaused        = "DSMapBoxDownloadManagerDownloadIsPaused";
+static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDownloadManagerDownloadIsIndeterminate";
+static const char *DSMapBoxDownloadManagerDownloadIdentifier      = "DSMapBoxDownloadManagerDownloadIdentifier";
+static const char *DSMapBoxDownloadManagerDownloadFileHandle      = "DSMapBoxDownloadManagerDownloadFileHandle";
+
+- (BOOL)isPaused
+{
+    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsPaused] boolValue];
+}
+
+- (void)setIsPaused:(BOOL)flag
+{
+    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsPaused];
+}
+
+- (BOOL)isIndeterminate
+{
+    return [[self associatedValueForKey:DSMapBoxDownloadManagerDownloadIsIndeterminate] boolValue];
+}
+
+- (void)setIsIndeterminate:(BOOL)flag
+{
+    [self associateValue:[NSNumber numberWithBool:flag] withKey:DSMapBoxDownloadManagerDownloadIsIndeterminate];
+}
+
+- (void)setIdentifier:(NSString *)newIdentifier
+{
+    [self associateValue:newIdentifier withKey:DSMapBoxDownloadManagerDownloadIdentifier];
+}
+
+- (NSString *)identifier
+{
+    return [self associatedValueForKey:DSMapBoxDownloadManagerDownloadIdentifier];
+}
+
+- (NSString *)downloadPath
+{
+    return [NSString stringWithFormat:@"%@/%@.%@", [DSMapBoxDownloadManager sharedManager].downloadsPath, self.identifier, kPartialDownloadExtension];
+}
+
+- (void)setFileHandle:(NSFileHandle *)newFileHandle
+{
+    [self associateValue:newFileHandle withKey:DSMapBoxDownloadManagerDownloadFileHandle];
+}
+
+- (NSFileHandle *)fileHandle
+{
+    return [self associatedValueForKey:DSMapBoxDownloadManagerDownloadFileHandle];
 }
 
 @end

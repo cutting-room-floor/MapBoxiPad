@@ -13,15 +13,6 @@ static NSString *const DSMapBoxDownloadProgressKey          = @"DSMapBoxDownload
 static NSString *const DSMapBoxDownloadTotalDownloadedKey   = @"DSMapBoxDownloadTotalDownloadedKey";
 static NSString *const DSMapBoxDownloadTotalSizeKey         = @"DSMapBoxDownloadTotalSizeKey";
 
-@interface NSURLConnection (DSMapBoxDownloadManager)
-
-- (BOOL)isPaused;
-- (BOOL)isIndeterminate;
-
-@end
-
-#pragma mark -
-
 @interface DSMapBoxDownloadManager : NSObject <NSURLConnectionDelegate>
 
 @property (nonatomic, readonly, strong) NSMutableArray *downloads;
@@ -32,5 +23,14 @@ static NSString *const DSMapBoxDownloadTotalSizeKey         = @"DSMapBoxDownload
 - (void)pauseDownload:(NSURLConnection *)download;
 - (void)resumeDownload:(NSURLConnection *)download;
 - (void)cancelDownload:(NSURLConnection *)download;
+
+@end
+
+#pragma mark -
+
+@interface NSURLConnection (DSMapBoxDownloadManager)
+
+- (BOOL)isPaused;
+- (BOOL)isIndeterminate;
 
 @end
