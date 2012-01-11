@@ -135,10 +135,23 @@
 
     self.attributionLabel.verticalAlignment = BAVerticalAlignmentBottom;
     
-    // hide cluster & download buttons to start
+    // hide cluster button to start
     //
-    [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@ AND NOT SELF = %@", self.clusteringButton, self.downloadsButton]] animated:NO];
+    [self.toolbar setItems:[[NSMutableArray arrayWithArray:self.toolbar.items] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF = %@", self.clusteringButton]] animated:NO];
 
+    // customize downloads button
+    //
+    UIButton *downloadsProgressButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    UIImage *downloadStateImage = [UIImage imageNamed:@"downloads0.png"];
+    
+    downloadsProgressButton.bounds = CGRectMake(0, 0, downloadStateImage.size.width, downloadStateImage.size.height);
+    
+    [downloadsProgressButton setImage:downloadStateImage forState:UIControlStateNormal];
+    [downloadsProgressButton addTarget:self action:@selector(tappedDownloadsButton:) forControlEvents:UIControlEventTouchUpInside];
+
+    self.downloadsButton.customView = downloadsProgressButton;
+    
     // setup toolbar items as exclusive actions
     //
     for (id item in self.toolbar.items)
@@ -753,7 +766,6 @@
         self.downloadsPopover = [[UIPopoverController alloc] initWithContentViewController:wrapper];
         
         self.downloadsPopover.passthroughViews = nil;
-        self.downloadsPopover.delegate = self;
     }
     
     self.downloadsPopover.popoverContentSize = self.downloadsPopover.contentViewController.contentSizeForViewInPopover;
@@ -798,45 +810,17 @@
 
 - (void)downloadQueueChanged:(NSNotification *)notification
 {
-    BOOL queueActive = [((NSNumber *)[notification object]) boolValue];
-    
-    if (queueActive && ! [self.toolbar.items containsObject:self.downloadsButton])
+    // revert to empty progress image when no downloads in queue
+    //
+    if ( ! [((NSNumber *)[notification object]) boolValue])
     {
-        // show downloads button if we have downloads going
-        //
         UIButton *button = (UIButton *)self.downloadsButton.customView;
-        
-        if ( ! button)
-        {
-            button = [UIButton buttonWithType:UIButtonTypeCustom];
-            
-            [button addTarget:self action:@selector(tappedDownloadsButton:) forControlEvents:UIControlEventTouchUpInside];
-            
-            self.downloadsButton.customView = button;
-        }
-        
+
         UIImage *stateImage = [UIImage imageNamed:@"downloads0.png"];
         
         button.bounds = CGRectMake(0, 0, stateImage.size.width, stateImage.size.height);
         
         [button setImage:stateImage forState:UIControlStateNormal];
-        
-        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-        
-        [newItems insertObject:self.downloadsButton atIndex:4];
-        
-        [self.toolbar setItems:newItems animated:YES];
-    }
-    else if ( ! queueActive && [self.toolbar.items containsObject:self.downloadsButton] && ! self.downloadsPopover.popoverVisible)
-    {
-        // Don't remove the downloads button when the popover is attached.
-        // That's taken care of by the popover delegate call when it closes.
-        //
-        NSMutableArray *newItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-        
-        [newItems removeObject:self.downloadsButton];
-        
-        [self.toolbar setItems:newItems animated:YES];
     }
 }
 
@@ -1569,23 +1553,6 @@
         {
             [self dismissModalViewControllerAnimated:YES];
         }
-    }
-}
-
-#pragma mark -
-
-- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
-{
-    if ([popoverController isEqual:self.downloadsPopover] && ! [[DSMapBoxDownloadManager sharedManager].downloads count])
-    {
-        dispatch_delayed_ui_action(1.0, ^(void)
-        {
-            NSMutableArray *newItems = [NSMutableArray arrayWithArray:toolbar.items];
-            
-            [newItems removeObject:self.downloadsButton];
-            
-            [toolbar setItems:newItems animated:YES];
-        });
     }
 }
 

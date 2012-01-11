@@ -20,8 +20,7 @@
                                                         DSMapBoxDataLayerHandlerDelegate,
                                                         UIAlertViewDelegate, 
                                                         MFMailComposeViewControllerDelegate,
-                                                        DSMapBoxLayerControllerDelegate,
-                                                        UIPopoverControllerDelegate>
+                                                        DSMapBoxLayerControllerDelegate>
 
 @property (nonatomic, strong) IBOutlet DSMapView *mapView;
 @property (nonatomic, strong) IBOutlet UIImageView *watermarkImage;
