@@ -400,6 +400,8 @@
                            ([layer objectForKey:@"template"] ? [layer objectForKey:@"template"] : @""), @"template",
                            ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
                            ([layer objectForKey:@"legend"] ? [layer objectForKey:@"legend"] : @""), @"legend",
+                           ([layer objectForKey:@"download"] ? [layer objectForKey:@"download"] : @""), @"download",
+                           ([layer objectForKey:@"filesize"] ? [layer objectForKey:@"filesize"] : @""), @"filesize",
                            [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
                            [layer objectForKey:@"id"], @"id", 

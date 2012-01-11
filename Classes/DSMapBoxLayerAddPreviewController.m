@@ -87,6 +87,9 @@
     if ([source coversFullWorld])
         [metadata appendString:@", full-world coverage"];
     
+    if ([[self.info objectForKey:@"download"] length] && [[self.info objectForKey:@"filesize"] integerValue])
+        [metadata appendString:[NSString stringWithFormat:@", available offline (%i MB)", ([[self.info objectForKey:@"filesize"] integerValue] / (1024 * 1024))]];
+    
     self.metadataLabel.text = metadata;
     
     [TESTFLIGHT passCheckpoint:@"previewed TileStream layer"];
