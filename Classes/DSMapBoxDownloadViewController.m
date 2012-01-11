@@ -11,6 +11,7 @@
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadTableViewCell.h"
 #import "DSMapBoxTintedBarButtonItem.h"
+#import "DSMapBoxTintedPlusItem.h"
 
 #import "SSPieProgressView.h"
 
@@ -45,6 +46,9 @@
                                                                   target:self
                                                                   action:@selector(doneButtonTapped:)];
 
+    self.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem = [[DSMapBoxTintedPlusItem alloc] initWithTarget:self
+                                                                                                                            action:@selector(promptForURL:)];
+    
     self.navigationItem.rightBarButtonItem = self.editButton;
     
     // watch for download queue
@@ -101,6 +105,8 @@
     }
 }
 
+#pragma mark -
+
 - (void)downloadQueueChanged:(NSNotification *)notification
 {
     [self reloadTableView];
@@ -139,6 +145,40 @@
 }
 
 #pragma mark -
+
+- (void)promptForURL:(id)sender
+{
+    __weak UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Download MBTiles" message:@"Enter an MBTiles file URL:"];
+    
+    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+    
+    [alert setCancelButtonWithTitle:@"Cancel" handler:nil];
+
+    [alert addButtonWithTitle:@"Download" handler:^(void)
+    {
+        NSURL *downloadURL = [NSURL URLWithString:[alert textFieldAtIndex:0].text];
+        
+        NSString *errorMessage;
+        
+        if ( ! downloadURL || ! [[[downloadURL pathExtension] lowercaseString] isEqualToString:@"mbtiles"])
+            errorMessage = @"Please enter a valid MBTiles URL.";
+        
+        else if ( ! [[[downloadURL scheme] lowercaseString] hasPrefix:@"http"] && ! [[[downloadURL scheme] lowercaseString] hasPrefix:kMBTilesURLSchemePrefix])
+            errorMessage = [NSString stringWithFormat:@"Unable to download a URL starting with %@://.", [downloadURL scheme]];
+
+        if (errorMessage)
+            [UIAlertView showAlertViewWithTitle:@"Download Error"
+                                        message:errorMessage
+                              cancelButtonTitle:@"Try Again" 
+                              otherButtonTitles:nil
+                                        handler:^(UIAlertView *alert, NSInteger buttonIndex) { [self promptForURL:self]; }];
+
+        else
+            [[UIApplication sharedApplication] openURL:downloadURL];
+    }];
+    
+    [alert show];
+}
 
 - (void)editButtonTapped:(id)sender
 {
