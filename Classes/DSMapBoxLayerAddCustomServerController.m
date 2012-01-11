@@ -191,7 +191,7 @@
             
             self.validationDownload = [NSURLConnection connectionWithRequest:validationRequest];
             
-            __weak DSMapBoxLayerAddCustomServerController *selfCopy = self;
+            __weak DSMapBoxLayerAddCustomServerController *weakSelf = self;
             
             self.validationDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
             {
@@ -201,20 +201,20 @@
                 
                 if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
                 {
-                    selfCopy.finalURL = [NSURL URLWithString:[[selfCopy.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
+                    weakSelf.finalURL = [NSURL URLWithString:[[weakSelf.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
                     
-                    [selfCopy indicateSuccess];
+                    [weakSelf indicateSuccess];
                 }
                 
                 else
-                    [selfCopy indicateFailure];
+                    [weakSelf indicateFailure];
             };
             
             self.validationDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
             {
                 [DSMapBoxNetworkActivityIndicator removeJob:connection];
                 
-                [selfCopy indicateFailure];
+                [weakSelf indicateFailure];
             };
             
             [DSMapBoxNetworkActivityIndicator addJob:self.validationDownload];

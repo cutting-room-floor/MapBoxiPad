@@ -77,13 +77,13 @@
     
     self.albumDownload = [NSURLConnection connectionWithRequest:albumRequest];
     
-    __weak DSMapBoxLayerAddTileStreamAlbumController *selfCopy = self;
+    __weak DSMapBoxLayerAddTileStreamAlbumController *weakSelf = self;
     
     self.albumDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
     {
         [DSMapBoxNetworkActivityIndicator removeJob:connection];
         
-        [selfCopy.spinner stopAnimating];
+        [weakSelf.spinner stopAnimating];
         
         id newServersReceived = [responseData mutableObjectFromJSONData];
         
@@ -139,27 +139,27 @@
             
             // make things visible
             //
-            selfCopy.helpLabel.hidden         = NO;
-            selfCopy.accountScrollView.hidden = NO;
+            weakSelf.helpLabel.hidden         = NO;
+            weakSelf.accountScrollView.hidden = NO;
             
             if ([newServers count] > 9)
-                selfCopy.accountPageControl.hidden = NO;
+                weakSelf.accountPageControl.hidden = NO;
             
             // update content
             //
-            selfCopy.servers = [NSArray arrayWithArray:newServers];
+            weakSelf.servers = [NSArray arrayWithArray:newServers];
             
             // layout preview tiles
             //
-            int pageCount = ([selfCopy.servers count] / 9) + ([selfCopy.servers count] % 9 ? 1 : 0);
+            int pageCount = ([weakSelf.servers count] / 9) + ([weakSelf.servers count] % 9 ? 1 : 0);
             
-            selfCopy.accountScrollView.contentSize = CGSizeMake((selfCopy.accountScrollView.frame.size.width * pageCount), selfCopy.accountScrollView.frame.size.height);
+            weakSelf.accountScrollView.contentSize = CGSizeMake((weakSelf.accountScrollView.frame.size.width * pageCount), weakSelf.accountScrollView.frame.size.height);
             
-            selfCopy.accountPageControl.numberOfPages = pageCount;
+            weakSelf.accountPageControl.numberOfPages = pageCount;
             
             for (int i = 0; i < pageCount; i++)
             {
-                UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * selfCopy.accountScrollView.frame.size.width, 0, selfCopy.accountScrollView.frame.size.width, selfCopy.accountScrollView.frame.size.height)];
+                UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * weakSelf.accountScrollView.frame.size.width, 0, weakSelf.accountScrollView.frame.size.width, weakSelf.accountScrollView.frame.size.height)];
                 
                 containerView.backgroundColor = [UIColor clearColor];
                 
@@ -167,7 +167,7 @@
                 {
                     int index = i * 9 + j;
                     
-                    if (index < [selfCopy.servers count])
+                    if (index < [weakSelf.servers count])
                     {
                         int row = j / 3;
                         int col = j - (row * 3);
@@ -185,7 +185,7 @@
                         
                         // get label bits
                         //
-                        NSDictionary *server  = [selfCopy.servers objectAtIndex:index];
+                        NSDictionary *server  = [weakSelf.servers objectAtIndex:index];
                         NSString *accountName = ([[server objectForKey:@"name"] length] ? [server objectForKey:@"name"] : [server objectForKey:@"id"]);
                         NSString *layerCount  = [server valueForKey:@"mapCount"];
                         
@@ -193,7 +193,7 @@
                                                                                                             imageURLs:[imagesToDownload objectAtIndex:index]
                                                                                                             labelText:[NSString stringWithFormat:@"%@ (%@)", accountName, layerCount]];
                         
-                        accountView.delegate = selfCopy;
+                        accountView.delegate = weakSelf;
                         accountView.tag = index;
                         
                         if (i == 0 && index == 0)
@@ -227,7 +227,7 @@
                     }
                 }
                 
-                [selfCopy.accountScrollView addSubview:containerView];
+                [weakSelf.accountScrollView addSubview:containerView];
             }
         }
     };
@@ -236,13 +236,13 @@
     {
         [DSMapBoxNetworkActivityIndicator removeJob:connection];
         
-        [selfCopy.spinner stopAnimating];
+        [weakSelf.spinner stopAnimating];
         
         DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to connect"];
         
-        [selfCopy.view addSubview:errorView];
+        [weakSelf.view addSubview:errorView];
         
-        errorView.center = selfCopy.view.center;
+        errorView.center = weakSelf.view.center;
     };
     
     [DSMapBoxNetworkActivityIndicator addJob:self.albumDownload];

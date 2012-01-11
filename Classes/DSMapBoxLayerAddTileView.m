@@ -86,7 +86,7 @@
             
             imageDownload = [NSURLConnection connectionWithRequest:imageRequest];
             
-            __weak DSMapBoxLayerAddTileView *selfCopy = self;
+            __weak DSMapBoxLayerAddTileView *weakSelf = self;
             
             imageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
             {
@@ -105,31 +105,31 @@
                     UIBezierPath *corneredPath = [UIBezierPath bezierPath];
                     
                     [corneredPath moveToPoint:CGPointMake(0, 0)];
-                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width - cornerImage.size.width, 0)];
-                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, cornerImage.size.height)];
-                    [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, selfCopy.imageView.bounds.size.height)];
-                    [corneredPath addLineToPoint:CGPointMake(0, selfCopy.imageView.bounds.size.height)];
+                    [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width - cornerImage.size.width, 0)];
+                    [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width, cornerImage.size.height)];
+                    [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width, weakSelf.imageView.bounds.size.height)];
+                    [corneredPath addLineToPoint:CGPointMake(0, weakSelf.imageView.bounds.size.height)];
                     [corneredPath closePath];
                     
                     // begin image mods
                     //
-                    UIGraphicsBeginImageContext(selfCopy.imageView.bounds.size);
+                    UIGraphicsBeginImageContext(weakSelf.imageView.bounds.size);
                     
                     CGContextRef c = UIGraphicsGetCurrentContext();
                     
                     // fill background with white
                     //
-                    CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:selfCopy.imageView.bounds] CGPath]);
+                    CGContextAddPath(c, [[UIBezierPath bezierPathWithRect:weakSelf.imageView.bounds] CGPath]);
                     CGContextSetFillColorWithColor(c, [[UIColor whiteColor] CGColor]);
                     CGContextFillPath(c);
                     
                     // store unclipped version for later & reset context
                     //
-                    [tileImage drawInRect:selfCopy.imageView.bounds];
+                    [tileImage drawInRect:weakSelf.imageView.bounds];
                     
-                    selfCopy.image = UIGraphicsGetImageFromCurrentImageContext();
+                    weakSelf.image = UIGraphicsGetImageFromCurrentImageContext();
                     
-                    CGContextClearRect(c, selfCopy.imageView.bounds);
+                    CGContextClearRect(c, weakSelf.imageView.bounds);
                     
                     // fill background with white again, but cornered
                     //
@@ -144,7 +144,7 @@
                     
                     // draw again for our display
                     //
-                    [tileImage drawInRect:selfCopy.imageView.bounds];
+                    [tileImage drawInRect:weakSelf.imageView.bounds];
                     
                     UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
                     
@@ -154,7 +154,7 @@
                     //
                     UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
                     
-                    cornerImageView.frame = CGRectMake(selfCopy.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+                    cornerImageView.frame = CGRectMake(weakSelf.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
                     
                     // add shadow to corner image
                     //
@@ -169,11 +169,11 @@
                     cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
                     cornerImageView.layer.shadowPath    = [cornerPath CGPath];
                     
-                    [selfCopy.imageView addSubview:cornerImageView];
+                    [weakSelf.imageView addSubview:cornerImageView];
                     
                     // update tile
                     //
-                    selfCopy.imageView.image = clippedImage;
+                    weakSelf.imageView.image = clippedImage;
                     
                     // animate cover removal
                     //
@@ -181,7 +181,7 @@
                     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
                     [UIView setAnimationDuration:0.1];
                     
-                    selfCopy.imageView.layer.shadowPath = [corneredPath CGPath];
+                    weakSelf.imageView.layer.shadowPath = [corneredPath CGPath];
                     cornerImageView.hidden = NO;
                     
                     [UIView commitAnimations];

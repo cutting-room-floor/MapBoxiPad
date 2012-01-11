@@ -99,13 +99,13 @@
     
     self.layersDownload = [NSURLConnection connectionWithRequest:layersRequest];
     
-    __weak DSMapBoxLayerAddTileStreamBrowseController *selfCopy = self;
+    __weak DSMapBoxLayerAddTileStreamBrowseController *weakSelf = self;
     
     self.layersDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
     {
         [DSMapBoxNetworkActivityIndicator removeJob:connection];
         
-        [selfCopy.spinner stopAnimating];
+        [weakSelf.spinner stopAnimating];
         
         id newLayersReceived = [responseData mutableObjectFromJSONData];
         
@@ -150,10 +150,10 @@
                         
                         // update layer for server-wide variables
                         //
-                        [layer setValue:[selfCopy.serverURL scheme]                                                           forKey:@"apiScheme"];
-                        [layer setValue:[selfCopy.serverURL host]                                                             forKey:@"apiHostname"];
-                        [layer setValue:([selfCopy.serverURL port] ? [selfCopy.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-                        [layer setValue:([selfCopy.serverURL path] ? [selfCopy.serverURL path] : @"")                         forKey:@"apiPath"];
+                        [layer setValue:[weakSelf.serverURL scheme]                                                           forKey:@"apiScheme"];
+                        [layer setValue:[weakSelf.serverURL host]                                                             forKey:@"apiHostname"];
+                        [layer setValue:([weakSelf.serverURL port] ? [weakSelf.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                        [layer setValue:([weakSelf.serverURL path] ? [weakSelf.serverURL path] : @"")                         forKey:@"apiPath"];
                         [layer setValue:tileURLString                                                                         forKey:@"tileURL"];
                         
                         // set size for downloadable tiles
@@ -191,25 +191,25 @@
                     [updatedLayers addObject:layer];
                 }
                 
-                selfCopy.helpLabel.hidden      = NO;
-                selfCopy.tileScrollView.hidden = NO;
+                weakSelf.helpLabel.hidden      = NO;
+                weakSelf.tileScrollView.hidden = NO;
                 
                 if ([updatedLayers count] > 9)
-                    selfCopy.tilePageControl.hidden = NO;
+                    weakSelf.tilePageControl.hidden = NO;
                 
-                selfCopy.layers = [NSArray arrayWithArray:updatedLayers];
+                weakSelf.layers = [NSArray arrayWithArray:updatedLayers];
                 
                 // layout preview tiles
                 //
-                int pageCount = ([selfCopy.layers count] / 9) + ([selfCopy.layers count] % 9 ? 1 : 0);
+                int pageCount = ([weakSelf.layers count] / 9) + ([weakSelf.layers count] % 9 ? 1 : 0);
                 
-                selfCopy.tileScrollView.contentSize = CGSizeMake((selfCopy.tileScrollView.frame.size.width * pageCount), selfCopy.tileScrollView.frame.size.height);
+                weakSelf.tileScrollView.contentSize = CGSizeMake((weakSelf.tileScrollView.frame.size.width * pageCount), weakSelf.tileScrollView.frame.size.height);
                 
-                selfCopy.tilePageControl.numberOfPages = pageCount;
+                weakSelf.tilePageControl.numberOfPages = pageCount;
                 
                 for (int i = 0; i < pageCount; i++)
                 {
-                    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * selfCopy.tileScrollView.frame.size.width, 0, selfCopy.tileScrollView.frame.size.width, selfCopy.tileScrollView.frame.size.height)];
+                    UIView *containerView = [[UIView alloc] initWithFrame:CGRectMake(i * weakSelf.tileScrollView.frame.size.width, 0, weakSelf.tileScrollView.frame.size.width, weakSelf.tileScrollView.frame.size.height)];
                     
                     containerView.backgroundColor = [UIColor clearColor];
                     
@@ -217,7 +217,7 @@
                     {
                         int index = i * 9 + j;
                         
-                        if (index < [selfCopy.layers count])
+                        if (index < [weakSelf.layers count])
                         {
                             int row = j / 3;
                             int col = j - (row * 3);
@@ -235,34 +235,34 @@
                             
                             DSMapBoxLayerAddTileView *tileView = [[DSMapBoxLayerAddTileView alloc] initWithFrame:CGRectMake(x, 105 + (row * 166), 148, 148) 
                                                                                                         imageURL:[imagesToDownload objectAtIndex:index]
-                                                                                                       labelText:[[selfCopy.layers objectAtIndex:index] valueForKey:@"name"]];
+                                                                                                       labelText:[[weakSelf.layers objectAtIndex:index] valueForKey:@"name"]];
                             
-                            tileView.delegate = selfCopy;
+                            tileView.delegate = weakSelf;
                             tileView.tag = index;
                             
                             [containerView addSubview:tileView];
                         }
                     }
                     
-                    [selfCopy.tileScrollView addSubview:containerView];
+                    [weakSelf.tileScrollView addSubview:containerView];
                 }
             }
             else
             {
                 DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"No layers available"];
                 
-                [selfCopy.view addSubview:errorView];
+                [weakSelf.view addSubview:errorView];
                 
-                errorView.center = selfCopy.view.center;
+                errorView.center = weakSelf.view.center;
             }
         }
         else
         {
             DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
             
-            [selfCopy.view addSubview:errorView];
+            [weakSelf.view addSubview:errorView];
             
-            errorView.center = selfCopy.view.center;
+            errorView.center = weakSelf.view.center;
         }
     };
     
@@ -270,13 +270,13 @@
     {
         [DSMapBoxNetworkActivityIndicator removeJob:connection];
         
-        [selfCopy.spinner stopAnimating];
+        [weakSelf.spinner stopAnimating];
         
         DSMapBoxErrorView *errorView = [DSMapBoxErrorView errorViewWithMessage:@"Unable to browse"];
         
-        [selfCopy.view addSubview:errorView];
+        [weakSelf.view addSubview:errorView];
         
-        errorView.center = selfCopy.view.center;
+        errorView.center = weakSelf.view.center;
     };
     
     [DSMapBoxNetworkActivityIndicator addJob:self.layersDownload];

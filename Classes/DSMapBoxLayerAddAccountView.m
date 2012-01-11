@@ -88,7 +88,7 @@
         
         primaryImageDownload = [NSURLConnection connectionWithRequest:primaryImageRequest];
         
-        __weak DSMapBoxLayerAddAccountView *selfCopy = self;
+        __weak DSMapBoxLayerAddAccountView *weakSelf = self;
         
         primaryImageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
         {
@@ -96,7 +96,7 @@
             
             UIImage *tileImage = [UIImage imageWithData:responseData];
             
-            [selfCopy downloadSecondaryImages];
+            [weakSelf downloadSecondaryImages];
             
             // process & update primary image
             //
@@ -111,15 +111,15 @@
                 UIBezierPath *corneredPath = [UIBezierPath bezierPath];
                 
                 [corneredPath moveToPoint:CGPointMake(0, 0)];
-                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width - cornerImage.size.width, 0)];
-                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, cornerImage.size.height)];
-                [corneredPath addLineToPoint:CGPointMake(selfCopy.imageView.bounds.size.width, selfCopy.imageView.bounds.size.height)];
-                [corneredPath addLineToPoint:CGPointMake(0, selfCopy.imageView.bounds.size.height)];
+                [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width - cornerImage.size.width, 0)];
+                [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width, cornerImage.size.height)];
+                [corneredPath addLineToPoint:CGPointMake(weakSelf.imageView.bounds.size.width, weakSelf.imageView.bounds.size.height)];
+                [corneredPath addLineToPoint:CGPointMake(0, weakSelf.imageView.bounds.size.height)];
                 [corneredPath closePath];
                 
                 // begin image mods
                 //
-                UIGraphicsBeginImageContext(selfCopy.imageView.bounds.size);
+                UIGraphicsBeginImageContext(weakSelf.imageView.bounds.size);
                 
                 CGContextRef c = UIGraphicsGetCurrentContext();
                 
@@ -136,7 +136,7 @@
                 
                 // draw tile
                 //
-                [tileImage drawInRect:selfCopy.imageView.bounds];
+                [tileImage drawInRect:weakSelf.imageView.bounds];
                 
                 UIImage *clippedImage = UIGraphicsGetImageFromCurrentImageContext();
                 
@@ -146,7 +146,7 @@
                 //
                 UIImageView *cornerImageView = [[UIImageView alloc] initWithImage:cornerImage];
                 
-                cornerImageView.frame = CGRectMake(selfCopy.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
+                cornerImageView.frame = CGRectMake(weakSelf.imageView.bounds.size.width - cornerImageView.bounds.size.width, 0, cornerImageView.bounds.size.width, cornerImageView.bounds.size.height);
                 
                 // add shadow to corner image
                 //
@@ -161,21 +161,21 @@
                 cornerImageView.layer.shadowOffset  = CGSizeMake(-1, 1);
                 cornerImageView.layer.shadowPath    = [cornerPath CGPath];
                 
-                [selfCopy.imageView addSubview:cornerImageView];
+                [weakSelf.imageView addSubview:cornerImageView];
                 
                 // cover tile for animated reveal
                 //
                 cornerImageView.hidden = YES;
                 
-                UIImageView *coverView = [[UIImageView alloc] initWithFrame:selfCopy.bounds];
+                UIImageView *coverView = [[UIImageView alloc] initWithFrame:weakSelf.bounds];
                 
-                coverView.image = selfCopy.imageView.image;
+                coverView.image = weakSelf.imageView.image;
                 
-                [selfCopy addSubview:coverView];
+                [weakSelf addSubview:coverView];
                 
                 // update tile
                 //
-                selfCopy.imageView.image = [clippedImage transparentBorderImage:1];
+                weakSelf.imageView.image = [clippedImage transparentBorderImage:1];
                 
                 // animate cover removal
                 //
@@ -184,7 +184,7 @@
                                     options:UIViewAnimationOptionCurveEaseOut
                                  animations:^(void)
                                  {
-                                     selfCopy.imageView.layer.shadowPath = [corneredPath CGPath];
+                                     weakSelf.imageView.layer.shadowPath = [corneredPath CGPath];
                                      
                                      cornerImageView.hidden = NO;
                                      coverView.hidden       = YES;
@@ -202,7 +202,7 @@
             
             // we can still try for the secondaries
             //
-            [selfCopy downloadSecondaryImages];
+            [weakSelf downloadSecondaryImages];
         };
         
         // save secondary image URLs for later
