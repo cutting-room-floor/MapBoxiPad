@@ -10,9 +10,36 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxNotificationView : UIView
+
+@end
+
+#pragma mark -
+
+@implementation DSMapBoxNotificationView
+
+- (void)drawRect:(CGRect)rect
+{
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    [[UIColor colorWithWhite:0.0 alpha:0.6] set];
+    
+    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:rect
+                                               byRoundingCorners:UIRectCornerBottomRight
+                                                     cornerRadii:CGSizeMake(12, 12)];
+    
+    CGContextAddPath(context, [path CGPath]);
+    
+    CGContextFillPath(context);
+}
+
+@end
+
+#pragma mark -
+
 @interface DSMapBoxNotificationCenter ()
 
-@property (nonatomic, strong) UIView *view;
+@property (nonatomic, strong) DSMapBoxNotificationView *view;
 @property (nonatomic, strong) UILabel *label;
 
 - (id)initWithFrame:(CGRect)rect;
@@ -44,9 +71,9 @@
 
     if (self != nil)
     {
-        view = [[UIView alloc] initWithFrame:rect];
+        view = [[DSMapBoxNotificationView alloc] initWithFrame:rect];
         
-        view.backgroundColor        = [UIColor colorWithWhite:0.0 alpha:0.6];
+        view.backgroundColor        = [UIColor clearColor];
         view.userInteractionEnabled = NO;
 
         view.layer.shadowOffset     = CGSizeMake(0, 1);
