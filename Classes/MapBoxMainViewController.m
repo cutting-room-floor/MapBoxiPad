@@ -802,6 +802,8 @@
     
     if (queueActive && ! [self.toolbar.items containsObject:self.downloadsButton])
     {
+        // show downloads button if we have downloads going
+        //
         UIButton *button = (UIButton *)self.downloadsButton.customView;
         
         if ( ! button)
@@ -840,6 +842,8 @@
 
 - (void)downloadProgressChanged:(NSNotification *)notification
 {
+    // adjust downloads button image according to aggregate progress
+    //
     if ([[notification object] isEqual:[DSMapBoxDownloadManager sharedManager]])
     {
         float progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
@@ -855,6 +859,8 @@
 
 - (void)downloadCompleted:(NSNotification *)notification
 {
+    // post Growl-style notification
+    //
     NSURLConnection *download = [notification object];
     
     [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
@@ -1519,6 +1525,8 @@
     {
         if (buttonIndex == customAlertView.firstOtherButtonIndex)
         {
+            // import clipboard URL
+            //
             [TESTFLIGHT passCheckpoint:@"imported clipboard URL"];
 
             [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
@@ -1527,6 +1535,8 @@
         }
         else if (buttonIndex == customAlertView.firstOtherButtonIndex + 1)
         {
+            // don't prompt about clipboard URLs again
+            //
             [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"skipPasteboardURLPrompt"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
