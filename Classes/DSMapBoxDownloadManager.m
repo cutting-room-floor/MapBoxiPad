@@ -49,14 +49,14 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 @interface DSMapBoxDownloadManager ()
 
 @property (nonatomic, strong) NSMutableArray *downloads;           // NSURLConnection objects
-@property (nonatomic, strong) NSMutableArray *backgroundDownloads; // NSNumber objects containing background task IDs
+@property (nonatomic, strong) NSMutableArray *backgroundTasks;     // NSNumber objects containing background task IDs
 @property (nonatomic, strong) NSMutableArray *progresses;          // NSNumber objects tracking download progress (floats)
 @property (nonatomic, readonly, strong) NSString *downloadsPath;   // path to download folder on disk
 @property (nonatomic, readonly, strong) NSArray *pendingDownloads; // full paths to download stub plists left on disk
 
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload;
-- (void)unregisterBackgroundDownload:(NSURLConnection *)download;
+- (void)unregisterBackgroundTaskForDownload:(NSURLConnection *)download;
 
 @end
 
@@ -65,7 +65,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 @implementation DSMapBoxDownloadManager
 
 @synthesize downloads;
-@synthesize backgroundDownloads;
+@synthesize backgroundTasks;
 @synthesize progresses;
 @synthesize downloadsPath;
 
@@ -85,9 +85,9 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 
     if (self)
     {
-        downloads           = [NSMutableArray array];
-        backgroundDownloads = [NSMutableArray array];
-        progresses          = [NSMutableArray array];
+        downloads       = [NSMutableArray array];
+        backgroundTasks = [NSMutableArray array];
+        progresses      = [NSMutableArray array];
         
         downloadsPath       = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
         
@@ -153,14 +153,14 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
         //
         [pausedDownload cancel];
         [DSMapBoxNetworkActivityIndicator removeJob:pausedDownload];
-        [self unregisterBackgroundDownload:pausedDownload];
+        [self unregisterBackgroundTaskForDownload:pausedDownload];
     }
     else
     {
         // add new download to master downloads list, background jobs, and progress tracking
         //
         [self.downloads addObject:download];
-        [self.backgroundDownloads addObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
+        [self.backgroundTasks addObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
         [self.progresses addObject:[NSNumber numberWithFloat:0.0]];
     }
     
@@ -179,9 +179,9 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
                                                 int match = -1;
                                                 int i;
                                                 
-                                                for (i = 0; i < [self.backgroundDownloads count]; i++)
+                                                for (i = 0; i < [self.backgroundTasks count]; i++)
                                                 {
-                                                    if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] == taskID)
+                                                    if ([[self.backgroundTasks objectAtIndex:i] unsignedIntegerValue] == taskID)
                                                     {
                                                         match = i;
                                                         break;
@@ -196,8 +196,8 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
         
         // update background task list with new ID
         //
-        [self.backgroundDownloads replaceObjectAtIndex:[self.downloads indexOfObject:download] 
-                                            withObject:[NSNumber numberWithUnsignedInteger:taskID]];
+        [self.backgroundTasks replaceObjectAtIndex:[self.downloads indexOfObject:download] 
+                                        withObject:[NSNumber numberWithUnsignedInteger:taskID]];
     }
     
     // start the new download
@@ -205,7 +205,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
     [download start];
 }
 
-- (void)unregisterBackgroundDownload:(NSURLConnection *)download
+- (void)unregisterBackgroundTaskForDownload:(NSURLConnection *)download
 {
     if ([self.downloads containsObject:download])
     {
@@ -213,13 +213,13 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
         //
         int i = [self.downloads indexOfObject:download];
         
-        if ([[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue] != UIBackgroundTaskInvalid)
+        if ([[self.backgroundTasks objectAtIndex:i] unsignedIntegerValue] != UIBackgroundTaskInvalid)
         {
             // proceed only for valid background tasks
             //
-            [[UIApplication sharedApplication] endBackgroundTask:[[self.backgroundDownloads objectAtIndex:i] unsignedIntegerValue]];
+            [[UIApplication sharedApplication] endBackgroundTask:[[self.backgroundTasks objectAtIndex:i] unsignedIntegerValue]];
             
-            [self.backgroundDownloads replaceObjectAtIndex:i withObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
+            [self.backgroundTasks replaceObjectAtIndex:i withObject:[NSNumber numberWithUnsignedInteger:UIBackgroundTaskInvalid]];
         }
     }
 }
@@ -272,7 +272,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
     
     [DSMapBoxNetworkActivityIndicator removeJob:download];
     
-    [self unregisterBackgroundDownload:download];
+    [self unregisterBackgroundTaskForDownload:download];
 
     [TESTFLIGHT passCheckpoint:@"paused MBTiles download"];
 }
@@ -296,7 +296,7 @@ static const char *DSMapBoxDownloadManagerDownloadIsIndeterminate = "DSMapBoxDow
 
     [DSMapBoxNetworkActivityIndicator removeJob:download];
     
-    [self unregisterBackgroundDownload:download];
+    [self unregisterBackgroundTaskForDownload:download];
     
     [self.progresses removeObjectAtIndex:[self.downloads indexOfObject:download]];
     [self.downloads  removeObject:download];
