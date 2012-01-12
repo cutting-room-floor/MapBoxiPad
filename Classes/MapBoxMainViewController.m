@@ -814,9 +814,12 @@
 {
     // post Growl-style notification
     //
-    NSURLConnection *download = [notification object];
-    
-    [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download began", [download.originalRequest.URL lastPathComponent]]];
+    if ( ! self.downloadsPopover.isPopoverVisible)
+    {
+        NSURLConnection *download = [notification object];
+        
+        [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download began", [download.originalRequest.URL lastPathComponent]]];
+    }
 }
 
 - (void)downloadQueueChanged:(NSNotification *)notification
@@ -856,9 +859,12 @@
 {
     // post Growl-style notification
     //
-    NSURLConnection *download = [notification object];
-    
-    [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
+    if ( ! self.downloadsPopover.isPopoverVisible)
+    {
+        NSURLConnection *download = [notification object];
+        
+        [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
+    }
 }
 
 #pragma mark -
