@@ -215,22 +215,23 @@
                                                  name:RMTileError
                                                object:nil];
 
-    // watch for download queue
+    // watch for download events
     //
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(downloadBegan:)
+                                                 name:DSMapBoxDownloadBeganNotification
+                                               object:nil];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(downloadQueueChanged:)
                                                  name:DSMapBoxDownloadQueueNotification
                                                object:nil];
     
-    // watch for download progress
-    //
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(downloadProgressChanged:)
                                                  name:DSMapBoxDownloadProgressNotification
                                                object:nil];
     
-    // watch for download completion
-    //
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(downloadCompleted:)
                                                  name:DSMapBoxDownloadCompleteNotification
@@ -345,6 +346,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRequested                      object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRetrieved                      object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileError                          object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadBeganNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadCompleteNotification object:nil];
@@ -807,6 +809,15 @@
 }
 
 #pragma mark -
+
+- (void)downloadBegan:(NSNotification *)notification
+{
+    // post Growl-style notification
+    //
+    NSURLConnection *download = [notification object];
+    
+    [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download began", [download.originalRequest.URL lastPathComponent]]];
+}
 
 - (void)downloadQueueChanged:(NSNotification *)notification
 {

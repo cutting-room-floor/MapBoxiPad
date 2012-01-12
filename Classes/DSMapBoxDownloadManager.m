@@ -323,7 +323,11 @@
     //
     if ([webResponse statusCode] >= 400)
         return [self connection:connection didFailWithError:nil];
-        
+
+    // notify of start
+    //
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadBeganNotification object:connection];
+    
     // determine if resuming partial download
     //
     NSString *stubFile = [NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]];
