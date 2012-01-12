@@ -113,47 +113,49 @@
     //
     if ([self.queue count])
     {
-        // hide first
-        //
-        self.view.alpha = 0.0;
-        
         // process oldest item in queue
         //
         self.label.text = [self.queue objectAtIndex:0];
         
         // dequeue
-        ///
+        //
         [self.queue removeObjectAtIndex:0];
         
-        // resize as needed
+        // resize as needed & start left of screen
         //
         CGSize labelSize   = self.label.frame.size;
         CGSize textSize    = [self.label.text sizeWithFont:self.label.font];
         
         CGFloat adjustment = labelSize.width - textSize.width;
-        
-        self.view.frame = CGRectMake(self.view.frame.origin.x,  
-                                     self.view.frame.origin.y, 
-                                     self.view.frame.size.width - adjustment, 
-                                     self.view.frame.size.height);
+
+        self.view.frame = CGRectMake(-self.view.frame.size.width - adjustment,  
+                                      self.view.frame.origin.y, 
+                                      self.view.frame.size.width - adjustment, 
+                                      self.view.frame.size.height);
         
         // animate in & out
         //
-        [UIView animateWithDuration:0.5
+        [UIView animateWithDuration:0.25
                               delay:0.0
-                            options:UIViewAnimationCurveEaseIn
+                            options:UIViewAnimationCurveEaseOut
                          animations:^(void)
                          {
-                             self.view.alpha = 1.0;
+                             self.view.frame = CGRectMake(0, 
+                                                          self.view.frame.origin.y, 
+                                                          self.view.frame.size.width, 
+                                                          self.view.frame.size.height);
                          }
                          completion:^(BOOL finished)
                          {
-                             [UIView animateWithDuration:0.5
+                             [UIView animateWithDuration:0.25
                                                    delay:3.0
-                                                 options:UIViewAnimationCurveEaseOut
+                                                 options:UIViewAnimationCurveEaseIn
                                               animations:^(void)
                                               {
-                                                  self.view.alpha = 0.0;
+                                                  self.view.frame = CGRectMake(-self.view.frame.size.width, 
+                                                                                self.view.frame.origin.y, 
+                                                                                self.view.frame.size.width, 
+                                                                                self.view.frame.size.height);
                                               }
                                               completion:^(BOOL finished)
                                               {
