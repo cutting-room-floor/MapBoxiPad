@@ -41,6 +41,7 @@
 
 @property (nonatomic, strong) DSMapBoxNotificationView *view;
 @property (nonatomic, strong) UILabel *label;
+@property (nonatomic, strong) NSMutableArray *queue;
 
 - (id)initWithFrame:(CGRect)rect;
 
@@ -52,6 +53,7 @@
 
 @synthesize view;
 @synthesize label;
+@synthesize queue;
 
 + (DSMapBoxNotificationCenter *)sharedInstance
 {
@@ -91,6 +93,8 @@
         [view addSubview:label];
         
         [[((UIWindow *)[[[UIApplication sharedApplication] windows] objectAtIndex:0]).subviews objectAtIndex:0] addSubview:view];
+        
+        queue = [NSMutableArray array];
     }
     
     return self;
@@ -100,46 +104,65 @@
 
 - (void)notifyWithMessage:(NSString *)message
 {
-    // hide first
+    // append to queue, in case we're backed up
     //
-    self.view.alpha = 0.0;
+    if (message)
+        [self.queue addObject:message];
     
-    // update label
+    // continue if we've got at least one message queued
     //
-    self.label.text = message;
-    
-    // resize as needed
-    //
-    CGSize labelSize   = self.label.frame.size;
-    CGSize textSize    = [self.label.text sizeWithFont:self.label.font];
-    
-    CGFloat adjustment = labelSize.width - textSize.width;
-    
-    self.view.frame = CGRectMake(self.view.frame.origin.x,  
-                                 self.view.frame.origin.y, 
-                                 self.view.frame.size.width - adjustment, 
-                                 self.view.frame.size.height);
-    
-    // animate in & out
-    //
-    [UIView animateWithDuration:0.25
-                          delay:0.0
-                        options:UIViewAnimationCurveEaseIn
-                     animations:^(void)
-                     {
-                         self.view.alpha = 1.0;
-                     }
-                     completion:^(BOOL finished)
-                     {
-                         [UIView animateWithDuration:0.5
-                                               delay:3.0
-                                             options:UIViewAnimationCurveEaseOut
-                                          animations:^(void)
-                                          {
-                                              self.view.alpha = 0.0;
-                                          }
-                                          completion:nil];
-                     }];
+    if ([self.queue count])
+    {
+        // hide first
+        //
+        self.view.alpha = 0.0;
+        
+        // process oldest item in queue
+        //
+        self.label.text = [self.queue objectAtIndex:0];
+        
+        // dequeue
+        ///
+        [self.queue removeObjectAtIndex:0];
+        
+        // resize as needed
+        //
+        CGSize labelSize   = self.label.frame.size;
+        CGSize textSize    = [self.label.text sizeWithFont:self.label.font];
+        
+        CGFloat adjustment = labelSize.width - textSize.width;
+        
+        self.view.frame = CGRectMake(self.view.frame.origin.x,  
+                                     self.view.frame.origin.y, 
+                                     self.view.frame.size.width - adjustment, 
+                                     self.view.frame.size.height);
+        
+        // animate in & out
+        //
+        [UIView animateWithDuration:0.5
+                              delay:0.0
+                            options:UIViewAnimationCurveEaseIn
+                         animations:^(void)
+                         {
+                             self.view.alpha = 1.0;
+                         }
+                         completion:^(BOOL finished)
+                         {
+                             [UIView animateWithDuration:0.5
+                                                   delay:3.0
+                                                 options:UIViewAnimationCurveEaseOut
+                                              animations:^(void)
+                                              {
+                                                  self.view.alpha = 0.0;
+                                              }
+                                              completion:^(BOOL finished)
+                                              {
+                                                  // loop to continue dequeueing
+                                                  //
+                                                  [self notifyWithMessage:nil];
+                                              }];
+                         }];
+    }
 }
 
 @end
