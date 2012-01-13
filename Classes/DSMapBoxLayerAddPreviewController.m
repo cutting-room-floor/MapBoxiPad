@@ -11,7 +11,6 @@
 #import "DSMapView.h"
 #import "RMTileStreamSource.h"
 #import "DSMapContents.h"
-#import "DSMapBoxTintedBarButtonItem.h"
 #import "RMInteractiveSource.h"
 #import "DSMapBoxDataOverlayManager.h"
 
@@ -36,9 +35,14 @@
     
     self.navigationItem.title = [NSString stringWithFormat:@"Preview %@", [info objectForKey:@"name"]];
     
-    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                         target:self
-                                                                                         action:@selector(dismissPreview:)];
+    
+    
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(dismissPreview:)];
+    
+    self.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
     
     // map view
     //

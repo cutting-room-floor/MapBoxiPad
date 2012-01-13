@@ -12,8 +12,6 @@
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
-#import "DSMapBoxTintedBarButtonItem.h"
-#import "DSMapBoxTintedPlusItem.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapView.h"
@@ -53,8 +51,13 @@
     
     self.navigationItem.title = @"Layers";
 
-    self.navigationItem.leftBarButtonItem = [[DSMapBoxTintedPlusItem alloc] initWithTarget:self.delegate
-                                                                                    action:@selector(presentAddLayerHelper)];
+    
+    
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                          target:self.delegate
+                                                                                          action:@selector(presentAddLayerHelper)];
+    
+    self.navigationItem.leftBarButtonItem.tintColor = kMapBoxBlue;
     
     self.showActiveLayersOnly = YES;
     

@@ -21,7 +21,6 @@
 #import "DSMapBoxLayerAddTileStreamAlbumController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
-#import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
@@ -728,9 +727,12 @@
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
     
-    helpController.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done"
-                                                                                                   target:helpController
-                                                                                                   action:@selector(tappedHelpDoneButton:)];
+    helpController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" 
+                                                                                        style:UIBarButtonItemStyleBordered 
+                                                                                       target:helpController
+                                                                                       action:@selector(tappedHelpDoneButton:)];
+
+    helpController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
@@ -1288,9 +1290,13 @@
                                                                                                     target:self
                                                                                                     action:@selector(dismissModal)];
             
-            self.saveController.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Save"
-                                                                                                                target:self
-                                                                                                                action:@selector(saveState:)];
+            self.saveController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" 
+                                                                                                style:UIBarButtonItemStyleBordered 
+                                                                                               target:self
+                                                                                               action:@selector(saveState:)];
+            
+            self.saveController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
+
             
             wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

@@ -83,8 +83,6 @@
 		DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
-		DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */; };
-		DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015E13BE2CB000A72513 /* mapbox_button.png */; };
 		DD30497E143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */; };
 		DD30497F143CDEAB0049EE9E /* geography-class.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD30497D143CDEAB0049EE9E /* geography-class.plist */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
@@ -174,8 +172,6 @@
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */; };
-		DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DDB23A7D13BE86970090FEC6 /* plus_button.png */; };
 		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
 		DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */; };
 		DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */; };
@@ -456,9 +452,6 @@
 		DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLGroundOverlay.m; path = "Externals/Simple KML/SimpleKMLGroundOverlay.m"; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
-		DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedBarButtonItem.h; sourceTree = "<group>"; };
-		DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedBarButtonItem.m; sourceTree = "<group>"; };
-		DD2F015E13BE2CB000A72513 /* mapbox_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mapbox_button.png; path = ../mapbox_button.png; sourceTree = "<group>"; };
 		DD30497C143CDEAB0049EE9E /* blue-marble-topo-bathy-jul.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "blue-marble-topo-bathy-jul.plist"; sourceTree = "<group>"; };
 		DD30497D143CDEAB0049EE9E /* geography-class.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "geography-class.plist"; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -590,9 +583,6 @@
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDB0FCA51485CD70003A4FD3 /* BALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BALabel.h; path = Externals/BaseAppKit/BALabel.h; sourceTree = "<group>"; };
 		DDB0FCA61485CD70003A4FD3 /* BALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BALabel.m; path = Externals/BaseAppKit/BALabel.m; sourceTree = "<group>"; };
-		DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTintedPlusItem.h; sourceTree = "<group>"; };
-		DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTintedPlusItem.m; sourceTree = "<group>"; };
-		DDB23A7D13BE86970090FEC6 /* plus_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = plus_button.png; sourceTree = SOURCE_ROOT; };
 		DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxErrorView.h; sourceTree = "<group>"; };
 		DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxErrorView.m; sourceTree = "<group>"; };
 		DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamAlbumController.m; sourceTree = "<group>"; };
@@ -1027,10 +1017,6 @@
 			children = (
 				DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */,
 				DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */,
-				DD2F015613BD137200A72513 /* DSMapBoxTintedBarButtonItem.h */,
-				DD2F015713BD137200A72513 /* DSMapBoxTintedBarButtonItem.m */,
-				DDB23A7A13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.h */,
-				DDB23A7B13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m */,
 				DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */,
 				DD7E1C68140D91B4008F52C6 /* DSMapBoxAlertView.m */,
 				DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationCenter.h */,
@@ -1048,8 +1034,6 @@
 		DD2F016013BE3A2200A72513 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DD2F015E13BE2CB000A72513 /* mapbox_button.png */,
-				DDB23A7D13BE86970090FEC6 /* plus_button.png */,
 				DDE011A013CE33390070F421 /* error.png */,
 				DD680D55147DB66600BF32F2 /* white_clear.png */,
 			);
@@ -1724,10 +1708,8 @@
 				DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */,
 				DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */,
 				DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */,
-				DD2F015F13BE2CB000A72513 /* mapbox_button.png in Resources */,
 				DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */,
 				DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */,
-				DDB23A7E13BE86970090FEC6 /* plus_button.png in Resources */,
 				DD3E66B213C5337300D09B4B /* check.png in Resources */,
 				DD3E66B413C5339300D09B4B /* corner_fold.png in Resources */,
 				DD3E66B613C53BA100D09B4B /* chevron.png in Resources */,
@@ -1887,9 +1869,7 @@
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
 				DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */,
 				DDB96E9D13BBF7E4005D23DA /* DSMapBoxLayerAddTileView.m in Sources */,
-				DD2F015813BD137200A72513 /* DSMapBoxTintedBarButtonItem.m in Sources */,
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
-				DDB23A7C13BE84B80090FEC6 /* DSMapBoxTintedPlusItem.m in Sources */,
 				DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */,
 				DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */,
 				DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */,

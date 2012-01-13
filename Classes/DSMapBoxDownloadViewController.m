@@ -10,8 +10,6 @@
 
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadTableViewCell.h"
-#import "DSMapBoxTintedBarButtonItem.h"
-#import "DSMapBoxTintedPlusItem.h"
 
 #import "SSPieProgressView.h"
 
@@ -41,13 +39,19 @@
     self.editButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemEdit
                                                                     target:self
                                                                     action:@selector(editButtonTapped:)];
-    
-    self.doneButton = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Done" 
-                                                                  target:self
-                                                                  action:@selector(doneButtonTapped:)];
 
-    self.navigationItem.leftBarButtonItem = self.navigationItem.leftBarButtonItem = [[DSMapBoxTintedPlusItem alloc] initWithTarget:self
-                                                                                                                            action:@selector(promptForURL:)];
+    self.doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
+                                                       style:UIBarButtonItemStyleBordered
+                                                      target:self
+                                                      action:@selector(doneButtonTapped:)];
+    
+    self.doneButton.tintColor = kMapBoxBlue;
+
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
+                                                                                          target:self
+                                                                                          action:@selector(promptForURL:)];
+    
+    self.navigationItem.leftBarButtonItem.tintColor = kMapBoxBlue;
     
     self.navigationItem.rightBarButtonItem = self.editButton;
     

@@ -10,7 +10,6 @@
 
 #import "DSMapBoxLayerAddPreviewController.h"
 #import "DSMapBoxAlphaModalNavigationController.h"
-#import "DSMapBoxTintedBarButtonItem.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
 
@@ -69,11 +68,13 @@
     else
         self.navigationItem.title = [NSString stringWithFormat:@"Browse %@%@ Maps", self.serverName, ([self.serverName hasSuffix:@"s"] ? @"'" : @"'s")];
     
-    self.navigationItem.rightBarButtonItem = [[DSMapBoxTintedBarButtonItem alloc] initWithTitle:@"Add Layer" 
-                                                                                         target:self 
-                                                                                         action:@selector(tappedDoneButton:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add Layer"
+                                                                              style:UIBarButtonItemStyleBordered
+                                                                             target:self
+                                                                             action:@selector(tappedDoneButton:)];
 
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    self.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
+    self.navigationItem.rightBarButtonItem.enabled   = NO;
     
     // setup progress indication
     //
