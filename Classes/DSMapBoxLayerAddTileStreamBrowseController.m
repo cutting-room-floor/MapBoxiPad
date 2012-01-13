@@ -71,9 +71,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Add Layer"
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
-                                                                             action:@selector(tappedDoneButton:)];
-
-    self.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
+                                                                             action:@selector(tappedDoneButton:)
+                                                                          tintColor:kMapBoxBlue];
     self.navigationItem.rightBarButtonItem.enabled   = NO;
     
     // setup progress indication

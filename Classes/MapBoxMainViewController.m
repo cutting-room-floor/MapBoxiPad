@@ -730,9 +730,8 @@
     helpController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" 
                                                                                         style:UIBarButtonItemStyleBordered 
                                                                                        target:helpController
-                                                                                       action:@selector(tappedHelpDoneButton:)];
-
-    helpController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
+                                                                                       action:@selector(tappedHelpDoneButton:)
+                                                                                    tintColor:kMapBoxBlue];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;
@@ -1293,10 +1292,8 @@
             self.saveController.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Save" 
                                                                                                 style:UIBarButtonItemStyleBordered 
                                                                                                target:self
-                                                                                               action:@selector(saveState:)];
-            
-            self.saveController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
-
+                                                                                               action:@selector(saveState:)
+                                                                                                 tintColor:kMapBoxBlue];
             
             wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
             wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

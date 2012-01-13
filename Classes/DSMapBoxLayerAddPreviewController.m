@@ -40,9 +40,8 @@
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                                               style:UIBarButtonItemStyleBordered
                                                                              target:self
-                                                                             action:@selector(dismissPreview:)];
-    
-    self.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
+                                                                             action:@selector(dismissPreview:)
+                                                                          tintColor:kMapBoxBlue];
     
     // map view
     //

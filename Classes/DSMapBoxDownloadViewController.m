@@ -43,15 +43,13 @@
     self.doneButton = [[UIBarButtonItem alloc] initWithTitle:@"Done"
                                                        style:UIBarButtonItemStyleBordered
                                                       target:self
-                                                      action:@selector(doneButtonTapped:)];
-    
-    self.doneButton.tintColor = kMapBoxBlue;
+                                                      action:@selector(doneButtonTapped:)
+                                                   tintColor:kMapBoxBlue];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                           target:self
-                                                                                          action:@selector(promptForURL:)];
-    
-    self.navigationItem.leftBarButtonItem.tintColor = kMapBoxBlue;
+                                                                                          action:@selector(promptForURL:)
+                                                                                       tintColor:kMapBoxBlue];
     
     self.navigationItem.rightBarButtonItem = self.editButton;
     

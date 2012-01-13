@@ -212,6 +212,7 @@
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
 		DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
+		DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
 		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
 /* End PBXBuildFile section */
@@ -640,6 +641,8 @@
 		DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamBrowseController.m; sourceTree = "<group>"; };
 		DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamBrowseController.xib; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
+		DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBarButtonItem_Additions.m; sourceTree = "<group>"; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
 		DDFB5ED611F784CA00695B89 /* DSMapContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapContents.m; sourceTree = "<group>"; };
@@ -1280,6 +1283,8 @@
 				DD64BF8D14366355000CF679 /* UIViewController_Additions.m */,
 				DDA2921511F8B53B000FFFF4 /* UIApplication_Additions.h */,
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
+				DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */,
+				DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */,
 				DD4BABF613BE62C50043FA21 /* DSSound.h */,
 				DD4BABF713BE62C50043FA21 /* DSSound.m */,
 			);
@@ -1895,6 +1900,7 @@
 				DD91C35F14B51FD700330326 /* SSPieProgressView.m in Sources */,
 				DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */,
 				DD47068114BB7AD600E5B99E /* Reachability.m in Sources */,
+				DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

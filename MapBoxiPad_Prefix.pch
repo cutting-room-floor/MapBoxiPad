@@ -8,6 +8,7 @@
     #import "MapBoxConstants.h"
     #import "UIApplication_Additions.h"
     #import "UIViewController_Additions.h"
+    #import "UIBarButtonItem_Additions.h"
     #import "DSMapBoxNetworkActivityIndicator.h"
     #import "DSMapBoxURLRequest.h"
     #import <BlocksKit/BlocksKit.h>
