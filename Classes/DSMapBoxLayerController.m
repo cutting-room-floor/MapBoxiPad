@@ -16,6 +16,8 @@
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapView.h"
 
+#import "MapBoxAppDelegate.h"
+
 #import "RMMBTilesTileSource.h"
 #import "RMTileStreamSource.h"
 
@@ -23,16 +25,17 @@
 
 @interface DSMapBoxLayerController ()
 
-@property (nonatomic, strong) NSIndexPath *indexPathToDelete;
-@property (nonatomic, assign) BOOL showActiveLayersOnly;
+@property (nonatomic, readonly, strong) UIButton *crosshairsButton;
+@property (nonatomic, strong) NSArray *defaultToolbarItems;
+@property (nonatomic, assign) BOOL activeLayerMode;
+@property (nonatomic, assign) BOOL bulkDownloadMode;
+@property (nonatomic, assign) BOOL bulkDeleteMode;
 
-- (void)toggleShowActiveLayersOnly:(id)sender;
-- (void)updateLayersButton;
 - (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL;
-- (BOOL)layersActiveInSection:(DSMapBoxLayerSection)section;
+- (NSArray *)selectedIndexPathsInSection:(DSMapBoxLayerSection)section;
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
-- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath warningForLargeLayers:(BOOL)shouldWarn;
-- (UIButton *)crosshairsButton;
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths warningForLargeLayers:(BOOL)shouldWarn;
 
 @end
 
@@ -41,77 +44,269 @@
 @implementation DSMapBoxLayerController
 
 @synthesize layerManager;
-@synthesize indexPathToDelete;
-@synthesize showActiveLayersOnly;
 @synthesize delegate;
+@synthesize defaultToolbarItems;
+@synthesize activeLayerMode;
+@synthesize bulkDownloadMode;
+@synthesize bulkDeleteMode;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    // set top bar title & buttons
+    //
     self.navigationItem.title = @"Layers";
 
-    
-    
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                           target:self.delegate
-                                                                                          action:@selector(presentAddLayerHelper)];
-    
-    self.navigationItem.leftBarButtonItem.tintColor = kMapBoxBlue;
-    
-    self.showActiveLayersOnly = YES;
-    
-    [self toggleShowActiveLayersOnly:self];
-    
+                                                                                          action:@selector(presentAddLayerHelper)
+                                                                                       tintColor:kMapBoxBlue];
+
     // We are always in editing mode, which allows reordering
     // of layers at any time. We use gestures to bring up a
     // menu for deletion rather than use the built-in table 
-    // view way, though.
+    // view way, though, as well as a bottom bar action. 
     //
-    self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.editing = YES;
+    self.tableView.allowsSelection = YES;
+    self.tableView.allowsMultipleSelection = YES;
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.allowsMultipleSelectionDuringEditing = YES;
+    
+    // setup bottom bar download/delete actions
+    //
+    self.navigationController.toolbarHidden = NO;
+    
+    self.defaultToolbarItems = [NSArray arrayWithObjects:
+                                   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize handler:^(id sender)
+                                   {
+                                       self.bulkDownloadMode = ! self.bulkDownloadMode;
+                                   }],
+                                   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
+                                   [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemTrash handler:^(id sender)
+                                   {
+                                       self.bulkDeleteMode   = ! self.bulkDeleteMode;
+                                   }],
+                                   nil];
+    
+    self.toolbarItems = self.defaultToolbarItems;
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDocumentsChangedNotification object:nil];
+    [self.layerManager reloadLayersFromDisk];
+
+    [self reloadRowsAtIndexPaths:nil];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
     
-    [self.tableView reloadData];
-    
-    [self updateLayersButton];
+    self.bulkDownloadMode = NO;
+    self.bulkDeleteMode   = NO;
 }
 
 #pragma mark -
 
-- (void)toggleShowActiveLayersOnly:(id)sender
+- (UIButton *)crosshairsButton
 {
-    self.showActiveLayersOnly = ! self.showActiveLayersOnly;
-
-    [self.tableView reloadData];
-
-    [self updateLayersButton];
-}
-
-- (void)updateLayersButton
-{
-    if ( ! [self layersActiveInSection:DSMapBoxLayerSectionData] && ! [self layersActiveInSection:DSMapBoxLayerSectionTile])
-        self.navigationItem.rightBarButtonItem = nil;
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     
-    else
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:self.showActiveLayersOnly ? @"Show All" : @"Show Active" 
-                                                                                  style:UIBarButtonItemStyleBordered 
-                                                                                 target:self
-                                                                                 action:@selector(toggleShowActiveLayersOnly:)];
+    button.frame = CGRectMake(0, 0, 44.0, 44.0);
+    
+    [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
+    [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
+    
+    [button addTarget:self action:@selector(tappedLayerAccessoryButton:event:) forControlEvents:UIControlEventTouchUpInside];
+    
+    return button;
 }
 
-- (IBAction)tappedLayerButton:(id)sender event:(id)event
+- (void)setActiveLayerMode:(BOOL)flag
 {
+    if (activeLayerMode != flag)
+    {
+        activeLayerMode = flag;
+    
+        self.navigationItem.title = (activeLayerMode ? @"Active Layers" : @"Layers");
+    
+        [self reloadRowsAtIndexPaths:nil];
+    }
+}
+
+- (void)setBulkDownloadMode:(BOOL)flag
+{
+    if (bulkDownloadMode != flag)
+    {    
+        bulkDownloadMode = flag;
+        
+        if (bulkDownloadMode)
+        {
+            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender)
+                                      {
+                                          self.bulkDownloadMode = ! self.bulkDownloadMode;
+                                          
+                                          self.toolbarItems = self.defaultToolbarItems;
+                                      }];
+
+            cancel.width = 100;
+
+            UIBarButtonItem *download = [[UIBarButtonItem alloc] initWithTitle:@"Download" style:UIBarButtonItemStyleBordered handler:^(id sender)
+            {
+                UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Download Layers?" 
+                                                             message:@"Are you sure that you want to download the selected layers? They will be downloaded in the background."];
+                
+                [alert setCancelButtonWithTitle:@"Cancel" handler:nil];
+                
+                [alert addButtonWithTitle:@"Download" handler:^(void)
+                {
+                    for (NSIndexPath *indexPath in [self selectedIndexPathsInSection:DSMapBoxLayerSectionTile])
+                    {
+                        NSDictionary *layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+
+                        NSString *downloadURLString = [[NSDictionary dictionaryWithContentsOfURL:[layer objectForKey:@"URL"]] objectForKey:@"download"];
+                            
+                        if (downloadURLString)
+                            [((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate]) openExternalURL:[NSURL URLWithString:downloadURLString]];
+                    }
+
+                    self.bulkDownloadMode = NO;
+                }];
+                
+                [alert show];
+            }
+            tintColor:kMapBoxBlue];
+            
+            download.width = 100;
+            download.enabled = NO;
+            
+            self.toolbarItems = [NSArray arrayWithObjects:
+                                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
+                                    cancel,
+                                    download, 
+                                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
+                                    nil];
+            
+            self.navigationItem.title = @"Layers To Download";
+        }
+        else
+        {
+            self.toolbarItems = self.defaultToolbarItems;
+            
+            self.navigationItem.title = @"Layers";
+        }
+        
+        [self reloadRowsAtIndexPaths:nil];
+    }
+}
+
+- (void)setBulkDeleteMode:(BOOL)flag
+{
+    if (bulkDeleteMode != flag)
+    {
+        bulkDeleteMode = flag;
+    
+        if (bulkDeleteMode)
+        {
+            UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender)
+                                      {
+                                          self.bulkDeleteMode = ! self.bulkDeleteMode;
+                                          
+                                          self.toolbarItems = self.defaultToolbarItems;
+                                      }];
+
+            cancel.width = 100;
+
+            UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleBordered handler:^(id sender)
+            {
+                UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Delete Layers?" 
+                                                             message:@"Are you sure that you want to permanently delete the selected layers?"];
+                
+                [alert setCancelButtonWithTitle:@"Cancel" handler:nil];
+                
+                [alert addButtonWithTitle:@"Delete" handler:^(void)
+                {
+                    NSMutableArray *indexPaths = [NSMutableArray arrayWithArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionData]];
+                    
+                    [indexPaths addObjectsFromArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile]];
+                    
+                    [self deleteLayersAtIndexPaths:indexPaths warningForLargeLayers:NO];
+
+                    self.bulkDeleteMode = NO;
+                }];
+                
+                [alert show];
+            }
+            tintColor:[UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0]];
+
+            delete.width = 100;
+            delete.enabled = NO;
+            
+            self.toolbarItems = [NSArray arrayWithObjects:
+                                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
+                                    cancel,
+                                    delete, 
+                                    [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
+                                    nil];
+            
+            self.navigationItem.title = @"Layers To Delete";
+        }
+        else
+        {
+            self.toolbarItems = self.defaultToolbarItems;
+            
+            self.navigationItem.title = @"Layers";
+        }
+
+        [self reloadRowsAtIndexPaths:nil];
+    }
+}
+
+#pragma mark -
+
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths
+{
+    // deselect all cells first if not in bulk modes
+    //
+    if ( ! self.bulkDownloadMode && ! self.bulkDeleteMode)
+        for (int i = 0; i < [self.tableView numberOfSections]; i++)
+            for (int j = 0; j < [self.tableView numberOfRowsInSection:i]; j++)
+                [self.tableView deselectRowAtIndexPath:[NSIndexPath indexPathForRow:j inSection:i] animated:NO];
+    
+    // do reloads, all or some
+    //
+    if (indexPaths)
+        [self.tableView reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+    else
+        [self.tableView reloadData];
+
+    // update active layers button accordingly
+    //
+    int count = [[self selectedIndexPathsInSection:DSMapBoxLayerSectionData] count] + [[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile] count];
+    
+    if (self.bulkDownloadMode || self.bulkDeleteMode || ! count)
+        self.navigationItem.rightBarButtonItem = nil;
+    else
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(self.activeLayerMode ? @"Show All" : @"Show Active")
+                                                                                  style:UIBarButtonItemStyleBordered
+                                                                                handler:^(id sender)
+                                                                                {
+                                                                                    self.activeLayerMode = ! self.activeLayerMode;
+                                                                                }];
+}
+
+- (IBAction)tappedLayerAccessoryButton:(id)sender event:(id)event
+{
+    // first half of the accessory button faking routine
+    //
     UITouch *touch = [[event allTouches] anyObject];
     CGPoint  point = [touch locationInView:self.tableView];
     
-    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint: point];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
 
     if (indexPath)
         [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
@@ -119,6 +314,9 @@
 
 - (void)handleGesture:(UIGestureRecognizer *)gesture
 {
+    if (self.bulkDownloadMode || self.bulkDeleteMode) // FIXME
+        return;
+    
     if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan)
     {
         // cancel gesture
@@ -150,15 +348,18 @@
         
         if (layerCanBeDeleted)
         {
-            self.indexPathToDelete = [self.tableView indexPathForCell:cell];
+            UIActionSheet *deleteActionSheet = [UIActionSheet actionSheetWithTitle:cell.textLabel.text];
             
-            UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:cell.textLabel.text
-                                                                     delegate:self
-                                                            cancelButtonTitle:@"Cancel"
-                                                       destructiveButtonTitle:@"Delete Layer"
-                                                            otherButtonTitles:nil];
-            
-            [actionSheet showFromRect:cell.frame inView:cell animated:YES];
+            [deleteActionSheet setDestructiveButtonWithTitle:@"Delete Layer" handler:^(void)
+            {
+                [self deleteLayersAtIndexPaths:[NSArray arrayWithObject:[self.tableView indexPathForCell:cell]] warningForLargeLayers:YES];
+                
+                [TESTFLIGHT passCheckpoint:@"confirmed layer deletion"];
+            }];
+
+            [deleteActionSheet setCancelButtonWithTitle:@"Cancel" handler:nil];
+
+            [deleteActionSheet showFromToolbar:self.navigationController.toolbar];
             
             [TESTFLIGHT passCheckpoint:@"long-press gesture to delete layer table row"];
         }
@@ -189,31 +390,35 @@
     return shouldShowCrosshairs;
 }
 
-- (BOOL)layersActiveInSection:(DSMapBoxLayerSection)section
+- (NSArray *)selectedIndexPathsInSection:(DSMapBoxLayerSection)section
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"selected = YES"];
+    NSMutableArray *indexPaths = [NSMutableArray array];
 
-    if (section == DSMapBoxLayerSectionData)
-        return (BOOL)[[self.layerManager.dataLayers filteredArrayUsingPredicate:predicate] count];
+    if (self.bulkDownloadMode || self.bulkDeleteMode)
+    {
+        // for bulk modes, use true table selection state
+        //
+        for (int row = 0; row < [self.tableView numberOfRowsInSection:section]; row++)
+            if ([self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:row inSection:section]].selected)
+                [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
+    }
+    else
+    {
+        // for layer toggling, use the data model instead
+        //
+        NSArray *layers;
+        
+        if (section == DSMapBoxLayerSectionData)
+            layers = self.layerManager.dataLayers;
+        else
+            layers = self.layerManager.tileLayers;
+        
+        for (int row = 0; row < [layers count]; row++)
+            if ([[[layers objectAtIndex:row] objectForKey:@"selected"] boolValue])
+                [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
+    }
     
-    else if (section == DSMapBoxLayerSectionTile)
-        return (BOOL)[[self.layerManager.tileLayers filteredArrayUsingPredicate:predicate] count];
-
-    return NO;
-}
-
-- (UIButton *)crosshairsButton
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    
-    button.frame = CGRectMake(0, 0, 44.0, 44.0);
-    
-    [button setImage:[UIImage imageNamed:@"crosshairs.png"]           forState:UIControlStateNormal];
-    [button setImage:[UIImage imageNamed:@"crosshairs_highlight.png"] forState:UIControlStateHighlighted];
-    
-    [button addTarget:self action:@selector(tappedLayerButton:event:) forControlEvents:UIControlEventTouchUpInside];
-
-    return button;
+    return indexPaths;
 }
 
 #pragma mark -
@@ -237,7 +442,7 @@
 
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     
-    NSArray *layers = nil;
+    NSArray *layers;
     
     switch (indexPath.section)
     {
@@ -256,7 +461,7 @@
         
         if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
-            cell.accessoryView = [self crosshairsButton];
+            cell.accessoryView = self.crosshairsButton;
         }
         else
         {
@@ -271,47 +476,56 @@
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    // reload this changed row
+    //
+    [self reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath]];
     
-    [self updateLayersButton];
-
     // if, after toggling, we aren't showing any layers, get out of "active layers" mode
     //
-    if (self.showActiveLayersOnly && ! [self layersActiveInSection:DSMapBoxLayerSectionData] && ! [self layersActiveInSection:DSMapBoxLayerSectionTile])
-        [self toggleShowActiveLayersOnly:self];
+    int count = [[self selectedIndexPathsInSection:DSMapBoxLayerSectionData] count] + [[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile] count];
+    
+    if (self.activeLayerMode && ! count)
+        self.activeLayerMode = NO;
 }
 
-- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath warningForLargeLayers:(BOOL)shouldWarn
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths warningForLargeLayers:(BOOL)shouldWarn
 {
-    if (shouldWarn && indexPath.section == DSMapBoxLayerSectionTile)
-    {
-        // we want to warn the user if they are deleting a large tile layer
-        //
-        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-        
-        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
-        
-        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
-        {
-            self.indexPathToDelete = indexPath;
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Delete Layer?"
-                                                            message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Don't Delete"
-                                                  otherButtonTitles:@"Delete", nil];
-            
-            [alert show];
-            
-            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
-            
-            return;
-        }
-    }
+//    // FIXME warn on multiple deletions?
+//    //
+//    if (shouldWarn && indexPath.section == DSMapBoxLayerSectionTile)
+//    {
+//        // we want to warn the user if they are deleting a large tile layer
+//        //
+//        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+//        
+//        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
+//        
+//        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
+//        {
+//            [UIAlertView showAlertViewWithTitle:@"Delete Layer?"
+//                                        message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
+//                              cancelButtonTitle:@"Don't Delete"
+//                              otherButtonTitles:[NSArray arrayWithObject:@"Delete"]
+//                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+//                                        {
+//                                            if (buttonIndex == alertView.firstOtherButtonIndex)
+//                                            {
+//                                                [self deleteLayerAtIndexPath:indexPath warningForLargeLayers:NO];
+//                                                
+//                                                [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
+//                                            }
+//                                        }];
+//            
+//            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
+//            
+//            return;
+//        }
+//    }
     
-    [self.layerManager deleteLayerAtIndexPath:indexPath];
-    
-    [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationLeft];
+    for (NSIndexPath *indexPath in indexPaths)
+        [self.layerManager deleteLayerAtIndexPath:indexPath];
+
+    [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 }
 
 #pragma mark -
@@ -372,8 +586,8 @@
                 
                 if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
-                    cell.accessoryView        = [self crosshairsButton];
-                    cell.editingAccessoryView = [self crosshairsButton];
+                    cell.accessoryView        = self.crosshairsButton;
+                    cell.editingAccessoryView = self.crosshairsButton;
                 }
                 else
                 {
@@ -442,14 +656,16 @@
             break;
     }
     
-    if ( ! cell.gestureRecognizers)
-    {
-        UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-
-        gesture.minimumPressDuration = 1.0;
-
-        [cell addGestureRecognizer:gesture];
-    }
+//    // FIXME enable this again around bulk modes
+//    //
+//    if ( ! cell.gestureRecognizers)
+//    {
+//        UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
+//
+//        gesture.minimumPressDuration = 1.0;
+//
+//        [cell addGestureRecognizer:gesture];
+//    }
     
     return cell;
 }
@@ -461,7 +677,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    return ! (self.bulkDownloadMode || self.bulkDeleteMode);
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -475,48 +691,95 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (self.showActiveLayersOnly && ! [self layersActiveInSection:section])
-        return 0.0;
-        
+    // hide headers if only TileStream layers shown
+    //
+    if (self.bulkDownloadMode)
+        return 0;
+    
+    // hide header if section is empty when showing only active layers
+    //
+    if (self.activeLayerMode && ! [[self selectedIndexPathsInSection:section] count])
+        return 0;
+    
     return [tableView sectionHeaderHeight];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.showActiveLayersOnly)
-    {
-        if (indexPath.section == DSMapBoxLayerSectionData)
-            if ([[((NSDictionary *)[self.layerManager.dataLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
-                return 0.0;
-
-        if (indexPath.section == DSMapBoxLayerSectionTile)
-            if ([[((NSDictionary *)[self.layerManager.tileLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
-                return 0.0;
-    }
-
+    NSArray *sectionLayers = (indexPath.section == DSMapBoxLayerSectionData ? self.layerManager.dataLayers : self.layerManager.tileLayers);
+    
+    NSDictionary *layer = [sectionLayers objectAtIndex:indexPath.row];
+    
+    // active layer mode - don't show unselected layers
+    //
+    if (self.activeLayerMode)
+        if ( ! [[layer objectForKey:@"selected"] boolValue])
+            return 0;
+    
+    // bulk download mode - only show downloadable TileStream layers
+    //
+    if (self.bulkDownloadMode)
+        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL])
+            return 0; // FIXME also needs `download` key
+    
+    // bulk delete - only show deleteable layers
+    //
+    if (self.bulkDeleteMode)
+        if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
+            return 0;
+            
     return [tableView rowHeight];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.showActiveLayersOnly)
+    // hide certain rows
+    //
+    NSArray *sectionLayers = (indexPath.section == DSMapBoxLayerSectionData ? self.layerManager.dataLayers : self.layerManager.tileLayers);
+    
+    NSDictionary *layer = [sectionLayers objectAtIndex:indexPath.row];
+    
+    // active layer mode - don't show unselected layers
+    //
+    if (self.activeLayerMode)
+        if ( ! [[layer objectForKey:@"selected"] boolValue])
+            cell.hidden = YES;
+    
+    // bulk download mode - only show downloadable TileStream layers
+    //
+    if (self.bulkDownloadMode)
+        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL])
+            cell.hidden = YES; // FIXME also requires `download` key
+    
+    // bulk delete - only show deleteable layers
+    //
+    if (self.bulkDeleteMode)
+        if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
+            cell.hidden = YES;
+
+    // setup selection backgrounds
+    //
+    if (self.bulkDownloadMode || self.bulkDeleteMode)
     {
-        if (indexPath.section == DSMapBoxLayerSectionData)
-            if ([[((NSDictionary *)[self.layerManager.dataLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
-                cell.hidden = YES;
-
-        if (indexPath.section == DSMapBoxLayerSectionTile)
-            if ([[((NSDictionary *)[self.layerManager.tileLayers objectAtIndex:indexPath.row]) objectForKey:@"selected"] boolValue] == NO)
-                cell.hidden = YES;
+        // Mail.app-style multple selection highlighting
+        //
+        cell.selectedBackgroundView = nil;
+        
+        cell.multipleSelectionBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+        cell.multipleSelectionBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     }
-
-    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+    else
+    {
+        // custom-themed highlight selection background
+        //
+        cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+        cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
+    }
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return NO;
+    return (self.bulkDownloadMode || self.bulkDeleteMode);
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -524,9 +787,47 @@
     return UITableViewCellEditingStyleNone;
 }
 
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // happens when toggling in bulk modes
+    //
+    [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSDictionary *layer = nil;
+    // toggle selection off in normal mode
+    //
+    if ( ! self.bulkDownloadMode && ! self.bulkDeleteMode)
+        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+
+    // update download/delete button label in bulk modes & return
+    //
+    if (self.bulkDownloadMode || self.bulkDeleteMode)
+    {
+        UIBarButtonItem *item = [self.toolbarItems objectAtIndex:2];
+        
+        NSString *title = [[item.title componentsSeparatedByString:@" "] objectAtIndex:0];
+
+        int count = [[self selectedIndexPathsInSection:DSMapBoxLayerSectionData] count] + [[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile] count];
+        
+        if (count)
+        {
+            item.title = [NSString stringWithFormat:@"%@ (%i)", title, count];
+            item.enabled = YES;
+        }
+        else
+        {
+            item.title = title;
+            item.enabled = NO;
+        }
+        
+        return;
+    }
+
+    // perform layer toggling actions when in normal mode
+    //
+    NSDictionary *layer;
     
     if (indexPath.section == DSMapBoxLayerSectionTile)
         layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
@@ -534,7 +835,9 @@
     else if (indexPath.section == DSMapBoxLayerSectionData)
         layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
     
-    if (layer && ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL]))
+    // require net for online layers turning on
+    //
+    if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL])
     {        
         if ( ! [[layer valueForKey:@"selected"] boolValue] && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
@@ -552,15 +855,15 @@
         }
     }
     
+    // warn when turning on MBTiles layers that are lower than our min zoom
+    //
     if (indexPath.section == DSMapBoxLayerSectionTile)
     {
-        NSArray *layers;
-        
-        layers = self.layerManager.tileLayers;
+        NSArray *layers = self.layerManager.tileLayers;
         
         NSDictionary *layer = [layers objectAtIndex:indexPath.row];
         
-        if ([[[layer valueForKey:@"URL"] pathExtension] isEqualToString:@"mbtiles"])
+        if ([[layer valueForKey:@"URL"] isMBTilesURL])
         {
             if ([[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] maxZoomNative] < kLowerZoomBounds)
             {
@@ -597,6 +900,8 @@
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
+    // don't allow dragging out of layer's own section
+    //
     if (sourceIndexPath.section < proposedDestinationIndexPath.section)
         return [NSIndexPath indexPathForRow:0 inSection:sourceIndexPath.section];
 
@@ -609,52 +914,13 @@
 
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    /**
-     * Note that we are currently faking this via accessory view button actions.
-     */
-    
-    NSDictionary *layer = nil;
-    
-    switch (indexPath.section)
-    {
-        case DSMapBoxLayerSectionTile:
-            layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
-            break;
-            
-        case DSMapBoxLayerSectionData:
-            layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
-            break;
-    }
-
+    // we are currently faking this via accessory view button actions
+    //
     if (indexPath.section == DSMapBoxLayerSectionTile)
         if (self.delegate && [self.delegate respondsToSelector:@selector(zoomToLayer:)])
-            [self.delegate zoomToLayer:layer];
+            [self.delegate zoomToLayer:[self.layerManager.tileLayers objectAtIndex:indexPath.row]];
     
     [TESTFLIGHT passCheckpoint:@"tapped layer crosshairs to zoom"];
-}
-
-#pragma mark -
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.firstOtherButtonIndex)
-    {
-        [self deleteLayerAtIndexPath:self.indexPathToDelete warningForLargeLayers:NO];
-        
-        [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
-    }
-}
-
-#pragma mark -
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.destructiveButtonIndex)
-    {
-        [self deleteLayerAtIndexPath:self.indexPathToDelete warningForLargeLayers:YES];
-        
-        [TESTFLIGHT passCheckpoint:@"confirmed layer deletion"];
-    }
 }
 
 @end

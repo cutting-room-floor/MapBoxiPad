@@ -19,8 +19,6 @@
 //  new top-most map view. 
 //
 
-static NSString *const DSMapBoxDocumentsChangedNotification = @"DSMapBoxDocumentsChangedNotification";
-
 @class DSMapBoxDataOverlayManager;
 @class DSMapView;
 @class RMMBTilesTileSource;
@@ -67,6 +65,7 @@ typedef enum {
 - (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow;
+- (void)reloadLayersFromDisk;
 - (void)reorderLayerDisplay;
 
 @end

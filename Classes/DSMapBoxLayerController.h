@@ -17,7 +17,7 @@
 
 #pragma mark -
 
-@interface DSMapBoxLayerController : UITableViewController <UIAlertViewDelegate, UIActionSheetDelegate>
+@interface DSMapBoxLayerController : UITableViewController
 
 @property (nonatomic, strong) DSMapBoxLayerManager *layerManager;
 @property (nonatomic, weak) id <DSMapBoxLayerControllerDelegate, NSObject>delegate;

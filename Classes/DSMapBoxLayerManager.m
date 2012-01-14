@@ -33,8 +33,6 @@
 @property (nonatomic, strong) NSArray *tileLayers;
 @property (nonatomic, strong) NSArray *dataLayers;
 
-- (void)reloadLayersFromDisk;
-
 @end
 
 #pragma mark -
@@ -87,19 +85,9 @@
         
         [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"Tile Layer Count"];
         [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"Data Layer Count"];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadLayersFromDisk)
-                                                     name:DSMapBoxDocumentsChangedNotification
-                                                   object:nil];
     }
 
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDocumentsChangedNotification object:nil];
 }
 
 #pragma mark -
