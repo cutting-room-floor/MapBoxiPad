@@ -11,6 +11,8 @@
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadTableViewCell.h"
 
+#import "MapBoxAppDelegate.h"
+
 #import "SSPieProgressView.h"
 
 @interface DSMapBoxDownloadViewController ()
@@ -176,7 +178,7 @@
                                         handler:^(UIAlertView *alert, NSInteger buttonIndex) { [self promptForURL:self]; }];
 
         else
-            [[UIApplication sharedApplication] openURL:downloadURL];
+            [((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate])  openExternalURL:downloadURL];
     }];
     
     [alert show];
