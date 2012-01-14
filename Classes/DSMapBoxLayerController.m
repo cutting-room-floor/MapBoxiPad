@@ -191,7 +191,7 @@
                                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
                                     nil];
             
-            self.navigationItem.title = @"Layers To Download";
+            self.navigationItem.title = @"Downloadable Layers";
         }
         else
         {
@@ -253,7 +253,7 @@
                                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
                                     nil];
             
-            self.navigationItem.title = @"Layers To Delete";
+            self.navigationItem.title = @"Delete Layers";
         }
         else
         {
@@ -719,8 +719,8 @@
     // bulk download mode - only show downloadable TileStream layers
     //
     if (self.bulkDownloadMode)
-        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL])
-            return 0; // FIXME also needs `download` key
+        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL] || ! [[layer objectForKey:@"downloadable"] boolValue])
+            return 0;
     
     // bulk delete - only show deleteable layers
     //
@@ -748,8 +748,8 @@
     // bulk download mode - only show downloadable TileStream layers
     //
     if (self.bulkDownloadMode)
-        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL])
-            cell.hidden = YES; // FIXME also requires `download` key
+        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL] || ! [[layer objectForKey:@"downloadable"] boolValue])
+            cell.hidden = YES;
     
     // bulk delete - only show deleteable layers
     //

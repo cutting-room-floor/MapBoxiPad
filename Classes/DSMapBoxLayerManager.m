@@ -132,11 +132,19 @@
             NSString *description = [[DSMapBoxTileSetManager defaultManager] descriptionForTileSetAtURL:tileSetURL];
             NSString *attribution = [[DSMapBoxTileSetManager defaultManager] attributionForTileSetAtURL:tileSetURL];
             
-            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                        @"URL",
-                                                                                           name,                              @"name",
-                                                                                           (description ? description : @""), @"description",
-                                                                                           [NSNumber numberWithBool:NO],      @"selected",
-                                                                                           attribution,                       @"attribution",
+            // determine if downloadable as MBTiles
+            //
+            BOOL downloadable = NO;
+            
+            if ([tileSetURL isTileStreamURL] && [NSURL URLWithString:[[NSDictionary dictionaryWithContentsOfURL:tileSetURL] objectForKey:@"download"]])
+                downloadable = YES;
+            
+            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                             @"URL",
+                                                                                           name,                                   @"name",
+                                                                                           (description ? description : @""),      @"description",
+                                                                                           [NSNumber numberWithBool:NO],           @"selected",
+                                                                                           attribution,                            @"attribution",
+                                                                                           [NSNumber numberWithBool:downloadable], @"downloadable",
                                                                                            nil]];
         }
     }
