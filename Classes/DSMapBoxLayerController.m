@@ -135,6 +135,8 @@
         self.navigationItem.title = (activeLayerMode ? @"Active Layers" : @"Layers");
     
         [self reloadRowsAtIndexPaths:nil];
+        
+        [TESTFLIGHT passCheckpoint:@"toggled active layer mode"];
     }
 }
 
@@ -175,6 +177,8 @@
                     }
 
                     self.bulkDownloadMode = NO;
+                    
+                    [TESTFLIGHT passCheckpoint:@"bulk downloaded layers"];
                 }];
                 
                 [alert show];
@@ -201,6 +205,8 @@
         }
         
         [self reloadRowsAtIndexPaths:nil];
+        
+        [TESTFLIGHT passCheckpoint:@"toggled bulk download mode"];
     }
 }
 
@@ -237,6 +243,8 @@
                     [self deleteLayersAtIndexPaths:indexPaths warningForLargeLayers:NO];
 
                     self.bulkDeleteMode = NO;
+                    
+                    [TESTFLIGHT passCheckpoint:@"bulk deleted layers"];
                 }];
                 
                 [alert show];
@@ -263,6 +271,8 @@
         }
 
         [self reloadRowsAtIndexPaths:nil];
+        
+        [TESTFLIGHT passCheckpoint:@"toggled bulk delete mode"];
     }
 }
 

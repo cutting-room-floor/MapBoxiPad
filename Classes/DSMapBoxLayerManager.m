@@ -137,7 +137,11 @@
             BOOL downloadable = NO;
             
             if ([tileSetURL isTileStreamURL] && [NSURL URLWithString:[[NSDictionary dictionaryWithContentsOfURL:tileSetURL] objectForKey:@"download"]])
+            {
                 downloadable = YES;
+                
+                [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+            }
             
             [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                             @"URL",
                                                                                            name,                                   @"name",
