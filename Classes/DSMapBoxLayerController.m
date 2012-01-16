@@ -64,9 +64,9 @@
                                                                                        tintColor:kMapBoxBlue];
 
     // We are always in editing mode, which allows reordering
-    // of layers at any time. We use gestures to bring up a
-    // menu for deletion rather than use the built-in table 
-    // view way, though, as well as a bottom bar action. 
+    // of layers at any time. We use a bulk deletion method
+    // for deletion rather than use the built-in table 
+    // view swiping way. 
     //
     self.tableView.editing = YES;
     self.tableView.allowsSelection = YES;
@@ -361,60 +361,6 @@
         [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:indexPath];
 }
 
-- (void)handleGesture:(UIGestureRecognizer *)gesture
-{
-    if (self.bulkDownloadMode || self.bulkDeleteMode) // FIXME
-        return;
-    
-    if ([gesture isKindOfClass:[UILongPressGestureRecognizer class]] && gesture.state == UIGestureRecognizerStateBegan)
-    {
-        // cancel gesture
-        //
-        gesture.enabled = NO;
-        gesture.enabled = YES;
-        
-        // determine cell touched & index path
-        //
-        UITableViewCell *cell = (UITableViewCell *)gesture.view;
-        
-        NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-        
-        // show deletion menu for deletable layers
-        //
-        BOOL layerCanBeDeleted = NO;
-        
-        if (indexPath.section == DSMapBoxLayerSectionTile)
-        {
-            NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-            
-            if ( ! [tileSetURL isEqual:kDSOpenStreetMapURL] && ! [tileSetURL isEqual:kDSMapQuestOSMURL])
-                layerCanBeDeleted = YES;
-        }
-        else if (indexPath.section == DSMapBoxLayerSectionData)
-        {
-            layerCanBeDeleted = YES;
-        }
-        
-        if (layerCanBeDeleted)
-        {
-            UIActionSheet *deleteActionSheet = [UIActionSheet actionSheetWithTitle:cell.textLabel.text];
-            
-            [deleteActionSheet setDestructiveButtonWithTitle:@"Delete Layer" handler:^(void)
-            {
-                [self deleteLayersAtIndexPaths:[NSArray arrayWithObject:[self.tableView indexPathForCell:cell]] warningForLargeLayers:YES];
-                
-                [TESTFLIGHT passCheckpoint:@"confirmed layer deletion"];
-            }];
-
-            [deleteActionSheet setCancelButtonWithTitle:@"Cancel" handler:nil];
-
-            [deleteActionSheet showFromToolbar:self.navigationController.toolbar];
-            
-            [TESTFLIGHT passCheckpoint:@"long-press gesture to delete layer table row"];
-        }
-    }
-}
-
 #pragma mark -
 
 - (BOOL)layerAtURLShouldShowCrosshairs:(NSURL *)layerURL
@@ -694,17 +640,6 @@
             
             break;
     }
-    
-//    // FIXME enable this again around bulk modes
-//    //
-//    if ( ! cell.gestureRecognizers)
-//    {
-//        UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleGesture:)];
-//
-//        gesture.minimumPressDuration = 1.0;
-//
-//        [cell addGestureRecognizer:gesture];
-//    }
     
     return cell;
 }
