@@ -254,10 +254,6 @@
     //
     for (NSString *dupe in duplicates)
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, dupe] error:NULL];
-    
-    // notify that download queue has changed
-    //
-    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
 }
 
 #pragma mark -
@@ -276,6 +272,9 @@
     
     [self unregisterBackgroundTaskForDownload:download];
 
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
+                                                        object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
+
     [TESTFLIGHT passCheckpoint:@"paused MBTiles download"];
 }
 
@@ -286,6 +285,8 @@
     download.isPaused = NO;
     
     [self downloadURL:download.originalRequest.URL resumingDownload:download];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:YES]];
     
     [TESTFLIGHT passCheckpoint:@"resumed MBTiles download"];
 }
@@ -307,6 +308,9 @@
 
     [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.%@", self.downloadsPath, [self identifierForDownload:download], kPartialDownloadExtension] error:NULL];
     [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:download]] error:NULL];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
+                                                        object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
     
     [TESTFLIGHT passCheckpoint:@"cancelled MBTiles download"];
 }
@@ -509,14 +513,20 @@
     //
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadCompleteNotification object:connection];
     
-    // check if we're the last pending download & post queue update if so
-    //
-    if ([self.downloads count] == 0)
-        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:NO]];
-    
     // wait a sec for UI to update, then invalidate background job
     //
-    [self performBlock:^(id sender) { [self unregisterBackgroundTaskForDownload:connection]; } afterDelay:1.0];
+    [self performBlock:^(id sender)
+    {
+        // remove background job tracking
+        //
+        [self unregisterBackgroundTaskForDownload:connection];
+
+        // post queue update
+        //
+        [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
+                                                            object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
+    }
+    afterDelay:1.0];
     
     [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
 }
