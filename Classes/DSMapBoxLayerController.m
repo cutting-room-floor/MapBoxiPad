@@ -70,9 +70,7 @@
     //
     self.tableView.editing = YES;
     self.tableView.allowsSelection = YES;
-    self.tableView.allowsMultipleSelection = YES;
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.allowsMultipleSelectionDuringEditing = YES;
     
     // setup bottom bar download/delete actions
     //
@@ -138,12 +136,26 @@
         
         [TESTFLIGHT passCheckpoint:@"toggled active layer mode"];
     }
+
+    self.tableView.allowsMultipleSelection = NO;
+    self.tableView.allowsMultipleSelectionDuringEditing = NO;
 }
 
 - (void)setBulkDownloadMode:(BOOL)flag
 {
     if (bulkDownloadMode != flag)
-    {    
+    {
+        if (flag && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
+        {
+            [UIAlertView showAlertViewWithTitle:@"No Internet Connection"
+                                        message:@"Downloading layers requires an active internet connection."
+                              cancelButtonTitle:nil
+                              otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                        handler:nil];
+            
+            return;
+        }
+        
         bulkDownloadMode = flag;
         
         if (bulkDownloadMode)
@@ -204,6 +216,9 @@
             self.navigationItem.title = @"Layers";
         }
         
+        self.tableView.allowsMultipleSelection = bulkDownloadMode;
+        self.tableView.allowsMultipleSelectionDuringEditing = bulkDownloadMode;
+
         [self reloadRowsAtIndexPaths:nil];
         
         [TESTFLIGHT passCheckpoint:@"toggled bulk download mode"];
@@ -269,6 +284,9 @@
             
             self.navigationItem.title = @"Layers";
         }
+
+        self.tableView.allowsMultipleSelection = bulkDeleteMode;
+        self.tableView.allowsMultipleSelectionDuringEditing = bulkDeleteMode;
 
         [self reloadRowsAtIndexPaths:nil];
         
@@ -771,7 +789,7 @@
     //
     if (self.bulkDownloadMode || self.bulkDeleteMode)
     {
-        // Mail.app-style multple selection highlighting
+        // Mail.app-style multiple selection highlighting
         //
         cell.selectedBackgroundView = nil;
         
@@ -851,15 +869,11 @@
     {        
         if ( ! [[layer valueForKey:@"selected"] boolValue] && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
-            [tableView deselectRowAtIndexPath:indexPath animated:NO];
-
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Internet Connection"
-                                                            message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"OK", nil];
-
-            [alert show];
+            [UIAlertView showAlertViewWithTitle:@"No Internet Connection"
+                                        message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
+                              cancelButtonTitle:nil
+                              otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                        handler:nil];
             
             return;
         }
@@ -867,31 +881,17 @@
     
     // warn when turning on MBTiles layers that are lower than our min zoom
     //
-    if (indexPath.section == DSMapBoxLayerSectionTile)
+    if (indexPath.section == DSMapBoxLayerSectionTile && [[layer valueForKey:@"URL"] isMBTilesURL] && [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] maxZoomNative] < kLowerZoomBounds)
     {
-        NSArray *layers = self.layerManager.tileLayers;
+        [UIAlertView showAlertViewWithTitle:@"Unable To Zoom"
+                                    message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
+                          cancelButtonTitle:nil
+                          otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                    handler:nil];
         
-        NSDictionary *layer = [layers objectAtIndex:indexPath.row];
+        [TESTFLIGHT passCheckpoint:@"user warned about out-of-zoom layer"];
         
-        if ([[layer valueForKey:@"URL"] isMBTilesURL])
-        {
-            if ([[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] maxZoomNative] < kLowerZoomBounds)
-            {
-                [tableView deselectRowAtIndexPath:indexPath animated:NO];
-                
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Unable To Zoom"
-                                                                message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:@"OK", nil];
-                
-                [alert show];
-                
-                [TESTFLIGHT passCheckpoint:@"user warned about out-of-zoom layer"];
-                
-                return;
-            }
-        }
+        return;
     }
     
     /**

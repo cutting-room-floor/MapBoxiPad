@@ -641,7 +641,7 @@
 		DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamBrowseController.m; sourceTree = "<group>"; };
 		DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamBrowseController.xib; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
+		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
 		DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBarButtonItem_Additions.m; sourceTree = "<group>"; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
