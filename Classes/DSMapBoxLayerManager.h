@@ -62,7 +62,7 @@ typedef enum {
 
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
-- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath;
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow;
 - (void)reloadLayersFromDisk;

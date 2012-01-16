@@ -513,8 +513,7 @@
 
 - (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths
 {
-    for (NSIndexPath *indexPath in indexPaths)
-        [self.layerManager deleteLayerAtIndexPath:indexPath];
+    [self.layerManager deleteLayersAtIndexPaths:indexPaths];
 
     [self.tableView deleteRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationLeft];
 }

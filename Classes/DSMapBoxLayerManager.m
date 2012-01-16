@@ -414,47 +414,51 @@
     [self reorderLayerDisplay];
 }
 
-- (void)deleteLayerAtIndexPath:(NSIndexPath *)indexPath
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths
 {
-    NSMutableDictionary *layer;
-
-    switch (indexPath.section)
+    // build up array of actual layers first, as index paths change during individual deletion
+    //
+    NSMutableArray *layers = [NSMutableArray array];
+    
+    for (NSIndexPath *indexPath in indexPaths)
     {
-        case DSMapBoxLayerSectionTile:
-        {
-            layer = [self.tileLayers objectAtIndex:indexPath.row];
-            
-            if ([[layer objectForKey:@"selected"] boolValue])
-                [self toggleLayerAtIndexPath:indexPath];
+        if (indexPath.section == DSMapBoxLayerSectionTile)
+            [layers addObject:[self.tileLayers objectAtIndex:indexPath.row]];
+        else if (indexPath.section == DSMapBoxLayerSectionData)
+            [layers addObject:[self.dataLayers objectAtIndex:indexPath.row]];
+    }
+    
+    // do the actual deletions, toggling off first if necessary
+    //
+    NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+    NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
 
-            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
-            
-            NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+    for (NSDictionary *layer in layers)
+    {
+        // remove from UI & data model
+        //
+        if ([mutableTileLayers containsObject:layer])
+        {
+            if ([[layer objectForKey:@"selected"] boolValue])
+                [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableTileLayers indexOfObject:layer] inSection:DSMapBoxLayerSectionTile]];
             
             [mutableTileLayers removeObject:layer];
-            
-            self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
-            
-            break;
         }
-        case DSMapBoxLayerSectionData:
+        else if ([mutableDataLayers containsObject:layer])
         {
-            layer = [self.dataLayers objectAtIndex:indexPath.row];
-
             if ([[layer objectForKey:@"selected"] boolValue])
-                [self toggleLayerAtIndexPath:indexPath];
-            
-            [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
-            
-            NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
+                [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableDataLayers indexOfObject:layer] inSection:DSMapBoxLayerSectionData]];
             
             [mutableDataLayers removeObject:layer];
-            
-            self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
-            
-            break;
         }
+        
+        // remove from disk
+        //
+        [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
     }
+    
+    self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
+    self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
 }
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath
