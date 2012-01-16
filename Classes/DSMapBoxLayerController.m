@@ -747,8 +747,6 @@
     {
         // Mail.app-style multiple selection highlighting
         //
-        cell.selectedBackgroundView = nil;
-        
         cell.multipleSelectionBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
         cell.multipleSelectionBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9 alpha:1.0];
     }

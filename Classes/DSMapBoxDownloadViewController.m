@@ -215,9 +215,12 @@
     
     cell.primaryLabel.text   = [download.originalRequest.URL lastPathComponent];
     cell.secondaryLabel.text = [NSString stringWithFormat:@"%@%@", [download.originalRequest.URL host], (download.isPaused ? @" (paused)" : @"")];
+
+    cell.primaryLabel.highlightedTextColor   = [UIColor whiteColor];
+    cell.secondaryLabel.highlightedTextColor = [UIColor whiteColor];
     
-    cell.isIndeterminate     = download.isIndeterminate;
-    cell.isPaused            = download.isPaused;
+    cell.isIndeterminate = download.isIndeterminate;
+    cell.isPaused        = download.isPaused;
 
     return cell;
 }
@@ -246,6 +249,12 @@
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return @"Cancel";
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
+    cell.selectedBackgroundView.backgroundColor = kMapBoxBlue;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
