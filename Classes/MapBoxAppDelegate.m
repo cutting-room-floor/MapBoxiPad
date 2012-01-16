@@ -200,10 +200,6 @@
     // check pasteboard for supported URLs
     //
     [self.viewController checkPasteboardForURL];
-    
-    // resume downloads
-    //
-    [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation

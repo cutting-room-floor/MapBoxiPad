@@ -8,6 +8,10 @@
 
 #import "DSMapBoxDownloadManager.h"
 
+#import "DSMapBoxNotificationCenter.h"
+
+#import "Reachability.h"
+
 @interface NSURLConnection (DSMapBoxDownloadManagerPrivate)
 
 - (void)setIsPaused:(BOOL)flag;
@@ -67,6 +71,8 @@
         
         downloadsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDownloadsFolderName];
         
+        // create downloads path if needed
+        //
         BOOL isDir;
         
         if ( ! [[NSFileManager defaultManager] fileExistsAtPath:downloadsPath isDirectory:&isDir] || ! isDir)
@@ -78,9 +84,21 @@
                                                        attributes:nil
                                                             error:NULL];
         }
+        
+        // watch for net changes
+        //
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(reachabilityDidChange:)
+                                                     name:kReachabilityChangedNotification
+                                                   object:nil];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification object:nil];
 }
 
 #pragma mark -
@@ -224,11 +242,34 @@
     }
 }
 
+- (void)reachabilityDidChange:(NSNotification *)notification
+{
+    if ([Reachability reachabilityForInternetConnection].currentReachabilityStatus == ReachableViaWiFi)
+    {
+        // upgraded to wifi - resume downloads, which will notify individually
+        //
+        [self resumeDownloads];
+    }
+    else if ([Reachability reachabilityForInternetConnection].currentReachabilityStatus == ReachableViaWWAN)
+    {
+        if ([self.downloads count])
+        {
+            [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:@"Automatic downloads paused on cellular connection"];
+            
+            // downgraded to cellular - pause all downloads
+            //
+            for (NSURLConnection *download in self.downloads)
+                if ( ! download.isPaused)
+                    [self pauseDownload:download];
+        }
+    }
+}
+
 #pragma mark -
 
 - (void)resumeDownloads
 {
-    // find stub files with duplicate URLs
+    // grab new URLs & find stub files with duplicate URLs
     //
     NSMutableArray *duplicates = [NSMutableArray array];
     
@@ -239,21 +280,21 @@
         NSURL *downloadURL = [NSURL URLWithString:[info objectForKey:@"URL"]];        
         
         if ([[self.downloads valueForKeyPath:@"originalRequest.URL"] containsObject:downloadURL])
-        {
             [duplicates addObject:downloadStubFile];
-        }
         else
-        {
-            // TODO: also resume paused downloads
-            
             [self downloadURL:downloadURL resumingDownload:nil];
-        }
     }
     
     // delete duplicate stub files
     //
     for (NSString *dupe in duplicates)
         [[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, dupe] error:NULL];
+    
+    // catch any paused downloads & resume them
+    //
+    for (NSURLConnection *download in self.downloads)
+        if (download.isPaused)
+            [self resumeDownload:download];
 }
 
 #pragma mark -
