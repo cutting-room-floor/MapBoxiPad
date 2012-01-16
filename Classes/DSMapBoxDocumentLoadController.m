@@ -8,6 +8,8 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
+#import "DSMapBoxMailComposeViewController.h"
+
 @interface DSMapBoxDocumentLoadController ()
 
 - (void)reload;
@@ -269,7 +271,7 @@
             
             // configure & present mailer
             //
-            MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+            MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
             
             mailer.mailComposeDelegate = self;
             
@@ -279,8 +281,6 @@
             [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
                              mimeType:@"image/jpeg" 
                              fileName:@"MapBoxSnapshot.jpg"];
-            
-            mailer.modalPresentationStyle = UIModalPresentationPageSheet;
             
             [self presentModalViewController:mailer animated:YES];
         }
