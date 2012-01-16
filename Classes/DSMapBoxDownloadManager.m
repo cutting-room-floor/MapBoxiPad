@@ -295,6 +295,11 @@
     for (NSURLConnection *download in self.downloads)
         if (download.isPaused)
             [self resumeDownload:download];
+    
+    // ensure queue watchers update
+    //
+    [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
+                                                        object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
 }
 
 #pragma mark -
