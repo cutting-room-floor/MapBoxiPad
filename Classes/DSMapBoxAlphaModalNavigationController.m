@@ -30,8 +30,7 @@
 {
     self.view.backgroundColor = [UIColor colorWithWhite:0.0 alpha:0.5];
 
-    self.navigationBar.barStyle    = UIBarStyleBlack;
-    self.navigationBar.translucent = YES;
+    self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
 
     // image background with poor man's blur
     //

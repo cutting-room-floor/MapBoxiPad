@@ -28,6 +28,7 @@
 #import "DSMapBoxDownloadManager.h"
 #import "DSMapBoxDownloadViewController.h"
 #import "DSMapBoxNotificationCenter.h"
+#import "DSMapBoxMailComposeViewController.h"
 
 #import "DSSound.h"
 
@@ -1246,8 +1247,7 @@
 
             UINavigationController *wrapper = [[UINavigationController alloc] initWithRootViewController:loadController];
             
-            wrapper.navigationBar.barStyle    = UIBarStyleBlack;
-            wrapper.navigationBar.translucent = YES;
+            wrapper.navigationBar.barStyle = UIBarStyleBlack;
             
             self.loadController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                      style:UIBarButtonItemStyleBordered
@@ -1311,7 +1311,7 @@
             //
             if ([MFMailComposeViewController canSendMail])
             {
-                MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
                 
                 mailer.mailComposeDelegate = self;
                 
@@ -1321,8 +1321,6 @@
                 [mailer addAttachmentData:UIImageJPEGRepresentation([self mapSnapshot], 1.0) 
                                  mimeType:@"image/jpeg"
                                  fileName:@"MapBoxSnapshot.jpg"];
-                
-                mailer.modalPresentationStyle = UIModalPresentationPageSheet;
                 
                 [self presentModalViewController:mailer animated:YES];
             }
@@ -1451,7 +1449,7 @@
         {
             if ([MFMailComposeViewController canSendMail])
             {
-                MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
                 
                 mailer.mailComposeDelegate = self;
                 
@@ -1498,8 +1496,6 @@
                                      mimeType:@"application/octet-stream" 
                                      fileName:[[self.badParseURL absoluteString] lastPathComponent]];
                 }
-                
-                mailer.modalPresentationStyle = UIModalPresentationPageSheet;
                 
                 [self presentModalViewController:mailer animated:YES];
                 
