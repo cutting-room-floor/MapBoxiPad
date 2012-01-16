@@ -197,17 +197,32 @@
                 
                 [alert addButtonWithTitle:@"Download" handler:^(void)
                 {
+                    BOOL downloadSuccess = NO;
+                    
                     for (NSIndexPath *indexPath in [self selectedIndexPathsInSection:DSMapBoxLayerSectionTile])
                     {
                         NSDictionary *layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
 
                         NSString *downloadURLString = [[NSDictionary dictionaryWithContentsOfURL:[layer objectForKey:@"URL"]] objectForKey:@"download"];
-                            
+
                         if (downloadURLString)
+                        {
                             [((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate]) openExternalURL:[NSURL URLWithString:downloadURLString]];
+                            
+                            [[NSFileManager defaultManager] removeItemAtURL:[layer objectForKey:@"URL"] error:NULL];
+                            
+                            downloadSuccess = YES;
+                        }
                     }
 
                     self.bulkDownloadMode = NO;
+                    
+                    if (downloadSuccess)
+                    {
+                        [self.layerManager reloadLayersFromDisk];
+                        
+                        [self reloadRowsAtIndexPaths:nil];
+                    }
                     
                     [TESTFLIGHT passCheckpoint:@"bulk downloaded layers"];
                 }];
