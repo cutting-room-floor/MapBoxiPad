@@ -160,6 +160,25 @@
         
         if (bulkDownloadMode)
         {
+            // make sure there is at least one downloadable TileStream layer
+            //
+            if ( ! [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.downloadable = YES"]] count])
+            {
+                [UIAlertView showAlertViewWithTitle:@"No Downloadable Layers"
+                                            message:@"You don't have any offline-capable layers that aren't already downloaded. Try adding some from MapBox Hosting first."
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:[NSArray arrayWithObjects:@"OK", @"Show Me", nil]
+                                            handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+                                            {
+                                                if (buttonIndex == alertView.firstOtherButtonIndex + 1)
+                                                    [self.delegate presentAddLayerHelper];
+                                            }];
+                
+                return;
+            }
+
+            // change toolbar to show cancel & download action buttons
+            //
             UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender)
                                       {
                                           self.bulkDownloadMode = ! self.bulkDownloadMode;
@@ -233,6 +252,8 @@
     
         if (bulkDeleteMode)
         {
+            // change toolbar to show cancel & delete action buttons
+            //
             UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender)
                                       {
                                           self.bulkDeleteMode = ! self.bulkDeleteMode;
