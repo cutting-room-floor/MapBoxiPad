@@ -35,7 +35,7 @@
 - (NSArray *)selectedIndexPathsInSection:(DSMapBoxLayerSection)section;
 - (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
-- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths warningForLargeLayers:(BOOL)shouldWarn;
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths;
 
 @end
 
@@ -265,25 +265,53 @@
 
             UIBarButtonItem *delete = [[UIBarButtonItem alloc] initWithTitle:@"Delete" style:UIBarButtonItemStyleBordered handler:^(id sender)
             {
-                UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Delete Layers?" 
-                                                             message:@"Are you sure that you want to permanently delete the selected layers?"];
+                NSMutableArray *indexPaths = [NSMutableArray arrayWithArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionData]];
                 
-                [alert setCancelButtonWithTitle:@"Cancel" handler:nil];
+                [indexPaths addObjectsFromArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile]];
                 
-                [alert addButtonWithTitle:@"Delete" handler:^(void)
+                // we want to warn the user if they are deleting any large tile layers
+                //
+                BOOL hasLargeLayer = NO;
+                
+                for (NSIndexPath *indexPath in indexPaths)
                 {
-                    NSMutableArray *indexPaths = [NSMutableArray arrayWithArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionData]];
-                    
-                    [indexPaths addObjectsFromArray:[self selectedIndexPathsInSection:DSMapBoxLayerSectionTile]];
-                    
-                    [self deleteLayersAtIndexPaths:indexPaths warningForLargeLayers:NO];
-
-                    self.bulkDeleteMode = NO;
-                    
-                    [TESTFLIGHT passCheckpoint:@"bulk deleted layers"];
-                }];
+                    if ( ! hasLargeLayer && indexPath.section == DSMapBoxLayerSectionTile)
+                    {
+                        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+                        
+                        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
+                        
+                        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
+                            hasLargeLayer = YES;
+                    }
+                }
                 
-                [alert show];
+                if (hasLargeLayer)
+                {
+                    [UIAlertView showAlertViewWithTitle:@"Delete Large Layers?"
+                                                message:@"You are deleting one or more large layers. Are you sure that you want to delete them permanently?"
+                                      cancelButtonTitle:@"Don't Delete"
+                                      otherButtonTitles:[NSArray arrayWithObject:@"Delete"]
+                                                handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+                                                {
+                                                    if (buttonIndex == alertView.firstOtherButtonIndex)
+                                                    {
+                                                        [self deleteLayersAtIndexPaths:indexPaths];
+                                                        
+                                                        [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
+                                                    }
+
+                                                    self.bulkDeleteMode = NO;
+                                                }];
+                    
+                    return;
+                }
+                else
+                    [self deleteLayersAtIndexPaths:indexPaths];
+                
+                self.bulkDeleteMode = NO;
+                
+                [TESTFLIGHT passCheckpoint:@"bulk deleted layers"];
             }
             tintColor:[UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0]];
 
@@ -483,40 +511,8 @@
         self.activeLayerMode = NO;
 }
 
-- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths warningForLargeLayers:(BOOL)shouldWarn
+- (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths
 {
-//    // FIXME warn on multiple deletions?
-//    //
-//    if (shouldWarn && indexPath.section == DSMapBoxLayerSectionTile)
-//    {
-//        // we want to warn the user if they are deleting a large tile layer
-//        //
-//        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
-//        
-//        NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
-//        
-//        if ([[attributes objectForKey:NSFileSize] unsignedLongLongValue] >= (1024 * 1024 * 100)) // 100MB+
-//        {
-//            [UIAlertView showAlertViewWithTitle:@"Delete Layer?"
-//                                        message:@"This is a large layer file. Are you sure that you want to delete it permanently?"
-//                              cancelButtonTitle:@"Don't Delete"
-//                              otherButtonTitles:[NSArray arrayWithObject:@"Delete"]
-//                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex)
-//                                        {
-//                                            if (buttonIndex == alertView.firstOtherButtonIndex)
-//                                            {
-//                                                [self deleteLayerAtIndexPath:indexPath warningForLargeLayers:NO];
-//                                                
-//                                                [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
-//                                            }
-//                                        }];
-//            
-//            [TESTFLIGHT passCheckpoint:@"user warned about deleting large layer"];
-//            
-//            return;
-//        }
-//    }
-    
     for (NSIndexPath *indexPath in indexPaths)
         [self.layerManager deleteLayerAtIndexPath:indexPath];
 
