@@ -489,19 +489,19 @@
         
         if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
-            cell.accessoryView = self.crosshairsButton;
+            cell.editingAccessoryView = self.crosshairsButton;
         }
         else
         {
-            cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            cell.editingAccessoryView = nil;
+            cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
     
     else
     {
-        cell.accessoryView = nil;
-        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.editingAccessoryView = nil;
+        cell.editingAccessoryType = UITableViewCellAccessoryNone;
     }
     
     // reload this changed row
@@ -614,24 +614,17 @@
                 
                 if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
-                    cell.accessoryView        = self.crosshairsButton;
                     cell.editingAccessoryView = self.crosshairsButton;
                 }
                 else
                 {
-                    cell.accessoryView        = nil;
                     cell.editingAccessoryView = nil;
-                    
-                    cell.accessoryType        = UITableViewCellAccessoryCheckmark;
                     cell.editingAccessoryType = UITableViewCellAccessoryCheckmark;
                 }
             }
             else
             {
-                cell.accessoryView        = nil;
                 cell.editingAccessoryView = nil;
-                
-                cell.accessoryType        = UITableViewCellAccessoryNone;
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
             }
 
@@ -656,11 +649,8 @@
 
             layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
             
-            cell.accessoryView        = nil;
             cell.editingAccessoryView = nil;
-            
-            cell.accessoryType        = [[layer valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
-            cell.editingAccessoryType = cell.accessoryType;
+            cell.editingAccessoryType = [[layer valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
             cell.textLabel.text       = [layer valueForKey:@"name"];
             cell.detailTextLabel.text = [layer valueForKey:@"description"];
@@ -817,22 +807,18 @@
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // happens when toggling in bulk modes
+    // happens when toggling off in bulk modes - trigger action button updates
     //
-    [self tableView:tableView didSelectRowAtIndexPath:indexPath];
+    if (self.bulkDownloadMode || self.bulkDeleteMode)
+        [self tableView:tableView didSelectRowAtIndexPath:indexPath];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // toggle selection off in normal mode
-    //
-    if ( ! self.bulkDownloadMode && ! self.bulkDeleteMode)
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    // update download/delete button label in bulk modes & return
-    //
     if (self.bulkDownloadMode || self.bulkDeleteMode)
     {
+        // just update download/delete button label in bulk modes
+        //
         UIBarButtonItem *item = [self.toolbarItems objectAtIndex:2];
         
         NSString *title = [[item.title componentsSeparatedByString:@" "] objectAtIndex:0];
@@ -853,7 +839,7 @@
         return;
     }
 
-    // perform layer toggling actions when in normal mode
+    // perform layer toggling actions
     //
     NSDictionary *layer;
     
@@ -902,7 +888,7 @@
      */
     
     UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-    [self.tableView cellForRowAtIndexPath:indexPath].accessoryView = spinner;
+    [self.tableView cellForRowAtIndexPath:indexPath].editingAccessoryView = spinner;
     [spinner startAnimating];
     
     [self performSelector:@selector(toggleLayerAtIndexPath:) withObject:indexPath afterDelay:0.0];
