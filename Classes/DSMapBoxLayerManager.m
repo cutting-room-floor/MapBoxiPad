@@ -135,20 +135,28 @@
             // determine if downloadable as MBTiles
             //
             BOOL downloadable = NO;
+            NSUInteger filesize = 0;
             
-            if ([tileSetURL isTileStreamURL] && [NSURL URLWithString:[[NSDictionary dictionaryWithContentsOfURL:tileSetURL] objectForKey:@"download"]])
+            if ([tileSetURL isTileStreamURL])
             {
-                downloadable = YES;
+                NSDictionary *info = [NSDictionary dictionaryWithContentsOfURL:tileSetURL];
                 
-                [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+                if ([NSURL URLWithString:[info objectForKey:@"download"]])
+                {
+                    downloadable = YES;
+                    filesize     = [[info objectForKey:@"filesize"] unsignedIntegerValue];
+
+                    [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+                }
             }
             
-            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                             @"URL",
-                                                                                           name,                                   @"name",
-                                                                                           (description ? description : @""),      @"description",
-                                                                                           [NSNumber numberWithBool:NO],           @"selected",
-                                                                                           attribution,                            @"attribution",
-                                                                                           [NSNumber numberWithBool:downloadable], @"downloadable",
+            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                                    @"URL",
+                                                                                           name,                                          @"name",
+                                                                                           (description ? description : @""),             @"description",
+                                                                                           [NSNumber numberWithBool:NO],                  @"selected",
+                                                                                           attribution,                                   @"attribution",
+                                                                                           [NSNumber numberWithBool:downloadable],        @"downloadable",
+                                                                                           [NSNumber numberWithUnsignedInteger:filesize], @"filesize",
                                                                                            nil]];
         }
     }

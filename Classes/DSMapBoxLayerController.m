@@ -590,9 +590,13 @@
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
             }
 
-            cell.textLabel.text       = [layer valueForKey:@"name"];
-            cell.detailTextLabel.text = [layer valueForKey:@"description"];
-
+            cell.textLabel.text = [layer valueForKey:@"name"];
+            
+            if (self.bulkDownloadMode && [[layer valueForKey:@"downloadable"] boolValue])
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%i MB", ([[layer objectForKey:@"filesize"] intValue] / (1024 * 1024))];
+            else
+                cell.detailTextLabel.text = [layer valueForKey:@"description"];
+            
             if ([[layer valueForKey:@"URL"] isEqual:kDSOpenStreetMapURL])
                 cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
             
