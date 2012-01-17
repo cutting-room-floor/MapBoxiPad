@@ -21,7 +21,7 @@
 {
     [super viewDidLoad];
     
-    self.navigationController.navigationBar.barStyle    = UIBarStyleBlack;
+    self.navigationController.navigationBar.barStyle    = UIBarStyleBlackTranslucent;
     self.navigationController.navigationBar.translucent = YES;
     
     snapshotView.image = self.snapshot;

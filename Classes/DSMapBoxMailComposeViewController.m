@@ -18,7 +18,7 @@
     {
         self.modalPresentationStyle = UIModalPresentationPageSheet;
         
-        self.navigationBar.barStyle = UIBarStyleBlack;
+        self.navigationBar.barStyle = UIBarStyleBlackTranslucent;
         
         self.visibleViewController.navigationItem.rightBarButtonItem.style     = UIBarButtonItemStyleBordered;
         self.visibleViewController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
