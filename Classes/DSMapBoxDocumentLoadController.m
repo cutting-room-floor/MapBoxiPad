@@ -8,7 +8,7 @@
 
 #import "DSMapBoxDocumentLoadController.h"
 
-#import "DSMapBoxMailComposeViewController.h"
+#import "DSMapBoxShareSheet.h"
 
 @interface DSMapBoxDocumentLoadController ()
 
@@ -225,87 +225,26 @@
 
 - (IBAction)tappedSendButton:(id)sender
 {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Email Snapshot", @"Save Image", nil];
+    // get save data & setup sheet
+    //
+    NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
     
-    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    sheet.tag = 0;
+    NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
     
-    [sheet showFromRect:self.actionButton.bounds inView:self.actionButton animated:YES];
+    NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
+    
+    DSMapBoxShareSheet *shareSheet = [DSMapBoxShareSheet shareSheetForImageHandler:^(void) { return [UIImage imageWithData:[saveData objectForKey:@"mapSnapshot"]]; }
+                                                                withViewController:self];
+    
+    [shareSheet showFromRect:self.actionButton.bounds inView:self.actionButton animated:YES];
 }
 
 - (IBAction)tappedTrashButton:(id)sender
 {
-    UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                       delegate:self
-                                              cancelButtonTitle:nil
-                                         destructiveButtonTitle:@"Delete Map"
-                                              otherButtonTitles:nil];
+    UIActionSheet *sheet = [UIActionSheet actionSheetWithTitle:nil];
     
-    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
-    sheet.tag = 1;
-    
-    [sheet showFromRect:self.trashButton.bounds inView:self.trashButton animated:YES];
-}
-
-#pragma mark -
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (actionSheet.tag == 0) // share
+    [sheet addButtonWithTitle:@"Delete Map" handler:^(void)
     {
-        // get save data
-        //
-        NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
-        
-        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
-        
-        NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
-
-        if (buttonIndex == actionSheet.firstOtherButtonIndex)
-        {
-            // email button: compose
-            //
-            if ([MFMailComposeViewController canSendMail])
-            {
-                // configure & present mailer
-                //
-                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
-                
-                mailer.mailComposeDelegate = self;
-                
-                [mailer setSubject:@""];
-                [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
-                
-                [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
-                                 mimeType:@"image/jpeg" 
-                                 fileName:@"MapBoxSnapshot.jpg"];
-                
-                [self presentModalViewController:mailer animated:YES];
-            }
-            else
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                                message:@"Please setup Mail before trying to send map snapshots."
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:@"OK", nil];
-                
-                [alert show];
-            }
-        }
-        else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1)
-        {
-            UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:[saveData objectForKey:@"mapSnapshot"]], nil, nil, nil);
-        }
-    }
-    else if (actionSheet.tag == 1 && buttonIndex == actionSheet.destructiveButtonIndex) // delete
-    {
-        // trash button: delete
-        //
         NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
         
         NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
@@ -313,7 +252,11 @@
         [[NSFileManager defaultManager] removeItemAtPath:saveFilePath error:NULL];
         
         [self reload];
-    }
+    }];
+    
+    sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
+    
+    [sheet showFromRect:self.trashButton.bounds inView:self.trashButton animated:YES];
 }
 
 #pragma mark -
@@ -331,43 +274,6 @@
         [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
     
     [TESTFLIGHT passCheckpoint:@"loaded saved document"];
-}
-
-#pragma mark -
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
-{
-    switch (result)
-    {
-        case MFMailComposeResultFailed:
-        {
-            [self dismissModalViewControllerAnimated:NO];
-            
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Failed"
-                                                            message:@"There was a problem sending the mail. Try again?"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Cancel"
-                                                  otherButtonTitles:@"Try Again", nil];
-            
-            [alert show];
-            
-            break;
-        }
-        default:
-        {
-            [self dismissModalViewControllerAnimated:YES];
-            
-            [TESTFLIGHT passCheckpoint:@"shared snapshot from document loader"];
-        }
-    }
-}
-
-#pragma mark -
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.firstOtherButtonIndex)
-        [self tappedSendButton:self];
 }
 
 @end

@@ -173,6 +173,8 @@
 		DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */; };
 		DDBA898A1210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */; };
 		DDBE15C012C1747800C4AAB7 /* about.txt in Resources */ = {isa = PBXBuildFile; fileRef = DDBE15BF12C1747800C4AAB7 /* about.txt */; };
+		DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE14114C610C3009082A2 /* DSMapBoxShareSheet.m */; };
+		DDBFE14414C623BC009082A2 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBFE14314C623BC009082A2 /* Twitter.framework */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
 		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
 		DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCBA2EB14C4D7D90099C220 /* DSMapBoxMailComposeViewController.m */; };
@@ -579,6 +581,9 @@
 		DDBA89871210EF4600E5B572 /* DSMapBoxDocumentSaveController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxDocumentSaveController.m; sourceTree = "<group>"; };
 		DDBA89881210EF4600E5B572 /* DSMapBoxDocumentSaveController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxDocumentSaveController.xib; sourceTree = "<group>"; };
 		DDBE15BF12C1747800C4AAB7 /* about.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = about.txt; path = ../about.txt; sourceTree = "<group>"; };
+		DDBFE14014C610C3009082A2 /* DSMapBoxShareSheet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxShareSheet.h; sourceTree = "<group>"; };
+		DDBFE14114C610C3009082A2 /* DSMapBoxShareSheet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxShareSheet.m; sourceTree = "<group>"; };
+		DDBFE14314C623BC009082A2 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
 		DDC7F97511FE1BE80019A081 /* DSMapBoxTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTiledLayerMapView.h; sourceTree = "<group>"; };
@@ -641,6 +646,7 @@
 				DD43652F147C847700235F20 /* MobileCoreServices.framework in Frameworks */,
 				DD61A0451407FD1C00C3B7C5 /* QuartzCore.framework in Frameworks */,
 				DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */,
+				DDBFE14414C623BC009082A2 /* Twitter.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */,
 				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
@@ -730,6 +736,7 @@
 				DD43652E147C847700235F20 /* MobileCoreServices.framework */,
 				DD61A0441407FD1C00C3B7C5 /* QuartzCore.framework */,
 				DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */,
+				DDBFE14314C623BC009082A2 /* Twitter.framework */,
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */,
 				DD1ACD5A13CD1CD2001244D2 /* libz.dylib */,
@@ -1353,6 +1360,15 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		DDBFE13F14C61092009082A2 /* Snapshot Sharing */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFE14014C610C3009082A2 /* DSMapBoxShareSheet.h */,
+				DDBFE14114C610C3009082A2 /* DSMapBoxShareSheet.m */,
+			);
+			name = "Snapshot Sharing";
+			sourceTree = "<group>";
+		};
 		DDC7AE19134F84B100C46EC0 /* Fingertips */ = {
 			isa = PBXGroup;
 			children = (
@@ -1445,6 +1461,7 @@
 				DD2755DE1385AD5E007B58AC /* Legacy Data Migration */,
 				DDCE0EFC14B61C3E006438AE /* Network Activity Indicator */,
 				DDD7F81014BB579900B6840E /* URL Requests */,
+				DDBFE13F14C61092009082A2 /* Snapshot Sharing */,
 			);
 			name = "Minor Functionality";
 			path = Classes;
@@ -1832,6 +1849,7 @@
 				DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */,
 				DD47068114BB7AD600E5B99E /* Reachability.m in Sources */,
 				DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */,
+				DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
