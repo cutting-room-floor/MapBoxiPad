@@ -241,7 +241,7 @@
                                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
                                     nil];
             
-            self.navigationItem.title = @"Downloadable Layers";
+            self.navigationItem.title = @"Choose Layers To Download";
         }
         else
         {
@@ -340,7 +340,7 @@
                                     [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace handler:nil],
                                     nil];
             
-            self.navigationItem.title = @"Delete Layers";
+            self.navigationItem.title = @"Choose Layers To Delete";
         }
         else
         {
