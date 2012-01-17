@@ -8,6 +8,12 @@
 
 #import "UIApplication_Additions.h"
 
+#import <BlocksKit/BlocksKit.h>
+
+static const char *UIApplication_Additions_documentsFolderPathKey          = "UIApplication_Additions_documentsFolderPathKey";
+static const char *UIApplication_Additions_preferencesFolderPathKey        = "UIApplication_Additions_preferencesFolderPathKey";
+static const char *UIApplication_Additions_applicationSandboxFolderPathKey = "UIApplication_Additions_applicationSandboxFolderPathKey";
+
 void dispatch_delayed_ui_action(NSTimeInterval delaySeconds, dispatch_block_t block)
 {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delaySeconds * NSEC_PER_SEC), dispatch_get_main_queue(), block);
@@ -17,26 +23,41 @@ void dispatch_delayed_ui_action(NSTimeInterval delaySeconds, dispatch_block_t bl
 
 - (NSString *)documentsFolderPath
 {
-    NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    if ( ! [self associatedValueForKey:UIApplication_Additions_documentsFolderPathKey])
+    {
+        NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        
+        [self associateValue:[userPaths objectAtIndex:0] withKey:UIApplication_Additions_documentsFolderPathKey];
+    }
     
-    return [userPaths objectAtIndex:0];
+    return [self associatedValueForKey:UIApplication_Additions_documentsFolderPathKey];
 }
 
 - (NSString *)preferencesFolderPath
 {
-    NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+    if ( ! [self associatedValueForKey:UIApplication_Additions_preferencesFolderPathKey])
+    {
+        NSArray *userPaths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
+        
+        [self associateValue:[NSString stringWithFormat:@"%@/Preferences", [userPaths objectAtIndex:0]] withKey:UIApplication_Additions_preferencesFolderPathKey];
+    }
     
-    return [NSString stringWithFormat:@"%@/Preferences", [userPaths objectAtIndex:0]];
+    return [self associatedValueForKey:UIApplication_Additions_preferencesFolderPathKey];
 }
 
 - (NSString *)applicationSandboxFolderPath
 {
-    NSMutableArray *parts = [NSMutableArray arrayWithArray:[[[NSBundle mainBundle] bundleURL] pathComponents]];
+    if ( ! [self associatedValueForKey:UIApplication_Additions_applicationSandboxFolderPathKey])
+    {
+        NSMutableArray *parts = [NSMutableArray arrayWithArray:[[[NSBundle mainBundle] bundleURL] pathComponents]];
 
-    [parts removeObject:@"/"];
-    [parts removeLastObject];
+        [parts removeObject:@"/"];
+        [parts removeLastObject];
+        
+        [self associateValue:[@"/" stringByAppendingString:[parts componentsJoinedByString:@"/"]] withKey:UIApplication_Additions_applicationSandboxFolderPathKey];
+    }
     
-    return [@"/" stringByAppendingString:[parts componentsJoinedByString:@"/"]];
+    return [self associatedValueForKey:UIApplication_Additions_applicationSandboxFolderPathKey];
 }
 
 @end

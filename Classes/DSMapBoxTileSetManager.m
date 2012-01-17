@@ -68,7 +68,7 @@
         NSString *layerPath = [NSString stringWithFormat:@"%@/%@", docsPath, localLayer];
         NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
         
-        if ([[layerURL pathExtension] isEqualToString:@"mbtiles"])
+        if ([layerURL isMBTilesURL])
             if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:self.defaultTileSetName])
                 [tileSetURLs addObject:layerURL];
     }
@@ -78,9 +78,8 @@
         NSString *layerPath = [NSString stringWithFormat:@"%@/%@", onlineLayersPath, onlineLayer];
         NSURL *layerURL     = [NSURL fileURLWithPath:layerPath];
         
-        if ([[[layerURL pathExtension] lowercaseString] isEqualToString:@"plist"])
-            if ( ! [[self displayNameForTileSetAtURL:layerURL] isEqualToString:self.defaultTileSetName])
-                [tileSetURLs addObject:layerURL];
+        if ([layerURL isTileStreamURL])
+            [tileSetURLs addObject:layerURL];
     }
     
     // add OpenStreetMap & MapQuest
@@ -100,22 +99,10 @@
         return kDSMapQuestOSMName;
 
     if ([tileSetURL isTileStreamURL])
-    {
-        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
-        
-        NSString *name = [source shortName];
-        
-        return name;
-    }
+        return [[[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL] shortName];
     
     if ([tileSetURL isMBTilesURL])
-    {
-        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
-        
-        NSString *name = [source shortName];
-        
-        return name;
-    }
+        return [[[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL] shortName];
     
     return @"(untitled)";
 }
