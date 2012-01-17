@@ -46,22 +46,28 @@
 
 + (void)addJob:(id)item
 {
-    DSMapBoxNetworkActivityIndicator *sharedInstance = [DSMapBoxNetworkActivityIndicator sharedInstance];
-    
-    [sharedInstance.jobs addObject:item];
-    
-    if ([sharedInstance.jobs count] > 0)
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    if (item)
+    {
+        DSMapBoxNetworkActivityIndicator *sharedInstance = [DSMapBoxNetworkActivityIndicator sharedInstance];
+        
+        [sharedInstance.jobs addObject:item];
+        
+        if ([sharedInstance.jobs count] > 0)
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    }
 }
 
 + (void)removeJob:(id)item
 {
-    DSMapBoxNetworkActivityIndicator *sharedInstance = [DSMapBoxNetworkActivityIndicator sharedInstance];
+    if (item)
+    {
+        DSMapBoxNetworkActivityIndicator *sharedInstance = [DSMapBoxNetworkActivityIndicator sharedInstance];
 
-    [sharedInstance.jobs removeObject:item];
-    
-    if ([sharedInstance.jobs count] == 0)
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+        [sharedInstance.jobs removeObject:item];
+        
+        if ([sharedInstance.jobs count] == 0)
+            [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
+    }
 }
 
 @end
