@@ -160,6 +160,9 @@
         
         if (bulkDownloadMode)
         {
+            if (self.activeLayerMode)
+                self.activeLayerMode = NO;
+            
             // make sure there is at least one downloadable TileStream layer
             //
             if ( ! [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.downloadable = YES"]] count])
@@ -252,6 +255,9 @@
     
         if (bulkDeleteMode)
         {
+            if (self.activeLayerMode)
+                self.activeLayerMode = NO;
+
             // change toolbar to show cancel & delete action buttons
             //
             UIBarButtonItem *cancel = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered handler:^(id sender)
