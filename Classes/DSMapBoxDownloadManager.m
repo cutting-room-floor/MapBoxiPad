@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSMutableArray *progresses;          // NSNumber objects tracking download progress (floats)
 @property (nonatomic, readonly, strong) NSString *downloadsPath;   // path to download folder on disk
 @property (nonatomic, readonly, strong) NSArray *pendingDownloads; // full paths to download stub plists left on disk
+@property (nonatomic, assign) NetworkStatus lastNetworkStatus;
 
 - (NSString *)identifierForDownload:(NSURLConnection *)download;
 - (void)downloadURL:(NSURL *)downloadURL resumingDownload:(NSURLConnection *)pausedDownload;
@@ -48,6 +49,7 @@
 @synthesize backgroundTasks;
 @synthesize progresses;
 @synthesize downloadsPath;
+@synthesize lastNetworkStatus;
 
 + (DSMapBoxDownloadManager *)sharedManager
 {
@@ -87,6 +89,8 @@
         
         // watch for net changes
         //
+        lastNetworkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(reachabilityDidChange:)
                                                      name:kReachabilityChangedNotification
@@ -244,25 +248,45 @@
 
 - (void)reachabilityDidChange:(NSNotification *)notification
 {
-    if ([Reachability reachabilityForInternetConnection].currentReachabilityStatus == ReachableViaWiFi)
+    NetworkStatus newNetworkStatus = [Reachability reachabilityForInternetConnection].currentReachabilityStatus;
+    
+    // only matters if we've got downloads & a change in status
+    //
+    if ([self.downloads count] && newNetworkStatus != self.lastNetworkStatus)
     {
-        // upgraded to wifi - resume downloads, which will notify individually
-        //
-        [self resumeDownloads];
-    }
-    else if ([Reachability reachabilityForInternetConnection].currentReachabilityStatus == ReachableViaWWAN)
-    {
-        if ([self.downloads count])
+        if (newNetworkStatus == ReachableViaWiFi)
         {
-            [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:@"Automatic downloads paused on cellular connection"];
-            
-            // downgraded to cellular - pause all downloads
+            // upgraded to wifi - resume downloads
             //
+            [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:@"Downloads resumed - Wi-Fi connection"];
+            
+            [self resumeDownloads];
+        }
+        else if (newNetworkStatus == ReachableViaWWAN && self.lastNetworkStatus == ReachableViaWiFi)
+        {
+            // downgraded to cellular - pause downloads
+            //
+            [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:@"Downloads paused - cellular connection"];
+            
+            for (NSURLConnection *download in self.downloads)
+                if ( ! download.isPaused)
+                    [self pauseDownload:download];
+        }
+        else if (newNetworkStatus == NotReachable)
+        {
+            // offline - pause downloads
+            //
+            [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:@"Downloads paused - offline"];
+            
             for (NSURLConnection *download in self.downloads)
                 if ( ! download.isPaused)
                     [self pauseDownload:download];
         }
     }
+
+    // update status tracking
+    //
+    self.lastNetworkStatus = newNetworkStatus;
 }
 
 #pragma mark -
