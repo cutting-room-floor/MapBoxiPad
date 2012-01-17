@@ -198,7 +198,7 @@
     }
     else
     {
-        self.title     = @"My Maps";
+        self.title          = @"My Maps";
         self.nameLabel.text = @"";
         self.dateLabel.text = @"";
 
@@ -229,7 +229,7 @@
                                                        delegate:self
                                               cancelButtonTitle:nil
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Email Snapshot", nil];
+                                              otherButtonTitles:@"Email Snapshot", @"Save Image", nil];
     
     sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     sheet.tag = 0;
@@ -255,47 +255,54 @@
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (actionSheet.tag == 0 && buttonIndex == actionSheet.firstOtherButtonIndex)
+    if (actionSheet.tag == 0) // share
     {
-        // email button: compose
+        // get save data
         //
-        if ([MFMailComposeViewController canSendMail])
+        NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
+        
+        NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
+        
+        NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
+
+        if (buttonIndex == actionSheet.firstOtherButtonIndex)
         {
-            // get the current image
+            // email button: compose
             //
-            NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
-            
-            NSString *saveFilePath = [NSString stringWithFormat:@"%@/%@", [[self class] saveFolderPath], [[[self saveFilesReloadingFromDisk:NO] objectAtIndex:index] valueForKey:@"name"]];
-            
-            NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
-            
-            // configure & present mailer
-            //
-            MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
-            
-            mailer.mailComposeDelegate = self;
-            
-            [mailer setSubject:@""];
-            [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
-            
-            [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
-                             mimeType:@"image/jpeg" 
-                             fileName:@"MapBoxSnapshot.jpg"];
-            
-            [self presentModalViewController:mailer animated:YES];
+            if ([MFMailComposeViewController canSendMail])
+            {
+                // configure & present mailer
+                //
+                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
+                
+                mailer.mailComposeDelegate = self;
+                
+                [mailer setSubject:@""];
+                [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
+                
+                [mailer addAttachmentData:[saveData objectForKey:@"mapSnapshot"]                       
+                                 mimeType:@"image/jpeg" 
+                                 fileName:@"MapBoxSnapshot.jpg"];
+                
+                [self presentModalViewController:mailer animated:YES];
+            }
+            else
+            {
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
+                                                                message:@"Please setup Mail before trying to send map snapshots."
+                                                               delegate:nil
+                                                      cancelButtonTitle:nil
+                                                      otherButtonTitles:@"OK", nil];
+                
+                [alert show];
+            }
         }
-        else
+        else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1)
         {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                            message:@"Please setup Mail before trying to send map snapshots."
-                                                           delegate:nil
-                                                  cancelButtonTitle:nil
-                                                  otherButtonTitles:@"OK", nil];
-            
-            [alert show];
+            UIImageWriteToSavedPhotosAlbum([UIImage imageWithData:[saveData objectForKey:@"mapSnapshot"]], nil, nil, nil);
         }
     }
-    else if (actionSheet.tag == 1 && buttonIndex == actionSheet.destructiveButtonIndex)
+    else if (actionSheet.tag == 1 && buttonIndex == actionSheet.destructiveButtonIndex) // delete
     {
         // trash button: delete
         //

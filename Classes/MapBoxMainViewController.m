@@ -702,7 +702,7 @@
                                                             delegate:self
                                                    cancelButtonTitle:nil
                                               destructiveButtonTitle:nil
-                                                   otherButtonTitles:@"Email Snapshot", nil];
+                                                   otherButtonTitles:@"Email Snapshot", @"Save Image", nil];
         
         [self.shareActionSheet showFromBarButtonItem:sender animated:YES];
         
@@ -1197,6 +1197,10 @@
                 
                 [alert show];
             }
+        }
+        else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1)
+        {
+            UIImageWriteToSavedPhotosAlbum([self mapSnapshot], nil, nil, nil);
         }
     }
 }
