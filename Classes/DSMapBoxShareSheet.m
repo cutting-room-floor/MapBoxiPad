@@ -73,15 +73,6 @@
             }
         }];
         
-        // save image action
-        //
-        [sheet addButtonWithTitle:@"Save Snapshot" handler:^(void)
-        {
-            UIImageWriteToSavedPhotosAlbum(imageHandler(), nil, nil, nil);
-            
-            [TESTFLIGHT passCheckpoint:@"saved snapshot to camera roll"];
-        }];
-
         // tweet action
         //
         [sheet addButtonWithTitle:@"Tweet Snapshot" handler:^(void)
@@ -112,6 +103,15 @@
             }
         }];
 
+        // save image action
+        //
+        [sheet addButtonWithTitle:@"Save Snapshot" handler:^(void)
+        {
+            UIImageWriteToSavedPhotosAlbum(imageHandler(), nil, nil, nil);
+            
+            [TESTFLIGHT passCheckpoint:@"saved snapshot to camera roll"];
+        }];
+        
         sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     }
     
