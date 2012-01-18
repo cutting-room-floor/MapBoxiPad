@@ -418,9 +418,9 @@
             {
                 NSDictionary *downloadInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:connection.downloadPath error:NULL];
                 
-                long long expectedSize    = [[stubInfo objectForKey:@"Size"] longLongValue];
-                NSUInteger downloadedSize = [[downloadInfo objectForKey:NSFileSize] unsignedIntegerValue];
-                NSUInteger reportedSize   = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] intValue];
+                long long expectedSize   = [[stubInfo objectForKey:@"Size"] longLongValue];
+                long long downloadedSize = [[downloadInfo objectForKey:NSFileSize] longLongValue];
+                long long reportedSize   = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] longLongValue];
                 
                 if (expectedSize - downloadedSize == reportedSize) // ranges match up
                     resuming = YES;
