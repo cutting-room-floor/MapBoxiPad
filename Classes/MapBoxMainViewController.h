@@ -10,8 +10,6 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 
-#import <MessageUI/MessageUI.h>
-
 @class DSMapView;
 @class BALabel;
 

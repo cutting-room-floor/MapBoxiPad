@@ -29,6 +29,7 @@
 #import "DSMapBoxDownloadViewController.h"
 #import "DSMapBoxNotificationCenter.h"
 #import "DSMapBoxMailComposeViewController.h"
+#import "DSMapBoxShareSheet.h"
 
 #import "DSSound.h"
 
@@ -68,7 +69,7 @@
 @property (nonatomic, strong) DSMapBoxDocumentLoadController *loadController;
 @property (nonatomic, strong) DSMapBoxLegendManager *legendManager;
 @property (nonatomic, strong) UIActionSheet *documentsActionSheet;
-@property (nonatomic, strong) UIActionSheet *shareActionSheet;
+@property (nonatomic, strong) DSMapBoxShareSheet *shareActionSheet;
 @property (nonatomic, strong) Reachability *reachability;
 @property (nonatomic, strong) NSURL *badParseURL;
 @property (nonatomic, strong) NSDate *lastLayerAlertDate;
@@ -744,11 +745,7 @@
 {
     if ( ! self.shareActionSheet || ! self.shareActionSheet.visible)
     {
-        self.shareActionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                            delegate:self
-                                                   cancelButtonTitle:nil
-                                              destructiveButtonTitle:nil
-                                                   otherButtonTitles:@"Email Snapshot", nil];
+        self.shareActionSheet = [DSMapBoxShareSheet shareSheetForImageHandler:^(void) { return [self mapSnapshot]; } withViewController:self];
         
         [self.shareActionSheet showFromBarButtonItem:sender animated:YES];
         
@@ -1301,41 +1298,6 @@
             [self presentModalViewController:wrapper animated:YES];
         }
     }
-    else if ([actionSheet isEqual:self.shareActionSheet])
-    {
-        if (buttonIndex == actionSheet.firstOtherButtonIndex)
-        {
-            [TESTFLIGHT passCheckpoint:@"composed snapshot from main view"];
-            
-            // email snapshot
-            //
-            if ([MFMailComposeViewController canSendMail])
-            {
-                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
-                
-                mailer.mailComposeDelegate = self;
-                
-                [mailer setSubject:@""];
-                [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
-                
-                [mailer addAttachmentData:UIImageJPEGRepresentation([self mapSnapshot], 1.0) 
-                                 mimeType:@"image/jpeg"
-                                 fileName:@"MapBoxSnapshot.jpg"];
-                
-                [self presentModalViewController:mailer animated:YES];
-            }
-            else
-            {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                                message:@"Please setup Mail first."
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:@"OK", nil];
-                
-                [alert show];
-            }
-        }
-    }
 }
 
 #pragma mark -
@@ -1449,7 +1411,7 @@
         {
             if ([MFMailComposeViewController canSendMail])
             {
-                MFMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
+                DSMapBoxMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
                 
                 mailer.mailComposeDelegate = self;
                 
