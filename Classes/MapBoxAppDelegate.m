@@ -124,7 +124,11 @@
         return [self openExternalURL:[launchOptions objectForKey:UIApplicationLaunchOptionsURLKey]];
     }
     
-#if BETA_TESTING
+    // kick off downloads (including any just-passed ones)
+    //
+    [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:5.0];
+    
+#if ADHOC
     // track number of saved maps
     //
     NSString *savedMapsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
