@@ -599,7 +599,7 @@
             cell.textLabel.text = [layer valueForKey:@"name"];
             
             if (self.bulkDownloadMode && [[layer valueForKey:@"downloadable"] boolValue])
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%i MB", ([[layer objectForKey:@"filesize"] intValue] / (1024 * 1024))];
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%qu MB", ([[layer objectForKey:@"filesize"] longLongValue] / (1024 * 1024))];
             else
                 cell.detailTextLabel.text = [layer valueForKey:@"description"];
             

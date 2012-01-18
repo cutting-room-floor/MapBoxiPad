@@ -418,7 +418,7 @@
             {
                 NSDictionary *downloadInfo = [[NSFileManager defaultManager] attributesOfItemAtPath:connection.downloadPath error:NULL];
                 
-                NSUInteger expectedSize   = [[stubInfo objectForKey:@"Size"] unsignedIntegerValue];
+                long long expectedSize    = [[stubInfo objectForKey:@"Size"] longLongValue];
                 NSUInteger downloadedSize = [[downloadInfo objectForKey:NSFileSize] unsignedIntegerValue];
                 NSUInteger reportedSize   = [[[webResponse allHeaderFields] objectForKey:@"Content-Length"] intValue];
                 
@@ -432,7 +432,7 @@
     //
     if ( ! [stubInfo objectForKey:@"Size"] && [[webResponse allHeaderFields] objectForKey:@"Content-Length"])
     {
-        [stubInfo setObject:[NSNumber numberWithInteger:[[[webResponse allHeaderFields] objectForKey:@"Content-Length"] integerValue]] forKey:@"Size"];
+        [stubInfo setObject:[NSNumber numberWithLongLong:[[[webResponse allHeaderFields] objectForKey:@"Content-Length"] longLongValue]] forKey:@"Size"];
         [stubInfo writeToFile:stubFile atomically:YES];
     }
     
@@ -487,14 +487,14 @@
     
     // update progress tracking if possible
     //
-    NSUInteger totalSize = 0.0;
+    long long totalSize  = 0.0;
     CGFloat thisProgress = 0.0;
     
     if ( ! connection.isIndeterminate)
     {
         NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[NSString stringWithFormat:@"%@/%@.plist", self.downloadsPath, [self identifierForDownload:connection]]];
 
-        totalSize    = [[info objectForKey:@"Size"] integerValue];
+        totalSize    = [[info objectForKey:@"Size"] longLongValue];
         thisProgress = (CGFloat)totalDownloaded / (CGFloat)totalSize;
         
         [self.progresses replaceObjectAtIndex:[self.downloads indexOfObject:connection] withObject:[NSNumber numberWithFloat:thisProgress]];
@@ -504,7 +504,7 @@
     //
     NSDictionary *progressDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:thisProgress], DSMapBoxDownloadProgressKey,
                                                                                   [NSNumber numberWithUnsignedInteger:totalDownloaded], DSMapBoxDownloadTotalDownloadedKey, 
-                                                                                  [NSNumber numberWithUnsignedInteger:totalSize], DSMapBoxDownloadTotalSizeKey,
+                                                                                  [NSNumber numberWithLongLong:totalSize], DSMapBoxDownloadTotalSizeKey,
                                                                                   nil];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadProgressNotification 

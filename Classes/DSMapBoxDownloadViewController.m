@@ -127,10 +127,10 @@
             CGFloat progress = [[[notification userInfo] objectForKey:DSMapBoxDownloadProgressKey] floatValue];
             
             NSUInteger totalDownloaded = [[[notification userInfo] objectForKey:DSMapBoxDownloadTotalDownloadedKey] unsignedIntegerValue];
-            NSUInteger totalSize       = [[[notification userInfo] objectForKey:DSMapBoxDownloadTotalSizeKey]       unsignedIntegerValue];
+            long long totalSize        = [[[notification userInfo] objectForKey:DSMapBoxDownloadTotalSizeKey]       longLongValue];
             
             NSString *totalDownloadedString = [NSString stringWithFormat:@"%i", (totalDownloaded / (1024 * 1024))];
-            NSString *totalSizeString       = (download.isIndeterminate ? @"?" : [NSString stringWithFormat:@"%i", (totalSize / (1024 * 1024))]);
+            NSString *totalSizeString       = (download.isIndeterminate ? @"?" : [NSString stringWithFormat:@"%qu", (totalSize / (1024 * 1024))]);
             
             int row = [[DSMapBoxDownloadManager sharedManager].downloads indexOfObject:download];
             
