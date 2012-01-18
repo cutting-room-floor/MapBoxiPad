@@ -297,7 +297,7 @@
     else
         [self setClusteringOn:NO];
     
-#if BETA_TESTING
+#if ADHOC
     // add beta tester feedback button
     //
     UIImage *testFlightImage = [UIImage imageNamed:@"testflight.png"];

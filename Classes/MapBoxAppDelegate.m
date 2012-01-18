@@ -144,7 +144,7 @@
     //
     [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:5.0];
     
-#if BETA_TESTING
+#if ADHOC
     // track number of saved maps
     //
     NSString *savedMapsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
