@@ -141,12 +141,16 @@
             {
                 NSDictionary *info = [NSDictionary dictionaryWithContentsOfURL:tileSetURL];
                 
-                if ([NSURL URLWithString:[info objectForKey:@"download"]])
+                if ([[info objectForKey:@"download"] length] && [NSURL URLWithString:[info objectForKey:@"download"]])
                 {
-                    downloadable = YES;
-                    filesize     = [[info objectForKey:@"filesize"] unsignedIntegerValue];
+                    if ([[info objectForKey:@"filesize"] isKindOfClass:[NSNumber class]])
+                    {
+                        filesize = [[info objectForKey:@"filesize"] unsignedIntegerValue];
 
-                    [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+                        downloadable = YES;
+
+                        [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+                    }
                 }
             }
             
