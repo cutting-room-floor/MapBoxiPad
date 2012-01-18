@@ -95,8 +95,8 @@
                 {
                     if (result == TWTweetComposeViewControllerResultDone)
                         [TESTFLIGHT passCheckpoint:@"shared snapshot by Twitter"];
-                    else
-                        [viewController dismissModalViewControllerAnimated:YES];
+
+                    [viewController dismissModalViewControllerAnimated:YES];
                 };
                 
                 [viewController presentModalViewController:tweetSheet animated:YES];
