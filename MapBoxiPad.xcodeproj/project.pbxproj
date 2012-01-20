@@ -11,7 +11,6 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
-		2899E5220DE3E06400AC0155 /* MapBoxMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* MapBoxMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */; };
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
@@ -172,6 +171,7 @@
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */; };
 		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
 		DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */; };
 		DDB8390A13CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB8390813CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.xib */; };
@@ -306,7 +306,6 @@
 		1D3623250D0F684500981E51 /* MapBoxAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxAppDelegate.m; sourceTree = "<group>"; };
 		1D6058910D05DD3D006BFB54 /* MapBox.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MapBox.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MapBoxMainViewController.xib; path = ../MapBoxMainViewController.xib; sourceTree = "<group>"; };
 		28AD733E0D9D9553002E5188 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainWindow.xib; sourceTree = "<group>"; };
 		28D7ACF60DDB3853001CB0EB /* MapBoxMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxMainViewController.h; sourceTree = "<group>"; };
 		28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapBoxMainViewController.m; sourceTree = "<group>"; };
@@ -587,6 +586,7 @@
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDB0FCA51485CD70003A4FD3 /* BALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BALabel.h; path = Externals/BaseAppKit/BALabel.h; sourceTree = "<group>"; };
 		DDB0FCA61485CD70003A4FD3 /* BALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BALabel.m; path = Externals/BaseAppKit/BALabel.m; sourceTree = "<group>"; };
+		DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapBoxMainViewController.xib; sourceTree = "<group>"; };
 		DDB7BEDA13CE160E00280095 /* DSMapBoxErrorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxErrorView.h; sourceTree = "<group>"; };
 		DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxErrorView.m; sourceTree = "<group>"; };
 		DDB8390613CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamAlbumController.m; sourceTree = "<group>"; };
@@ -692,7 +692,7 @@
 				1D3623250D0F684500981E51 /* MapBoxAppDelegate.m */,
 				28D7ACF60DDB3853001CB0EB /* MapBoxMainViewController.h */,
 				28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */,
-				2899E5210DE3E06400AC0155 /* MapBoxMainViewController.xib */,
+				DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */,
 			);
 			name = Main;
 			path = Classes;
@@ -1691,7 +1691,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */,
-				2899E5220DE3E06400AC0155 /* MapBoxMainViewController.xib in Resources */,
 				DD48C3C211CBFA9700038969 /* routeme.plist in Resources */,
 				DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */,
 				DDA1073911E442B6008D00A7 /* DSMapBoxBalloonController.xib in Resources */,
@@ -1770,6 +1769,7 @@
 				DD91C35914B51E5000330326 /* downloads6.png in Resources */,
 				DD91C35A14B51E5000330326 /* downloads7.png in Resources */,
 				DD91C35B14B51E5000330326 /* downloads8.png in Resources */,
+				DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
