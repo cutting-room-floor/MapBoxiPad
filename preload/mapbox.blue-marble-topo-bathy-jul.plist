@@ -20,12 +20,18 @@
 	<string>0,0,4</string>
 	<key>description</key>
 	<string>NASA's 'Blue Marble' global composite satellite imagery, collected over July, 2004.</string>
+	<key>download</key>
+	<string>http://a.tiles.mapbox.com/v1/mapbox.blue-marble-topo-bathy-jul.mbtiles</string>
+	<key>filesize</key>
+	<integer>621305856</integer>
 	<key>formatter</key>
 	<string></string>
 	<key>gridURL</key>
 	<string></string>
 	<key>id</key>
-	<string>blue-marble-topo-bathy-jul</string>
+	<string>mapbox.blue-marble-topo-bathy-jul</string>
+	<key>legend</key>
+	<string></string>
 	<key>maxzoom</key>
 	<integer>8</integer>
 	<key>minzoom</key>
@@ -36,8 +42,10 @@
 	<string>Blue Marble Topography &amp; Bathymetry (July)</string>
 	<key>size</key>
 	<integer>0</integer>
+	<key>template</key>
+	<string></string>
 	<key>tileURL</key>
-	<string>http://a.tiles.mapbox.com/mapbox/1.0.0/blue-marble-topo-bathy-jul/{z}/{x}/{y}.png</string>
+	<string>http://a.tiles.mapbox.com/v1/mapbox.blue-marble-topo-bathy-jul/{z}/{x}/{y}.png</string>
 	<key>type</key>
 	<string>baselayer</string>
 	<key>version</key>
