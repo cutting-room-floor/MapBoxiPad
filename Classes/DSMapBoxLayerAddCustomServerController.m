@@ -11,8 +11,6 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 #import "DSMapBoxTileStreamCommon.h"
 
-#import "JSONKit.h"
-
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerAddCustomServerController ()
@@ -197,7 +195,7 @@
             {
                 [DSMapBoxNetworkActivityIndicator removeJob:connection];
                 
-                id layers = [responseData objectFromJSONData];
+                id layers = [NSJSONSerialization JSONObjectWithData:responseData options:0 error:NULL];
                 
                 if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
                 {

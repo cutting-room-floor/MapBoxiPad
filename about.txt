@@ -14,8 +14,6 @@ Libraries used under license:
 
  * GRMustache, (c) 2010 Gwendal Roué https://github.com/groue/GRMustache
 
- * JSONKit, (c) 2011 John Engelhart https://github.com/johnezang/JSONKit
-
  * mustache.js, (c) 2010 Jan Lehnardt https://github.com/janl/mustache.js
 
  * Reachability, (c) 2010 Apple Inc. http://developer.apple.com/library/ios/#samplecode/Reachability/

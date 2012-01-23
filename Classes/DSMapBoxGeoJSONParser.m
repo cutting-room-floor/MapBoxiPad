@@ -8,8 +8,6 @@
 
 #import "DSMapBoxGeoJSONParser.h"
 
-#import "JSONKit.h"
-
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMProjection.h"
@@ -51,7 +49,7 @@
 {
     NSMutableArray *items = [NSMutableArray array];
     
-    id json = [geojson objectFromJSONString];
+    id json = [NSJSONSerialization JSONObjectWithData:[geojson dataUsingEncoding:NSUTF8StringEncoding] options:0 error:NULL];
     
     if ([json isKindOfClass:[NSDictionary class]])
     {
