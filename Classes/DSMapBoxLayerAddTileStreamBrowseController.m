@@ -13,8 +13,6 @@
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
 
-#import "JSONKit.h"
-
 #import "RMTile.h"
 
 #import <CoreLocation/CoreLocation.h>
@@ -107,7 +105,7 @@
         
         [weakSelf.spinner stopAnimating];
         
-        id newLayersReceived = [responseData mutableObjectFromJSONData];
+        id newLayersReceived = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:NULL];
         
         if (newLayersReceived && [newLayersReceived isKindOfClass:[NSMutableArray class]])
         {

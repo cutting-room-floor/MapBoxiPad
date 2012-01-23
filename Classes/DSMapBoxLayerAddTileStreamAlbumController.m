@@ -13,8 +13,6 @@
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
 
-#import "JSONKit.h"
-
 @interface DSMapBoxLayerAddTileStreamAlbumController ()
 
 @property (nonatomic, strong) NSURLConnection *albumDownload;
@@ -85,7 +83,7 @@
         
         [weakSelf.spinner stopAnimating];
         
-        id newServersReceived = [responseData mutableObjectFromJSONData];
+        id newServersReceived = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableContainers error:NULL];
         
         if (newServersReceived && [newServersReceived isKindOfClass:[NSMutableArray class]])
         {
