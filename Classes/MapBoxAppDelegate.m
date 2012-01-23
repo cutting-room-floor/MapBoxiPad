@@ -224,13 +224,22 @@
         {
             if ([enumeratedURL isFileURL])
             {
-                const char *filePath = [[enumeratedURL path] fileSystemRepresentation];
-                
-                const char *attrName = "com.apple.MobileBackup"; // attribute means "do not backup"
-                
-                u_int8_t attrValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"excludeiCloudBackup"] ? 1 : 0;
-                
-                setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+                if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"5.0.1") && SYSTEM_VERSION_LESS_THAN(@"5.1"))
+                {
+                    const char *filePath = [[enumeratedURL path] fileSystemRepresentation];
+                    
+                    const char *attrName = "com.apple.MobileBackup"; // attribute means "do not backup"
+                    
+                    u_int8_t attrValue = [[NSUserDefaults standardUserDefaults] boolForKey:@"excludeiCloudBackup"] ? 1 : 0;
+                    
+                    setxattr(filePath, attrName, &attrValue, sizeof(attrValue), 0, 0);
+                }
+                else if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"5.1"))
+                {
+                    [enumeratedURL setResourceValue:[[NSUserDefaults standardUserDefaults] objectForKey:@"excludeiCloudBackup"] 
+                                             forKey:NSURLIsExcludedFromBackupKey 
+                                              error:NULL];
+                }
             }
         }
     }
