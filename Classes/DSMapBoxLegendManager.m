@@ -98,7 +98,7 @@
         contentWebView.opaque = NO;
         
         contentWebView.layer.shadowColor   = [[UIColor blackColor] CGColor];
-        contentWebView.layer.shadowOffset  = CGSizeMake(0.0, 0.0);
+        contentWebView.layer.shadowOffset  = CGSizeMake(0.0, 1.0);
         contentWebView.layer.shadowRadius  = 5.0;
         contentWebView.layer.shadowOpacity = 1.0;
 
