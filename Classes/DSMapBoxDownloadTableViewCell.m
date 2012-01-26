@@ -35,7 +35,9 @@
 {
     self.backgroundColor        = [UIColor whiteColor];
     
-    self.pie.pieFillColor       = [UIColor colorWithCGColor:CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.5)];
+    CGColorRef fillColor        = CGColorCreateCopyWithAlpha([kMapBoxBlue CGColor], 0.5);
+    self.pie.pieFillColor       = [UIColor colorWithCGColor:fillColor];
+    CGColorRelease(fillColor);
     self.pie.pieBackgroundColor = [UIColor clearColor];
     self.pie.pieBorderColor     = kMapBoxBlue;
  

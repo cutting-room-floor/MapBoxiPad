@@ -856,13 +856,26 @@
 
 - (void)downloadCompleted:(NSNotification *)notification
 {
+    // get download in question
+    //
+    NSURLConnection *download = [notification object];
+    
     // post Growl-style notification
     //
     if ( ! self.downloadsPopover.isPopoverVisible)
-    {
-        NSURLConnection *download = [notification object];
-        
         [[DSMapBoxNotificationCenter sharedInstance] notifyWithMessage:[NSString stringWithFormat:@"%@ download complete", [download.originalRequest.URL lastPathComponent]]];
+    
+    // present local notification
+    //
+    if ([UIApplication sharedApplication].applicationState == UIApplicationStateBackground)
+    {
+        UILocalNotification *notification = [[UILocalNotification alloc] init];
+        
+        notification.alertAction = @"Launch";
+        notification.alertBody   = [NSString stringWithFormat:@"The download of %@ has completed.", [download.originalRequest.URL lastPathComponent]];
+        notification.soundName   = UILocalNotificationDefaultSoundName;
+        
+        [[UIApplication sharedApplication] presentLocalNotificationNow:notification];
     }
 }
 

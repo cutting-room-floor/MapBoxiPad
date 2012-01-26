@@ -109,6 +109,18 @@
         {
             UIImageWriteToSavedPhotosAlbum(imageHandler(), nil, nil, nil);
             
+            if ( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"notifiedSnapshotSave"])
+            {
+                [UIAlertView showAlertViewWithTitle:@"Snapshot Saved"
+                                            message:@"The snapshot was copied to your Saved Photos. In the future, this will happen without a notification." 
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                            handler:nil];
+                
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"notifiedSnapshotSave"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }            
+            
             [TESTFLIGHT passCheckpoint:@"saved snapshot to camera roll"];
         }];
         

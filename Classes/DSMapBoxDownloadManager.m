@@ -194,27 +194,29 @@
     //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"noBackgroundDownloads"] || ! [[NSUserDefaults standardUserDefaults] boolForKey:@"noBackgroundDownloads"])
     {
-        UIBackgroundTaskIdentifier taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
-                                            {
-                                                // find the task ID amongst the active background ones
-                                                //
-                                                int match = -1;
-                                                int i;
-                                                
-                                                for (i = 0; i < [self.backgroundTasks count]; i++)
-                                                {
-                                                    if ([[self.backgroundTasks objectAtIndex:i] unsignedIntegerValue] == taskID)
-                                                    {
-                                                        match = i;
-                                                        break;
-                                                    }
-                                                }
-                                                
-                                                // find & pause the download corresponding to the same index in the downloads list (if we found it)
-                                                //
-                                                if (match >= 0)
-                                                    [self pauseDownload:[self.downloads objectAtIndex:match]]; // also handles background task cleanup
-                                            }];
+        UIBackgroundTaskIdentifier taskID = UIBackgroundTaskInvalid;
+        
+        taskID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^(void)
+                 {
+                     // find the task ID amongst the active background ones
+                     //
+                     int match = -1;
+                     int i;
+                     
+                     for (i = 0; i < [self.backgroundTasks count]; i++)
+                     {
+                         if ([[self.backgroundTasks objectAtIndex:i] unsignedIntegerValue] == taskID)
+                         {
+                             match = i;
+                             break;
+                         }
+                     }
+                     
+                     // find & pause the download corresponding to the same index in the downloads list (if we found it)
+                     //
+                     if (match >= 0)
+                         [self pauseDownload:[self.downloads objectAtIndex:match]]; // also handles background task cleanup
+                 }];
         
         // update background task list with new ID
         //
