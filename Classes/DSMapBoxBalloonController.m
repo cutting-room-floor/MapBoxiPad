@@ -60,11 +60,13 @@
     [self.webView loadHTMLString:balloonText baseURL:nil];
 }
 
-- (void)dealloc
+- (void)viewDidDisappear:(BOOL)animated
 {
-    [webView stopLoading];
-
-    webView.delegate = nil;
+    [super viewDidDisappear:animated];
+    
+    [self.webView stopLoading];
+    
+    self.webView.delegate = nil;
 }
 
 #pragma mark -

@@ -612,7 +612,7 @@
     [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) removeMarkersAndClusters];
     self.mapView.contents.overlay.sublayers = nil;
     
-    if (self.balloon && self.balloon.popoverVisible)
+    if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
     
     [self.overlays removeAllObjects];
@@ -648,7 +648,7 @@
     if (overlayToRemove)
         [self.overlays removeObject:overlayToRemove];
     
-    if (self.balloon && self.balloon.popoverVisible)
+    if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
 }
 
@@ -709,7 +709,7 @@
 
         if (formattedOutput && [formattedOutput length])
         {
-            if (self.balloon)
+            if (self.balloon.popoverVisible)
                 [self.balloon dismissPopoverAnimated:NO];
             
             DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
@@ -733,17 +733,17 @@
             [TESTFLIGHT passCheckpoint:@"tapped interactive layer"];
         }
 
-        else if (self.balloon)
+        else if (self.balloon.popoverVisible)
             [self.balloon dismissPopoverAnimated:YES];
     }
 
-    else if (self.balloon)
+    else if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:YES];
 }
 
 - (void)hideInteractivityAnimated:(BOOL)animated
 {
-    if (self.balloon)
+    if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:animated];
 }
 
@@ -751,7 +751,7 @@
 
 - (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
 {
-    if (self.balloon)
+    if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
     
     NSDictionary *markerData = ((NSDictionary *)marker.data);
@@ -818,7 +818,7 @@
 
 - (void)mapViewRegionDidChange:(RMMapView *)map
 {
-    if (self.balloon)
+    if (self.balloon.popoverVisible)
     {
         if (self.lastKnownZoom != map.contents.zoom)
         {
