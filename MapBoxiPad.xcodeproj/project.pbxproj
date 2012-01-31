@@ -2015,6 +2015,7 @@
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
+				STRIP_INSTALLED_PRODUCT = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
