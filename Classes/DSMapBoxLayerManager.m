@@ -608,6 +608,8 @@
                     
                     if ( ! kml)
                     {
+                        // KML parsing failure
+                        //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
                             [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
                         
@@ -616,7 +618,22 @@
                     
                     // add layer visuals
                     //
-                    [self.dataOverlayManager addOverlayForKML:kml];
+                    RMSphericalTrapezium addedOverlayBounds = [self.dataOverlayManager addOverlayForKML:kml];
+                    
+                    RMSphericalTrapezium screenBounds = [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen];
+                    
+                    if (addedOverlayBounds.northeast.latitude  == screenBounds.northeast.latitude  && 
+                        addedOverlayBounds.northeast.longitude == screenBounds.northeast.longitude && 
+                        addedOverlayBounds.southwest.latitude  == screenBounds.southwest.latitude  && 
+                        addedOverlayBounds.southwest.longitude == screenBounds.southwest.longitude)
+                    {
+                        // no layer visual was actually added
+                        //
+                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                        
+                        return;
+                    }
                     
                     // save source for comparison later
                     //
