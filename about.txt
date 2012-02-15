@@ -1,4 +1,4 @@
-MapBox (c) 2010-2011 Development Seed, Inc.
+MapBox (c) 2010-2012 Development Seed, Inc.
 
 Libraries used under license: 
 
