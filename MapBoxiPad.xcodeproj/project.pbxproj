@@ -684,7 +684,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		080E96DDFE201D6D7F000001 /* Main */ = {
+		080E96DDFE201D6D7F000001 /* Main UI */ = {
 			isa = PBXGroup;
 			children = (
 				DDCE294412B6E598008A1257 /* MapBoxConstants.h */,
@@ -694,7 +694,7 @@
 				28D7ACF70DDB3853001CB0EB /* MapBoxMainViewController.m */,
 				DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */,
 			);
-			name = Main;
+			name = "Main UI";
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -709,7 +709,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				DDA291DD11F8ADD6000FFFF4 /* Classes */,
+				DDA291DD11F8ADD6000FFFF4 /* MapBoxiPad */,
 				DD48C45F11CC090400038969 /* Externals */,
 				29B97315FDCFA39411CA2CEA /* Other Sources */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
@@ -1372,10 +1372,10 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		DDA291DD11F8ADD6000FFFF4 /* Classes */ = {
+		DDA291DD11F8ADD6000FFFF4 /* MapBoxiPad */ = {
 			isa = PBXGroup;
 			children = (
-				080E96DDFE201D6D7F000001 /* Main */,
+				080E96DDFE201D6D7F000001 /* Main UI */,
 				DD1ADB8A120A270B00B052E9 /* Layer Management */,
 				DDA291D911F8AD87000FFFF4 /* Tile Overlays */,
 				DDA291D711F8AD79000FFFF4 /* Data Overlays & Interactivity */,
@@ -1386,7 +1386,7 @@
 				DDEEAD81136F7BBD0058BA90 /* Minor Functionality */,
 				DDA291D611F8AD41000FFFF4 /* Categories & Additions */,
 			);
-			name = Classes;
+			name = MapBoxiPad;
 			sourceTree = "<group>";
 		};
 		DDACBC9E141FC655002704B7 /* TestFlight SDK */ = {
