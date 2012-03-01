@@ -401,6 +401,8 @@
     
     // load tile overlay state(s)
     //
+    NSMutableArray *newActiveTileLayers = [NSMutableArray array];
+    
     if (tileOverlayState)
     {
         // remove current layers
@@ -423,11 +425,17 @@
             NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
             
             for (NSDictionary *tileLayer in layerManager.tileLayers)
+            {
                 if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
                     ([[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]] ||
                      [tileOverlayURL isEqual:kDSOpenStreetMapURL] || [tileOverlayURL isEqual:kDSMapQuestOSMURL]))
+                {
                     [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.tileLayers indexOfObject:tileLayer] 
                                                                                  inSection:DSMapBoxLayerSectionTile]];
+                    
+                    [newActiveTileLayers addObject:tileLayer];
+                }
+            }
         
             // notify if any require net & we're offline if loading doc
             //
@@ -453,6 +461,8 @@
     
     // load data overlay state(s)
     //
+    NSMutableArray *newActiveDataLayers = [NSMutableArray array];
+
     if (dataOverlayState)
     {
         // remove current layers
@@ -471,13 +481,23 @@
             NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
             
             for (NSDictionary *dataLayer in self.layerManager.dataLayers)
+            {
                 if ([[dataLayer objectForKey:@"URL"] isEqual:dataOverlayURL] &&
                     [[NSFileManager defaultManager] fileExistsAtPath:[dataOverlayURL relativePath]])
+                {
                     [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer] 
                                                                                  inSection:DSMapBoxLayerSectionData]];
+                    
+                    [newActiveDataLayers addObject:dataLayer];
+                }
+            }
         }
     }
 
+    // move selected layers to top of stack (currently sorted in tile manager load order)
+    //
+    [self.layerManager bringActiveTileLayersToTop:newActiveTileLayers dataLayers:newActiveDataLayers];
+    
     // dismiss document loader
     //
     if ([sender isKindOfClass:[NSString class]])

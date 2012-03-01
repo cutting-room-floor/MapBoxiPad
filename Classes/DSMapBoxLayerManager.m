@@ -386,6 +386,42 @@
         [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
 }
 
+- (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers
+{
+    // Move the passed layers to the top of their respective UIs. The reasoning is that the layers
+    // are normally sorted according to the tile manager sort order. When restoring state, we want to
+    // move all of the now-active layers to the top of the array & the UI so that they stack properly 
+    // in relation to each other and are easily accessible. 
+    //
+    if ([activeTileLayers count])
+    {
+        NSMutableArray *newTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
+        
+        for (NSDictionary *tileLayer in activeTileLayers)
+        {
+            [newTileLayers removeObject:tileLayer];
+            [newTileLayers insertObject:tileLayer atIndex:0];
+        }
+        
+        self.tileLayers = newTileLayers;
+    }
+    
+    if ([activeDataLayers count])
+    {
+        NSMutableArray *newDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
+
+        for (NSDictionary *dataLayer in newDataLayers)
+        {
+            [newDataLayers removeObject:dataLayer];
+            [newDataLayers insertObject:dataLayer atIndex:0];
+        }
+        
+        self.dataLayers = newDataLayers;
+    }
+    
+    [self reorderLayerDisplay];
+}
+
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
