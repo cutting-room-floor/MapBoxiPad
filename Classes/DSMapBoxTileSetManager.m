@@ -150,18 +150,14 @@
     {
         RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
         
-        NSString *attribution = [source shortAttribution];
-        
-        return attribution;
+        attribution = [source shortAttribution];
     }
 
     else if ([tileSetURL isMBTilesURL])
     {
         RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
         
-        NSString *attribution = [source shortAttribution];
-        
-        return attribution;        
+        attribution = [source shortAttribution];
     }
         
     // strip HTML
