@@ -243,7 +243,7 @@
 {
     UIActionSheet *sheet = [UIActionSheet actionSheetWithTitle:nil];
     
-    [sheet addButtonWithTitle:@"Delete Map" handler:^(void)
+    [sheet setDestructiveButtonWithTitle:@"Delete Map" handler:^(void)
     {
         NSUInteger index = self.scroller.contentOffset.x / kDSDocumentWidth;
         
