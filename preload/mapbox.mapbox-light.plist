@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>apiHostname</key>
+	<string>tiles.mapbox.com</string>
+	<key>apiPath</key>
+	<string>/mapbox</string>
+	<key>apiPort</key>
+	<integer>80</integer>
+	<key>apiScheme</key>
+	<string>http</string>
+	<key>attribution</key>
+	<string>Map data © OpenStreetMap (and) contributors, CC-BY-SA</string>
+	<key>basename</key>
+	<string>mapbox-light.mbtiles</string>
+	<key>bounds</key>
+	<string>-180,-85,180,85</string>
+	<key>center</key>
+	<string>0,0,2</string>
+	<key>description</key>
+	<string></string>
+	<key>download</key>
+	<string></string>
+	<key>filesize</key>
+	<integer>25865482240</integer>
+	<key>formatter</key>
+	<string></string>
+	<key>gridURL</key>
+	<string></string>
+	<key>id</key>
+	<string>mapbox.mapbox-light</string>
+	<key>legend</key>
+	<string></string>
+	<key>maxzoom</key>
+	<integer>16</integer>
+	<key>minzoom</key>
+	<integer>0</integer>
+	<key>mtime</key>
+	<date>1970-01-01T00:00:00Z</date>
+	<key>name</key>
+	<string>MapBox Light</string>
+	<key>size</key>
+	<integer>0</integer>
+	<key>template</key>
+	<string></string>
+	<key>tileURL</key>
+	<string>http://a.tiles.mapbox.com/v1/mapbox.mapbox-light/{z}/{x}/{y}.png</string>
+	<key>type</key>
+	<string></string>
+	<key>version</key>
+	<string>1.0.0</string>
+</dict>
+</plist>

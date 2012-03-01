@@ -96,6 +96,8 @@
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
+		DD4B11BB14FFF22200885EE9 /* mapbox.mapbox-light.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */; };
+		DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
 		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
 		DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */; };
@@ -473,6 +475,8 @@
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
+		DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mapbox.mapbox-light.plist"; sourceTree = "<group>"; };
+		DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mapbox.mapbox-streets.plist"; sourceTree = "<group>"; };
 		DD4BABF613BE62C50043FA21 /* DSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSSound.h; sourceTree = "<group>"; };
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
 		DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_off.png; sourceTree = "<group>"; };
@@ -1142,6 +1146,8 @@
 				DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */,
 				DDB87DF314CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist */,
 				DDB87DF414CDEEC900C5F717 /* mapbox.geography-class.plist */,
+				DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */,
+				DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */,
 			);
 			name = "Preloaded Data";
 			path = preload;
@@ -1770,6 +1776,8 @@
 				DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */,
 				DDB87DF514CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist in Resources */,
 				DDB87DF614CDEEC900C5F717 /* mapbox.geography-class.plist in Resources */,
+				DD4B11BB14FFF22200885EE9 /* mapbox.mapbox-light.plist in Resources */,
+				DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
