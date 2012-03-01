@@ -251,13 +251,6 @@
 			remoteGlobalIDString = 17157D87133BBC8300E28941;
 			remoteInfo = MapViewTests;
 		};
-		DDD7F88914BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6CC40A2A1447B58600E47595;
-			remoteInfo = "iOS Framework";
-		};
 		DDD7F88B14BB62CF00B6840E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
@@ -1487,9 +1480,8 @@
 		DDD7F87D14BB62CF00B6840E /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DDD7F88A14BB62CF00B6840E /* BlocksKit.framework */,
-				DDD7F88C14BB62CF00B6840E /* BlocksKit.framework */,
 				DDD7F88E14BB62CF00B6840E /* libBlocksKit.a */,
+				DDD7F88C14BB62CF00B6840E /* BlocksKit.framework */,
 				DDD7F89014BB62CF00B6840E /* BlocksKit.dylib */,
 				DDD7F89214BB62CF00B6840E /* BlocksKit_Chameleon.dylib */,
 				DDD7F89414BB62CF00B6840E /* iOS Tests.app */,
@@ -1645,13 +1637,6 @@
 			fileType = wrapper.cfbundle;
 			path = MapViewTests.octest;
 			remoteRef = DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F88A14BB62CF00B6840E /* BlocksKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = BlocksKit.framework;
-			remoteRef = DDD7F88914BB62CF00B6840E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		DDD7F88C14BB62CF00B6840E /* BlocksKit.framework */ = {
