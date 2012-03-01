@@ -19,7 +19,7 @@
 	<key>center</key>
 	<string>0,0,3</string>
 	<key>description</key>
-	<string></string>
+	<string>Beautiful global coverage powered by high-quality open data from OpenStreetMap.</string>
 	<key>download</key>
 	<string></string>
 	<key>filesize</key>
