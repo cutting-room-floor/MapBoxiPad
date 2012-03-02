@@ -197,7 +197,6 @@
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
 		DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */; };
 		DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */; };
-		DDD7F89714BB630400B6840E /* libBlocksKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDD7F88E14BB62CF00B6840E /* libBlocksKit.a */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
 		DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6413D75EEC00DDEA58 /* layers.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
@@ -250,48 +249,6 @@
 			proxyType = 2;
 			remoteGlobalIDString = 17157D87133BBC8300E28941;
 			remoteInfo = MapViewTests;
-		};
-		DDD7F88B14BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6CC40A751447BB1400E47595;
-			remoteInfo = "OS X Framework";
-		};
-		DDD7F88D14BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6C3DBF8D1382F1BA00E6C9AA;
-			remoteInfo = "iOS Library";
-		};
-		DDD7F88F14BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6CC08FCE1385555D00DDEABB;
-			remoteInfo = "OS X Library";
-		};
-		DDD7F89114BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 6CC0900913855CAE00DDEABB;
-			remoteInfo = "Chameleon Library";
-		};
-		DDD7F89314BB62CF00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 60FF000713C023CB004A1394;
-			remoteInfo = "iOS Tests";
-		};
-		DDD7F89514BB62FA00B6840E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 6C3DBF8C1382F1BA00E6C9AA;
-			remoteInfo = "iOS Library";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -622,7 +579,6 @@
 		DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileStreamCommon.m; sourceTree = "<group>"; };
 		DDD7F81114BB57BB00B6840E /* DSMapBoxURLRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxURLRequest.h; sourceTree = "<group>"; };
 		DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxURLRequest.m; sourceTree = "<group>"; };
-		DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BlocksKit.xcodeproj; path = Externals/BlocksKit/BlocksKit.xcodeproj; sourceTree = "<group>"; };
 		DDDA3C6313D75EEC00DDEA58 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		DDDA3C6413D75EEC00DDEA58 /* layers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layers.png; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
@@ -674,7 +630,6 @@
 				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
 				DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */,
 				DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */,
-				DDD7F89714BB630400B6840E /* libBlocksKit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1472,21 +1427,8 @@
 		DDD7F87B14BB62C000B6840E /* BlocksKit */ = {
 			isa = PBXGroup;
 			children = (
-				DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */,
 			);
 			name = BlocksKit;
-			sourceTree = "<group>";
-		};
-		DDD7F87D14BB62CF00B6840E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DDD7F88E14BB62CF00B6840E /* libBlocksKit.a */,
-				DDD7F88C14BB62CF00B6840E /* BlocksKit.framework */,
-				DDD7F89014BB62CF00B6840E /* BlocksKit.dylib */,
-				DDD7F89214BB62CF00B6840E /* BlocksKit_Chameleon.dylib */,
-				DDD7F89414BB62CF00B6840E /* iOS Tests.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DDE1C4731342711E0049C325 /* Resources */ = {
@@ -1573,7 +1515,6 @@
 			);
 			dependencies = (
 				DD0F619F11ED5B090050174D /* PBXTargetDependency */,
-				DDD7F89614BB62FA00B6840E /* PBXTargetDependency */,
 			);
 			name = MapBoxiPad;
 			productName = MapBoxiPadDemo;
@@ -1601,10 +1542,6 @@
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = DDD7F87D14BB62CF00B6840E /* Products */;
-					ProjectRef = DDD7F87C14BB62CF00B6840E /* BlocksKit.xcodeproj */;
-				},
 				{
 					ProductGroup = DD0F618C11ED5AE80050174D /* Products */;
 					ProjectRef = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
@@ -1637,41 +1574,6 @@
 			fileType = wrapper.cfbundle;
 			path = MapViewTests.octest;
 			remoteRef = DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F88C14BB62CF00B6840E /* BlocksKit.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = BlocksKit.framework;
-			remoteRef = DDD7F88B14BB62CF00B6840E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F88E14BB62CF00B6840E /* libBlocksKit.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libBlocksKit.a;
-			remoteRef = DDD7F88D14BB62CF00B6840E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F89014BB62CF00B6840E /* BlocksKit.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = BlocksKit.dylib;
-			remoteRef = DDD7F88F14BB62CF00B6840E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F89214BB62CF00B6840E /* BlocksKit_Chameleon.dylib */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.dylib";
-			path = BlocksKit_Chameleon.dylib;
-			remoteRef = DDD7F89114BB62CF00B6840E /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DDD7F89414BB62CF00B6840E /* iOS Tests.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "iOS Tests.app";
-			remoteRef = DDD7F89314BB62CF00B6840E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1929,11 +1831,6 @@
 			name = MapView;
 			targetProxy = DD0F619E11ED5B090050174D /* PBXContainerItemProxy */;
 		};
-		DDD7F89614BB62FA00B6840E /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "iOS Library";
-			targetProxy = DDD7F89514BB62FA00B6840E /* PBXContainerItemProxy */;
-		};
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
@@ -1943,7 +1840,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1960,16 +1856,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
 				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphoneos\"",
-				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Debug-iphonesimulator\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
@@ -1982,7 +1871,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = YES;
-				DEAD_CODE_STRIPPING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
@@ -1997,16 +1885,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
 				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
-				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
@@ -2022,8 +1903,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
@@ -2039,8 +1920,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2058,8 +1939,8 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
-				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
@@ -2074,7 +1955,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				COPY_PHASE_STRIP = NO;
-				DEAD_CODE_STRIPPING = NO;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = MapBoxiPad_Prefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = "ADHOC=1";
@@ -2089,16 +1969,9 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
 				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphoneos*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphoneos\"",
-				);
-				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*][arch=*]" = (
-					"$(inherited)",
-					"\"$(SRCROOT)/Externals/route-me/MapView/build/Release-iphonesimulator\"",
-				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
+					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
