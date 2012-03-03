@@ -8,20 +8,46 @@
 
 #import "DSMapBoxShareSheet.h"
 
-#import <MessageUI/MessageUI.h>
+#import "DSMapBoxMailComposeViewController.h"
+
 #import <Twitter/Twitter.h>
 
-@implementation DSMapBoxShareSheet
+@interface DSMapBoxShareSheetDelegate : NSObject <UIActionSheetDelegate, MFMailComposeViewControllerDelegate>
 
-+ (id)shareSheetForImageHandler:(UIImage *(^)(void))imageHandler withViewController:(UIViewController *)viewController
+@property (nonatomic, copy) UIImage *(^imageCreationBlock)(void);
+@property (nonatomic, weak) UIViewController *presentingViewController;
+
+- (id)initWithImageCreationBlock:(UIImage *(^)(void))imageCreationBlock modalForViewController:(UIViewController *)presentingViewController;
+
+@end
+
+#pragma mark -
+
+@implementation DSMapBoxShareSheetDelegate
+
+@synthesize imageCreationBlock=_imageCreationBlock;
+@synthesize presentingViewController=_presentingViewController;
+
+- (id)initWithImageCreationBlock:(UIImage *(^)(void))imageCreationBlock modalForViewController:(UIViewController *)presentingViewController
 {
-    DSMapBoxShareSheet *sheet = [DSMapBoxShareSheet actionSheetWithTitle:nil];
-
-    if (sheet)
+    self = [super init];
+    
+    if (self)
     {
-        // mail action
-        //
-        [sheet addButtonWithTitle:@"Email Snapshot" handler:^(void)
+        _imageCreationBlock = imageCreationBlock;
+        _presentingViewController = presentingViewController;
+    }
+    
+    return self;
+}
+
+#pragma mark -
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex)
+    {
+        case 0:
         {
             if ( ! [MFMailComposeViewController canSendMail])
             {
@@ -33,49 +59,23 @@
             }
             else
             {
-                MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
-
+                DSMapBoxMailComposeViewController *mailer = [[DSMapBoxMailComposeViewController alloc] init];
+                
                 [mailer setSubject:@""];
                 [mailer setMessageBody:@"<p>&nbsp;</p><p>Powered by <a href=\"http://mapbox.com\">MapBox</a></p>" isHTML:YES];
-
-                [mailer addAttachmentData:UIImageJPEGRepresentation(imageHandler(), 1.0)                       
+                
+                [mailer addAttachmentData:UIImageJPEGRepresentation(self.imageCreationBlock(), 1.0)                       
                                  mimeType:@"image/jpeg" 
                                  fileName:@"MapBoxSnapshot.jpg"];
-
-                // manual copy from DSMapBoxMailComposeViewController due to BlocksKit runtime weirdness
-                //
-                mailer.modalPresentationStyle = UIModalPresentationPageSheet;
                 
-                mailer.navigationBar.barStyle = UIBarStyleBlack;
+                mailer.mailComposeDelegate = self;
                 
-                mailer.visibleViewController.navigationItem.rightBarButtonItem.style     = UIBarButtonItemStyleBordered;
-                mailer.visibleViewController.navigationItem.rightBarButtonItem.tintColor = kMapBoxBlue;
-                //
-                // end copy from DSMapBoxMailComposeViewController
-                
-                mailer.completionBlock = ^(MFMailComposeViewController *mailer, MFMailComposeResult result, NSError *error)
-                {
-                    if (result == MFMailComposeResultFailed)
-                    {
-                        UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Mail Failed" message:@"There was a problem sending the mail."];
-                        
-                        [alert addButtonWithTitle:@"OK"];
-                        
-                        [alert show];
-                    }
-                    else
-                    {
-                        [TESTFLIGHT passCheckpoint:@"shared snapshot by mail"];
-                    }
-                };
-                
-                [viewController presentModalViewController:mailer animated:YES];
+                [self.presentingViewController presentModalViewController:mailer animated:YES];
             }
-        }];
-        
-        // tweet action
-        //
-        [sheet addButtonWithTitle:@"Tweet Snapshot" handler:^(void)
+            
+            break;
+        }
+        case 1:
         {
             if ( ! [TWTweetComposeViewController canSendTweet])
             {
@@ -89,25 +89,24 @@
             {
                 TWTweetComposeViewController *tweetSheet = [[TWTweetComposeViewController alloc] init];
                 
-                [tweetSheet addImage:imageHandler()];
+                [tweetSheet addImage:self.imageCreationBlock()];
                 
                 tweetSheet.completionHandler = ^(TWTweetComposeViewControllerResult result)
                 {
                     if (result == TWTweetComposeViewControllerResultDone)
                         [TESTFLIGHT passCheckpoint:@"shared snapshot by Twitter"];
-
-                    [viewController dismissModalViewControllerAnimated:YES];
+                    
+                    [self.presentingViewController dismissModalViewControllerAnimated:YES];
                 };
                 
-                [viewController presentModalViewController:tweetSheet animated:YES];
+                [self.presentingViewController presentModalViewController:tweetSheet animated:YES];
             }
-        }];
-
-        // save image action
-        //
-        [sheet addButtonWithTitle:@"Save Snapshot" handler:^(void)
+            
+            break;
+        }
+        case 2:
         {
-            UIImageWriteToSavedPhotosAlbum(imageHandler(), nil, nil, nil);
+            UIImageWriteToSavedPhotosAlbum(self.imageCreationBlock(), nil, nil, nil);
             
             if ( ! [[NSUserDefaults standardUserDefaults] boolForKey:@"notifiedSnapshotSave"])
             {
@@ -122,7 +121,61 @@
             }            
             
             [TESTFLIGHT passCheckpoint:@"saved snapshot to camera roll"];
-        }];
+            
+            break;
+        }
+    }
+}
+
+#pragma mark -
+
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    [self.presentingViewController dismissModalViewControllerAnimated:YES];
+    
+    if (result == MFMailComposeResultFailed)
+    {
+        UIAlertView *alert = [UIAlertView alertViewWithTitle:@"Mail Failed" message:@"There was a problem sending the mail."];
+        
+        [alert addButtonWithTitle:@"OK"];
+        
+        [alert show];
+    }
+    else
+    {
+        [TESTFLIGHT passCheckpoint:@"shared snapshot by mail"];
+    }
+}
+
+@end
+
+#pragma mark -
+
+@interface DSMapBoxShareSheet ()
+
+@property (nonatomic, strong) id <UIActionSheetDelegate>strongDelegate;
+
+@end
+
+#pragma mark -
+
+@implementation DSMapBoxShareSheet
+
+@synthesize strongDelegate;
+
++ (id)shareSheetWithImageCreationBlock:(UIImage *(^)(void))imageCreationBlock modalForViewController:(UIViewController *)presentingViewController
+{
+    DSMapBoxShareSheet *sheet = [[super alloc] init];
+    
+    if (self)
+    {
+        sheet.strongDelegate = [[DSMapBoxShareSheetDelegate alloc] initWithImageCreationBlock:imageCreationBlock modalForViewController:presentingViewController];
+        
+        sheet.delegate = sheet.strongDelegate;
+        
+        [sheet addButtonWithTitle:@"Email Snapshot"];
+        [sheet addButtonWithTitle:@"Tweet Snapshot"];
+        [sheet addButtonWithTitle:@"Save Snapshot"];
         
         sheet.actionSheetStyle = UIActionSheetStyleBlackTranslucent;
     }

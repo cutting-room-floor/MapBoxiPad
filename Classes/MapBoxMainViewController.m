@@ -765,7 +765,7 @@
 {
     if ( ! self.shareActionSheet || ! self.shareActionSheet.visible)
     {
-        self.shareActionSheet = [DSMapBoxShareSheet shareSheetForImageHandler:^(void) { return [self mapSnapshot]; } withViewController:self];
+        self.shareActionSheet = [DSMapBoxShareSheet shareSheetWithImageCreationBlock:^(void) { return [self mapSnapshot]; } modalForViewController:self];
         
         [self.shareActionSheet showFromBarButtonItem:sender animated:YES];
         

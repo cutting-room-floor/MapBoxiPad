@@ -233,8 +233,8 @@
     
     NSDictionary *saveData = [NSDictionary dictionaryWithContentsOfFile:saveFilePath];
     
-    DSMapBoxShareSheet *shareSheet = [DSMapBoxShareSheet shareSheetForImageHandler:^(void) { return [UIImage imageWithData:[saveData objectForKey:@"mapSnapshot"]]; }
-                                                                withViewController:self];
+    DSMapBoxShareSheet *shareSheet = [DSMapBoxShareSheet shareSheetWithImageCreationBlock:^(void) { return [UIImage imageWithData:[saveData objectForKey:@"mapSnapshot"]]; }
+                                                                   modalForViewController:self];
     
     [shareSheet showFromRect:self.actionButton.bounds inView:self.actionButton animated:YES];
 }

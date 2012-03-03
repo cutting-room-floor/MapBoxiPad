@@ -8,6 +8,14 @@
 
 @interface DSMapBoxShareSheet : UIActionSheet
 
-+ (id)shareSheetForImageHandler:(UIImage *(^)(void))imageHandler withViewController:(UIViewController *)viewController;
+// This API creates a customized UIActionSheet that takes an image creation block and
+// a presenting view controller. It presents the user with sharing choices, then when 
+// one is selected, obtains an image from the block and shares it accordingly, using
+// the view controller if needed to present from modally (Mail, Twitter, etc.)
+//
+// This avoids a possibly ugly delay while obtaining an image just to show an action
+// sheet that may not even get used. 
+//
++ (id)shareSheetWithImageCreationBlock:(UIImage *(^)(void))imageCreationBlock modalForViewController:(UIViewController *)presentingViewController;
 
 @end
