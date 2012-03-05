@@ -662,14 +662,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    RMSphericalTrapezium addedOverlayBounds = [self.dataOverlayManager addOverlayForKML:kml];
-                    
-                    RMSphericalTrapezium screenBounds = [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen];
-                    
-                    if (addedOverlayBounds.northeast.latitude  == screenBounds.northeast.latitude  && 
-                        addedOverlayBounds.northeast.longitude == screenBounds.northeast.longitude && 
-                        addedOverlayBounds.southwest.latitude  == screenBounds.southwest.latitude  && 
-                        addedOverlayBounds.southwest.longitude == screenBounds.southwest.longitude)
+                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForKML:kml], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
                     {
                         // no layer visual was actually added
                         //
@@ -704,7 +697,15 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    [self.dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]];
+                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    {
+                        // no layer visual was actually added
+                        //
+                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                        
+                        return;
+                    }
                     
                     // reference visuals for reordering later
                     //
@@ -726,7 +727,15 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    [self.dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]];
+                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    {
+                        // no layer visual was actually added
+                        //
+                        if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                        
+                        return;
+                    }
                     
                     // reference visuals for reordering later
                     //
