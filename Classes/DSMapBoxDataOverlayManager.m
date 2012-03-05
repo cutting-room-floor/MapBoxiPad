@@ -43,9 +43,10 @@
 
 #import "UIImage-Extensions.h"
 
-#define kDSPlacemarkAlpha    0.9f
-#define kDSPathShadowBlur   10.0f
-#define kDSPathShadowOffset CGSizeMake(3, 3)
+#define kDSPlacemarkAlpha        0.9f
+#define kDSPathShadowBlur       10.0f
+#define kDSPathShadowOffset     CGSizeMake(3, 3)
+#define kDSPathDefaultLineWidth  2.0f
 
 @interface DSMapBoxDataOverlayManager ()
 
@@ -129,8 +130,7 @@
         {
             // draw placemarks as RMMarkers with popups
             //
-            if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && 
-                ((SimpleKMLPlacemark *)feature).point)
+            if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).point)
             {
                 UIImage *icon;
                 
@@ -177,15 +177,12 @@
             
             // draw lines as RMPaths
             //
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
-                     ((SimpleKMLPlacemark *)feature).lineString         &&
-                     ((SimpleKMLPlacemark *)feature).style              && 
-                     ((SimpleKMLPlacemark *)feature).style.lineStyle)
+            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).lineString)
             {
                 RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
                 
-                path.lineColor    = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
-                path.lineWidth    = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                path.lineColor    = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
+                path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
                 path.fillColor    = [UIColor clearColor];
                 path.shadowBlur   = kDSPathShadowBlur;
                 path.shadowOffset = kDSPathShadowOffset;
@@ -229,14 +226,11 @@
             
             // draw polygons as RMPaths
             //
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] &&
-                     ((SimpleKMLPlacemark *)feature).polygon            &&
-                     ((SimpleKMLPlacemark *)feature).style              &&
-                     ((SimpleKMLPlacemark *)feature).style.polyStyle)
+            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).polygon)
             {
                 RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
                 
-                path.lineColor = ((SimpleKMLPlacemark *)feature).style.lineStyle.color;
+                path.lineColor = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
                 
                 if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
                     path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
@@ -244,7 +238,7 @@
                 else
                     path.fillColor = [UIColor clearColor];
                 
-                path.lineWidth    = ((SimpleKMLPlacemark *)feature).style.lineStyle.width;
+                path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
                 path.shadowBlur   = kDSPathShadowBlur;
                 path.shadowOffset = kDSPathShadowOffset;
 
