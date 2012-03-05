@@ -45,6 +45,14 @@
 @synthesize dataLayers;
 @synthesize delegate;
 
+bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium sphericalTrapeziumOne, RMSphericalTrapezium sphericalTrapeziumTwo)
+{
+    return (sphericalTrapeziumOne.northeast.latitude  == sphericalTrapeziumTwo.northeast.latitude  && 
+            sphericalTrapeziumOne.northeast.longitude == sphericalTrapeziumTwo.northeast.longitude && 
+            sphericalTrapeziumOne.southwest.latitude  == sphericalTrapeziumTwo.southwest.latitude  && 
+            sphericalTrapeziumOne.southwest.longitude == sphericalTrapeziumTwo.southwest.longitude);
+}
+
 - (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
 {
     self = [super init];

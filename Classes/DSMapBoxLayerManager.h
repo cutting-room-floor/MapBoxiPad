@@ -19,6 +19,8 @@
 //  new top-most map view. 
 //
 
+#import "RMLatLong.h"
+
 @class DSMapBoxDataOverlayManager;
 @class DSMapView;
 @class RMMBTilesTileSource;
@@ -68,5 +70,7 @@ typedef enum {
 - (void)reloadLayersFromDisk;
 - (void)reorderLayerDisplay;
 - (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers;
+
+bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium sphericalTrapeziumOne, RMSphericalTrapezium sphericalTrapeziumTwo);
 
 @end
