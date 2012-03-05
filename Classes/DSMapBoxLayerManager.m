@@ -521,7 +521,7 @@
     switch (indexPath.section)
     {
         case DSMapBoxLayerSectionTile:
-            
+        {
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue]) // layer disable
@@ -621,9 +621,9 @@
             }
 
             break;
-            
+        }
         case DSMapBoxLayerSectionData:
-            
+        {
             layer = [self.dataLayers objectAtIndex:indexPath.row];
             
             if ([[layer objectForKey:@"selected"] boolValue])
@@ -729,6 +729,7 @@
             }
 
             break;
+        }
     }
     
     // toggle selected state
