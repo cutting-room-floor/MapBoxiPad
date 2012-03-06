@@ -1430,6 +1430,8 @@
     alert.context = @"layer problem";
     
     [alert show];
+    
+    [TestFlight passCheckpoint:@"experienced layer problem"];
 }
 
 #pragma mark -
