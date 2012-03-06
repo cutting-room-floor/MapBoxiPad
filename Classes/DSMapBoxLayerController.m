@@ -134,7 +134,7 @@
     
         [self reloadRowsAtIndexPaths:nil];
         
-        [TESTFLIGHT passCheckpoint:@"toggled active layer mode"];
+        [TestFlight passCheckpoint:@"toggled active layer mode"];
     }
 
     self.tableView.allowsMultipleSelection = NO;
@@ -212,7 +212,7 @@
 
                     self.bulkDownloadMode = NO;
                     
-                    [TESTFLIGHT passCheckpoint:@"bulk downloaded layers"];
+                    [TestFlight passCheckpoint:@"bulk downloaded layers"];
                 }];
                 
                 [alert show];
@@ -243,7 +243,7 @@
 
         [self reloadRowsAtIndexPaths:nil];
         
-        [TESTFLIGHT passCheckpoint:@"toggled bulk download mode"];
+        [TestFlight passCheckpoint:@"toggled bulk download mode"];
     }
 }
 
@@ -304,7 +304,7 @@
                                                     {
                                                         [self deleteLayersAtIndexPaths:indexPaths];
                                                         
-                                                        [TESTFLIGHT passCheckpoint:@"confirmed large layer deletion"];
+                                                        [TestFlight passCheckpoint:@"confirmed large layer deletion"];
                                                     }
 
                                                     self.bulkDeleteMode = NO;
@@ -317,7 +317,7 @@
                 
                 self.bulkDeleteMode = NO;
                 
-                [TESTFLIGHT passCheckpoint:@"bulk deleted layers"];
+                [TestFlight passCheckpoint:@"bulk deleted layers"];
             }
             tintColor:[UIColor colorWithRed:0.8 green:0.1 blue:0.1 alpha:1.0]];
 
@@ -345,7 +345,7 @@
 
         [self reloadRowsAtIndexPaths:nil];
         
-        [TESTFLIGHT passCheckpoint:@"toggled bulk delete mode"];
+        [TestFlight passCheckpoint:@"toggled bulk delete mode"];
     }
 }
 
@@ -663,7 +663,7 @@
 {
     [self.layerManager moveLayerAtIndexPath:fromIndexPath toIndexPath:toIndexPath];
     
-    [TESTFLIGHT passCheckpoint:@"reordered layers"];
+    [TestFlight passCheckpoint:@"reordered layers"];
 }
 
 #pragma mark -
@@ -834,7 +834,7 @@
                           otherButtonTitles:[NSArray arrayWithObject:@"OK"]
                                     handler:nil];
         
-        [TESTFLIGHT passCheckpoint:@"user warned about out-of-zoom layer"];
+        [TestFlight passCheckpoint:@"user warned about out-of-zoom layer"];
         
         return;
     }
@@ -875,7 +875,7 @@
         if (self.delegate && [self.delegate respondsToSelector:@selector(zoomToLayer:)])
             [self.delegate zoomToLayer:[self.layerManager.tileLayers objectAtIndex:indexPath.row]];
     
-    [TESTFLIGHT passCheckpoint:@"tapped layer crosshairs to zoom"];
+    [TestFlight passCheckpoint:@"tapped layer crosshairs to zoom"];
 }
 
 @end

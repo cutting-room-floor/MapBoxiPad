@@ -12,4 +12,5 @@
     #import "DSMapBoxNetworkActivityIndicator.h"
     #import "DSMapBoxURLRequest.h"
     #import <BlocksKit/BlocksKit.h>
+    #import "TestFlight.h"
 #endif

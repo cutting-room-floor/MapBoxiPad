@@ -724,7 +724,7 @@
                                           inView:self.mapView.topMostMapView
                                         animated:YES];
             
-            [TESTFLIGHT passCheckpoint:@"tapped interactive layer"];
+            [TestFlight passCheckpoint:@"tapped interactive layer"];
         }
 
         else if (self.balloon.popoverVisible)
@@ -802,7 +802,7 @@
                                   inView:self.mapView.topMostMapView
                                 animated:YES];
     
-    [TESTFLIGHT passCheckpoint:@"tapped on marker"];
+    [TestFlight passCheckpoint:@"tapped on marker"];
 }
 
 - (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map

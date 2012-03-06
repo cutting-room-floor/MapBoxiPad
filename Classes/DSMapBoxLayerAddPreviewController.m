@@ -95,7 +95,7 @@
     
     self.metadataLabel.text = metadata;
     
-    [TESTFLIGHT passCheckpoint:@"previewed TileStream layer"];
+    [TestFlight passCheckpoint:@"previewed TileStream layer"];
 }
 
 #pragma mark -

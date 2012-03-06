@@ -309,7 +309,7 @@
     
     [feedbackButton setImage:testFlightImage forState:UIControlStateNormal];
     
-    [feedbackButton addTarget:[TESTFLIGHT class] action:@selector(openFeedbackView) forControlEvents:UIControlEventTouchUpInside];
+    [feedbackButton addTarget:[TestFlight class] action:@selector(openFeedbackView) forControlEvents:UIControlEventTouchUpInside];
     
     feedbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     
@@ -624,7 +624,7 @@
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TESTFLIGHT passCheckpoint:@"imported KML"];
+        [TestFlight passCheckpoint:@"imported KML"];
     }
 }
 
@@ -644,7 +644,7 @@
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TESTFLIGHT passCheckpoint:@"imported GeoRSS"];
+        [TestFlight passCheckpoint:@"imported GeoRSS"];
     }
     
     else
@@ -667,7 +667,7 @@
         
         [self layerImportAlertWithName:[fileURL lastPathComponent]];
         
-        [TESTFLIGHT passCheckpoint:@"imported GeoJSON"];
+        [TestFlight passCheckpoint:@"imported GeoJSON"];
     }
     
     else
@@ -684,7 +684,7 @@
     
     [self layerImportAlertWithName:[fileURL lastPathComponent]];
     
-    [TESTFLIGHT passCheckpoint:@"imported MBTiles"];
+    [TestFlight passCheckpoint:@"imported MBTiles"];
 }
 
 - (IBAction)tappedLayersButton:(id)sender
@@ -718,7 +718,7 @@
 {
     [self manageExclusiveItem:sender];
     
-    [TESTFLIGHT passCheckpoint:@"toggled clustering"];
+    [TestFlight passCheckpoint:@"toggled clustering"];
     
     DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.topMostMapView.contents.markerManager;
     
@@ -733,7 +733,7 @@
 
 - (IBAction)tappedHelpButton:(id)sender
 {
-    [TESTFLIGHT passCheckpoint:@"viewed help"];
+    [TestFlight passCheckpoint:@"viewed help"];
     
     [self manageExclusiveItem:sender];
     
@@ -800,7 +800,7 @@
     {
         [self.downloadsPopover presentPopoverFromBarButtonItem:self.downloadsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
-        [TESTFLIGHT passCheckpoint:@"opened downloads list"];
+        [TestFlight passCheckpoint:@"opened downloads list"];
     }
 }
 
@@ -1249,7 +1249,7 @@
                 
                 [alert show];
                 
-                [TESTFLIGHT passCheckpoint:@"prompted to import clipboard URL"];
+                [TestFlight passCheckpoint:@"prompted to import clipboard URL"];
             }
         }
     }
@@ -1362,7 +1362,7 @@
 {
     [self saveState:name];
     
-    [TESTFLIGHT passCheckpoint:@"saved document from main view"];
+    [TestFlight passCheckpoint:@"saved document from main view"];
 }
 
 #pragma mark -
@@ -1494,7 +1494,7 @@
                 
                 [self presentModalViewController:mailer animated:YES];
                 
-                [TESTFLIGHT passCheckpoint:@"prompted to report layer problem"];
+                [TestFlight passCheckpoint:@"prompted to report layer problem"];
             }
             else
             {
@@ -1526,7 +1526,7 @@
         {
             // import clipboard URL
             //
-            [TESTFLIGHT passCheckpoint:@"imported clipboard URL"];
+            [TestFlight passCheckpoint:@"imported clipboard URL"];
 
             [[UIPasteboard generalPasteboard] setValue:nil forPasteboardType:(NSString *)kUTTypeURL];
             

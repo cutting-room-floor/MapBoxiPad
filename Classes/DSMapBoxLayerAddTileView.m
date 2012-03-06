@@ -332,7 +332,7 @@
         //
         [self.delegate tileViewWantsToShowPreview:self];
         
-        [TESTFLIGHT passCheckpoint:@"tapped TileStream layer corner to preview"];
+        [TestFlight passCheckpoint:@"tapped TileStream layer corner to preview"];
     }
 
     else if (self.touched)
@@ -360,7 +360,7 @@
         //
         [self.delegate tileViewWantsToShowPreview:self];
         
-        [TESTFLIGHT passCheckpoint:@"used pinch gesture to preview TileStream layer"];
+        [TestFlight passCheckpoint:@"used pinch gesture to preview TileStream layer"];
     }
 }
 

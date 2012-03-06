@@ -73,7 +73,7 @@
     //
     dispatch_delayed_ui_action(0.0, ^(void) { [self reload]; });
     
-    [TESTFLIGHT passCheckpoint:@"viewed document loader"];
+    [TestFlight passCheckpoint:@"viewed document loader"];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -219,7 +219,7 @@
 
         [self reload];
         
-        [TESTFLIGHT passCheckpoint:@"saved document from document load view"];
+        [TestFlight passCheckpoint:@"saved document from document load view"];
     }
 }
 
@@ -273,7 +273,7 @@
     if ([self.delegate respondsToSelector:@selector(documentLoadController:didLoadDocumentWithName:)])
         [self.delegate documentLoadController:self didLoadDocumentWithName:[snapshotName stringByReplacingOccurrencesOfString:@".plist" withString:@""]];
     
-    [TESTFLIGHT passCheckpoint:@"loaded saved document"];
+    [TestFlight passCheckpoint:@"loaded saved document"];
 }
 
 @end

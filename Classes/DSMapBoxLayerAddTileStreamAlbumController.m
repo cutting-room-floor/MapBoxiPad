@@ -247,7 +247,7 @@
 
     [self.albumDownload start];
     
-    [TESTFLIGHT passCheckpoint:@"browsed TileStream accounts"];
+    [TestFlight passCheckpoint:@"browsed TileStream accounts"];
 }
 
 - (void)viewDidDisappear:(BOOL)animated

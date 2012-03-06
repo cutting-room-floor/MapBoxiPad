@@ -68,31 +68,31 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         [self reloadLayersFromDisk];
         
         if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"mbtiles"]) // bundled set doesn't have a URL
-            [TESTFLIGHT passCheckpoint:@"has MBTiles layer"];
+            [TestFlight passCheckpoint:@"has MBTiles layer"];
         
         if ([[tileLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"plist"])
-            [TESTFLIGHT passCheckpoint:@"has TileStream layer"];
+            [TestFlight passCheckpoint:@"has TileStream layer"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kml"])
-            [TESTFLIGHT passCheckpoint:@"has KML layer (.kml)"];
+            [TestFlight passCheckpoint:@"has KML layer (.kml)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"kmz"])
-            [TESTFLIGHT passCheckpoint:@"has KML layer (.kmz)"];
+            [TestFlight passCheckpoint:@"has KML layer (.kmz)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"rss"])            
-            [TESTFLIGHT passCheckpoint:@"has GeoRSS layer (.rss)"];
+            [TestFlight passCheckpoint:@"has GeoRSS layer (.rss)"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"xml"])
-            [TESTFLIGHT passCheckpoint:@"has GeoRSS layer (.xml)"];
+            [TestFlight passCheckpoint:@"has GeoRSS layer (.xml)"];
         
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"json"])
-            [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.json)"];
+            [TestFlight passCheckpoint:@"has GeoJSON layer (.json)"];
             
         if ([[dataLayers valueForKeyPath:@"URL.pathExtension"] containsObject:@"geojson"])
-            [TESTFLIGHT passCheckpoint:@"has GeoJSON layer (.geojson)"];
+            [TestFlight passCheckpoint:@"has GeoJSON layer (.geojson)"];
         
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"Tile Layer Count"];
-        [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"Data Layer Count"];
+        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [tileLayers count]] forKey:@"Tile Layer Count"];
+        [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", [dataLayers count]] forKey:@"Data Layer Count"];
     }
 
     return self;
@@ -157,7 +157,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
 
                         downloadable = YES;
 
-                        [TESTFLIGHT passCheckpoint:@"has downloadable TileStream layer"];
+                        [TestFlight passCheckpoint:@"has downloadable TileStream layer"];
                     }
                 }
             }
@@ -605,7 +605,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                 [layerMapViews addObject:layerMapView];
                 ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
                 
-                [TESTFLIGHT passCheckpoint:@"enabled tile layer"];
+                [TestFlight passCheckpoint:@"enabled tile layer"];
             }
 
             // hide default base map if we have full-world coverage somewhere else
@@ -681,7 +681,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     //
                     [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
-                    [TESTFLIGHT passCheckpoint:@"enabled KML layer"];
+                    [TestFlight passCheckpoint:@"enabled KML layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
                 {
@@ -711,7 +711,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     //
                     [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
-                    [TESTFLIGHT passCheckpoint:@"enabled GeoRSS layer"];
+                    [TestFlight passCheckpoint:@"enabled GeoRSS layer"];
                 }
                 else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
                 {
@@ -741,7 +741,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     //
                     [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
                     
-                    [TESTFLIGHT passCheckpoint:@"enabled GeoJSON layer"];
+                    [TestFlight passCheckpoint:@"enabled GeoJSON layer"];
                 }
             }
 

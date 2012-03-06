@@ -102,7 +102,7 @@
                 tweetSheet.completionHandler = ^(TWTweetComposeViewControllerResult result)
                 {
                     if (result == TWTweetComposeViewControllerResultDone)
-                        [TESTFLIGHT passCheckpoint:@"shared snapshot by Twitter"];
+                        [TestFlight passCheckpoint:@"shared snapshot by Twitter"];
                     
                     [self.presentingViewController dismissModalViewControllerAnimated:YES];
                 };
@@ -128,7 +128,7 @@
                 [[NSUserDefaults standardUserDefaults] synchronize];
             }            
             
-            [TESTFLIGHT passCheckpoint:@"saved snapshot to camera roll"];
+            [TestFlight passCheckpoint:@"saved snapshot to camera roll"];
             
             break;
         }
@@ -151,7 +151,7 @@
     }
     else
     {
-        [TESTFLIGHT passCheckpoint:@"shared snapshot by mail"];
+        [TestFlight passCheckpoint:@"shared snapshot by mail"];
     }
 }
 

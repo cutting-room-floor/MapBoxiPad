@@ -66,7 +66,7 @@
 
     [self.moviePlayer play];
 
-    [TESTFLIGHT passCheckpoint:@"started watching help video"];
+    [TestFlight passCheckpoint:@"started watching help video"];
 }
 
 - (void)tappedHelpDoneButton:(id)sender
@@ -81,7 +81,7 @@
     if (self.moviePlayer.fullscreen)
         [self.moviePlayer setFullscreen:NO animated:YES];
     
-    [TESTFLIGHT passCheckpoint:@"finished watching help video"];
+    [TestFlight passCheckpoint:@"finished watching help video"];
 }
 
 #pragma mark -

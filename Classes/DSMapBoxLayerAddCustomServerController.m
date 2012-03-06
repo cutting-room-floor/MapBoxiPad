@@ -63,7 +63,7 @@
     self.recentServersTableView.clipsToBounds      = YES;
     self.recentServersTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
     
-    [TESTFLIGHT passCheckpoint:@"viewed custom TileStream servers"];
+    [TestFlight passCheckpoint:@"viewed custom TileStream servers"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -291,7 +291,7 @@
     
     [(UINavigationController *)self.parentViewController pushViewController:controller animated:YES];
     
-    [TESTFLIGHT passCheckpoint:@"added custom TileStream server"];
+    [TestFlight passCheckpoint:@"added custom TileStream server"];
 }
 
 #pragma mark -
@@ -328,7 +328,7 @@
     
     [self tappedNextButton:self];
     
-    [TESTFLIGHT passCheckpoint:@"tapped custom TileStream server in history"];
+    [TestFlight passCheckpoint:@"tapped custom TileStream server in history"];
 }
 
 #pragma mark -

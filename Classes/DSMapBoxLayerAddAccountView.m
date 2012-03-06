@@ -428,7 +428,7 @@
                                      [self.delegate accountViewWasSelected:self];
                                  }];
                 
-                [TESTFLIGHT passCheckpoint:@"used flick gesture on TileStream account to browse"];
+                [TestFlight passCheckpoint:@"used flick gesture on TileStream account to browse"];
             }
             else
             {
@@ -468,7 +468,7 @@
             
             [UIView commitAnimations];
             
-            [TESTFLIGHT passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
+            [TestFlight passCheckpoint:@"tried pinch gesture on TileStream account with one set"];
         }
         else
         {
@@ -517,7 +517,7 @@
 
                 [UIView commitAnimations];
                 
-                [TESTFLIGHT passCheckpoint:@"used pinch gesture on TileStream account to peek"];
+                [TestFlight passCheckpoint:@"used pinch gesture on TileStream account to peek"];
             }
         }
     }

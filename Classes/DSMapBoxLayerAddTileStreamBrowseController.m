@@ -281,7 +281,7 @@
     
     [self.layersDownload start];
     
-    [TESTFLIGHT passCheckpoint:@"browsed TileStream server"];
+    [TestFlight passCheckpoint:@"browsed TileStream server"];
 }
 
 - (void)viewWillAppear:(BOOL)animated

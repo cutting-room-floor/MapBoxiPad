@@ -49,8 +49,10 @@
     
     // begin TestFlight tracking
     //
-    [TESTFLIGHT takeOff:kTestFlightTeamToken];
-    
+#if ! DEBUG
+    [TestFlight takeOff:kTestFlightTeamToken];
+#endif
+
     // legacy data migration
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
@@ -144,15 +146,13 @@
     //
     [[DSMapBoxDownloadManager sharedManager] performSelector:@selector(resumeDownloads) withObject:nil afterDelay:5.0];
     
-#if ADHOC
     // track number of saved maps
     //
     NSString *savedMapsPath = [NSString stringWithFormat:@"%@/%@", [[UIApplication sharedApplication] preferencesFolderPath], kDSSaveFolderName];
     
     int savedMapsCount = [[[NSFileManager defaultManager] contentsOfDirectoryAtPath:savedMapsPath error:NULL] count];
     
-    [TESTFLIGHT addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", savedMapsCount] forKey:@"Saved Map Count"];
-#endif
+    [TestFlight addCustomEnvironmentInformation:[NSString stringWithFormat:@"%i", savedMapsCount] forKey:@"Saved Map Count"];
     
 	return YES;
 }
@@ -260,7 +260,7 @@
         
         [[DSMapBoxDownloadManager sharedManager] resumeDownloads];
         
-        [TESTFLIGHT passCheckpoint:@"opened in-app MBTiles download URL"];
+        [TestFlight passCheckpoint:@"opened in-app MBTiles download URL"];
 
         return success;
     }
@@ -303,7 +303,7 @@
         
         [download start];
         
-        [TESTFLIGHT passCheckpoint:@"opened network URL"];
+        [TestFlight passCheckpoint:@"opened network URL"];
         
         return YES;
     }

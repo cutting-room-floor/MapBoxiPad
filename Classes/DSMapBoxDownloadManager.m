@@ -347,7 +347,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
                                                         object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
 
-    [TESTFLIGHT passCheckpoint:@"paused MBTiles download"];
+    [TestFlight passCheckpoint:@"paused MBTiles download"];
 }
 
 - (void)resumeDownload:(NSURLConnection *)download
@@ -360,7 +360,7 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification object:[NSNumber numberWithBool:YES]];
     
-    [TESTFLIGHT passCheckpoint:@"resumed MBTiles download"];
+    [TestFlight passCheckpoint:@"resumed MBTiles download"];
 }
 
 - (void)cancelDownload:(NSURLConnection *)download
@@ -384,7 +384,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxDownloadQueueNotification 
                                                         object:[NSNumber numberWithBool:([self.downloads count] ? YES : NO)]];
     
-    [TESTFLIGHT passCheckpoint:@"cancelled MBTiles download"];
+    [TestFlight passCheckpoint:@"cancelled MBTiles download"];
 }
 
 #pragma mark -
@@ -470,7 +470,7 @@
     //
     [self pauseDownload:connection];
 
-    [TESTFLIGHT passCheckpoint:@"failed MBTiles download"];
+    [TestFlight passCheckpoint:@"failed MBTiles download"];
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
@@ -600,7 +600,7 @@
     }
     afterDelay:1.0];
     
-    [TESTFLIGHT passCheckpoint:@"completed MBTiles download"];
+    [TestFlight passCheckpoint:@"completed MBTiles download"];
 }
 
 @end

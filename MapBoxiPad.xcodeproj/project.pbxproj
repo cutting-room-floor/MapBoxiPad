@@ -168,7 +168,6 @@
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
 		DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */; };
-		DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
 		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -564,8 +563,6 @@
 		DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLegendView.xib; sourceTree = "<group>"; };
 		DDAB24D6146B49C100C14467 /* DSMapBoxLegendManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLegendManager.h; sourceTree = "<group>"; };
 		DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegendManager.m; sourceTree = "<group>"; };
-		DDAB4E5C14313F9C00840F9C /* TestFlightDummy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlightDummy.h; sourceTree = "<group>"; };
-		DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestFlightDummy.m; sourceTree = "<group>"; };
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
 		DDACBCA0141FC6F4002704B7 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = "Externals/TestFlight SDK/TestFlight.h"; sourceTree = "<group>"; };
 		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
@@ -710,8 +707,6 @@
 			children = (
 				32CA4F630368D1EE00C91783 /* MapBoxiPad_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
-				DDAB4E5C14313F9C00840F9C /* TestFlightDummy.h */,
-				DDAB4E5D14313F9C00840F9C /* TestFlightDummy.m */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -1885,7 +1880,6 @@
 				DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */,
 				DD506C1C13FD8F73008EB626 /* DSMapBoxGeoJSONParser.m in Sources */,
 				DD7E1C69140D91B4008F52C6 /* DSMapBoxAlertView.m in Sources */,
-				DDAB4E5E14313F9C00840F9C /* TestFlightDummy.m in Sources */,
 				DD64BF8E14366355000CF679 /* UIViewController_Additions.m in Sources */,
 				DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */,
 				DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */,
