@@ -1498,13 +1498,15 @@
             }
             else
             {
-                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Mail Not Setup"
-                                                                message:@"Please setup Mail first."
-                                                               delegate:nil
-                                                      cancelButtonTitle:nil
-                                                      otherButtonTitles:@"OK", nil];
-                
-                [alert show];
+                [UIAlertView showAlertViewWithTitle:@"Mail Not Setup"
+                                            message:@"Please setup a Mail account in order to send a problem file."
+                                  cancelButtonTitle:nil
+                                  otherButtonTitles:[NSArray arrayWithObjects:@"OK", @"Show Me", nil]
+                                            handler:^(UIAlertView *alertView, NSInteger buttonIndex)
+                                            {
+                                                if (buttonIndex == alertView.firstOtherButtonIndex + 1)
+                                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=ACCOUNT_SETTINGS"]];
+                                            }];
             }
         }
     }
