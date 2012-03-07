@@ -19,7 +19,7 @@
 	<key>center</key>
 	<string>0,0,0</string>
 	<key>description</key>
-	<string>One of the example maps that comes with TileMill - a bright &amp; colorful world map that blends retro and high-tech with its folded paper texture and interactive flag tooltips. </string>
+	<string>Bright &amp; colorful world map that blends retro and high-tech with its folded paper texture and interactive flag tooltips. </string>
 	<key>download</key>
 	<string>http://a.tiles.mapbox.com/v1/mapbox.geography-class.mbtiles</string>
 	<key>filesize</key>
