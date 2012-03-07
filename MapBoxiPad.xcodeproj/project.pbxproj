@@ -96,7 +96,6 @@
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
-		DD4B11BB14FFF22200885EE9 /* mapbox.mapbox-light.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */; };
 		DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
 		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
@@ -169,7 +168,6 @@
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
 		DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
-		DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */; };
 		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */; };
 		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
@@ -216,6 +214,7 @@
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
 		DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
+		DDF7F7401506E08E00F8E27C /* mapbox-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */; };
 		DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
 		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
@@ -425,7 +424,6 @@
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
-		DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mapbox.mapbox-light.plist"; sourceTree = "<group>"; };
 		DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mapbox.mapbox-streets.plist"; sourceTree = "<group>"; };
 		DD4BABF613BE62C50043FA21 /* DSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSSound.h; sourceTree = "<group>"; };
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
@@ -565,7 +563,6 @@
 		DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegendManager.m; sourceTree = "<group>"; };
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
 		DDACBCA0141FC6F4002704B7 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = "Externals/TestFlight SDK/TestFlight.h"; sourceTree = "<group>"; };
-		DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "world-light-ipad.mbtiles"; path = "tiles/world-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDB0FCA51485CD70003A4FD3 /* BALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BALabel.h; path = Externals/BaseAppKit/BALabel.h; sourceTree = "<group>"; };
 		DDB0FCA61485CD70003A4FD3 /* BALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BALabel.m; path = Externals/BaseAppKit/BALabel.m; sourceTree = "<group>"; };
 		DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapBoxMainViewController.xib; sourceTree = "<group>"; };
@@ -632,6 +629,7 @@
 		DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamBrowseController.m; sourceTree = "<group>"; };
 		DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamBrowseController.xib; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "mapbox-light-ipad.mbtiles"; path = "../stuff to not backup/mapbox-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
 		DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBarButtonItem_Additions.m; sourceTree = "<group>"; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1123,7 +1121,6 @@
 				DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */,
 				DDB87DF314CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist */,
 				DDB87DF414CDEEC900C5F717 /* mapbox.geography-class.plist */,
-				DD4B11B914FFF22200885EE9 /* mapbox.mapbox-light.plist */,
 				DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */,
 			);
 			name = "Preloaded Data";
@@ -1174,7 +1171,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DDADED5A137059AC0092226A /* world-light-ipad.mbtiles */,
+				DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */,
 				DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */,
 			);
 			name = "Tile Sets";
@@ -1691,7 +1688,6 @@
 				DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */,
 				DDE1C6BA1342E12F0049C325 /* point.png in Resources */,
 				DDEEACAF136F516A0058BA90 /* loading.png in Resources */,
-				DDADED5B137059AC0092226A /* world-light-ipad.mbtiles in Resources */,
 				DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */,
 				DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */,
 				DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */,
@@ -1741,8 +1737,8 @@
 				DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */,
 				DDB87DF514CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist in Resources */,
 				DDB87DF614CDEEC900C5F717 /* mapbox.geography-class.plist in Resources */,
-				DD4B11BB14FFF22200885EE9 /* mapbox.mapbox-light.plist in Resources */,
 				DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */,
+				DDF7F7401506E08E00F8E27C /* mapbox-light-ipad.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1977,7 +1973,6 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALTERNATE_MODE = "";
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -1994,7 +1989,6 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALTERNATE_MODE = "";
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -2012,7 +2006,6 @@
 		DD41D3B913C6617C004B7B42 /* Ad Hoc */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALTERNATE_MODE = Entitlements.plist;
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
 				CODE_SIGN_ENTITLEMENTS = Entitlements.plist;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
