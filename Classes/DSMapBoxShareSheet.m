@@ -54,12 +54,8 @@
                 [UIAlertView showAlertViewWithTitle:@"Mail Not Setup"
                                             message:@"Please setup a Mail account in order to send a snapshot."
                                   cancelButtonTitle:nil
-                                  otherButtonTitles:[NSArray arrayWithObjects:@"OK", @"Show Me", nil]
-                                            handler:^(UIAlertView *alertView, NSInteger buttonIndex)
-                                            {
-                                                if (buttonIndex == alertView.firstOtherButtonIndex + 1)
-                                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=ACCOUNT_SETTINGS"]];
-                                            }];
+                                  otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                            handler:nil];
             }
             else
             {
@@ -86,12 +82,8 @@
                 [UIAlertView showAlertViewWithTitle:@"Twitter Not Setup"
                                             message:@"Please setup a Twitter account in order to tweet a snapshot."
                                   cancelButtonTitle:nil
-                                  otherButtonTitles:[NSArray arrayWithObjects:@"OK", @"Show Me", nil]
-                                            handler:^(UIAlertView *alertView, NSInteger buttonIndex)
-                                            {
-                                                if (buttonIndex == alertView.firstOtherButtonIndex + 1)
-                                                    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=TWITTER"]];
-                                            }];
+                                  otherButtonTitles:[NSArray arrayWithObject:@"OK"]
+                                            handler:nil];
             }
             else
             {
