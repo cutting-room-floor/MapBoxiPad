@@ -41,8 +41,6 @@
 		DD0F615B11ED5A9F0050174D /* SimpleKMLStyleSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614511ED5A9F0050174D /* SimpleKMLStyleSelector.m */; };
 		DD0F615C11ED5A9F0050174D /* SimpleKMLSubStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */; };
 		DD10184511EE51FC00DF286F /* mapbox.png in Resources */ = {isa = PBXBuildFile; fileRef = DD10184411EE51FC00DF286F /* mapbox.png */; };
-		DD15A16E14904CD8004F7AFD /* scroll_hint_bottom.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */; };
-		DD15A16F14904CD8004F7AFD /* scroll_hint_top.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */; };
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
@@ -72,7 +70,6 @@
 		DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */; };
 		DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */; };
 		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
-		DD25422D12C03E79009261C1 /* dialog_background.png in Resources */ = {isa = PBXBuildFile; fileRef = DD25422C12C03E79009261C1 /* dialog_background.png */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
@@ -317,8 +314,6 @@
 		DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLSubStyle.m; path = "Externals/Simple KML/SimpleKMLSubStyle.m"; sourceTree = "<group>"; };
 		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
-		DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_bottom.png; sourceTree = SOURCE_ROOT; };
-		DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_top.png; sourceTree = SOURCE_ROOT; };
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -369,7 +364,6 @@
 		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
-		DD25422C12C03E79009261C1 /* dialog_background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dialog_background.png; sourceTree = "<group>"; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
 		DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxPopoverController.m; sourceTree = "<group>"; };
 		DD27509E13844560007B58AC /* DSMapBoxLayerAddPreviewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddPreviewController.h; sourceTree = "<group>"; };
@@ -1124,7 +1118,6 @@
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
-				DD25422C12C03E79009261C1 /* dialog_background.png */,
 				DDEEACAE136F516A0058BA90 /* loading.png */,
 				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
 				DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */,
@@ -1332,8 +1325,6 @@
 				DD72C76211E6847C0030C637 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
 				DDE4E21014897AE70040AFCD /* grabber.png */,
-				DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */,
-				DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1616,7 +1607,6 @@
 				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
 				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
-				DD25422D12C03E79009261C1 /* dialog_background.png in Resources */,
 				DDBE15C012C1747800C4AAB7 /* about.txt in Resources */,
 				DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */,
 				DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */,
@@ -1661,8 +1651,6 @@
 				DD4364DF147C3DAF00235F20 /* reset.css in Resources */,
 				DD680D56147DB66600BF32F2 /* white_clear.png in Resources */,
 				DDE4E21114897AE70040AFCD /* grabber.png in Resources */,
-				DD15A16E14904CD8004F7AFD /* scroll_hint_bottom.png in Resources */,
-				DD15A16F14904CD8004F7AFD /* scroll_hint_top.png in Resources */,
 				DD91C34714B51E3200330326 /* DSMapBoxDownloadTableViewCell.xib in Resources */,
 				DD91C35314B51E5000330326 /* downloads0.png in Resources */,
 				DD91C35414B51E5000330326 /* downloads1.png in Resources */,
