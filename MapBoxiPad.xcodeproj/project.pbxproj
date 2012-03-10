@@ -1852,6 +1852,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
@@ -1882,6 +1883,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
@@ -1964,6 +1966,7 @@
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/Externals/TestFlight SDK\"",
