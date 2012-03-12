@@ -93,7 +93,6 @@
 		DD48AC4011D3D79A000AF79E /* page_flip.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD48AC3F11D3D79A000AF79E /* page_flip.wav */; };
 		DD48AC4411D3D807000AF79E /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD48AC4311D3D807000AF79E /* AudioToolbox.framework */; };
 		DD48C3C211CBFA9700038969 /* routeme.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD48C3C111CBFA9700038969 /* routeme.plist */; };
-		DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */; };
 		DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4BABF713BE62C50043FA21 /* DSSound.m */; };
 		DD4BAC1913BE6D7B0043FA21 /* cluster_off.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */; };
 		DD4BAC1A13BE6D7B0043FA21 /* cluster_on.png in Resources */ = {isa = PBXBuildFile; fileRef = DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */; };
@@ -197,6 +196,7 @@
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
 		DDE011A113CE33390070F421 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE011A013CE33390070F421 /* error.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
+		DDE0C069150E82AD006FCCE9 /* mapbox-streets-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDE0C068150E82AD006FCCE9 /* mapbox-streets-ipad.mbtiles */; };
 		DDE1C6B51342E1180049C325 /* crosshairs_highlight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */; };
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
@@ -211,7 +211,6 @@
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
 		DDEF90D613832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */; };
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
-		DDF7F7401506E08E00F8E27C /* mapbox-light-ipad.mbtiles in Resources */ = {isa = PBXBuildFile; fileRef = DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */; };
 		DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
 		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
@@ -396,7 +395,6 @@
 		DD48AC3F11D3D79A000AF79E /* page_flip.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = page_flip.wav; sourceTree = "<group>"; };
 		DD48AC4311D3D807000AF79E /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		DD48C3C111CBFA9700038969 /* routeme.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = routeme.plist; sourceTree = "<group>"; };
-		DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "mapbox.mapbox-streets.plist"; sourceTree = "<group>"; };
 		DD4BABF613BE62C50043FA21 /* DSSound.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSSound.h; sourceTree = "<group>"; };
 		DD4BABF713BE62C50043FA21 /* DSSound.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSSound.m; sourceTree = "<group>"; };
 		DD4BAC1713BE6D7B0043FA21 /* cluster_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cluster_off.png; sourceTree = "<group>"; };
@@ -583,6 +581,7 @@
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
 		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = error.png; path = ../error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DDE0C068150E82AD006FCCE9 /* mapbox-streets-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "mapbox-streets-ipad.mbtiles"; path = "../stuff to not backup/mapbox-streets-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs_highlight.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B41342E1180049C325 /* crosshairs.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = crosshairs.png; sourceTree = SOURCE_ROOT; };
 		DDE1C6B91342E12F0049C325 /* point.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = point.png; sourceTree = SOURCE_ROOT; };
@@ -601,7 +600,6 @@
 		DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddTileStreamBrowseController.m; sourceTree = "<group>"; };
 		DDEF90D413832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddTileStreamBrowseController.xib; sourceTree = "<group>"; };
 		DDF3221211DADD720068287A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */ = {isa = PBXFileReference; lastKnownFileType = file; name = "mapbox-light-ipad.mbtiles"; path = "../stuff to not backup/mapbox-light-ipad.mbtiles"; sourceTree = "<group>"; };
 		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
 		DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBarButtonItem_Additions.m; sourceTree = "<group>"; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
@@ -1054,7 +1052,6 @@
 				DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */,
 				DDB87DF314CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist */,
 				DDB87DF414CDEEC900C5F717 /* mapbox.geography-class.plist */,
-				DD4B11BA14FFF22200885EE9 /* mapbox.mapbox-streets.plist */,
 			);
 			name = "Preloaded Data";
 			path = preload;
@@ -1104,7 +1101,7 @@
 		DD70D91C11D188BB0002E222 /* Tile Sets */ = {
 			isa = PBXGroup;
 			children = (
-				DDF7F73F1506E08E00F8E27C /* mapbox-light-ipad.mbtiles */,
+				DDE0C068150E82AD006FCCE9 /* mapbox-streets-ipad.mbtiles */,
 				DD75BB0212E0E1BE0058258E /* bundled_tileset_md5sum.txt */,
 			);
 			name = "Tile Sets";
@@ -1664,8 +1661,7 @@
 				DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */,
 				DDB87DF514CDEEC900C5F717 /* mapbox.blue-marble-topo-bathy-jul.plist in Resources */,
 				DDB87DF614CDEEC900C5F717 /* mapbox.geography-class.plist in Resources */,
-				DD4B11BC14FFF22200885EE9 /* mapbox.mapbox-streets.plist in Resources */,
-				DDF7F7401506E08E00F8E27C /* mapbox-light-ipad.mbtiles in Resources */,
+				DDE0C069150E82AD006FCCE9 /* mapbox-streets-ipad.mbtiles in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
