@@ -57,11 +57,6 @@
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
     
-    // main UI setup
-    //
-    [self.window addSubview:self.viewController.view];
-    [self.window makeKeyAndVisible];
-
     // display help UI on first run
     //
     if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
