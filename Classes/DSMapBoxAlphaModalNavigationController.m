@@ -68,8 +68,8 @@
         // the view, since, assuming we are modal, it is below us and 
         // isn't going anywhere.
         //
-        self.baseView = [[UIApplication sharedApplication].keyWindow.subviews objectAtIndex:0];
-            
+        self.baseView = [[[[[UIApplication sharedApplication] windows] objectAtIndex:0] subviews] objectAtIndex:0];
+
         BOOL viewIsFullscreen = ((self.baseView.bounds.size.width >= 748 && self.baseView.bounds.size.width <= 768 && self.baseView.bounds.size.height >= 1004 && self.baseView.bounds.size.height <= 1024) ||
                                 (self.baseView.bounds.size.height >= 748 && self.baseView.bounds.size.height <= 768 && self.baseView.bounds.size.width >= 1004 && self.baseView.bounds.size.height <= 1024));
 
