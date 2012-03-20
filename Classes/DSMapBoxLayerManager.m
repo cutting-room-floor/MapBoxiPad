@@ -594,7 +594,8 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                                           zoomLevel:self.baseMapView.contents.zoom
                                        maxZoomLevel:[source maxZoom]
                                        minZoomLevel:[source minZoom]
-                                    backgroundImage:nil];
+                                    backgroundImage:nil
+                                        screenScale:0.0];
                 
                 // get peer layer map views
                 //

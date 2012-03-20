@@ -125,7 +125,8 @@
                               zoomLevel:kStartingZoom
                            maxZoomLevel:[source maxZoom]
                            minZoomLevel:[source minZoom]
-                        backgroundImage:nil];
+                        backgroundImage:nil
+                            screenScale:0.0];
     
     self.mapView.enableRotate = NO;
     self.mapView.deceleration = NO;
