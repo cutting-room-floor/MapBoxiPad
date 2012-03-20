@@ -106,7 +106,6 @@
 		DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */; };
 		DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */; };
 		DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */; };
-		DD5678C912AEF2E100B73C8A /* intro.mov in Resources */ = {isa = PBXBuildFile; fileRef = DD5678C812AEF2E100B73C8A /* intro.mov */; };
 		DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5678F212AEF62200B73C8A /* MediaPlayer.framework */; };
 		DD601BA212FA3C9A00CE7C14 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B8812FA3C9A00CE7C14 /* CTidy.m */; };
 		DD601BA312FA3C9A00CE7C14 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B8912FA3C9A00CE7C14 /* CXMLNode.m */; };
@@ -426,7 +425,6 @@
 		DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxHelpController.h; sourceTree = "<group>"; };
 		DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxHelpController.m; sourceTree = "<group>"; };
 		DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxHelpController.xib; sourceTree = "<group>"; };
-		DD5678C812AEF2E100B73C8A /* intro.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = intro.mov; sourceTree = "<group>"; };
 		DD5678F212AEF62200B73C8A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DD601B8512FA3C9A00CE7C14 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD601B8712FA3C9A00CE7C14 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
@@ -718,7 +716,6 @@
 				DD70D91D11D188DA0002E222 /* Images */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
-				DD5678C712AEF2C900B73C8A /* Videos */,
 				DD52696E12C1E051002E890C /* Preloaded Data */,
 			);
 			name = Resources;
@@ -1097,14 +1094,6 @@
 				DDCE299412B6E707008A1257 /* Resources */,
 			);
 			name = Help;
-			sourceTree = "<group>";
-		};
-		DD5678C712AEF2C900B73C8A /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				DD5678C812AEF2E100B73C8A /* intro.mov */,
-			);
-			name = Videos;
 			sourceTree = "<group>";
 		};
 		DD601B8612FA3C9A00CE7C14 /* Tidy */ = {
@@ -1643,7 +1632,6 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
-				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
 				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
 				DDBE15C012C1747800C4AAB7 /* about.txt in Resources */,
