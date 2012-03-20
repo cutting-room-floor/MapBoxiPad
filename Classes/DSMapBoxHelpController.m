@@ -115,7 +115,7 @@
             break;
             
         case 1:
-            cell.textLabel.text = @"View Release Notes";
+            cell.textLabel.text = @"Release Notes";
             break;
         
         case 2:
