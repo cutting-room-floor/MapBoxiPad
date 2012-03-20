@@ -10,12 +10,11 @@
 
 static NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
-@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddTileViewDelegate>
+@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <DSMapBoxLayerAddTileViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *helpLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) IBOutlet UIScrollView *tileScrollView;
-@property (nonatomic, strong) IBOutlet UIPageControl *tilePageControl;
 @property (nonatomic, strong) NSString *serverName;
 @property (nonatomic, strong) NSURL *serverURL;
 
