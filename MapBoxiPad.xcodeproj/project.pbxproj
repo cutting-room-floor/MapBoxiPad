@@ -212,6 +212,7 @@
 		DDDD574315181AB80052F9AE /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574015181AB80052F9AE /* iTunesArtwork@2x */; };
 		DDDD574415181AB80052F9AE /* spotlight-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574115181AB80052F9AE /* spotlight-icon.png */; };
 		DDDD574515181AB80052F9AE /* spotlight-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */; };
+		DDDD574715181B6E0052F9AE /* testflight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574615181B6E0052F9AE /* testflight@2x.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
 		DDE011A113CE33390070F421 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE011A013CE33390070F421 /* error.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
@@ -616,6 +617,7 @@
 		DDDD574015181AB80052F9AE /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		DDDD574115181AB80052F9AE /* spotlight-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spotlight-icon.png"; sourceTree = "<group>"; };
 		DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spotlight-icon@2x.png"; sourceTree = "<group>"; };
+		DDDD574615181B6E0052F9AE /* testflight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testflight@2x.png"; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
 		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = error.png; path = ../error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -1163,6 +1165,7 @@
 				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
 				DD98F5CE15140BFA0054D27F /* layers@2x.png */,
 				DDE41E5D1443CABB00837C16 /* testflight.png */,
+				DDDD574615181B6E0052F9AE /* testflight@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1730,6 +1733,7 @@
 				DDDD574315181AB80052F9AE /* iTunesArtwork@2x in Resources */,
 				DDDD574415181AB80052F9AE /* spotlight-icon.png in Resources */,
 				DDDD574515181AB80052F9AE /* spotlight-icon@2x.png in Resources */,
+				DDDD574715181B6E0052F9AE /* testflight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
