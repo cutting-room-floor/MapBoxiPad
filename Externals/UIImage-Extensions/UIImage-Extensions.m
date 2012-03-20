@@ -66,7 +66,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
    
    // this is actually the interesting part:
    
-   UIGraphicsBeginImageContext(targetSize);
+   UIGraphicsBeginImageContextWithOptions(targetSize, NO, 0);
    
    CGRect thumbnailRect = CGRectZero;
    thumbnailRect.origin = thumbnailPoint;
@@ -128,7 +128,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
    
    // this is actually the interesting part:
    
-   UIGraphicsBeginImageContext(targetSize);
+   UIGraphicsBeginImageContextWithOptions(targetSize, NO, 0);
    
    CGRect thumbnailRect = CGRectZero;
    thumbnailRect.origin = thumbnailPoint;
@@ -167,7 +167,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
    
    // this is actually the interesting part:
    
-   UIGraphicsBeginImageContext(targetSize);
+   UIGraphicsBeginImageContextWithOptions(targetSize, NO, 0);
    
    CGRect thumbnailRect = CGRectZero;
    thumbnailRect.origin = thumbnailPoint;
@@ -201,7 +201,7 @@ CGFloat RadiansToDegrees(CGFloat radians) {return radians * 180/M_PI;};
    [rotatedViewBox release];
    
    // Create the bitmap context
-   UIGraphicsBeginImageContext(rotatedSize);
+   UIGraphicsBeginImageContextWithOptions(rotatedSize, NO, 0);
    CGContextRef bitmap = UIGraphicsGetCurrentContext();
    
    // Move the origin to the middle of the image so we will rotate and scale around the center.
