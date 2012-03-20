@@ -10,10 +10,19 @@
 
 #import <QuartzCore/QuartzCore.h>
 
+@interface DSMapBoxHelpController ()
+
+@property (nonatomic, strong) IBOutlet UIView *logoView;
+@property (nonatomic, strong) IBOutlet UITableView *helpTableView;
+@property (nonatomic, strong) IBOutlet UILabel *versionInfoLabel;
+
+@end
+
+#pragma mark -
+
 @implementation DSMapBoxHelpController
 
-@synthesize moviePlayButton;
-@synthesize moviePlayer;
+@synthesize logoView;
 @synthesize helpTableView;
 @synthesize versionInfoLabel;
 
@@ -21,23 +30,41 @@
 {
     [super viewWillAppear:animated];
     
+    // round logo & add shadow
+    //
+    UIView *clippingView = [[UIView alloc] initWithFrame:self.logoView.bounds];
+    
+    clippingView.backgroundColor = [UIColor clearColor];
+    clippingView.clipsToBounds = YES;
+    clippingView.layer.cornerRadius = clippingView.bounds.size.width / 10;
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"iTunesArtwork"]];
+    
+    logoImageView.frame = clippingView.bounds;
+
+    [clippingView addSubview:logoImageView];
+    
+    [self.logoView addSubview:clippingView];
+    
+    self.logoView.backgroundColor = [UIColor clearColor];
+    
+    self.logoView.layer.cornerRadius = clippingView.layer.cornerRadius;
+
+    self.logoView.layer.shadowOpacity = 1.0;
+    self.logoView.layer.shadowOffset  = CGSizeMake(0, 2);
+
+    // style table view
+    //
     self.helpTableView.layer.cornerRadius = 10.0;
     self.helpTableView.clipsToBounds      = YES;
     self.helpTableView.separatorColor     = [UIColor colorWithWhite:1.0 alpha:0.25];
 
+    // populate version info
+    //
     self.versionInfoLabel.text = [NSString stringWithFormat:@"%@ %@.%@", 
                                      [[NSProcessInfo processInfo] processName],
                                      [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"],
                                      [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"] stringByReplacingOccurrencesOfString:@"." withString:@""]];
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self 
-                                                    name:MPMoviePlayerPlaybackDidFinishNotification 
-                                                  object:nil];
-    
-    [moviePlayer stop];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -45,43 +72,9 @@
     return YES;
 }
 
-#pragma mark -
-
-- (IBAction)tappedVideoButton:(id)sender
-{
-    if ( ! self.moviePlayer)
-    {
-        NSURL *movieURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:@"intro" ofType:@"mov"]];
-        
-        self.moviePlayer = [[MPMoviePlayerController alloc] initWithContentURL:movieURL];
-        
-        self.moviePlayer.view.frame = self.moviePlayButton.frame;
-        [self.view insertSubview:self.moviePlayer.view aboveSubview:self.moviePlayButton];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(movieDidFinish:)
-                                                     name:MPMoviePlayerPlaybackDidFinishNotification
-                                                   object:self.moviePlayer];
-    }
-
-    [self.moviePlayer play];
-
-    [TestFlight passCheckpoint:@"started watching help video"];
-}
-
 - (void)tappedHelpDoneButton:(id)sender
 {
     [self.parentViewController dismissModalViewControllerAnimated:YES];
-}
-
-#pragma mark -
-
-- (void)movieDidFinish:(NSNotification *)notification
-{
-    if (self.moviePlayer.fullscreen)
-        [self.moviePlayer setFullscreen:NO animated:YES];
-    
-    [TestFlight passCheckpoint:@"finished watching help video"];
 }
 
 #pragma mark -
@@ -118,14 +111,18 @@
     switch (indexPath.row)
     {
         case 0:
-            cell.textLabel.text = @"Contact Support";
+            cell.textLabel.text = @"Getting Started Guide";
             break;
-        
+            
         case 1:
             cell.textLabel.text = @"View Release Notes";
             break;
-
+        
         case 2:
+            cell.textLabel.text = @"Contact Support";
+            break;
+
+        case 3:
             cell.textLabel.text = [NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]];
             break;
     }
@@ -135,7 +132,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 #pragma mark -
@@ -148,18 +145,16 @@
     
     switch (indexPath.row)
     {
+        // these get opened delayed to avoid button press glitches
+        //
         case 0:
-            // open delayed to avoid button press glitches
-            //
             [[UIApplication sharedApplication] performSelector:@selector(openURL:)
-                                                    withObject:[NSURL URLWithString:kSupportURL]
+                                                    withObject:[NSURL URLWithString:kGettingStartedURL]
                                                     afterDelay:0.25];
-
+            
             break;
             
         case 1:
-            // open delayed to avoid button press glitches
-            //
             [[UIApplication sharedApplication] performSelector:@selector(openURL:)
                                                     withObject:[NSURL URLWithString:kReleaseNotesURL]
                                                     afterDelay:0.25];
@@ -167,6 +162,13 @@
             break;
             
         case 2:
+            [[UIApplication sharedApplication] performSelector:@selector(openURL:)
+                                                    withObject:[NSURL URLWithString:kSupportURL]
+                                                    afterDelay:0.25];
+
+            break;
+            
+        case 3:
             alert = [[UIAlertView alloc] initWithTitle:[NSString stringWithFormat:@"About %@", [[NSProcessInfo processInfo] processName]]
                                                 message:[NSString stringWithFormat:@"%@\n\n%@", 
                                                          self.versionInfoLabel.text, 
