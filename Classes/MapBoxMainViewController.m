@@ -50,7 +50,7 @@
 
 #import "Reachability.h"
 
-#import "UIImage+Alpha.h"
+#import "UIImage_Additions.h"
 
 #import "BALabel.h"
 
@@ -1059,7 +1059,7 @@
     {
         // create tile image view
         //
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] transparentBorderImage:1]];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] imageWithTransparentBorderOfWidth:1]];
         
         imageView.layer.shadowOpacity = 0.5;
         imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];

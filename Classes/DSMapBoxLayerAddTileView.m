@@ -113,7 +113,7 @@
                     
                     // begin image mods
                     //
-                    UIGraphicsBeginImageContext(weakSelf.imageView.bounds.size);
+                    UIGraphicsBeginImageContextWithOptions(weakSelf.imageView.bounds.size, NO, 0);
                     
                     CGContextRef c = UIGraphicsGetCurrentContext();
                     
@@ -209,7 +209,7 @@
 
             // fill image view itself with solid white
             //
-            UIGraphicsBeginImageContext(imageView.bounds.size);
+            UIGraphicsBeginImageContextWithOptions(imageView.bounds.size, YES, 0);
             
             CGContextSetFillColorWithColor(UIGraphicsGetCurrentContext(), [[UIColor whiteColor] CGColor]);
             

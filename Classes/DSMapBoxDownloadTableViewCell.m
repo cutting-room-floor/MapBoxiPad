@@ -108,7 +108,7 @@
         //
         CGSize pieSize = self.pie.bounds.size;
         
-        UIGraphicsBeginImageContext(pieSize);
+        UIGraphicsBeginImageContextWithOptions(pieSize, NO, 0);
         
         CGContextRef c = UIGraphicsGetCurrentContext();
         

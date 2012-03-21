@@ -46,7 +46,6 @@
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
-		DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA171208DBEA00B052E9 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EC1208DBEA00B052E9 /* adler32.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA181208DBEA00B052E9 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9ED1208DBEA00B052E9 /* compress.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA191208DBEA00B052E9 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EE1208DBEA00B052E9 /* crc32.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -79,6 +78,7 @@
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */; };
 		DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */; };
+		DD28BE021519565300EAF5D2 /* UIImage_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28BE011519565300EAF5D2 /* UIImage_Additions.m */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
@@ -338,8 +338,6 @@
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		DD1ACD8313CD3177001244D2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Alpha.h"; path = "Externals/UIImage+Alpha/UIImage+Alpha.h"; sourceTree = "<group>"; };
-		DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Alpha.m"; path = "Externals/UIImage+Alpha/UIImage+Alpha.m"; sourceTree = "<group>"; };
 		DD1AD9EC1208DBEA00B052E9 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
 		DD1AD9ED1208DBEA00B052E9 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
 		DD1AD9EE1208DBEA00B052E9 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
@@ -397,6 +395,8 @@
 		DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLOverlay.m; path = "Externals/Simple KML/SimpleKMLOverlay.m"; sourceTree = "<group>"; };
 		DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLGroundOverlay.h; path = "Externals/Simple KML/SimpleKMLGroundOverlay.h"; sourceTree = "<group>"; };
 		DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLGroundOverlay.m; path = "Externals/Simple KML/SimpleKMLGroundOverlay.m"; sourceTree = "<group>"; };
+		DD28BE001519565300EAF5D2 /* UIImage_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImage_Additions.h; sourceTree = "<group>"; };
+		DD28BE011519565300EAF5D2 /* UIImage_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImage_Additions.m; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -856,15 +856,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */ = {
-			isa = PBXGroup;
-			children = (
-				DD1ACD8313CD3177001244D2 /* UIImage+Alpha.h */,
-				DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */,
-			);
-			name = "UIImage+Alpha";
-			sourceTree = "<group>";
-		};
 		DD1AD9EB1208DBEA00B052E9 /* ZLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -1070,7 +1061,6 @@
 				DD4364DB147C3D4400235F20 /* TileMill */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD051E491475F36E00072B0F /* UIColor-Expanded */,
-				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
 			);
 			name = Externals;
@@ -1297,6 +1287,8 @@
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
 				DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */,
 				DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */,
+				DD28BE001519565300EAF5D2 /* UIImage_Additions.h */,
+				DD28BE011519565300EAF5D2 /* UIImage_Additions.m */,
 				DD4BABF613BE62C50043FA21 /* DSSound.h */,
 				DD4BABF713BE62C50043FA21 /* DSSound.m */,
 			);
@@ -1863,7 +1855,6 @@
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
 				DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */,
 				DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */,
-				DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */,
 				DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */,
 				DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */,
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
@@ -1888,6 +1879,7 @@
 				DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */,
 				DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */,
 				DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */,
+				DD28BE021519565300EAF5D2 /* UIImage_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

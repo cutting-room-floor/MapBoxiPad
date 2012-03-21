@@ -30,6 +30,4 @@ Libraries used under license:
 
  * UIColor-Expanded, (c) 2009 Erica Sadun https://github.com/ars/uicolor-utilities
 
- * UIImage+Alpha, (c) 2009 Trevor Harmon http://vocaro.com/trevor/blog/
-
  * UIImage-Extensions, (c) 2009 Catamount Software http://www.catamount.com/blog/1015/uiimage-extensions-for-cutting-scaling-and-rotating-uiimages/

@@ -8,7 +8,7 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-#import "UIImage+Alpha.h"
+#import "UIImage_Additions.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -119,7 +119,7 @@
                 
                 // begin image mods
                 //
-                UIGraphicsBeginImageContext(weakSelf.imageView.bounds.size);
+                UIGraphicsBeginImageContextWithOptions(weakSelf.imageView.bounds.size, NO, 0);
                 
                 CGContextRef c = UIGraphicsGetCurrentContext();
                 
@@ -175,7 +175,7 @@
                 
                 // update tile
                 //
-                weakSelf.imageView.image = [clippedImage transparentBorderImage:1];
+                weakSelf.imageView.image = [clippedImage imageWithTransparentBorderOfWidth:1];
                 
                 // animate cover removal
                 //
@@ -549,7 +549,7 @@
             
             // begin image mods
             //
-            UIGraphicsBeginImageContext(preview.bounds.size);
+            UIGraphicsBeginImageContextWithOptions(preview.bounds.size, NO, 0);
             
             CGContextRef c = UIGraphicsGetCurrentContext();
             
@@ -569,7 +569,7 @@
             
             // update image view (adding border to fix jaggies)
             //
-            preview.image = [image transparentBorderImage:1];
+            preview.image = [image imageWithTransparentBorderOfWidth:1];
             
             // style shadow
             //
