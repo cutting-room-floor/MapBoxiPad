@@ -1,16 +1,16 @@
 //
-//  DSMapBoxAlphaModalNavigationController.m
+//  DSMapBoxStyledModalNavigationController.m
 //  MapBoxiPad
 //
 //  Created by Justin R. Miller on 5/17/11.
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxStyledModalNavigationController.h"
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface DSMapBoxAlphaModalNavigationController ()
+@interface DSMapBoxStyledModalNavigationController ()
 
 @property (nonatomic, strong) UITapGestureRecognizer *outsideTapRecognizer;
 
@@ -18,7 +18,7 @@
 
 #pragma mark -
 
-@implementation DSMapBoxAlphaModalNavigationController
+@implementation DSMapBoxStyledModalNavigationController
 
 @synthesize outsideTapRecognizer;
 

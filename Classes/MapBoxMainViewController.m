@@ -20,7 +20,7 @@
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxLayerAddTileStreamAlbumController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxStyledModalNavigationController.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
@@ -740,7 +740,7 @@
     
     DSMapBoxHelpController *helpController = [[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil];
     
-    DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController];
+    DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:helpController];
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
     
@@ -1297,7 +1297,7 @@
             
             self.saveController.name = docName;
             
-            DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController];
+            DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:saveController];
             
             self.saveController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                      style:UIBarButtonItemStyleBordered
@@ -1608,7 +1608,7 @@
     [self tappedLayersButton:self];
 
     DSMapBoxLayerAddTileStreamAlbumController *albumController = [[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil];
-    DSMapBoxAlphaModalNavigationController *wrapper  = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController];
+    DSMapBoxStyledModalNavigationController *wrapper  = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:albumController];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

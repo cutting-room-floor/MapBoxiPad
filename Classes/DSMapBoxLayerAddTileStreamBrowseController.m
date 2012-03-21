@@ -9,7 +9,7 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
 #import "DSMapBoxLayerAddPreviewController.h"
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxStyledModalNavigationController.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
 
@@ -401,7 +401,7 @@
                            [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
-        DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview];
+        DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:preview];
         
         wrapper.navigationBar.translucent = YES;
         
