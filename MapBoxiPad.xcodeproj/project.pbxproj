@@ -199,8 +199,6 @@
 		DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCBA2EB14C4D7D90099C220 /* DSMapBoxMailComposeViewController.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
 		DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */; };
-		DDCE29B712B6E9F5008A1257 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B612B6E9F5008A1257 /* play.png */; };
-		DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCE29B812B6E9F9008A1257 /* video_capture.png */; };
 		DDCFC94A1427F15A0089E2EB /* transparent.png in Resources */ = {isa = PBXBuildFile; fileRef = DDCFC9491427F15A0089E2EB /* transparent.png */; };
 		DDD0E064146DE41500FC4342 /* DSMapBoxTileStreamCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */; };
 		DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */; };
@@ -602,8 +600,6 @@
 		DDCE0EFD14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNetworkActivityIndicator.h; sourceTree = "<group>"; };
 		DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNetworkActivityIndicator.m; sourceTree = "<group>"; };
 		DDCE294412B6E598008A1257 /* MapBoxConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapBoxConstants.h; sourceTree = SOURCE_ROOT; };
-		DDCE29B612B6E9F5008A1257 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = SOURCE_ROOT; };
-		DDCE29B812B6E9F9008A1257 /* video_capture.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = video_capture.png; sourceTree = SOURCE_ROOT; };
 		DDCFC9491427F15A0089E2EB /* transparent.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = transparent.png; sourceTree = SOURCE_ROOT; };
 		DDD0E062146DE41500FC4342 /* DSMapBoxTileStreamCommon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTileStreamCommon.h; sourceTree = "<group>"; };
 		DDD0E063146DE41500FC4342 /* DSMapBoxTileStreamCommon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileStreamCommon.m; sourceTree = "<group>"; };
@@ -1446,8 +1442,6 @@
 		DDCE299412B6E707008A1257 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DDCE29B812B6E9F9008A1257 /* video_capture.png */,
-				DDCE29B612B6E9F5008A1257 /* play.png */,
 				DDBE15BF12C1747800C4AAB7 /* about.txt */,
 			);
 			name = Resources;
@@ -1645,8 +1639,6 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
-				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
-				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
 				DDBE15C012C1747800C4AAB7 /* about.txt in Resources */,
 				DD52697312C1E051002E890C /* Afghanistan Election Fraud by Province.kmz in Resources */,
 				DD52697412C1E051002E890C /* Haiti Aid Projects.kml in Resources */,
