@@ -936,11 +936,13 @@
     else
         [self.mapView.contents zoomOutToNextNativeZoomAt:center];
     
-    // get full screen snapshot
+    // get full screen snapshot without toolbar
     //
-    UIGraphicsBeginImageContext(self.view.bounds.size);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height), YES, 0);
+    self.toolbar.hidden = YES;
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *full = UIGraphicsGetImageFromCurrentImageContext();
+    self.toolbar.hidden = NO;
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
     // restore previous zoom
@@ -948,18 +950,6 @@
     float factor = exp2f(oldZoom - [self.mapView.contents zoom]);
     [self.mapView.contents zoomByFactor:factor near:center];
     
-    // crop out top toolbar
-    //
-    CGImageRef cropped = CGImageCreateWithImageInRect(full.CGImage, CGRectMake(0, 
-                                                                               self.toolbar.frame.size.height, 
-                                                                               full.size.width, 
-                                                                               full.size.height - self.toolbar.frame.size.height));
-    
-    // convert & clean up
-    //
-    UIImage *snapshot = [UIImage imageWithCGImage:cropped];
-    CGImageRelease(cropped);
-
     return snapshot;
 }
 
