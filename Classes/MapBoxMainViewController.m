@@ -20,7 +20,7 @@
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxLayerAddTileStreamAlbumController.h"
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxStyledModalNavigationController.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
 #import "DSMapBoxGeoJSONParser.h"
 #import "DSMapBoxAlertView.h"
@@ -50,7 +50,7 @@
 
 #import "Reachability.h"
 
-#import "UIImage+Alpha.h"
+#import "UIImage_Additions.h"
 
 #import "BALabel.h"
 
@@ -125,7 +125,8 @@
                               zoomLevel:kStartingZoom
                            maxZoomLevel:[source maxZoom]
                            minZoomLevel:[source minZoom]
-                        backgroundImage:nil];
+                        backgroundImage:nil
+                            screenScale:0.0];
     
     self.mapView.enableRotate = NO;
     self.mapView.deceleration = NO;
@@ -739,13 +740,7 @@
     
     DSMapBoxHelpController *helpController = [[DSMapBoxHelpController alloc] initWithNibName:nil bundle:nil];
     
-    DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:helpController];
-    
-    if ( ! [[NSUserDefaults standardUserDefaults] objectForKey:@"firstRunVideoPlayed"])
-    {
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"firstRunVideoPlayed"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+    DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:helpController];
     
     helpController.navigationItem.title = [NSString stringWithFormat:@"%@ Help", [[NSProcessInfo processInfo] processName]];
     
@@ -941,11 +936,13 @@
     else
         [self.mapView.contents zoomOutToNextNativeZoomAt:center];
     
-    // get full screen snapshot
+    // get full screen snapshot without toolbar
     //
-    UIGraphicsBeginImageContext(self.view.bounds.size);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height), YES, 0);
+    self.toolbar.hidden = YES;
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *full = UIGraphicsGetImageFromCurrentImageContext();
+    self.toolbar.hidden = NO;
+    UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
     // restore previous zoom
@@ -953,18 +950,6 @@
     float factor = exp2f(oldZoom - [self.mapView.contents zoom]);
     [self.mapView.contents zoomByFactor:factor near:center];
     
-    // crop out top toolbar
-    //
-    CGImageRef cropped = CGImageCreateWithImageInRect(full.CGImage, CGRectMake(0, 
-                                                                               self.toolbar.frame.size.height, 
-                                                                               full.size.width, 
-                                                                               full.size.height - self.toolbar.frame.size.height));
-    
-    // convert & clean up
-    //
-    UIImage *snapshot = [UIImage imageWithCGImage:cropped];
-    CGImageRelease(cropped);
-
     return snapshot;
 }
 
@@ -1064,7 +1049,7 @@
     {
         // create tile image view
         //
-        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] transparentBorderImage:1]];
+        UIImageView *imageView = [[UIImageView alloc] initWithImage:[[layerImages objectAtIndex:i] imageWithTransparentBorderOfWidth:1]];
         
         imageView.layer.shadowOpacity = 0.5;
         imageView.layer.shadowPath = [[UIBezierPath bezierPathWithRect:imageView.bounds] CGPath];
@@ -1312,7 +1297,7 @@
             
             self.saveController.name = docName;
             
-            DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:saveController];
+            DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:saveController];
             
             self.saveController.navigationItem.leftBarButtonItem  = [[UIBarButtonItem alloc] initWithTitle:@"Cancel"
                                                                                                      style:UIBarButtonItemStyleBordered
@@ -1623,7 +1608,7 @@
     [self tappedLayersButton:self];
 
     DSMapBoxLayerAddTileStreamAlbumController *albumController = [[DSMapBoxLayerAddTileStreamAlbumController alloc] initWithNibName:nil bundle:nil];
-    DSMapBoxAlphaModalNavigationController *wrapper  = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:albumController];
+    DSMapBoxStyledModalNavigationController *wrapper  = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:albumController];
     
     wrapper.modalPresentationStyle = UIModalPresentationFormSheet;
     wrapper.modalTransitionStyle   = UIModalTransitionStyleCoverVertical;

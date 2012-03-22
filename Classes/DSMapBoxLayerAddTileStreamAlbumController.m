@@ -27,7 +27,6 @@
 @synthesize helpLabel;
 @synthesize spinner;
 @synthesize accountScrollView;
-@synthesize accountPageControl;
 @synthesize albumDownload;
 @synthesize servers;
 
@@ -61,9 +60,8 @@
     //
     [self.spinner startAnimating];
     
-    self.helpLabel.hidden          = YES;
-    self.accountScrollView.hidden  = YES;
-    self.accountPageControl.hidden = YES;
+    self.helpLabel.hidden         = YES;
+    self.accountScrollView.hidden = YES;
     
     // fire off account list request
     //
@@ -140,9 +138,6 @@
             weakSelf.helpLabel.hidden         = NO;
             weakSelf.accountScrollView.hidden = NO;
             
-            if ([newServers count] > 9)
-                weakSelf.accountPageControl.hidden = NO;
-            
             // update content
             //
             weakSelf.servers = [NSArray arrayWithArray:newServers];
@@ -152,8 +147,6 @@
             int pageCount = ([weakSelf.servers count] / 9) + ([weakSelf.servers count] % 9 ? 1 : 0);
             
             weakSelf.accountScrollView.contentSize = CGSizeMake((weakSelf.accountScrollView.frame.size.width * pageCount), weakSelf.accountScrollView.frame.size.height);
-            
-            weakSelf.accountPageControl.numberOfPages = pageCount;
             
             for (int i = 0; i < pageCount; i++)
             {
@@ -286,13 +279,6 @@
     browseController.serverURL  = [NSURL URLWithString:serverURLString];
     
     [(UINavigationController *)self.parentViewController pushViewController:browseController animated:YES];
-}
-
-#pragma mark -
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    self.accountPageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
 }
 
 @end

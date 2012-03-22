@@ -9,7 +9,7 @@
 #import "DSMapBoxLayerAddTileStreamBrowseController.h"
 
 #import "DSMapBoxLayerAddPreviewController.h"
-#import "DSMapBoxAlphaModalNavigationController.h"
+#import "DSMapBoxStyledModalNavigationController.h"
 #import "DSMapBoxErrorView.h"
 #import "DSMapBoxTileStreamCommon.h"
 
@@ -36,7 +36,6 @@
 @synthesize helpLabel;
 @synthesize spinner;
 @synthesize tileScrollView;
-@synthesize tilePageControl;
 @synthesize serverName;
 @synthesize serverURL;
 @synthesize layers;
@@ -79,7 +78,6 @@
     
     self.helpLabel.hidden       = YES;
     self.tileScrollView.hidden  = YES;
-    self.tilePageControl.hidden = YES;
     
     // fire off layer list request
     //
@@ -192,9 +190,6 @@
                 weakSelf.helpLabel.hidden      = NO;
                 weakSelf.tileScrollView.hidden = NO;
                 
-                if ([updatedLayers count] > 9)
-                    weakSelf.tilePageControl.hidden = NO;
-                
                 weakSelf.layers = [NSArray arrayWithArray:updatedLayers];
                 
                 // layout preview tiles
@@ -202,8 +197,6 @@
                 int pageCount = ([weakSelf.layers count] / 9) + ([weakSelf.layers count] % 9 ? 1 : 0);
                 
                 weakSelf.tileScrollView.contentSize = CGSizeMake((weakSelf.tileScrollView.frame.size.width * pageCount), weakSelf.tileScrollView.frame.size.height);
-                
-                weakSelf.tilePageControl.numberOfPages = pageCount;
                 
                 for (int i = 0; i < pageCount; i++)
                 {
@@ -408,7 +401,7 @@
                            [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
-        DSMapBoxAlphaModalNavigationController *wrapper = [[DSMapBoxAlphaModalNavigationController alloc] initWithRootViewController:preview];
+        DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:preview];
         
         wrapper.navigationBar.translucent = YES;
         
@@ -417,15 +410,6 @@
         
         [self presentModalViewController:wrapper animated:YES];
     });
-}
-
-#pragma mark -
-
-// TODO: if scrolling too fast, doesn't update
-//
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    self.tilePageControl.currentPage = (int)floorf(scrollView.contentOffset.x / scrollView.frame.size.width);
 }
 
 @end

@@ -46,7 +46,6 @@
 		DD15ED6E13D8E86200B0ABAE /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = DD15ED6D13D8E86200B0ABAE /* empty.png */; };
 		DD1ACD5C13CD1CD2001244D2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */; };
 		DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1ACD5A13CD1CD2001244D2 /* libz.dylib */; };
-		DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA171208DBEA00B052E9 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EC1208DBEA00B052E9 /* adler32.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA181208DBEA00B052E9 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9ED1208DBEA00B052E9 /* compress.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA191208DBEA00B052E9 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1AD9EE1208DBEA00B052E9 /* crc32.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -79,6 +78,7 @@
 		DD2755E11385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2755E01385AD86007B58AC /* DSMapBoxLegacyMigrationManager.m */; };
 		DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */; };
 		DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */; };
+		DD28BE021519565300EAF5D2 /* UIImage_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD28BE011519565300EAF5D2 /* UIImage_Additions.m */; };
 		DD2F015413BC638B00A72513 /* paper_throw_end.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015213BC638B00A72513 /* paper_throw_end.wav */; };
 		DD2F015513BC638B00A72513 /* paper_throw_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DD2F015313BC638B00A72513 /* paper_throw_start.wav */; };
 		DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD3ACA4211FF3E5F00B4203F /* DSMapBoxLayerManager.m */; };
@@ -106,7 +106,6 @@
 		DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD540F7D12131F3800C5899E /* DSMapBoxLargeSnapshotView.m */; };
 		DD56786F12AEEB8F00B73C8A /* DSMapBoxHelpController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */; };
 		DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */; };
-		DD5678C912AEF2E100B73C8A /* intro.mov in Resources */ = {isa = PBXBuildFile; fileRef = DD5678C812AEF2E100B73C8A /* intro.mov */; };
 		DD5678F312AEF62200B73C8A /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5678F212AEF62200B73C8A /* MediaPlayer.framework */; };
 		DD601BA212FA3C9A00CE7C14 /* CTidy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B8812FA3C9A00CE7C14 /* CTidy.m */; };
 		DD601BA312FA3C9A00CE7C14 /* CXMLNode.m in Sources */ = {isa = PBXBuildFile; fileRef = DD601B8912FA3C9A00CE7C14 /* CXMLNode.m */; };
@@ -207,6 +206,13 @@
 		DDD7F81314BB57BB00B6840E /* DSMapBoxURLRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */; };
 		DDDA3C6513D75EEC00DDEA58 /* help.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6313D75EEC00DDEA58 /* help.png */; };
 		DDDA3C6613D75EEC00DDEA58 /* layers.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDA3C6413D75EEC00DDEA58 /* layers.png */; };
+		DDDD573D15181AAE0052F9AE /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD573A15181AAE0052F9AE /* icon@2x.png */; };
+		DDDD573E15181AAE0052F9AE /* settings-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD573B15181AAE0052F9AE /* settings-icon.png */; };
+		DDDD573F15181AAE0052F9AE /* settings-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD573C15181AAE0052F9AE /* settings-icon@2x.png */; };
+		DDDD574315181AB80052F9AE /* iTunesArtwork@2x in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574015181AB80052F9AE /* iTunesArtwork@2x */; };
+		DDDD574415181AB80052F9AE /* spotlight-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574115181AB80052F9AE /* spotlight-icon.png */; };
+		DDDD574515181AB80052F9AE /* spotlight-icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */; };
+		DDDD574715181B6E0052F9AE /* testflight@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDD574615181B6E0052F9AE /* testflight@2x.png */; };
 		DDDF85DE13B1289E007E7E28 /* mapquest_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */; };
 		DDE011A113CE33390070F421 /* error.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE011A013CE33390070F421 /* error.png */; };
 		DDE09E23123C1006008ECB7A /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */; };
@@ -219,7 +225,7 @@
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
 		DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationCenter.m */; };
-		DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */; };
+		DDEF8FF413831B1A00FF148C /* DSMapBoxStyledModalNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF8FF213831B1A00FF148C /* DSMapBoxStyledModalNavigationController.m */; };
 		DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */; };
 		DDEF901413831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */; };
 		DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEF90D313832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m */; };
@@ -332,8 +338,6 @@
 		DD15ED6D13D8E86200B0ABAE /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = SOURCE_ROOT; };
 		DD1ACD5913CD1CD2001244D2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		DD1ACD5A13CD1CD2001244D2 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
-		DD1ACD8313CD3177001244D2 /* UIImage+Alpha.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Alpha.h"; path = "Externals/UIImage+Alpha/UIImage+Alpha.h"; sourceTree = "<group>"; };
-		DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Alpha.m"; path = "Externals/UIImage+Alpha/UIImage+Alpha.m"; sourceTree = "<group>"; };
 		DD1AD9EC1208DBEA00B052E9 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
 		DD1AD9ED1208DBEA00B052E9 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
 		DD1AD9EE1208DBEA00B052E9 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
@@ -391,6 +395,8 @@
 		DD283A2913A93BF600AB9BD2 /* SimpleKMLOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLOverlay.m; path = "Externals/Simple KML/SimpleKMLOverlay.m"; sourceTree = "<group>"; };
 		DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLGroundOverlay.h; path = "Externals/Simple KML/SimpleKMLGroundOverlay.h"; sourceTree = "<group>"; };
 		DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLGroundOverlay.m; path = "Externals/Simple KML/SimpleKMLGroundOverlay.m"; sourceTree = "<group>"; };
+		DD28BE001519565300EAF5D2 /* UIImage_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImage_Additions.h; sourceTree = "<group>"; };
+		DD28BE011519565300EAF5D2 /* UIImage_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIImage_Additions.m; sourceTree = "<group>"; };
 		DD2F015213BC638B00A72513 /* paper_throw_end.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_end.wav; sourceTree = "<group>"; };
 		DD2F015313BC638B00A72513 /* paper_throw_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = paper_throw_start.wav; sourceTree = "<group>"; };
 		DD3ACA4111FF3E5F00B4203F /* DSMapBoxLayerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerManager.h; sourceTree = "<group>"; };
@@ -426,7 +432,6 @@
 		DD56786C12AEEB8F00B73C8A /* DSMapBoxHelpController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxHelpController.h; sourceTree = "<group>"; };
 		DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxHelpController.m; sourceTree = "<group>"; };
 		DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxHelpController.xib; sourceTree = "<group>"; };
-		DD5678C812AEF2E100B73C8A /* intro.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = intro.mov; sourceTree = "<group>"; };
 		DD5678F212AEF62200B73C8A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		DD601B8512FA3C9A00CE7C14 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD601B8712FA3C9A00CE7C14 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
@@ -606,6 +611,13 @@
 		DDD7F81214BB57BB00B6840E /* DSMapBoxURLRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxURLRequest.m; sourceTree = "<group>"; };
 		DDDA3C6313D75EEC00DDEA58 /* help.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = help.png; sourceTree = "<group>"; };
 		DDDA3C6413D75EEC00DDEA58 /* layers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = layers.png; sourceTree = "<group>"; };
+		DDDD573A15181AAE0052F9AE /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
+		DDDD573B15181AAE0052F9AE /* settings-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-icon.png"; sourceTree = "<group>"; };
+		DDDD573C15181AAE0052F9AE /* settings-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-icon@2x.png"; sourceTree = "<group>"; };
+		DDDD574015181AB80052F9AE /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
+		DDDD574115181AB80052F9AE /* spotlight-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spotlight-icon.png"; sourceTree = "<group>"; };
+		DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spotlight-icon@2x.png"; sourceTree = "<group>"; };
+		DDDD574615181B6E0052F9AE /* testflight@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "testflight@2x.png"; sourceTree = "<group>"; };
 		DDDF85DD13B1289E007E7E28 /* mapquest_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapquest_layer.png; sourceTree = SOURCE_ROOT; };
 		DDE011A013CE33390070F421 /* error.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = error.png; path = ../error.png; sourceTree = "<group>"; };
 		DDE09E22123C1006008ECB7A /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -619,8 +631,8 @@
 		DDEEACAE136F516A0058BA90 /* loading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loading.png; sourceTree = "<group>"; };
 		DDEEAD85136F7C090058BA90 /* DSMapBoxNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxNotificationCenter.h; sourceTree = "<group>"; };
 		DDEEAD86136F7C090058BA90 /* DSMapBoxNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxNotificationCenter.m; sourceTree = "<group>"; };
-		DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxAlphaModalNavigationController.h; sourceTree = "<group>"; };
-		DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxAlphaModalNavigationController.m; sourceTree = "<group>"; };
+		DDEF8FF113831B1A00FF148C /* DSMapBoxStyledModalNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = DSMapBoxStyledModalNavigationController.h; sourceTree = "<group>"; };
+		DDEF8FF213831B1A00FF148C /* DSMapBoxStyledModalNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxStyledModalNavigationController.m; sourceTree = "<group>"; };
 		DDEF901013831DA800FF148C /* DSMapBoxLayerAddCustomServerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerAddCustomServerController.h; sourceTree = "<group>"; };
 		DDEF901113831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerAddCustomServerController.m; sourceTree = "<group>"; };
 		DDEF901213831DA800FF148C /* DSMapBoxLayerAddCustomServerController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxLayerAddCustomServerController.xib; sourceTree = "<group>"; };
@@ -718,7 +730,6 @@
 				DD70D91D11D188DA0002E222 /* Images */,
 				DD70D91C11D188BB0002E222 /* Tile Sets */,
 				DD48AC4111D3D79B000AF79E /* Sounds */,
-				DD5678C712AEF2C900B73C8A /* Videos */,
 				DD52696E12C1E051002E890C /* Preloaded Data */,
 			);
 			name = Resources;
@@ -845,15 +856,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */ = {
-			isa = PBXGroup;
-			children = (
-				DD1ACD8313CD3177001244D2 /* UIImage+Alpha.h */,
-				DD1ACD8413CD3177001244D2 /* UIImage+Alpha.m */,
-			);
-			name = "UIImage+Alpha";
-			sourceTree = "<group>";
-		};
 		DD1AD9EB1208DBEA00B052E9 /* ZLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -970,8 +972,8 @@
 		DD2F015913BD189600A72513 /* Custom UI */ = {
 			isa = PBXGroup;
 			children = (
-				DDEF8FF113831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.h */,
-				DDEF8FF213831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m */,
+				DDEF8FF113831B1A00FF148C /* DSMapBoxStyledModalNavigationController.h */,
+				DDEF8FF213831B1A00FF148C /* DSMapBoxStyledModalNavigationController.m */,
 				DDCBA2EA14C4D7D90099C220 /* DSMapBoxMailComposeViewController.h */,
 				DDCBA2EB14C4D7D90099C220 /* DSMapBoxMailComposeViewController.m */,
 				DD7E1C67140D91B4008F52C6 /* DSMapBoxAlertView.h */,
@@ -1059,7 +1061,6 @@
 				DD4364DB147C3D4400235F20 /* TileMill */,
 				DD72C34F11E53C500030C637 /* TouchXML */,
 				DD051E491475F36E00072B0F /* UIColor-Expanded */,
-				DD1ACD8213CD30D4001244D2 /* UIImage+Alpha */,
 				DD0A9E0D13DA313600D7B7D1 /* UIImage-Extensions */,
 			);
 			name = Externals;
@@ -1099,14 +1100,6 @@
 			name = Help;
 			sourceTree = "<group>";
 		};
-		DD5678C712AEF2C900B73C8A /* Videos */ = {
-			isa = PBXGroup;
-			children = (
-				DD5678C812AEF2E100B73C8A /* intro.mov */,
-			);
-			name = Videos;
-			sourceTree = "<group>";
-		};
 		DD601B8612FA3C9A00CE7C14 /* Tidy */ = {
 			isa = PBXGroup;
 			children = (
@@ -1142,10 +1135,16 @@
 			isa = PBXGroup;
 			children = (
 				DDFB5CB011F656EE00695B89 /* icon.png */,
+				DDDD573A15181AAE0052F9AE /* icon@2x.png */,
+				DDDD573B15181AAE0052F9AE /* settings-icon.png */,
+				DDDD573C15181AAE0052F9AE /* settings-icon@2x.png */,
+				DDDD574115181AB80052F9AE /* spotlight-icon.png */,
+				DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */,
 				DD10184411EE51FC00DF286F /* mapbox.png */,
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
+				DDDD574015181AB80052F9AE /* iTunesArtwork@2x */,
 				DDEEACAE136F516A0058BA90 /* loading.png */,
 				DDA7DBCA1381E503004461A8 /* mbtiles_file.png */,
 				DD4BAC1813BE6D7B0043FA21 /* cluster_on.png */,
@@ -1156,6 +1155,7 @@
 				DDDA3C6413D75EEC00DDEA58 /* layers.png */,
 				DD98F5CE15140BFA0054D27F /* layers@2x.png */,
 				DDE41E5D1443CABB00837C16 /* testflight.png */,
+				DDDD574615181B6E0052F9AE /* testflight@2x.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1287,6 +1287,8 @@
 				DDA2921611F8B53B000FFFF4 /* UIApplication_Additions.m */,
 				DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */,
 				DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */,
+				DD28BE001519565300EAF5D2 /* UIImage_Additions.h */,
+				DD28BE011519565300EAF5D2 /* UIImage_Additions.m */,
 				DD4BABF613BE62C50043FA21 /* DSSound.h */,
 				DD4BABF713BE62C50043FA21 /* DSSound.m */,
 			);
@@ -1643,7 +1645,6 @@
 				DDE77E511212138B00201ACE /* trash.png in Resources */,
 				DD0B1349121DD3D000A1309D /* action.png in Resources */,
 				DD56787012AEEB8F00B73C8A /* DSMapBoxHelpController.xib in Resources */,
-				DD5678C912AEF2E100B73C8A /* intro.mov in Resources */,
 				DDCE29B712B6E9F5008A1257 /* play.png in Resources */,
 				DDCE29B912B6E9F9008A1257 /* video_capture.png in Resources */,
 				DDBE15C012C1747800C4AAB7 /* about.txt in Resources */,
@@ -1718,6 +1719,13 @@
 				DD98F5CC15140BEA0054D27F /* corner_fold_preview@2x.png in Resources */,
 				DD98F5CD15140BEA0054D27F /* corner_fold@2x.png in Resources */,
 				DD98F5CF15140BFA0054D27F /* layers@2x.png in Resources */,
+				DDDD573D15181AAE0052F9AE /* icon@2x.png in Resources */,
+				DDDD573E15181AAE0052F9AE /* settings-icon.png in Resources */,
+				DDDD573F15181AAE0052F9AE /* settings-icon@2x.png in Resources */,
+				DDDD574315181AB80052F9AE /* iTunesArtwork@2x in Resources */,
+				DDDD574415181AB80052F9AE /* spotlight-icon.png in Resources */,
+				DDDD574515181AB80052F9AE /* spotlight-icon@2x.png in Resources */,
+				DDDD574715181B6E0052F9AE /* testflight@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1750,7 +1758,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "INFO=$( echo $PWD)/MapBoxiPad-Info\nTAG=$( git describe --tags `git rev-list --tags --max-count=1` )\nCOMMIT=\nGITPATH=/usr/bin:/usr/local/bin:/usr/local/git/bin\nPATH=$PATH:$GITPATH; export PATH\n\nif [ -z $( which git ) ]; then\n  echo \"Unable to find git binary in \\$GITPATH\"\n  exit 1\nfi\n\n# check if we've got untagged commits, adding a 'd' if so\nif [ $( git log | sed -n '1p' | awk '{ print $2 }' ) != $( git rev-list --tags --max-count=1 ) ]; then\n  TAG=$( echo $TAG )d\nfi\n\nCURRENT=$( defaults read \"$INFO\" CFBundleVersion )\n\nif [ $CURRENT != $TAG ]; then\n  # output for Xcode logging\n  echo \"Updating CFBundleVersion to $TAG\"\n\n  # write it to the Info.plist\n  defaults write \"$INFO\" CFBundleVersion $TAG  \nelse\n  # output for Xcode logging\n  echo \"CFBundleVersion already at $TAG\"\nfi";
+			shellScript = "PATH=/usr/bin; export PATH\nINFO=$( echo $PWD )/MapBoxiPad-Info\nTAG=$( git describe --tags `git rev-list --tags --max-count=1` )\nCOMMIT=\n\nif [ -z $( which git ) ]; then\n  echo \"Unable to find git binary in \\$GITPATH\"\n  exit 1\nfi\n\n# check if we've got untagged commits, adding a 'd' if so\nif [ $( git log | sed -n '1p' | awk '{ print $2 }' ) != $( git rev-list --tags --max-count=1 ) ]; then\n  TAG=$( echo $TAG )d\nfi\n\nCURRENT=$( defaults read \"$INFO\" CFBundleVersion )\n\nif [ $CURRENT != $TAG ]; then\n  # output for Xcode logging\n  echo \"Updating CFBundleVersion to $TAG\"\n\n  # write it to the Info.plist\n  defaults write \"$INFO\" CFBundleVersion $TAG  \nelse\n  # output for Xcode logging\n  echo \"CFBundleVersion already at $TAG\"\nfi\n\n# ensure that property list is text\nplutil -convert xml1 -s \"$INFO.plist\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1838,7 +1846,7 @@
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationCenter.m in Sources */,
-				DDEF8FF413831B1A00FF148C /* DSMapBoxAlphaModalNavigationController.m in Sources */,
+				DDEF8FF413831B1A00FF148C /* DSMapBoxStyledModalNavigationController.m in Sources */,
 				DDEF901313831DA800FF148C /* DSMapBoxLayerAddCustomServerController.m in Sources */,
 				DDEF90D513832AF700FF148C /* DSMapBoxLayerAddTileStreamBrowseController.m in Sources */,
 				DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */,
@@ -1847,7 +1855,6 @@
 				DD4BABF813BE62C50043FA21 /* DSSound.m in Sources */,
 				DDB8390913CBB62600D6A034 /* DSMapBoxLayerAddTileStreamAlbumController.m in Sources */,
 				DDB8390D13CBBB1900D6A034 /* DSMapBoxLayerAddAccountView.m in Sources */,
-				DD1ACD8513CD3177001244D2 /* UIImage+Alpha.m in Sources */,
 				DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */,
 				DD283A2A13A93BF600AB9BD2 /* SimpleKMLOverlay.m in Sources */,
 				DD283A2D13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m in Sources */,
@@ -1872,6 +1879,7 @@
 				DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */,
 				DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */,
 				DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */,
+				DD28BE021519565300EAF5D2 /* UIImage_Additions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1971,7 +1979,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;

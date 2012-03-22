@@ -8,11 +8,10 @@
 
 #import "DSMapBoxLayerAddAccountView.h"
 
-@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddAccountViewDelegate>
+@interface DSMapBoxLayerAddTileStreamAlbumController : UIViewController <DSMapBoxLayerAddAccountViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *helpLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;
 @property (nonatomic, strong) IBOutlet UIScrollView *accountScrollView;
-@property (nonatomic, strong) IBOutlet UIPageControl *accountPageControl;
 
 @end

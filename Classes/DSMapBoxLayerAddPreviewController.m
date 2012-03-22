@@ -57,7 +57,8 @@
                               zoomLevel:([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds)
                            maxZoomLevel:[source maxZoom]
                            minZoomLevel:[source minZoom]
-                        backgroundImage:nil];
+                        backgroundImage:nil
+                            screenScale:0.0];
     
     self.mapView.enableRotate = NO;
     self.mapView.deceleration = NO;

@@ -7,15 +7,7 @@
 //
 
 #import <MessageUI/MessageUI.h>
-#import <MediaPlayer/MediaPlayer.h>
 
 @interface DSMapBoxHelpController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-
-@property (nonatomic, strong) IBOutlet UIButton *moviePlayButton;
-@property (nonatomic, strong) MPMoviePlayerController *moviePlayer;
-@property (nonatomic, strong) IBOutlet UITableView *helpTableView;
-@property (nonatomic, strong) IBOutlet UILabel *versionInfoLabel;
-
-- (IBAction)tappedVideoButton:(id)sender;
 
 @end

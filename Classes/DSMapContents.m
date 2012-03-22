@@ -43,6 +43,7 @@
 	  maxZoomLevel:(float)maxZoomLevel
 	  minZoomLevel:(float)minZoomLevel
    backgroundImage:(UIImage *)backgroundImage
+       screenScale:(float)theScreenScale
 {
     self = [super initWithView:newView 
                     tilesource:newTilesource 
@@ -50,7 +51,8 @@
                      zoomLevel:initialZoomLevel 
                   maxZoomLevel:maxZoomLevel 
                   minZoomLevel:minZoomLevel 
-               backgroundImage:backgroundImage];
+               backgroundImage:backgroundImage
+                   screenScale:theScreenScale];
     
     if (self)
     {

@@ -568,6 +568,8 @@
     if ( ! cell)
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:LayerCellIdentifier];
     
+    cell.textLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
+    
     NSDictionary *layer = nil;
     
     switch (indexPath.section)

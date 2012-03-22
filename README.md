@@ -7,9 +7,9 @@
 
 ## Requirements
 
- * Base SDK: iOS 5.0
- * Deployment Target: iOS 4.2
+ * Base SDK: iOS 5.1
+ * Deployment Target: iOS 5.0
 
 ## License
 
-Copyright (c) 2010-2011 Development Seed, Inc.
+Copyright (c) 2010-2012 Development Seed, Inc.
