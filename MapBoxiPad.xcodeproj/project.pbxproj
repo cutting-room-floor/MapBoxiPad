@@ -149,6 +149,10 @@
 		DD84BA26151AA875002C8929 /* downloads6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA1D151AA875002C8929 /* downloads6@2x.png */; };
 		DD84BA27151AA875002C8929 /* downloads7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA1E151AA875002C8929 /* downloads7@2x.png */; };
 		DD84BA28151AA875002C8929 /* downloads8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA1F151AA875002C8929 /* downloads8@2x.png */; };
+		DD84BA48151AB63A002C8929 /* point@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA47151AB63A002C8929 /* point@2x.png */; };
+		DD84BA4A151AB65F002C8929 /* mapbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA49151AB65F002C8929 /* mapbox@2x.png */; };
+		DD84BA4C151AB665002C8929 /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA4B151AB665002C8929 /* Default-Portrait@2x.png */; };
+		DD84BA4E151AB669002C8929 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA4D151AB669002C8929 /* Default-Landscape@2x.png */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */; };
 		DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */; };
@@ -511,6 +515,10 @@
 		DD84BA1D151AA875002C8929 /* downloads6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downloads6@2x.png"; sourceTree = SOURCE_ROOT; };
 		DD84BA1E151AA875002C8929 /* downloads7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downloads7@2x.png"; sourceTree = SOURCE_ROOT; };
 		DD84BA1F151AA875002C8929 /* downloads8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "downloads8@2x.png"; sourceTree = SOURCE_ROOT; };
+		DD84BA47151AB63A002C8929 /* point@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "point@2x.png"; sourceTree = SOURCE_ROOT; };
+		DD84BA49151AB65F002C8929 /* mapbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mapbox@2x.png"; sourceTree = "<group>"; };
+		DD84BA4B151AB665002C8929 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
+		DD84BA4D151AB669002C8929 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD91C33E14B51E3200330326 /* DSMapBoxDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadManager.h; sourceTree = "<group>"; };
@@ -1180,8 +1188,11 @@
 				DDDD574115181AB80052F9AE /* spotlight-icon.png */,
 				DDDD574215181AB80052F9AE /* spotlight-icon@2x.png */,
 				DD10184411EE51FC00DF286F /* mapbox.png */,
+				DD84BA49151AB65F002C8929 /* mapbox@2x.png */,
 				DD3ACCD011FFCD2600B4203F /* Default-Portrait.png */,
+				DD84BA4B151AB665002C8929 /* Default-Portrait@2x.png */,
 				DD3ACCCF11FFCD2600B4203F /* Default-Landscape.png */,
+				DD84BA4D151AB669002C8929 /* Default-Landscape@2x.png */,
 				D71ECDE911FE2D8D006A60EB /* iTunesArtwork */,
 				DDDD574015181AB80052F9AE /* iTunesArtwork@2x */,
 				DDEEACAE136F516A0058BA90 /* loading.png */,
@@ -1406,6 +1417,7 @@
 				DDA1073B11E4436E008D00A7 /* balloon.html */,
 				DD84B9FF151A908F002C8929 /* circle.png */,
 				DDE1C6B91342E12F0049C325 /* point.png */,
+				DD84BA47151AB63A002C8929 /* point@2x.png */,
 				DDE4E21014897AE70040AFCD /* grabber.png */,
 				DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */,
 				DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */,
@@ -1794,6 +1806,10 @@
 				DD84BA26151AA875002C8929 /* downloads6@2x.png in Resources */,
 				DD84BA27151AA875002C8929 /* downloads7@2x.png in Resources */,
 				DD84BA28151AA875002C8929 /* downloads8@2x.png in Resources */,
+				DD84BA48151AB63A002C8929 /* point@2x.png in Resources */,
+				DD84BA4A151AB65F002C8929 /* mapbox@2x.png in Resources */,
+				DD84BA4C151AB665002C8929 /* Default-Portrait@2x.png in Resources */,
+				DD84BA4E151AB669002C8929 /* Default-Landscape@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
