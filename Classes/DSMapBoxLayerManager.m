@@ -405,8 +405,10 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     {
         NSMutableArray *newTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
         
-        for (NSDictionary *tileLayer in activeTileLayers)
+        for (int i = 0; i < [activeTileLayers count]; i++)
         {
+            NSDictionary *tileLayer = [[[activeTileLayers reverseObjectEnumerator] allObjects] objectAtIndex:i];
+            
             [newTileLayers removeObject:tileLayer];
             [newTileLayers insertObject:tileLayer atIndex:0];
         }
@@ -418,8 +420,10 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     {
         NSMutableArray *newDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
 
-        for (NSDictionary *dataLayer in newDataLayers)
+        for (int j = 0; j < [activeDataLayers count]; j++)
         {
+            NSDictionary *dataLayer = [[[activeDataLayers reverseObjectEnumerator] allObjects] objectAtIndex:j];
+            
             [newDataLayers removeObject:dataLayer];
             [newDataLayers insertObject:dataLayer atIndex:0];
         }

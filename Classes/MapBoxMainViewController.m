@@ -521,7 +521,7 @@
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [((DSMapContents *)self.mapView.contents).layerMapViews valueForKeyPath:@"tileSetURL.pathRelativeToApplicationSandbox"];
+    NSArray *tileOverlayState = [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
     
     // get data overlay state(s)
     //
