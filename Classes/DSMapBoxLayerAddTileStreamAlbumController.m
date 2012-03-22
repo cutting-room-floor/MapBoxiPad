@@ -190,6 +190,8 @@
                         if (i == 0 && index == 0)
                             accountView.featured = YES;
                         
+                        // handle first page specially
+                        //
                         if (i == 0)
                         {
                             // slide-fade-animate in first page of results
@@ -212,8 +214,12 @@
                             accountView.alpha = 1.0;
                             
                             [UIView commitAnimations];
+                            
+                            // start downloads
+                            //
+                            [accountView startDownload];
                         }
-                        
+
                         [containerView addSubview:accountView];
                     }
                 }
@@ -279,6 +285,16 @@
     browseController.serverURL  = [NSURL URLWithString:serverURLString];
     
     [(UINavigationController *)self.parentViewController pushViewController:browseController animated:YES];
+}
+
+#pragma mark -
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    UIView *containerView = [scrollView.subviews objectAtIndex:(scrollView.contentOffset.x / scrollView.bounds.size.width)];
+    
+    for (DSMapBoxLayerAddAccountView *accountView in containerView.subviews)
+        [accountView startDownload];
 }
 
 @end

@@ -10,7 +10,7 @@
 
 static NSString *const DSMapBoxLayersAdded = @"DSMapBoxLayersAdded";
 
-@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <DSMapBoxLayerAddTileViewDelegate>
+@interface DSMapBoxLayerAddTileStreamBrowseController : UIViewController <UIScrollViewDelegate, DSMapBoxLayerAddTileViewDelegate>
 
 @property (nonatomic, strong) IBOutlet UILabel *helpLabel;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *spinner;

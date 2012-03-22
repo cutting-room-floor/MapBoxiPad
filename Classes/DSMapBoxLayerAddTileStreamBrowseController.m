@@ -231,6 +231,11 @@
                             tileView.delegate = weakSelf;
                             tileView.tag = index;
                             
+                            // start downloads on first page
+                            //
+                            if (i == 0)
+                                [tileView startDownload];
+
                             [containerView addSubview:tileView];
                         }
                     }
@@ -410,6 +415,16 @@
         
         [self presentModalViewController:wrapper animated:YES];
     });
+}
+
+#pragma mark -
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    UIView *containerView = [scrollView.subviews objectAtIndex:(scrollView.contentOffset.x / scrollView.bounds.size.width)];
+    
+    for (DSMapBoxLayerAddTileView *tileView in containerView.subviews)
+        [tileView startDownload];
 }
 
 @end

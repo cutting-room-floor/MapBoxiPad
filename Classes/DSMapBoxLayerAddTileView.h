@@ -25,5 +25,6 @@
 @property (nonatomic, readonly, strong) UIImage *image;
 
 - (id)initWithFrame:(CGRect)rect imageURL:(NSURL *)imageURL labelText:(NSString *)labelText;
+- (void)startDownload;
 
 @end

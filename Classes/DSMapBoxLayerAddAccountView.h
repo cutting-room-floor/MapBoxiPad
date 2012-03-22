@@ -24,5 +24,6 @@
 @property (nonatomic, assign) BOOL featured;
 
 - (id)initWithFrame:(CGRect)rect imageURLs:(NSArray *)imageURLs labelText:(NSString *)labelText;
+- (void)startDownload;
 
 @end

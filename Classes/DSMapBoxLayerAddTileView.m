@@ -78,7 +78,7 @@
             UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
             [self addGestureRecognizer:pinch];
 
-            // fire off image download request
+            // prepare image download request
             //
             DSMapBoxURLRequest *imageRequest = [DSMapBoxURLRequest requestWithURL:imageURL];
             
@@ -91,6 +91,8 @@
             imageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
             {
                 [DSMapBoxNetworkActivityIndicator removeJob:connection];
+                
+                weakSelf.imageDownload = nil;
                 
                 UIImage *tileImage = [UIImage imageWithData:responseData];
                 
@@ -191,11 +193,9 @@
             imageDownload.failureBlock = ^(NSURLConnection *connection, NSError *error)
             {
                 [DSMapBoxNetworkActivityIndicator removeJob:connection];
+                
+                weakSelf.imageDownload = nil;
             };
-            
-            [DSMapBoxNetworkActivityIndicator addJob:imageDownload];
-            
-            [imageDownload start];
         }
         else
         {
@@ -233,8 +233,11 @@
 
 - (void)dealloc
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:imageDownload];
-    [imageDownload cancel];
+    if (imageDownload)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:imageDownload];
+        [imageDownload cancel];
+    }
 }
 
 #pragma mark -
@@ -361,6 +364,18 @@
         [self.delegate tileViewWantsToShowPreview:self];
         
         [TestFlight passCheckpoint:@"used pinch gesture to preview TileStream layer"];
+    }
+}
+
+#pragma mark -
+
+- (void)startDownload
+{
+    if (self.imageDownload)
+    {
+        [DSMapBoxNetworkActivityIndicator addJob:self.imageDownload];
+        
+        [self.imageDownload start];
     }
 }
 

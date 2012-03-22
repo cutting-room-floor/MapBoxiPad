@@ -80,7 +80,7 @@
         UIPinchGestureRecognizer *pinch = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(pinchGesture:)];
         [self addGestureRecognizer:pinch];
 
-        // fire off primary image download request
+        // prepare primary image download request
         //
         DSMapBoxURLRequest *primaryImageRequest = [DSMapBoxURLRequest requestWithURL:[imageURLs objectAtIndex:0]];
         
@@ -93,6 +93,8 @@
         primaryImageDownload.successBlock = ^(NSURLConnection *connection, NSURLResponse *response, NSData *responseData)
         {
             [DSMapBoxNetworkActivityIndicator removeJob:connection];
+            
+            weakSelf.primaryImageDownload = nil;
             
             UIImage *tileImage = [UIImage imageWithData:responseData];
             
@@ -200,6 +202,8 @@
         {
             [DSMapBoxNetworkActivityIndicator removeJob:connection];
             
+            weakSelf.primaryImageDownload = nil;
+            
             // we can still try for the secondaries
             //
             [weakSelf downloadSecondaryImages];
@@ -235,10 +239,6 @@
         }
         
         originalSize = rect.size;
-        
-        [DSMapBoxNetworkActivityIndicator addJob:primaryImageDownload];
-        
-        [primaryImageDownload start];
     }
     
     return self;
@@ -246,13 +246,19 @@
 
 - (void)dealloc
 {
-    [DSMapBoxNetworkActivityIndicator removeJob:primaryImageDownload];
-    [primaryImageDownload cancel];
+    if (primaryImageDownload)
+    {
+        [DSMapBoxNetworkActivityIndicator removeJob:primaryImageDownload];
+        [primaryImageDownload cancel];
+    }
     
     for (NSURLConnection *download in secondaryImageDownloads)
     {
-        [DSMapBoxNetworkActivityIndicator removeJob:download];
-        [download cancel];
+        if (download)
+        {
+            [DSMapBoxNetworkActivityIndicator removeJob:download];
+            [download cancel];
+        }
     }
 }
 
@@ -524,6 +530,16 @@
 }
 
 #pragma mark -
+
+- (void)startDownload
+{
+    if (self.primaryImageDownload)
+    {
+        [DSMapBoxNetworkActivityIndicator addJob:self.primaryImageDownload];
+        
+        [self.primaryImageDownload start];
+    }
+}
 
 - (void)downloadSecondaryImages
 {
