@@ -153,6 +153,7 @@
 		DD84BA4A151AB65F002C8929 /* mapbox@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA49151AB65F002C8929 /* mapbox@2x.png */; };
 		DD84BA4C151AB665002C8929 /* Default-Portrait@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA4B151AB665002C8929 /* Default-Portrait@2x.png */; };
 		DD84BA4E151AB669002C8929 /* Default-Landscape@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA4D151AB669002C8929 /* Default-Landscape@2x.png */; };
+		DD84BA50151AF290002C8929 /* geojson_layer@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DD84BA4F151AF290002C8929 /* geojson_layer@2x.png */; };
 		DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */; };
 		DD91C34514B51E3200330326 /* DSMapBoxDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C33F14B51E3200330326 /* DSMapBoxDownloadManager.m */; };
 		DD91C34614B51E3200330326 /* DSMapBoxDownloadTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91C34114B51E3200330326 /* DSMapBoxDownloadTableViewCell.m */; };
@@ -519,6 +520,7 @@
 		DD84BA49151AB65F002C8929 /* mapbox@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "mapbox@2x.png"; sourceTree = "<group>"; };
 		DD84BA4B151AB665002C8929 /* Default-Portrait@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait@2x.png"; sourceTree = "<group>"; };
 		DD84BA4D151AB669002C8929 /* Default-Landscape@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape@2x.png"; sourceTree = "<group>"; };
+		DD84BA4F151AF290002C8929 /* geojson_layer@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "geojson_layer@2x.png"; sourceTree = SOURCE_ROOT; };
 		DD86B69611FE6CE700165CDF /* DSMapBoxLayerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxLayerController.h; sourceTree = "<group>"; };
 		DD86B69711FE6CE700165CDF /* DSMapBoxLayerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLayerController.m; sourceTree = "<group>"; };
 		DD91C33E14B51E3200330326 /* DSMapBoxDownloadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxDownloadManager.h; sourceTree = "<group>"; };
@@ -1550,6 +1552,7 @@
 				DDE1C6B31342E1180049C325 /* crosshairs_highlight.png */,
 				DD84BA0B151A9AA6002C8929 /* crosshairs_highlight@2x.png */,
 				DD506C3B13FDAC4F008EB626 /* geojson_layer.png */,
+				DD84BA4F151AF290002C8929 /* geojson_layer@2x.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -1810,6 +1813,7 @@
 				DD84BA4A151AB65F002C8929 /* mapbox@2x.png in Resources */,
 				DD84BA4C151AB665002C8929 /* Default-Portrait@2x.png in Resources */,
 				DD84BA4E151AB669002C8929 /* Default-Landscape@2x.png in Resources */,
+				DD84BA50151AF290002C8929 /* geojson_layer@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
