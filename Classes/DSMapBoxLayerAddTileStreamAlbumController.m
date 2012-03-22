@@ -203,17 +203,14 @@
                                                            accountView.frame.size.width, 
                                                            accountView.frame.size.height);
                             
-                            accountView.alpha = 0.0;
-                            
-                            [UIView beginAnimations:nil context:nil];
-                            [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
-                            [UIView setAnimationDuration:0.25];
-                            [UIView setAnimationDelay:(0.05 + index * 0.05)];
-                            
-                            accountView.frame = destRect;
-                            accountView.alpha = 1.0;
-                            
-                            [UIView commitAnimations];
+                            [UIView animateWithDuration:0.25
+                                                  delay:(1.0 + (index * 0.075))
+                                                options:UIViewAnimationCurveEaseInOut
+                                             animations:^(void)
+                                             {
+                                                 accountView.frame = destRect;
+                                             }
+                                             completion:nil];
                             
                             // start downloads
                             //
