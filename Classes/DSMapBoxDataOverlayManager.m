@@ -124,228 +124,254 @@
     CGFloat minLon =  kMaxLong;
     CGFloat maxLon = -kMaxLong;
 
+    // collect supported features that we're going to plot
+    //
+    NSMutableSet *features = [NSMutableSet set];
+    
     if ([kml.feature isKindOfClass:[SimpleKMLContainer class]])
     {
-        for (SimpleKMLFeature *feature in ((SimpleKMLContainer *)kml.feature).flattenedPlacemarks)
-        {
-            // draw placemarks as RMMarkers with popups
-            //
-            if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).point)
-            {
-                UIImage *icon;
-                
-                if (((SimpleKMLPlacemark *)feature).style && ((SimpleKMLPlacemark *)feature).style.iconStyle)
-                    icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
-                
-                else
-                    icon = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
-                
-                RMMarker *marker;
-                
-                CLLocation *location = [[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
-                                                                  longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude];
-
-                if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
-                {
-                    // TODO: style the balloon according to the given style
-                }
-                
-                marker = [[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]];
-
-                marker.data = [NSDictionary dictionaryWithObjectsAndKeys:feature,  @"placemark",
-                                                                         location, @"location",
-                                                                         nil];
-
-                CLLocationCoordinate2D coordinate = ((SimpleKMLPlacemark *)feature).point.coordinate;
-                
-                if (coordinate.latitude < minLat)
-                    minLat = coordinate.latitude;
-                
-                if (coordinate.latitude > maxLat)
-                    maxLat = coordinate.latitude;
-                
-                if (coordinate.longitude < minLon)
-                    minLon = coordinate.longitude;
-                
-                if (coordinate.longitude > maxLon)
-                    maxLon = coordinate.longitude;
-                
-                [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
-                
-                [overlay addObject:marker];
-            }
-            
-            // draw lines as RMPaths
-            //
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).lineString)
-            {
-                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
-                
-                path.lineColor    = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
-                path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
-                path.fillColor    = [UIColor clearColor];
-                path.shadowBlur   = kDSPathShadowBlur;
-                path.shadowOffset = kDSPathShadowOffset;
-                
-                SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
-                
-                BOOL hasStarted = NO;
-                
-                for (CLLocation *coordinate in lineString.coordinates)
-                {
-                    if ( ! hasStarted)
-                    {
-                        [path moveToLatLong:coordinate.coordinate];
-                        hasStarted = YES;
-                    }
-                    
-                    else
-                        [path addLineToLatLong:coordinate.coordinate];
-                
-                    // this could be possibly be done per-path instead of per-point using
-                    // a bounding box but I wasn't having much luck with it & it's 
-                    // probably only worth it on very large & complicated paths
-                    //
-                    if (coordinate.coordinate.latitude < minLat)
-                        minLat = coordinate.coordinate.latitude;
-                    
-                    if (coordinate.coordinate.latitude > maxLat)
-                        maxLat = coordinate.coordinate.latitude;
-                    
-                    if (coordinate.coordinate.longitude < minLon)
-                        minLon = coordinate.coordinate.longitude;
-                    
-                    if (coordinate.coordinate.longitude > maxLon)
-                        maxLon = coordinate.coordinate.longitude;
-                }
-                
-                [self.mapView.contents.overlay addSublayer:path];
-                
-                [overlay addObject:path];
-            }
-            
-            // draw polygons as RMPaths
-            //
-            else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).polygon)
-            {
-                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
-                
-                path.lineColor = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
-                
-                if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
-                    path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
-                
-                else
-                    path.fillColor = [UIColor clearColor];
-                
-                path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
-                path.shadowBlur   = kDSPathShadowBlur;
-                path.shadowOffset = kDSPathShadowOffset;
-
-                SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
-                
-                BOOL hasStarted = NO;
-                
-                for (CLLocation *coordinate in outerBoundary.coordinates)
-                {
-                    if ( ! hasStarted)
-                    {
-                        [path moveToLatLong:coordinate.coordinate];
-                        hasStarted = YES;
-                    }
-                    
-                    else
-                        [path addLineToLatLong:coordinate.coordinate];
-                
-                    // this could be possibly be done per-path instead of per-point using
-                    // a bounding box but I wasn't having much luck with it & it's 
-                    // probably only worth it on very large & complicated paths
-                    //
-                    if (coordinate.coordinate.latitude < minLat)
-                        minLat = coordinate.coordinate.latitude;
-                    
-                    if (coordinate.coordinate.latitude > maxLat)
-                        maxLat = coordinate.coordinate.latitude;
-                    
-                    if (coordinate.coordinate.longitude < minLon)
-                        minLon = coordinate.coordinate.longitude;
-                    
-                    if (coordinate.coordinate.longitude > maxLon)
-                        maxLon = coordinate.coordinate.longitude;
-                }
-                
-                [self.mapView.contents.overlay addSublayer:path];
-                
-                [overlay addObject:path];
-            }
-        }
+        SimpleKMLContainer *container = (SimpleKMLContainer *)kml.feature;
         
-        [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
+        // get placemarks at all depths (mostly working around Folder nesting)
+        //
+        [features addObjectsFromArray:container.flattenedPlacemarks];
         
+        // add any other top-level features (e.g., GroundOverlay)
+        //
+        [features addObjectsFromArray:container.features];
     }
     else if ([kml.feature isKindOfClass:[SimpleKMLGroundOverlay class]])
     {
-        // get overlay, create layer, and get bounds
-        //
-        SimpleKMLGroundOverlay *groundOverlay = (SimpleKMLGroundOverlay *)kml.feature;
-        
-        RMMapLayer *overlayLayer = [RMMapLayer layer];
-
-        RMLatLong ne = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east);
-        RMLatLong nw = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.west);
-        RMLatLong se = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.east);
-        RMLatLong sw = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.west);
-        
-        CGPoint nePoint = [self.mapView.contents latLongToPixel:ne];
-        CGPoint nwPoint = [self.mapView.contents latLongToPixel:nw];
-        CGPoint sePoint = [self.mapView.contents latLongToPixel:se];
-        
-        // rotate & size image as necessary
-        //
-        UIImage *overlayImage = groundOverlay.icon;
-        
-        CGSize originalSize = overlayImage.size;
-        
-        if (groundOverlay.rotation)
-            overlayImage = [overlayImage imageRotatedByDegrees:-groundOverlay.rotation];
-        
-        // account for rotated corners now sticking out
-        //
-        CGFloat xFactor = (nePoint.x - nwPoint.x) / originalSize.width;
-        CGFloat yFactor = (sePoint.y - nePoint.y) / originalSize.height;
-        
-        CGFloat xDelta  = (overlayImage.size.width  - originalSize.width)  * xFactor;
-        CGFloat yDelta  = (overlayImage.size.height - originalSize.height) * yFactor;
-        
-        CGRect overlayRect = CGRectMake(nwPoint.x - (xDelta / 2), nwPoint.y - (yDelta / 2), nePoint.x - nwPoint.x + xDelta, sePoint.y - nePoint.y + yDelta);
-        
-        overlayImage = [overlayImage imageWithWidth:overlayRect.size.width height:overlayRect.size.height];
-        
-        // size & place layer with image
-        //
-        overlayLayer.frame = overlayRect;
-        
-        overlayLayer.contents = (id)[overlayImage CGImage];
-        
-        // update reported bounds & store for later
-        //
-        if (sw.latitude < minLat)
-            minLat = sw.latitude;
-        
-        if (nw.latitude > maxLat)
-            maxLat = nw.latitude;
-        
-        if (sw.longitude < minLon)
-            minLon = sw.longitude;
-        
-        if (nw.longitude > maxLon)
-            maxLon = nw.longitude;
-    
-        [self.mapView.contents.overlay addSublayer:overlayLayer];
-    
-        [overlay addObject:overlayLayer];
+        [features addObject:kml.feature];
     }
+        
+    // iterate & handle supported features
+    //
+    for (SimpleKMLFeature *feature in features)
+    {
+        // draw placemarks as RMMarkers with popups
+        //
+        if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).point)
+        {
+            UIImage *icon;
+            
+            if (((SimpleKMLPlacemark *)feature).style && ((SimpleKMLPlacemark *)feature).style.iconStyle)
+                icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
+            
+            else
+                icon = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
+            
+            RMMarker *marker;
+            
+            CLLocation *location = [[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
+                                                              longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude];
+
+            if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
+            {
+                // TODO: style the balloon according to the given style
+            }
+            
+            marker = [[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]];
+
+            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:feature,  @"placemark",
+                                                                     location, @"location",
+                                                                     nil];
+
+            CLLocationCoordinate2D coordinate = ((SimpleKMLPlacemark *)feature).point.coordinate;
+            
+            if (coordinate.latitude < minLat)
+                minLat = coordinate.latitude;
+            
+            if (coordinate.latitude > maxLat)
+                maxLat = coordinate.latitude;
+            
+            if (coordinate.longitude < minLon)
+                minLon = coordinate.longitude;
+            
+            if (coordinate.longitude > maxLon)
+                maxLon = coordinate.longitude;
+            
+            [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
+            
+            [overlay addObject:marker];
+        }
+        
+        // draw lines as RMPaths
+        //
+        else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).lineString)
+        {
+            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
+            
+            path.lineColor    = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
+            path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
+            path.fillColor    = [UIColor clearColor];
+            path.shadowBlur   = kDSPathShadowBlur;
+            path.shadowOffset = kDSPathShadowOffset;
+            
+            SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
+            
+            BOOL hasStarted = NO;
+            
+            for (CLLocation *coordinate in lineString.coordinates)
+            {
+                if ( ! hasStarted)
+                {
+                    [path moveToLatLong:coordinate.coordinate];
+                    hasStarted = YES;
+                }
+                
+                else
+                    [path addLineToLatLong:coordinate.coordinate];
+            
+                // this could be possibly be done per-path instead of per-point using
+                // a bounding box but I wasn't having much luck with it & it's 
+                // probably only worth it on very large & complicated paths
+                //
+                if (coordinate.coordinate.latitude < minLat)
+                    minLat = coordinate.coordinate.latitude;
+                
+                if (coordinate.coordinate.latitude > maxLat)
+                    maxLat = coordinate.coordinate.latitude;
+                
+                if (coordinate.coordinate.longitude < minLon)
+                    minLon = coordinate.coordinate.longitude;
+                
+                if (coordinate.coordinate.longitude > maxLon)
+                    maxLon = coordinate.coordinate.longitude;
+            }
+            
+            [self.mapView.contents.overlay addSublayer:path];
+            
+            [overlay addObject:path];
+        }
+        
+        // draw polygons as RMPaths
+        //
+        else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).polygon)
+        {
+            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
+            
+            path.lineColor = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
+            
+            if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
+                path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
+            
+            else
+                path.fillColor = [UIColor clearColor];
+            
+            path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
+            path.shadowBlur   = kDSPathShadowBlur;
+            path.shadowOffset = kDSPathShadowOffset;
+
+            SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
+            
+            BOOL hasStarted = NO;
+            
+            for (CLLocation *coordinate in outerBoundary.coordinates)
+            {
+                if ( ! hasStarted)
+                {
+                    [path moveToLatLong:coordinate.coordinate];
+                    hasStarted = YES;
+                }
+                
+                else
+                    [path addLineToLatLong:coordinate.coordinate];
+            
+                // this could be possibly be done per-path instead of per-point using
+                // a bounding box but I wasn't having much luck with it & it's 
+                // probably only worth it on very large & complicated paths
+                //
+                if (coordinate.coordinate.latitude < minLat)
+                    minLat = coordinate.coordinate.latitude;
+                
+                if (coordinate.coordinate.latitude > maxLat)
+                    maxLat = coordinate.coordinate.latitude;
+                
+                if (coordinate.coordinate.longitude < minLon)
+                    minLon = coordinate.coordinate.longitude;
+                
+                if (coordinate.coordinate.longitude > maxLon)
+                    maxLon = coordinate.coordinate.longitude;
+            }
+            
+            [self.mapView.contents.overlay addSublayer:path];
+            
+            [overlay addObject:path];
+        }
     
+        // add overlays as map layers
+        //
+        else if ([feature isKindOfClass:[SimpleKMLGroundOverlay class]] && ((SimpleKMLGroundOverlay *)feature).icon)
+        {
+            // get overlay, create layer, and get bounds
+            //
+            SimpleKMLGroundOverlay *groundOverlay = (SimpleKMLGroundOverlay *)feature;
+            
+            RMMapLayer *overlayLayer = [RMMapLayer layer];
+            
+            RMLatLong ne = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east);
+            RMLatLong nw = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.west);
+            RMLatLong se = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.east);
+            RMLatLong sw = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.west);
+            
+            CGPoint nePoint = [self.mapView.contents latLongToPixel:ne];
+            CGPoint nwPoint = [self.mapView.contents latLongToPixel:nw];
+            CGPoint sePoint = [self.mapView.contents latLongToPixel:se];
+            
+            // rotate & size image as necessary
+            //
+            UIImage *overlayImage = groundOverlay.icon;
+            
+            CGSize originalSize = overlayImage.size;
+            
+            if (groundOverlay.rotation)
+                overlayImage = [overlayImage imageRotatedByDegrees:-groundOverlay.rotation];
+            
+            // account for rotated corners now sticking out
+            //
+            CGFloat xFactor = (nePoint.x - nwPoint.x) / originalSize.width;
+            CGFloat yFactor = (sePoint.y - nePoint.y) / originalSize.height;
+            
+            CGFloat xDelta  = (overlayImage.size.width  - originalSize.width)  * xFactor;
+            CGFloat yDelta  = (overlayImage.size.height - originalSize.height) * yFactor;
+            
+            CGRect overlayRect = CGRectMake(nwPoint.x - (xDelta / 2), nwPoint.y - (yDelta / 2), nePoint.x - nwPoint.x + xDelta, sePoint.y - nePoint.y + yDelta);
+            
+            overlayImage = [overlayImage imageWithWidth:overlayRect.size.width height:overlayRect.size.height];
+            
+            // size & place layer with image
+            //
+            overlayLayer.frame = overlayRect;
+            
+            overlayLayer.contents = (id)[overlayImage CGImage];
+            
+            // update reported bounds & store for later
+            //
+            if (sw.latitude < minLat)
+                minLat = sw.latitude;
+            
+            if (nw.latitude > maxLat)
+                maxLat = nw.latitude;
+            
+            if (sw.longitude < minLon)
+                minLon = sw.longitude;
+            
+            if (nw.longitude > maxLon)
+                maxLon = nw.longitude;
+            
+            [self.mapView.contents.overlay addSublayer:overlayLayer];
+            
+            [overlay addObject:overlayLayer];
+        }
+    }
+
+    // now we can recalculate
+    //
+    [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
+        
+    // determine bounds
+    //
     if ([overlay count])
     {
         NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
