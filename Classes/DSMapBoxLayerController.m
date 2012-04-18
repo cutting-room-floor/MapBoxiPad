@@ -9,6 +9,7 @@
 #import "DSMapBoxLayerController.h"
 
 #import "DSMapBoxTileSetManager.h"
+#import "DSMapBoxLayer.h"
 #import "DSMapBoxLayerManager.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapContents.h"
@@ -165,7 +166,7 @@
             
             // make sure there is at least one downloadable TileStream layer
             //
-            if ( ! [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.downloadable = YES"]] count])
+            if ( ! [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isDownloadable = YES"]] count])
             {
                 [UIAlertView showAlertViewWithTitle:@"No Downloadable Layers"
                                             message:@"You don't have any offline-capable layers that aren't already downloaded. Try adding some from MapBox Hosting first."
@@ -202,9 +203,9 @@
                 {
                     for (NSIndexPath *indexPath in [self selectedIndexPathsInSection:DSMapBoxLayerSectionTile])
                     {
-                        NSDictionary *layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
+                        DSMapBoxLayer *layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
 
-                        NSString *downloadURLString = [[NSDictionary dictionaryWithContentsOfURL:[layer objectForKey:@"URL"]] objectForKey:@"download"];
+                        NSString *downloadURLString = [[NSDictionary dictionaryWithContentsOfURL:layer.URL] objectForKey:@"download"];
 
                         if (downloadURLString)
                             [((MapBoxAppDelegate *)[[UIApplication sharedApplication] delegate]) openExternalURL:[NSURL URLWithString:downloadURLString]];
@@ -283,7 +284,7 @@
                 {
                     if ( ! hasLargeLayer && indexPath.section == DSMapBoxLayerSectionTile)
                     {
-                        NSURL *tileSetURL = [[self.layerManager.tileLayers objectAtIndex:indexPath.row] valueForKey:@"URL"];
+                        NSURL *tileSetURL = ((DSMapBoxLayer *)[self.layerManager.tileLayers objectAtIndex:indexPath.row]).URL;
                         
                         NSDictionary *attributes = [[NSFileManager defaultManager] attributesOfItemAtPath:[tileSetURL relativePath] error:NULL];
                         
@@ -443,7 +444,7 @@
             layers = self.layerManager.tileLayers;
         
         for (int row = 0; row < [layers count]; row++)
-            if ([[[layers objectAtIndex:row] objectForKey:@"selected"] boolValue])
+            if (((DSMapBoxLayer *)[layers objectAtIndex:row]).isSelected)
                 [indexPaths addObject:[NSIndexPath indexPathForRow:row inSection:section]];
     }
     
@@ -484,9 +485,9 @@
             break;
     }
             
-    if ([[[layers objectAtIndex:indexPath.row] valueForKeyPath:@"selected"] boolValue])
+    if (((DSMapBoxLayer *)[layers objectAtIndex:indexPath.row]).isSelected)
     {
-        NSURL *layerURL = [[layers objectAtIndex:indexPath.row] valueForKeyPath:@"URL"];
+        NSURL *layerURL = ((DSMapBoxLayer *)[layers objectAtIndex:indexPath.row]).URL;
         
         if (indexPath.section == DSMapBoxLayerSectionTile && [self layerAtURLShouldShowCrosshairs:layerURL])
         {
@@ -570,7 +571,7 @@
     
     cell.textLabel.lineBreakMode = UILineBreakModeMiddleTruncation;
     
-    NSDictionary *layer = nil;
+    DSMapBoxLayer *layer = nil;
     
     switch (indexPath.section)
     {
@@ -578,9 +579,9 @@
 
             layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
             
-            if ([[layer valueForKey:@"selected"] boolValue])
+            if (layer.isSelected)
             {
-                NSURL *layerURL = [layer valueForKey:@"URL"];
+                NSURL *layerURL = layer.URL;
                 
                 if ([self layerAtURLShouldShowCrosshairs:layerURL])
                 {
@@ -598,20 +599,20 @@
                 cell.editingAccessoryType = UITableViewCellAccessoryNone;
             }
 
-            cell.textLabel.text = [layer valueForKey:@"name"];
+            cell.textLabel.text = layer.name;
             
-            if (self.bulkDownloadMode && [[layer valueForKey:@"downloadable"] boolValue])
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%qu MB", ([[layer objectForKey:@"filesize"] longLongValue] / (1024 * 1024))];
+            if (self.bulkDownloadMode && layer.isDownloadable)
+                cell.detailTextLabel.text = [NSString stringWithFormat:@"%qu MB", ([layer.filesize longLongValue] / (1024 * 1024))];
             else
-                cell.detailTextLabel.text = [layer valueForKey:@"description"];
+                cell.detailTextLabel.text = layer.description;
             
-            if ([[layer valueForKey:@"URL"] isEqual:kDSOpenStreetMapURL])
+            if ([layer.URL isEqual:kDSOpenStreetMapURL])
                 cell.imageView.image = [UIImage imageNamed:@"osm_layer.png"];
             
-            else if ([[layer valueForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
+            else if ([layer.URL isEqual:kDSMapQuestOSMURL])
                 cell.imageView.image = [UIImage imageNamed:@"mapquest_layer.png"];
             
-            else if ([[layer valueForKey:@"URL"] isTileStreamURL])
+            else if ([layer.URL isTileStreamURL])
                 cell.imageView.image = [UIImage imageNamed:@"tilestream_layer.png"];
             
             else
@@ -624,12 +625,12 @@
             layer = [self.layerManager.dataLayers objectAtIndex:indexPath.row];
             
             cell.editingAccessoryView = nil;
-            cell.editingAccessoryType = [[layer valueForKey:@"selected"] boolValue] ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+            cell.editingAccessoryType = layer.isSelected ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
             
-            cell.textLabel.text       = [layer valueForKey:@"name"];
-            cell.detailTextLabel.text = [layer valueForKey:@"description"];
+            cell.textLabel.text       = layer.name;
+            cell.detailTextLabel.text = layer.description;
             
-            switch ([[layer valueForKey:@"type"] intValue])
+            switch (layer.type)
             {
                 case DSMapBoxLayerTypeKML:
                 case DSMapBoxLayerTypeKMZ:
@@ -642,6 +643,10 @@
 
                 case DSMapBoxLayerTypeGeoJSON:
                     cell.imageView.image = [UIImage imageNamed:@"geojson_layer.png"];
+                    break;
+                    
+                case DSMapBoxLayerTypeTile:
+                default:
                     break;
             }
             
@@ -689,24 +694,24 @@
 {
     NSArray *sectionLayers = (indexPath.section == DSMapBoxLayerSectionData ? self.layerManager.dataLayers : self.layerManager.tileLayers);
     
-    NSDictionary *layer = [sectionLayers objectAtIndex:indexPath.row];
+    DSMapBoxLayer *layer = [sectionLayers objectAtIndex:indexPath.row];
     
     // active layer mode - don't show unselected layers
     //
     if (self.activeLayerMode)
-        if ( ! [[layer objectForKey:@"selected"] boolValue])
+        if ( ! layer.isSelected)
             return 0;
     
     // bulk download mode - only show downloadable TileStream layers
     //
     if (self.bulkDownloadMode)
-        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL] || ! [[layer objectForKey:@"downloadable"] boolValue])
+        if ( ! [layer.URL isTileStreamURL] || ! layer.isDownloadable)
             return 0;
     
     // bulk delete - only show deleteable layers
     //
     if (self.bulkDeleteMode)
-        if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
+        if ([layer.URL isEqual:kDSOpenStreetMapURL] || [layer.URL isEqual:kDSMapQuestOSMURL])
             return 0;
             
     return [tableView rowHeight];
@@ -718,24 +723,24 @@
     //
     NSArray *sectionLayers = (indexPath.section == DSMapBoxLayerSectionData ? self.layerManager.dataLayers : self.layerManager.tileLayers);
     
-    NSDictionary *layer = [sectionLayers objectAtIndex:indexPath.row];
+    DSMapBoxLayer *layer = [sectionLayers objectAtIndex:indexPath.row];
     
     // active layer mode - don't show unselected layers
     //
     if (self.activeLayerMode)
-        if ( ! [[layer objectForKey:@"selected"] boolValue])
+        if ( ! layer.isSelected)
             cell.hidden = YES;
     
     // bulk download mode - only show downloadable TileStream layers
     //
     if (self.bulkDownloadMode)
-        if ( ! [[layer objectForKey:@"URL"] isTileStreamURL] || ! [[layer objectForKey:@"downloadable"] boolValue])
+        if ( ! [layer.URL isTileStreamURL] || ! layer.isDownloadable)
             cell.hidden = YES;
     
     // bulk delete - only show deleteable layers
     //
     if (self.bulkDeleteMode)
-        if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL])
+        if ([layer.URL isEqual:kDSOpenStreetMapURL] || [layer.URL isEqual:kDSMapQuestOSMURL])
             cell.hidden = YES;
 
     // setup selection backgrounds
@@ -802,7 +807,7 @@
 
     // perform layer toggling actions
     //
-    NSDictionary *layer;
+    DSMapBoxLayer *layer;
     
     if (indexPath.section == DSMapBoxLayerSectionTile)
         layer = [self.layerManager.tileLayers objectAtIndex:indexPath.row];
@@ -812,9 +817,9 @@
     
     // require net for online layers turning on
     //
-    if ([[layer objectForKey:@"URL"] isEqual:kDSOpenStreetMapURL] || [[layer objectForKey:@"URL"] isEqual:kDSMapQuestOSMURL] || [[layer objectForKey:@"URL"] isTileStreamURL])
+    if ([layer.URL isEqual:kDSOpenStreetMapURL] || [layer.URL isEqual:kDSMapQuestOSMURL] || [layer.URL isTileStreamURL])
     {        
-        if ( ! [[layer valueForKey:@"selected"] boolValue] && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
+        if ( ! layer.isSelected && [[Reachability reachabilityForInternetConnection] currentReachabilityStatus] == NotReachable)
         {
             [UIAlertView showAlertViewWithTitle:@"No Internet Connection"
                                         message:[NSString stringWithFormat:@"%@ requires an active internet connection.", [tableView cellForRowAtIndexPath:indexPath].textLabel.text]
@@ -828,10 +833,10 @@
     
     // warn when turning on MBTiles layers that are lower than our min zoom
     //
-    if (indexPath.section == DSMapBoxLayerSectionTile && [[layer valueForKey:@"URL"] isMBTilesURL] && [[[RMMBTilesTileSource alloc] initWithTileSetURL:[layer valueForKey:@"URL"]] maxZoomNative] < kLowerZoomBounds)
+    if (indexPath.section == DSMapBoxLayerSectionTile && [layer.URL isMBTilesURL] && [[[RMMBTilesTileSource alloc] initWithTileSetURL:layer.URL] maxZoomNative] < kLowerZoomBounds)
     {
         [UIAlertView showAlertViewWithTitle:@"Unable To Zoom"
-                                    message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", [layer valueForKey:@"name"]]
+                                    message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", layer.name]
                           cancelButtonTitle:nil
                           otherButtonTitles:[NSArray arrayWithObject:@"OK"]
                                     handler:nil];

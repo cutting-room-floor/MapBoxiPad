@@ -6,11 +6,12 @@
 //  Copyright 2010 Development Seed. All rights reserved.
 //
 
+@class DSMapBoxLayer;
 @class DSMapBoxLayerManager;
 
 @protocol DSMapBoxLayerControllerDelegate
 
-- (void)zoomToLayer:(NSDictionary *)layer;
+- (void)zoomToLayer:(DSMapBoxLayer *)layer;
 - (void)presentAddLayerHelper;
 
 @end

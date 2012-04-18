@@ -8,6 +8,7 @@
 
 #import "DSMapBoxLayerManager.h"
 
+#import "DSMapBoxLayer.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxTiledLayerMapView.h"
@@ -111,11 +112,11 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     
     // look for tile layers missing on disk, turning them off
     //
-    for (NSDictionary *tileLayer in mutableTileLayers)
+    for (DSMapBoxLayer *tileLayer in mutableTileLayers)
     {
-        if ( ! [tileSetURLs containsObject:[tileLayer objectForKey:@"URL"]])
+        if ( ! [tileSetURLs containsObject:tileLayer.URL])
         {
-            if ([[tileLayer objectForKey:@"selected"] boolValue])
+            if (tileLayer.isSelected)
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableTileLayers indexOfObject:tileLayer] inSection:DSMapBoxLayerSectionTile]];
             
             [tileLayersToRemove addObject:tileLayer];
@@ -162,14 +163,17 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                 }
             }
             
-            [mutableTileLayers addObject:[NSMutableDictionary dictionaryWithObjectsAndKeys:tileSetURL,                             @"URL",
-                                                                                           name,                                   @"name",
-                                                                                           (description ? description : @""),      @"description",
-                                                                                           [NSNumber numberWithBool:NO],           @"selected",
-                                                                                           attribution,                            @"attribution",
-                                                                                           [NSNumber numberWithBool:downloadable], @"downloadable",
-                                                                                           [NSNumber numberWithLongLong:filesize], @"filesize",
-                                                                                           nil]];
+            DSMapBoxLayer *layer = [[DSMapBoxLayer alloc] init];
+            
+            layer.URL          = tileSetURL;
+            layer.name         = name;
+            layer.description  = (description ? description : @"");
+            layer.selected     = NO;
+            layer.attribution  = attribution;
+            layer.downloadable = downloadable;
+            layer.filesize     = [NSNumber numberWithLongLong:filesize];
+            
+            [mutableTileLayers addObject:layer];
         }
     }
     
@@ -190,11 +194,11 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     
     // look for data layers missing on disk, turning them off
     //
-    for (NSDictionary *dataLayer in mutableDataLayers)
+    for (DSMapBoxLayer *dataLayer in mutableDataLayers)
     {
-        if ( ! [docs containsObject:[[dataLayer objectForKey:@"URL"] lastPathComponent]])
+        if ( ! [docs containsObject:[dataLayer.URL lastPathComponent]])
         {
-            if ([[dataLayer objectForKey:@"selected"] boolValue])
+            if (dataLayer.isSelected)
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableDataLayers indexOfObject:dataLayer] inSection:DSMapBoxLayerSectionData]];
             
             [dataLayersToRemove addObject:dataLayer];
@@ -232,12 +236,13 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                                                       options:NSCaseInsensitiveSearch 
                                                         range:NSMakeRange(0, [name length])];
 
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                  @"URL", 
-                                                                                           name,                                          @"name",
-                                                                                           description,                                   @"description",
-                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeKML], @"type",
-                                                                                           [NSNumber numberWithBool:NO],                  @"selected",
-                                                                                           nil];
+            DSMapBoxLayer *layer = [[DSMapBoxLayer alloc] init];
+            
+            layer.URL         = [NSURL fileURLWithPath:path];
+            layer.name        = name;
+            layer.description = description;
+            layer.type        = DSMapBoxLayerTypeKML;
+            layer.selected    = NO;
             
             [mutableDataLayers addObject:layer];
         }
@@ -252,13 +257,14 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                                                    withString:@""
                                                       options:NSCaseInsensitiveSearch
                                                         range:NSMakeRange(0, [name length])];
-                        
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                     @"URL", 
-                                                                                           name,                                             @"name",
-                                                                                           description,                                      @"description",
-                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeGeoRSS], @"type",
-                                                                                           [NSNumber numberWithBool:NO],                     @"selected",
-                                                                                           nil];
+
+            DSMapBoxLayer *layer = [[DSMapBoxLayer alloc] init];
+            
+            layer.URL         = [NSURL fileURLWithPath:path];
+            layer.name        = name;
+            layer.description = description;
+            layer.type        = DSMapBoxLayerTypeGeoRSS;
+            layer.selected    = NO;
             
             [mutableDataLayers addObject:layer];
         }
@@ -279,12 +285,13 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                                                       options:NSCaseInsensitiveSearch
                                                         range:NSMakeRange(0, [name length])];
 
-            NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSURL fileURLWithPath:path],                      @"URL", 
-                                                                                           name,                                              @"name",
-                                                                                           description,                                       @"description",
-                                                                                           [NSNumber numberWithInt:DSMapBoxLayerTypeGeoJSON], @"type",
-                                                                                           [NSNumber numberWithBool:NO],                      @"selected",
-                                                                                           nil];
+            DSMapBoxLayer *layer = [[DSMapBoxLayer alloc] init];
+            
+            layer.URL         = [NSURL fileURLWithPath:path];
+            layer.name        = name;
+            layer.description = description;
+            layer.type        = DSMapBoxLayerTypeGeoJSON;
+            layer.selected    = NO;
             
             [mutableDataLayers addObject:layer];
         }
@@ -303,7 +310,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
 {
     // reorder tile layers
     //
-    NSArray *visibleTileLayers    = [[[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
+    NSArray *visibleTileLayers    = [[[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] reverseObjectEnumerator] allObjects];
     NSArray *currentLayerMapViews = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
     
     // remove all tile layer maps from superview
@@ -316,7 +323,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     
     for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
     {
-        DSMapBoxTiledLayerMapView *layerMapView = [[currentLayerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", [[visibleTileLayers objectAtIndex:i] objectForKey:@"URL"]]] lastObject];
+        DSMapBoxTiledLayerMapView *layerMapView = [[currentLayerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", ((DSMapBoxLayer *)[visibleTileLayers objectAtIndex:i]).URL]] lastObject];
         
         [self.baseMapView insertLayerMapView:layerMapView];
         [newLayerMapViews addObject:layerMapView];
@@ -356,11 +363,11 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     // notify delegate
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
-        [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+        [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
     
     // reorder data layers
     //
-    NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] reverseObjectEnumerator] allObjects];
+    NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] reverseObjectEnumerator] allObjects];
     
     // First iterate all layers & get all non-cluster paths, in order.
     // Clusters aren't grabbed here because they aren't associated 
@@ -368,9 +375,9 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     //
     NSMutableArray *orderedDataPaths = [NSMutableArray array];
     
-    for (NSDictionary *dataLayer in visibleDataLayers)
+    for (DSMapBoxLayer *dataLayer in visibleDataLayers)
     {
-        for (CALayer *path in [dataLayer objectForKey:@"overlay"])
+        for (CALayer *path in dataLayer.overlay)
         {
             // make sure it's live, then remove it and store it in order
             //
@@ -391,7 +398,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     // notify delegate
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderDataLayers:)])
-        [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+        [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
 }
 
 - (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers
@@ -438,7 +445,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
-    NSMutableDictionary *layer;
+    DSMapBoxLayer *layer;
     
     switch (fromIndexPath.section)
     {
@@ -493,20 +500,20 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
     NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
 
-    for (NSDictionary *layer in layers)
+    for (DSMapBoxLayer *layer in layers)
     {
         // remove from UI & data model
         //
         if ([mutableTileLayers containsObject:layer])
         {
-            if ([[layer objectForKey:@"selected"] boolValue])
+            if (layer.isSelected)
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableTileLayers indexOfObject:layer] inSection:DSMapBoxLayerSectionTile]];
             
             [mutableTileLayers removeObject:layer];
         }
         else if ([mutableDataLayers containsObject:layer])
         {
-            if ([[layer objectForKey:@"selected"] boolValue])
+            if (layer.isSelected)
                 [self toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[mutableDataLayers indexOfObject:layer] inSection:DSMapBoxLayerSectionData]];
             
             [mutableDataLayers removeObject:layer];
@@ -514,7 +521,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         
         // remove from disk
         //
-        [[NSFileManager defaultManager] removeItemAtPath:[[layer objectForKey:@"URL"] relativePath] error:NULL];
+        [[NSFileManager defaultManager] removeItemAtPath:[layer.URL relativePath] error:NULL];
     }
     
     self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
@@ -528,7 +535,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow
 {
-    NSMutableDictionary *layer = nil;
+    DSMapBoxLayer *layer = nil;
     
     switch (indexPath.section)
     {
@@ -536,11 +543,11 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         {
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
-            if ([[layer objectForKey:@"selected"] boolValue]) // layer disable
+            if (layer.isSelected) // layer disable
             {
                 for (DSMapBoxTiledLayerMapView *layerMapView in ((DSMapContents *)self.baseMapView.contents).layerMapViews)
                 {
-                    if ([layerMapView.tileSetURL isEqual:[layer objectForKey:@"URL"]])
+                    if ([layerMapView.tileSetURL isEqual:layer.URL])
                     {
                         // disassociate with master map
                         //
@@ -560,7 +567,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
             {
                 // create tile source
                 //
-                NSURL *tileSetURL = [layer objectForKey:@"URL"];
+                NSURL *tileSetURL = layer.URL;
                 
                 id <RMTileSource>source;
                 
@@ -639,28 +646,28 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         {
             layer = [self.dataLayers objectAtIndex:indexPath.row];
             
-            if ([[layer objectForKey:@"selected"] boolValue])
+            if (layer.isSelected)
             {
                 // free up reorder reference to visuals
                 //
-                [layer removeObjectForKey:@"overlay"];
+                layer.overlay = nil;
                 
                 // remove visuals
                 //
-                [self.dataOverlayManager removeOverlayWithSource:[layer objectForKey:@"source"]];
+                [self.dataOverlayManager removeOverlayWithSource:layer.source];
             }
             else
             {
-                if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKML || [[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeKMZ)
+                if (layer.type == DSMapBoxLayerTypeKML || layer.type == DSMapBoxLayerTypeKMZ)
                 {
-                    SimpleKML *kml = [SimpleKML KMLWithContentsOfURL:[layer objectForKey:@"URL"] error:NULL];
+                    SimpleKML *kml = [SimpleKML KMLWithContentsOfURL:layer.URL error:NULL];
                     
                     if ( ! kml)
                     {
                         // KML parsing failure
                         //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
@@ -672,79 +679,79 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                         // no layer visual was actually added
                         //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
                     
                     // save source for comparison later
                     //
-                    if ( ! [layer objectForKey:@"source"])
-                        [layer setObject:[kml source] forKey:@"source"];
+                    if ( ! layer.source)
+                        layer.source = [kml source];
                     
                     // reference visuals for reordering later
                     //
-                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
+                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled KML layer"];
                 }
-                else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoRSS)
+                else if (layer.type == DSMapBoxLayerTypeGeoRSS)
                 {
                     // save source for comparison later
                     //
-                    if ( ! [layer objectForKey:@"source"])
+                    if ( ! layer.source)
                     {
                         NSError *error = nil;
-                        NSString *source = [NSString stringWithContentsOfURL:[layer objectForKey:@"URL"] encoding:NSUTF8StringEncoding error:&error];
+                        NSString *source = [NSString stringWithContentsOfURL:layer.URL encoding:NSUTF8StringEncoding error:&error];
                         
-                        [layer setObject:source forKey:@"source"];
+                        layer.source = source;
                     }
                     
                     // add layer visuals
                     //
-                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoRSS:[layer objectForKey:@"source"]], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoRSS:layer.source], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
                     {
                         // no layer visual was actually added
                         //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
                     
                     // reference visuals for reordering later
                     //
-                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
+                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled GeoRSS layer"];
                 }
-                else if ([[layer objectForKey:@"type"] intValue] == DSMapBoxLayerTypeGeoJSON)
+                else if (layer.type == DSMapBoxLayerTypeGeoJSON)
                 {
                     // save source for comparison later
                     //
-                    if ( ! [layer objectForKey:@"source"])
+                    if ( ! layer.source)
                     {
                         NSError *error = nil;
-                        NSString *source = [NSString stringWithContentsOfURL:[layer objectForKey:@"URL"] encoding:NSUTF8StringEncoding error:&error];
+                        NSString *source = [NSString stringWithContentsOfURL:layer.URL encoding:NSUTF8StringEncoding error:&error];
                         
-                        [layer setObject:source forKey:@"source"];
+                        layer.source = source;
                     }
                     
                     // add layer visuals
                     //
-                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoJSON:[layer objectForKey:@"source"]], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoJSON:layer.source], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
                     {
                         // no layer visual was actually added
                         //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
-                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:[layer objectForKey:@"URL"]];
+                            [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
                     
                     // reference visuals for reordering later
                     //
-                    [layer setObject:[[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"] forKey:@"overlay"];
+                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled GeoJSON layer"];
                 }
@@ -756,17 +763,17 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     
     // toggle selected state
     //
-    [layer setObject:[NSNumber numberWithBool:( ! [[layer objectForKey:@"selected"] boolValue])] forKey:@"selected"];
+    layer.selected = ! layer.isSelected;
     
     // notify delegate of tile layer toggles to update attributions
     //
     if (indexPath.section == DSMapBoxLayerSectionTile && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateTileLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
     
     // notify delegate for clustering button to toggle visibility
     //
     if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]]];
+        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
 
     // reorder layers according to current arrangement
     //

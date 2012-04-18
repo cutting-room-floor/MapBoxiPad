@@ -43,14 +43,6 @@
 #pragma mark -
 
 typedef enum {
-    DSMapBoxLayerTypeTile    = 0,
-    DSMapBoxLayerTypeKML     = 1,
-    DSMapBoxLayerTypeKMZ     = 2,
-    DSMapBoxLayerTypeGeoRSS  = 4,
-    DSMapBoxLayerTypeGeoJSON = 8,
-} DSMapBoxLayerType;
-
-typedef enum {
     DSMapBoxLayerSectionData = 0,
     DSMapBoxLayerSectionTile = 1,
 } DSMapBoxLayerSection;
