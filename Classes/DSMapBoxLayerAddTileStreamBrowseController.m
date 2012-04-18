@@ -119,14 +119,14 @@
                 
                 for (int i = 0; i < [newLayers count]; i++)
                 {
-                    NSMutableDictionary *layer = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
+                    NSMutableDictionary *layerInfo = [NSMutableDictionary dictionaryWithDictionary:[newLayers objectAtIndex:i]];
                     
                     // determine center tile to download
                     //
-                    CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layer objectForKey:@"center"] objectAtIndex:1] floatValue], 
-                                                                               [[[layer objectForKey:@"center"] objectAtIndex:0] floatValue]);
+                    CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[[layerInfo objectForKey:@"center"] objectAtIndex:1] floatValue], 
+                                                                               [[[layerInfo objectForKey:@"center"] objectAtIndex:0] floatValue]);
                     
-                    int tileZoom = [[[layer objectForKey:@"center"] objectAtIndex:2] intValue];
+                    int tileZoom = [[[layerInfo objectForKey:@"center"] objectAtIndex:2] intValue];
                     
                     int tileX = (int)(floor((center.longitude + 180.0) / 360.0 * pow(2.0, tileZoom)));
                     int tileY = (int)(floor((1.0 - log(tan(center.latitude * M_PI / 180.0) + 1.0 / \
@@ -140,34 +140,34 @@
                         .y    = tileY,
                     };
                     
-                    if ([layer objectForKey:@"tiles"] && [[layer objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
+                    if ([layerInfo objectForKey:@"tiles"] && [[layerInfo objectForKey:@"tiles"] isKindOfClass:[NSArray class]])
                     {
-                        NSString *tileURLString = [[layer objectForKey:@"tiles"] objectAtIndex:0];
+                        NSString *tileURLString = [[layerInfo objectForKey:@"tiles"] objectAtIndex:0];
                         
                         // update layer for server-wide variables
                         //
-                        [layer setValue:[weakSelf.serverURL scheme]                                                           forKey:@"apiScheme"];
-                        [layer setValue:[weakSelf.serverURL host]                                                             forKey:@"apiHostname"];
-                        [layer setValue:([weakSelf.serverURL port] ? [weakSelf.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
-                        [layer setValue:([weakSelf.serverURL path] ? [weakSelf.serverURL path] : @"")                         forKey:@"apiPath"];
-                        [layer setValue:tileURLString                                                                         forKey:@"tileURL"];
+                        [layerInfo setValue:[weakSelf.serverURL scheme]                                                           forKey:@"apiScheme"];
+                        [layerInfo setValue:[weakSelf.serverURL host]                                                             forKey:@"apiHostname"];
+                        [layerInfo setValue:([weakSelf.serverURL port] ? [weakSelf.serverURL port] : [NSNumber numberWithInt:80]) forKey:@"apiPort"];
+                        [layerInfo setValue:([weakSelf.serverURL path] ? [weakSelf.serverURL path] : @"")                         forKey:@"apiPath"];
+                        [layerInfo setValue:tileURLString                                                                         forKey:@"tileURL"];
                         
                         // set size for downloadable tiles
                         //
-                        [layer setValue:[NSNumber numberWithInt:([[layer objectForKey:@"size"] isKindOfClass:[NSString class]] ? [[layer objectForKey:@"size"] intValue] : 0)] forKey:@"size"];
+                        [layerInfo setValue:[NSNumber numberWithInt:([[layerInfo objectForKey:@"size"] isKindOfClass:[NSString class]] ? [[layerInfo objectForKey:@"size"] intValue] : 0)] forKey:@"size"];
                         
                         // handle null that needs to be serialized later
                         //
                         // see https://github.com/developmentseed/tilestream-pro/issues/230
                         //
-                        for (NSString *key in [layer allKeys])
-                            if ([[layer objectForKey:key] isKindOfClass:[NSNull class]])
-                                [layer setObject:@"" forKey:key];
+                        for (NSString *key in [layerInfo allKeys])
+                            if ([[layerInfo objectForKey:key] isKindOfClass:[NSNull class]])
+                                [layerInfo setObject:@"" forKey:key];
                         
                         // pull out first grid URL
                         //
-                        if ([layer objectForKey:@"grids"] && [[layer objectForKey:@"grids"] isKindOfClass:[NSArray class]])
-                            [layer setValue:[[layer objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
+                        if ([layerInfo objectForKey:@"grids"] && [[layerInfo objectForKey:@"grids"] isKindOfClass:[NSArray class]])
+                            [layerInfo setValue:[[layerInfo objectForKey:@"grids"] objectAtIndex:0] forKey:@"gridURL"];
                         
                         // swap in x/y/z
                         //
@@ -184,7 +184,7 @@
                         [imagesToDownload addObject:[NSNull null]];
                     }
                     
-                    [updatedLayers addObject:layer];
+                    [updatedLayers addObject:layerInfo];
                 }
                 
                 weakSelf.helpLabel.hidden      = NO;
@@ -388,22 +388,22 @@
     {
         DSMapBoxLayerAddPreviewController *preview = [[DSMapBoxLayerAddPreviewController alloc] initWithNibName:nil bundle:nil];                         
         
-        NSDictionary *layer = [self.layers objectAtIndex:tileView.tag];
+        NSDictionary *layerInfo = [self.layers objectAtIndex:tileView.tag];
         
         preview.info = [NSDictionary dictionaryWithObjectsAndKeys:
-                           [layer objectForKey:@"tileURL"], @"tileURL",
-                           ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
-                           ([layer objectForKey:@"template"] ? [layer objectForKey:@"template"] : @""), @"template",
-                           ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
-                           ([layer objectForKey:@"legend"] ? [layer objectForKey:@"legend"] : @""), @"legend",
-                           ([layer objectForKey:@"download"] ? [layer objectForKey:@"download"] : @""), @"download",
-                           ([layer objectForKey:@"filesize"] ? [layer objectForKey:@"filesize"] : @""), @"filesize",
-                           [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom", 
-                           [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
-                           [layer objectForKey:@"id"], @"id", 
-                           [layer objectForKey:@"name"], @"name", 
-                           [layer objectForKey:@"center"], @"center",
-                           [[layer objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
+                           [layerInfo objectForKey:@"tileURL"], @"tileURL",
+                           ([layerInfo objectForKey:@"gridURL"] ? [layerInfo objectForKey:@"gridURL"] : @""), @"gridURL",
+                           ([layerInfo objectForKey:@"template"] ? [layerInfo objectForKey:@"template"] : @""), @"template",
+                           ([layerInfo objectForKey:@"formatter"] ? [layerInfo objectForKey:@"formatter"] : @""), @"formatter",
+                           ([layerInfo objectForKey:@"legend"] ? [layerInfo objectForKey:@"legend"] : @""), @"legend",
+                           ([layerInfo objectForKey:@"download"] ? [layerInfo objectForKey:@"download"] : @""), @"download",
+                           ([layerInfo objectForKey:@"filesize"] ? [layerInfo objectForKey:@"filesize"] : @""), @"filesize",
+                           [NSNumber numberWithInt:[[layerInfo objectForKey:@"minzoom"] intValue]], @"minzoom", 
+                           [NSNumber numberWithInt:[[layerInfo objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
+                           [layerInfo objectForKey:@"id"], @"id", 
+                           [layerInfo objectForKey:@"name"], @"name", 
+                           [layerInfo objectForKey:@"center"], @"center",
+                           [[layerInfo objectForKey:@"bounds"] componentsJoinedByString:@","], @"bounds",
                            nil];
         
         DSMapBoxStyledModalNavigationController *wrapper = [[DSMapBoxStyledModalNavigationController alloc] initWithRootViewController:preview];

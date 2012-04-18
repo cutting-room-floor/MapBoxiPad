@@ -14,6 +14,7 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapContents.h"
+#import "DSMapBoxLayer.h"
 #import "DSMapBoxDocumentSaveController.h"
 #import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
@@ -408,8 +409,8 @@
     {
         // remove current layers
         //
-        NSArray *activeTileLayers = [self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
-        for (NSDictionary *tileLayer in activeTileLayers)
+        NSArray *activeTileLayers = [self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
+        for (DSMapBoxLayer *tileLayer in activeTileLayers)
             [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.tileLayers indexOfObject:tileLayer]
                                                                          inSection:DSMapBoxLayerSectionTile]];
         
@@ -425,9 +426,9 @@
             
             NSURL *tileOverlayURL = [NSURL fileURLWithPath:tileOverlayURLString];
             
-            for (NSDictionary *tileLayer in layerManager.tileLayers)
+            for (DSMapBoxLayer *tileLayer in layerManager.tileLayers)
             {
-                if ([[tileLayer objectForKey:@"URL"] isEqual:tileOverlayURL] &&
+                if ([tileLayer.URL isEqual:tileOverlayURL] &&
                     ([[NSFileManager defaultManager] fileExistsAtPath:[tileOverlayURL relativePath]] ||
                      [tileOverlayURL isEqual:kDSOpenStreetMapURL] || [tileOverlayURL isEqual:kDSMapQuestOSMURL]))
                 {
@@ -468,7 +469,7 @@
     {
         // remove current layers
         //
-        NSArray *activeDataLayers = [self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]];
+        NSArray *activeDataLayers = [self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
         for (NSDictionary *dataLayer in activeDataLayers)
             [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer]
                                                                          inSection:DSMapBoxLayerSectionData]];
@@ -481,9 +482,9 @@
 
             NSURL *dataOverlayURL = [NSURL fileURLWithPath:dataOverlayURLString];
             
-            for (NSDictionary *dataLayer in self.layerManager.dataLayers)
+            for (DSMapBoxLayer *dataLayer in self.layerManager.dataLayers)
             {
-                if ([[dataLayer objectForKey:@"URL"] isEqual:dataOverlayURL] &&
+                if ([dataLayer.URL isEqual:dataOverlayURL] &&
                     [[NSFileManager defaultManager] fileExistsAtPath:[dataOverlayURL relativePath]])
                 {
                     [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer] 
@@ -521,11 +522,11 @@
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
+    NSArray *tileOverlayState = [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
+    NSArray *dataOverlayState = [[self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
 
     // determine if document or global save
     //
@@ -900,7 +901,7 @@
 {
     if ([(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
     {
-        for (NSURL *layerURL in [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"selected = 1"]] valueForKey:@"URL"])
+        for (NSURL *layerURL in [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKey:@"URL"])
         {
             if ([layerURL isEqual:kDSOpenStreetMapURL] || [layerURL isEqual:kDSMapQuestOSMURL] || [layerURL isTileStreamURL])
             {
@@ -989,45 +990,45 @@
 {
     // add layers to disk
     //
-    NSArray *layers = [[notification userInfo] objectForKey:@"selectedLayers"];
+    NSArray *layerDictionaries = [[notification userInfo] objectForKey:@"selectedLayers"];
     
     NSMutableString *message = [NSMutableString string];
     
-    for (NSDictionary *layer in layers)
+    for (NSDictionary *layerDictionary in layerDictionaries)
     {
-        [message appendString:[layer objectForKey:@"name"]];
+        [message appendString:[layerDictionary objectForKey:@"name"]];
         [message appendString:@"\n"];
         
         NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                                 [layer objectForKey:@"apiScheme"], @"apiScheme",
-                                 [layer objectForKey:@"apiHostname"], @"apiHostname",
-                                 [layer objectForKey:@"apiPort"], @"apiPort",
-                                 [layer objectForKey:@"apiPath"], @"apiPath",
-                                 [layer objectForKey:@"id"], @"id",
-                                 ([layer objectForKey:@"bounds"] ? [[layer objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
-                                 ([layer objectForKey:@"center"] ? [[layer objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
-                                 ([layer objectForKey:@"name"] ? [layer objectForKey:@"name"] : @""), @"name",
-                                 ([layer objectForKey:@"attribution"] ? [layer objectForKey:@"attribution"] : @""), @"attribution",
-                                 ([layer objectForKey:@"type"] ? [layer objectForKey:@"type"] : @""), @"type",
-                                 ([layer objectForKey:@"version"] ? [layer objectForKey:@"version"] : @""), @"version",
-                                 [layer objectForKey:@"size"], @"size",
-                                 [NSNumber numberWithInt:[[layer objectForKey:@"maxzoom"] intValue]], @"maxzoom",
-                                 [NSNumber numberWithInt:[[layer objectForKey:@"minzoom"] intValue]], @"minzoom",
-                                 ([layer objectForKey:@"description"] ? [layer objectForKey:@"description"] : @""), @"description",
-                                 ([layer objectForKey:@"download"] ? [layer objectForKey:@"download"] : @""), @"download",
-                                 ([layer objectForKey:@"filesize"] ? [layer objectForKey:@"filesize"] : @""), @"filesize",
-                                 [NSDate dateWithTimeIntervalSince1970:([[layer objectForKey:@"mtime"] doubleValue] / 1000)], @"mtime",
-                                 ([layer objectForKey:@"basename"] ? [layer objectForKey:@"basename"] : @""), @"basename",
-                                 [layer objectForKey:@"tileURL"], @"tileURL",
-                                 ([layer objectForKey:@"gridURL"] ? [layer objectForKey:@"gridURL"] : @""), @"gridURL",
-                                 ([layer objectForKey:@"formatter"] ? [layer objectForKey:@"formatter"] : @""), @"formatter",
-                                 ([layer objectForKey:@"template"] ? [layer objectForKey:@"template"] : @""), @"template",
-                                 ([layer objectForKey:@"legend"] ? [layer objectForKey:@"legend"] : @""), @"legend",
+                                 [layerDictionary objectForKey:@"apiScheme"], @"apiScheme",
+                                 [layerDictionary objectForKey:@"apiHostname"], @"apiHostname",
+                                 [layerDictionary objectForKey:@"apiPort"], @"apiPort",
+                                 [layerDictionary objectForKey:@"apiPath"], @"apiPath",
+                                 [layerDictionary objectForKey:@"id"], @"id",
+                                 ([layerDictionary objectForKey:@"bounds"] ? [[layerDictionary objectForKey:@"bounds"] componentsJoinedByString:@","] : @""), @"bounds",
+                                 ([layerDictionary objectForKey:@"center"] ? [[layerDictionary objectForKey:@"center"] componentsJoinedByString:@","] : @""), @"center",
+                                 ([layerDictionary objectForKey:@"name"] ? [layerDictionary objectForKey:@"name"] : @""), @"name",
+                                 ([layerDictionary objectForKey:@"attribution"] ? [layerDictionary objectForKey:@"attribution"] : @""), @"attribution",
+                                 ([layerDictionary objectForKey:@"type"] ? [layerDictionary objectForKey:@"type"] : @""), @"type",
+                                 ([layerDictionary objectForKey:@"version"] ? [layerDictionary objectForKey:@"version"] : @""), @"version",
+                                 [layerDictionary objectForKey:@"size"], @"size",
+                                 [NSNumber numberWithInt:[[layerDictionary objectForKey:@"maxzoom"] intValue]], @"maxzoom",
+                                 [NSNumber numberWithInt:[[layerDictionary objectForKey:@"minzoom"] intValue]], @"minzoom",
+                                 ([layerDictionary objectForKey:@"description"] ? [layerDictionary objectForKey:@"description"] : @""), @"description",
+                                 ([layerDictionary objectForKey:@"download"] ? [layerDictionary objectForKey:@"download"] : @""), @"download",
+                                 ([layerDictionary objectForKey:@"filesize"] ? [layerDictionary objectForKey:@"filesize"] : @""), @"filesize",
+                                 [NSDate dateWithTimeIntervalSince1970:([[layerDictionary objectForKey:@"mtime"] doubleValue] / 1000)], @"mtime",
+                                 ([layerDictionary objectForKey:@"basename"] ? [layerDictionary objectForKey:@"basename"] : @""), @"basename",
+                                 [layerDictionary objectForKey:@"tileURL"], @"tileURL",
+                                 ([layerDictionary objectForKey:@"gridURL"] ? [layerDictionary objectForKey:@"gridURL"] : @""), @"gridURL",
+                                 ([layerDictionary objectForKey:@"formatter"] ? [layerDictionary objectForKey:@"formatter"] : @""), @"formatter",
+                                 ([layerDictionary objectForKey:@"template"] ? [layerDictionary objectForKey:@"template"] : @""), @"template",
+                                 ([layerDictionary objectForKey:@"legend"] ? [layerDictionary objectForKey:@"legend"] : @""), @"legend",
                                  nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPath];
         
-        [dict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist", prefsFolder, kTileStreamFolderName, [layer objectForKey:@"id"]] atomically:YES];
+        [dict writeToFile:[NSString stringWithFormat:@"%@/%@/%@.plist", prefsFolder, kTileStreamFolderName, [layerDictionary objectForKey:@"id"]] atomically:YES];
     }
     
     // animate layers into layer UI
@@ -1558,9 +1559,9 @@
 
 #pragma mark -
 
-- (void)zoomToLayer:(NSDictionary *)layer
+- (void)zoomToLayer:(DSMapBoxLayer *)layer
 {
-    NSURL *layerURL = [layer objectForKey:@"URL"];
+    NSURL *layerURL = layer.URL;
     
     id source = nil;
     
