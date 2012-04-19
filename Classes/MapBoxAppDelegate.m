@@ -53,6 +53,12 @@
     [TestFlight takeOff:kTestFlightTeamToken];
 #endif
 
+    // track test users
+    //
+#if ADHOC
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+#endif
+
     // legacy data migration
     //
     [[DSMapBoxLegacyMigrationManager defaultManager] migrate];
