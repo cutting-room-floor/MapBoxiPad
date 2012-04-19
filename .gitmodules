@@ -25,3 +25,6 @@
 [submodule "Externals/SSToolkit"]
 	path = Externals/SSToolkit
 	url = https://github.com/samsoffes/sstoolkit.git
+[submodule "Externals/MapBox iOS SDK"]
+	path = Externals/MapBox iOS SDK
+	url = git@github.com:mapbox/mapbox-ios-sdk.git
