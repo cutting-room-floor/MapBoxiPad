@@ -70,7 +70,6 @@
 		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
 		DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */; };
 		DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */; };
-		DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD0F619B11ED5AE80050174D /* libMapView.a */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
 		DD2750A113844560007B58AC /* DSMapBoxLayerAddPreviewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD27509F13844560007B58AC /* DSMapBoxLayerAddPreviewController.m */; };
 		DD2750A213844560007B58AC /* DSMapBoxLayerAddPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD2750A013844560007B58AC /* DSMapBoxLayerAddPreviewController.xib */; };
@@ -260,33 +259,19 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		DD0F619A11ED5AE80050174D /* PBXContainerItemProxy */ = {
+		DD579D8015407AD300BA5BF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
+			containerPortal = DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = B8C974590E8A19B2007D16AD;
+			remoteGlobalIDString = 17F31EFA1331050A00122B16;
 			remoteInfo = MapView;
 		};
-		DD0F619C11ED5AE80050174D /* PBXContainerItemProxy */ = {
+		DD579D8215407AD300BA5BF1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
-			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
+			containerPortal = DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 2BF3078F0F8AC5C0007014EE;
 			remoteInfo = "Unit Tests";
-		};
-		DD0F619E11ED5B090050174D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = B8C974130E8A19B2007D16AD;
-			remoteInfo = MapView;
-		};
-		DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 17157D87133BBC8300E28941;
-			remoteInfo = MapViewTests;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -354,7 +339,6 @@
 		DD0F614511ED5A9F0050174D /* SimpleKMLStyleSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLStyleSelector.m; path = "Externals/Simple KML/SimpleKMLStyleSelector.m"; sourceTree = "<group>"; };
 		DD0F614611ED5A9F0050174D /* SimpleKMLSubStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLSubStyle.h; path = "Externals/Simple KML/SimpleKMLSubStyle.h"; sourceTree = "<group>"; };
 		DD0F614711ED5A9F0050174D /* SimpleKMLSubStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLSubStyle.m; path = "Externals/Simple KML/SimpleKMLSubStyle.m"; sourceTree = "<group>"; };
-		DD0F618B11ED5AE80050174D /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/route-me/MapView/MapView.xcodeproj"; sourceTree = SOURCE_ROOT; };
 		DD10184411EE51FC00DF286F /* mapbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapbox.png; sourceTree = "<group>"; };
 		DD15A16C14904CD8004F7AFD /* scroll_hint_bottom.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_bottom.png; sourceTree = SOURCE_ROOT; };
 		DD15A16D14904CD8004F7AFD /* scroll_hint_top.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = scroll_hint_top.png; sourceTree = SOURCE_ROOT; };
@@ -458,6 +442,7 @@
 		DD56786D12AEEB8F00B73C8A /* DSMapBoxHelpController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxHelpController.m; sourceTree = "<group>"; };
 		DD56786E12AEEB8F00B73C8A /* DSMapBoxHelpController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DSMapBoxHelpController.xib; sourceTree = "<group>"; };
 		DD5678F212AEF62200B73C8A /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MapView.xcodeproj; path = "Externals/MapBox iOS SDK/MapView/MapView.xcodeproj"; sourceTree = "<group>"; };
 		DD601B8512FA3C9A00CE7C14 /* TouchXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchXML.h; path = Externals/TouchXML/Source/TouchXML.h; sourceTree = "<group>"; };
 		DD601B8712FA3C9A00CE7C14 /* CTidy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CTidy.h; sourceTree = "<group>"; };
 		DD601B8812FA3C9A00CE7C14 /* CTidy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTidy.m; sourceTree = "<group>"; };
@@ -712,7 +697,6 @@
 				DDBFE14414C623BC009082A2 /* Twitter.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DDA1830F150177B00070E67C /* libBlocksKit.a in Frameworks */,
-				DD1F7E4D135DF42D00D769BC /* libMapView.a in Frameworks */,
 				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
 				DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */,
 				DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */,
@@ -891,16 +875,6 @@
 				DD1ADA2C1208DBED00B052E9 /* Objective-Zip */,
 			);
 			name = "Simple KML";
-			sourceTree = "<group>";
-		};
-		DD0F618C11ED5AE80050174D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				DD0F619B11ED5AE80050174D /* libMapView.a */,
-				DD261B2E135CF7EB001609A3 /* MapViewTests.octest */,
-				DD0F619D11ED5AE80050174D /* RM Unit Tests.app */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		DD1AD9EB1208DBEA00B052E9 /* ZLib */ = {
@@ -1090,15 +1064,6 @@
 			name = Sounds;
 			sourceTree = "<group>";
 		};
-		DD48C2CB11CBF30600038969 /* route-me */ = {
-			isa = PBXGroup;
-			children = (
-				DD0F618B11ED5AE80050174D /* MapView.xcodeproj */,
-			);
-			name = "route-me";
-			path = Classes;
-			sourceTree = "<group>";
-		};
 		DD48C45F11CC090400038969 /* Externals */ = {
 			isa = PBXGroup;
 			children = (
@@ -1106,9 +1071,9 @@
 				DDD7F87B14BB62C000B6840E /* BlocksKit */,
 				DD436528147C838400235F20 /* DirectoryWatcher */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
+				DD579D7015407ABD00BA5BF1 /* MapBox iOS SDK */,
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD47067E14BB7AC600E5B99E /* Reachability */,
-				DD48C2CB11CBF30600038969 /* route-me */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
 				DD91C35C14B51FBD00330326 /* SSToolkit */,
 				DDACBC9E141FC655002704B7 /* TestFlight SDK */,
@@ -1152,6 +1117,23 @@
 				DDCE299412B6E707008A1257 /* Resources */,
 			);
 			name = Help;
+			sourceTree = "<group>";
+		};
+		DD579D7015407ABD00BA5BF1 /* MapBox iOS SDK */ = {
+			isa = PBXGroup;
+			children = (
+				DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */,
+			);
+			name = "MapBox iOS SDK";
+			sourceTree = "<group>";
+		};
+		DD579D7215407AD200BA5BF1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DD579D8115407AD300BA5BF1 /* libMapView.a */,
+				DD579D8315407AD300BA5BF1 /* RM Unit Tests.app */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		DD601B8612FA3C9A00CE7C14 /* Tidy */ = {
@@ -1631,7 +1613,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				DD0F619F11ED5B090050174D /* PBXTargetDependency */,
 			);
 			name = MapBoxiPad;
 			productName = MapBoxiPadDemo;
@@ -1660,8 +1641,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = DD0F618C11ED5AE80050174D /* Products */;
-					ProjectRef = DD0F618B11ED5AE80050174D /* MapView.xcodeproj */;
+					ProductGroup = DD579D7215407AD200BA5BF1 /* Products */;
+					ProjectRef = DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -1672,25 +1653,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		DD0F619B11ED5AE80050174D /* libMapView.a */ = {
+		DD579D8115407AD300BA5BF1 /* libMapView.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libMapView.a;
-			remoteRef = DD0F619A11ED5AE80050174D /* PBXContainerItemProxy */;
+			remoteRef = DD579D8015407AD300BA5BF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		DD0F619D11ED5AE80050174D /* RM Unit Tests.app */ = {
+		DD579D8315407AD300BA5BF1 /* RM Unit Tests.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = "RM Unit Tests.app";
-			remoteRef = DD0F619C11ED5AE80050174D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		DD261B2E135CF7EB001609A3 /* MapViewTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = MapViewTests.octest;
-			remoteRef = DD261B2D135CF7EB001609A3 /* PBXContainerItemProxy */;
+			remoteRef = DD579D8215407AD300BA5BF1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1978,14 +1952,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		DD0F619F11ED5B090050174D /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = MapView;
-			targetProxy = DD0F619E11ED5B090050174D /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
