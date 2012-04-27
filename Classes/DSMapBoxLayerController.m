@@ -11,16 +11,13 @@
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxLayer.h"
 #import "DSMapBoxLayerManager.h"
-#import "DSMapBoxMarkerManager.h"
-#import "DSMapContents.h"
 #import "DSMapBoxAlertView.h"
 #import "DSMapBoxTileSourceInfiniteZoom.h"
-#import "DSMapView.h"
 
 #import "MapBoxAppDelegate.h"
 
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
 
 #import "Reachability.h"
 
@@ -404,18 +401,20 @@
     
     if ([layerURL isMBTilesURL])
     {
-        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
+        RMMBTilesSource *source = [[RMMBTilesSource alloc] initWithTileSetURL:layerURL];
         
         if ( ! [source coversFullWorld])
             shouldShowCrosshairs = YES;
     }
     else if ([layerURL isTileStreamURL])
     {
-        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
+        RMMapBoxSource *source = [[RMMapBoxSource alloc] initWithReferenceURL:layerURL];
         
         if ( ! [source coversFullWorld])
             shouldShowCrosshairs = YES;
     }
+    
+    // FIXME add/track bounds in layer & allow zooming to data layers
 
     return shouldShowCrosshairs;
 }
@@ -833,10 +832,10 @@
     
     // warn when turning on MBTiles layers that are lower than our min zoom
     //
-    if (indexPath.section == DSMapBoxLayerSectionTile && [layer.URL isMBTilesURL] && [[[RMMBTilesTileSource alloc] initWithTileSetURL:layer.URL] maxZoomNative] < kLowerZoomBounds)
+    if (indexPath.section == DSMapBoxLayerSectionTile && [layer.URL isMBTilesURL] && [[[RMMBTilesSource alloc] initWithTileSetURL:layer.URL] maxZoomNative] < kLowerZoomBounds)
     {
         [UIAlertView showAlertViewWithTitle:@"Unable To Zoom"
-                                    message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", layer.name]
+                                    message:[NSString stringWithFormat:@"The %@ layer can't zoom out far enough to be displayed. Please contact the layer author and request a file that supports zoom level 3 or higher.", layer.name] // FIXME
                           cancelButtonTitle:nil
                           otherButtonTitles:[NSArray arrayWithObject:@"OK"]
                                     handler:nil];

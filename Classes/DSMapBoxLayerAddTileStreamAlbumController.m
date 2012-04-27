@@ -65,7 +65,7 @@
     
     // fire off account list request
     //
-    NSString *fullURLString = [NSString stringWithFormat:@"%@%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], kTileStreamAlbumAPIPath];
+    NSString *fullURLString = [NSString stringWithFormat:@"%@/%@/%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], kTileStreamHostingVersion, kTileStreamAlbumAPIPath];
     
     DSMapBoxURLRequest *albumRequest = [DSMapBoxURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     

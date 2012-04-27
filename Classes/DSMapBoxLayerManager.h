@@ -19,10 +19,10 @@
 //  new top-most map view. 
 //
 
-#import "RMLatLong.h"
+#import "RMFoundation.h"
 
 @class DSMapBoxDataOverlayManager;
-@class DSMapView;
+@class RMMapView;
 @class RMMBTilesTileSource;
 
 @protocol DSMapBoxDataLayerHandlerDelegate
@@ -49,20 +49,18 @@ typedef enum {
 
 @interface DSMapBoxLayerManager : NSObject
 
-@property (nonatomic, readonly, strong) DSMapView *baseMapView;
+@property (nonatomic, readonly, strong) RMMapView *mapView;
 @property (nonatomic, readonly, strong) NSArray *tileLayers;
 @property (nonatomic, readonly, strong) NSArray *dataLayers;
 @property (nonatomic, weak) id <NSObject, DSMapBoxDataLayerHandlerDelegate>delegate;
 
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overMapView:(RMMapView *)aMapView;
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath;
 - (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow;
 - (void)reloadLayersFromDisk;
-- (void)reorderLayerDisplay;
+- (void)reorderLayers;
 - (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers;
-
-bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium sphericalTrapeziumOne, RMSphericalTrapezium sphericalTrapeziumTwo);
 
 @end

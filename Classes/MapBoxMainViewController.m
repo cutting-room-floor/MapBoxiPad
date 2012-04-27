@@ -10,13 +10,10 @@
 
 #import "MapBoxAppDelegate.h"
 
-#import "DSMapView.h"
 #import "DSMapBoxTileSetManager.h"
 #import "DSMapBoxDataOverlayManager.h"
-#import "DSMapContents.h"
 #import "DSMapBoxLayer.h"
 #import "DSMapBoxDocumentSaveController.h"
-#import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxHelpController.h"
 #import "DSMapBoxFeedParser.h"
 #import "DSMapBoxLayerAddTileStreamAlbumController.h"
@@ -36,13 +33,12 @@
 
 #import "SimpleKML.h"
 
-#import "RMTileSource.h"
+#import "RMMapView.h"
 #import "RMOpenStreetMapSource.h"
 #import "RMMapQuestOSMSource.h"
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
-
-#import "TouchXML.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
+#import "RMCompositeSource.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -118,23 +114,21 @@
     //
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     
-    RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]];
+    self.mapView.tileSource = [[RMCompositeSource alloc] initWithTileSource:[[RMMBTilesSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]]];
+
+    self.mapView.zoom = kStartingZoom;
+    [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(kStartingLat, kStartingLon) animated:NO];
+
+    self.mapView.adjustTilesForRetinaDisplay = YES;
     
-	[[DSMapContents alloc] initWithView:self.mapView 
-                             tilesource:source
-                           centerLatLon:startingPoint
-                              zoomLevel:kStartingZoom
-                           maxZoomLevel:[source maxZoom]
-                           minZoomLevel:[source minZoom]
-                        backgroundImage:nil
-                            screenScale:0.0];
+    self.mapView.enableClustering = YES;
+    self.mapView.positionClusterMarkersAtTheGravityCenter = YES;
     
-    self.mapView.enableRotate = NO;
-    self.mapView.deceleration = NO;
+    self.mapView.decelerationMode = RMMapDecelerationFast;
+    
+    // FIXME: bounding mask
     
     self.mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
-
-    self.mapView.contents.zoom = kStartingZoom;
 
     self.attributionLabel.verticalAlignment = BAVerticalAlignmentBottom;
     
@@ -164,10 +158,8 @@
     // data overlay, layer, and legend managers
     //
     self.dataOverlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:mapView];
-    self.dataOverlayManager.mapView = self.mapView;
     self.mapView.delegate = self.dataOverlayManager;
-    self.mapView.interactivityDelegate = self.dataOverlayManager;
-    self.layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overBaseMapView:mapView];
+    self.layerManager = [[DSMapBoxLayerManager alloc] initWithDataOverlayManager:dataOverlayManager overMapView:self.mapView];
     self.layerManager.delegate = self;
     self.legendManager = [[DSMapBoxLegendManager alloc] initWithFrame:CGRectMake(5, 
                                                                                  self.view.frame.size.height - kDSMapBoxLegendManagerMaxHeight - 5, 
@@ -189,7 +181,7 @@
     //
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(zoomBoundsReached:)
-                                                 name:DSMapContentsZoomBoundsReached
+                                                 name:DSMapBoxZoomBoundsReached
                                                object:nil];
     
     self.lastLayerAlertDate = [NSDate date];
@@ -211,11 +203,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(webTileRequestEnd:)
                                                  name:RMTileRetrieved
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(webTileRequestEnd:)
-                                                 name:RMTileError
                                                object:nil];
 
     // watch for download events
@@ -293,11 +280,7 @@
     
     // set clustering button state
     //
-    if (((DSMapBoxMarkerManager *)mapView.topMostMapView.contents.markerManager).clusteringEnabled)
-        [self setClusteringOn:YES];
-
-    else
-        [self setClusteringOn:NO];
+    [self setClusteringOn:self.mapView.enableClustering];
     
 #if ADHOC
     // add beta tester feedback button
@@ -328,27 +311,23 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    self.postRotationMapCenter = self.mapView.contents.mapCenter;
+    self.postRotationMapCenter = self.mapView.centerCoordinate;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration
 {
-    self.mapView.contents.mapCenter = self.postRotationMapCenter;
+    [self.mapView setCenterCoordinate:self.postRotationMapCenter animated:NO];
     
-    if ([self.mapView.contents isKindOfClass:[DSMapContents class]])
-        [(DSMapContents *)self.mapView.contents postZoom];
-    
-    [self.mapView.delegate mapViewRegionDidChange:self.mapView]; // trigger popover move
+//    [self.mapView.delegate mapViewRegionDidChange:self.mapView]; // trigger popover move
 }
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:kReachabilityChangedNotification     object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapContentsZoomBoundsReached       object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxZoomBoundsReached            object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxLayersAdded                  object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRequested                      object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileRetrieved                      object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:RMTileError                          object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadBeganNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadQueueNotification    object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:DSMapBoxDownloadProgressNotification object:nil];
@@ -394,11 +373,11 @@
             .longitude = [[baseMapState objectForKey:@"centerLongitude"] floatValue],
         };
         
-        if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
-            self.mapView.contents.mapCenter = mapCenter;
-        
         if ([[baseMapState objectForKey:@"zoomLevel"] floatValue] >= kLowerZoomBounds && [[baseMapState objectForKey:@"zoomLevel"] floatValue] <= kUpperZoomBounds)
-            self.mapView.contents.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+            self.mapView.zoom = [[baseMapState objectForKey:@"zoomLevel"] floatValue];
+
+        if (mapCenter.latitude <= kUpperLatitudeBounds && mapCenter.latitude >= kLowerLatitudeBounds)
+            [self.mapView setCenterCoordinate:mapCenter animated:NO];
     }
     
     // load tile overlay state(s)
@@ -515,9 +494,9 @@
     // get base map state
     //
     NSDictionary *baseMapState = [NSDictionary dictionaryWithObjectsAndKeys:
-                                     [NSNumber numberWithFloat:self.mapView.contents.mapCenter.latitude],  @"centerLatitude",
-                                     [NSNumber numberWithFloat:self.mapView.contents.mapCenter.longitude], @"centerLongitude",
-                                     [NSNumber numberWithFloat:self.mapView.contents.zoom],                @"zoomLevel",
+                                     [NSNumber numberWithFloat:self.mapView.centerCoordinate.latitude],  @"centerLatitude",
+                                     [NSNumber numberWithFloat:self.mapView.centerCoordinate.longitude], @"centerLongitude",
+                                     [NSNumber numberWithFloat:self.mapView.zoom],                       @"zoomLevel",
                                      nil];
     
     // get tile overlay state(s)
@@ -722,15 +701,13 @@
     
     [TestFlight passCheckpoint:@"toggled clustering"];
     
-    DSMapBoxMarkerManager *markerManager = (DSMapBoxMarkerManager *)mapView.topMostMapView.contents.markerManager;
+    self.mapView.enableClustering = ! self.mapView.enableClustering;
     
-    markerManager.clusteringEnabled = ! markerManager.clusteringEnabled;
-    
-    [self setClusteringOn:markerManager.clusteringEnabled];
+    [self setClusteringOn:self.mapView.enableClustering];
     
     // reorder to ensure clusters or points are ordered properly
     //
-    [self.layerManager reorderLayerDisplay];
+    [self.layerManager reorderLayers];
 }
 
 - (IBAction)tappedHelpButton:(id)sender
@@ -926,16 +903,16 @@
 
 - (UIImage *)mapSnapshot
 {
-    // zoom to even zoom level to avoid artifacts
-    //
-    CGFloat oldZoom = self.mapView.contents.zoom;
-    CGPoint center  = CGPointMake(self.mapView.frame.size.width / 2, self.mapView.frame.size.height / 2);
-    
-    if ((CGFloat)ceil(oldZoom) - oldZoom < 0.5)    
-        [self.mapView.contents zoomInToNextNativeZoomAt:center];
-    
-    else
-        [self.mapView.contents zoomOutToNextNativeZoomAt:center];
+//    // zoom to even zoom level to avoid artifacts
+//    //
+//    CGFloat oldZoom = self.mapView.zoom;
+//    CGPoint center  = CGPointMake(self.mapView.frame.size.width / 2, self.mapView.frame.size.height / 2);
+//    
+//    if ((CGFloat)ceil(oldZoom) - oldZoom < 0.5)    
+//        [self.mapView zoomInToNextNativeZoomAt:center animated:NO];
+//    
+//    else
+//        [self.mapView zoomOutToNextNativeZoomAt:center animated:NO];
     
     // get full screen snapshot without toolbar
     //
@@ -946,10 +923,10 @@
     UIImage *snapshot = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    // restore previous zoom
-    //
-    float factor = exp2f(oldZoom - [self.mapView.contents zoom]);
-    [self.mapView.contents zoomByFactor:factor near:center];
+//    // restore previous zoom
+//    //
+//    float factor = exp2f(oldZoom - self.mapView.zoom);
+//    [self.mapView zoomByFactor:factor near:center animated:NO];
     
     return snapshot;
 }
@@ -1024,6 +1001,7 @@
                                  ([layerDictionary objectForKey:@"formatter"] ? [layerDictionary objectForKey:@"formatter"] : @""), @"formatter",
                                  ([layerDictionary objectForKey:@"template"] ? [layerDictionary objectForKey:@"template"] : @""), @"template",
                                  ([layerDictionary objectForKey:@"legend"] ? [layerDictionary objectForKey:@"legend"] : @""), @"legend",
+                                 ([layerDictionary objectForKey:@"scheme"] ? [layerDictionary objectForKey:@"scheme"] : @"xyz"), @"scheme",
                                  nil];
         
         NSString *prefsFolder = [[UIApplication sharedApplication] preferencesFolderPath];
@@ -1371,14 +1349,20 @@
     
     // update legends
     //
-    self.legendManager.legendSources = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"contents.tileSource"];
+    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
+        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
+    else
+        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
 }
 
 - (void)dataLayerHandler:(id)handler didReorderTileLayers:(NSArray *)activeTileLayers
 {
     // update legends
     //
-    self.legendManager.legendSources = [((DSMapContents *)mapView.contents).layerMapViews valueForKeyPath:@"contents.tileSource"];
+    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
+        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
+    else
+        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
 }
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
@@ -1566,15 +1550,15 @@
     id source = nil;
     
     if ([layerURL isMBTilesURL])
-        source = [[RMMBTilesTileSource alloc] initWithTileSetURL:layerURL];
+        source = [[RMMBTilesSource alloc] initWithTileSetURL:layerURL];
 
     else if ([layerURL isTileStreamURL])
-        source = [[RMTileStreamSource alloc] initWithReferenceURL:layerURL];
+        source = [[RMMapBoxSource alloc] initWithReferenceURL:layerURL];
     
     if ( ! source)
         return;
     
-    self.mapView.contents.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
+    self.mapView.zoom = ([source minZoomNative] >= kLowerZoomBounds ? [source minZoomNative] : kLowerZoomBounds);
     
     if ( ! [source coversFullWorld])
     {
@@ -1582,10 +1566,10 @@
         
         CLLocationDegrees lon, lat;
         
-        lon = (bbox.northeast.longitude + bbox.southwest.longitude) / 2;
-        lat = (bbox.northeast.latitude  + bbox.southwest.latitude)  / 2;
+        lon = (bbox.northEast.longitude + bbox.southWest.longitude) / 2;
+        lat = (bbox.northEast.latitude  + bbox.southWest.latitude)  / 2;
         
-        [self.mapView.contents moveToLatLong:CLLocationCoordinate2DMake(lat, lon)];
+        [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(lat, lon) animated:YES];
     }
 }
 

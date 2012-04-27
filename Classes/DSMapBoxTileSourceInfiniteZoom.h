@@ -6,17 +6,17 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
 
-@interface RMMBTilesTileSource (DSMapBoxTileSourceInfiniteZoom)
+@interface RMMBTilesSource (DSMapBoxTileSourceInfiniteZoom)
 
 - (float)minZoomNative;
 - (float)maxZoomNative;
 
 @end
 
-@interface RMTileStreamSource (DSMapBoxTileSourceInfiniteZoom)
+@interface RMMapBoxSource (DSMapBoxTileSourceInfiniteZoom)
 
 - (float)minZoomNative;
 - (float)maxZoomNative;

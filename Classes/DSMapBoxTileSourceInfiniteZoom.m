@@ -18,6 +18,7 @@
 #import "RMTileImage.h"
 
 #import "FMDatabase.h"
+#import "FMDatabaseQueue.h"
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -48,26 +49,26 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass);
 
 void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 {
-    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(minZoom),    @selector(minZoomInfinite));
-    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(maxZoom),    @selector(maxZoomInfinite));    
-    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(tileImage:), @selector(tileImageInfinite:));
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(minZoom),               @selector(minZoomInfinite));
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(maxZoom),               @selector(maxZoomInfinite));    
+    DSMapBoxTileSourceInfiniteZoomMethodSwizzle(aClass, @selector(imageForTile:inCache:), @selector(infiniteImageForTile:inCache:));
 }
 
 #pragma mark Categories
 
-@implementation RMMBTilesTileSource (DSMapBoxTileSourceInfiniteZoom)
+@implementation RMMBTilesSource (DSMapBoxTileSourceInfiniteZoom)
 
 + (void)load
 {
     DSMapBoxTileSourceInfiniteZoomEnable(self);
 }
 
-- (RMTileImage *)tileImageInfinite:(RMTile)tile
+- (UIImage *)infiniteImageForTile:(RMTile)tile inCache:(RMTileCache *)tileCache
 {
     if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative])
-        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
+        return [UIImage imageNamed:@"transparent.png"];
     
-    return [self tileImageInfinite:tile];
+    return [self infiniteImageForTile:tile inCache:tileCache];
 }
 
 - (float)minZoomInfinite
@@ -77,18 +78,27 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 
 - (float)minZoomNative
 {
-    FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
+    __block CGFloat minZoom;
     
-    if ([db hadError])
-        return kMBTilesDefaultMinTileZoom;
+    [queue inDatabase:^(FMDatabase *db)
+    {
+        FMResultSet *results = [db executeQuery:@"select min(zoom_level) from tiles"];
     
-    [results next];
+        if ([db hadError])
+        {
+            minZoom = kMBTilesDefaultMinTileZoom;
+        }
+        else
+        {
+            [results next];
     
-    double minZoom = [results doubleForColumnIndex:0];
+            minZoom = (CGFloat)[results doubleForColumnIndex:0];
+        }
+        
+        [results close];
+    }];
     
-    [results close];
-    
-    return (float)minZoom;
+    return minZoom;
 }
 
 - (float)maxZoomInfinite
@@ -98,40 +108,49 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 
 - (float)maxZoomNative
 {
-    FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
+    __block CGFloat maxZoom;
     
-    if ([db hadError])
-        return kMBTilesDefaultMaxTileZoom;
+    [queue inDatabase:^(FMDatabase *db)
+    {
+        FMResultSet *results = [db executeQuery:@"select max(zoom_level) from tiles"];
+         
+        if ([db hadError])
+        {
+            maxZoom = kMBTilesDefaultMaxTileZoom;
+        }
+        else
+        {
+            [results next];
+            
+            maxZoom = (CGFloat)[results doubleForColumnIndex:0];
+        }
+         
+        [results close];
+    }];
     
-    [results next];
-    
-    double maxZoom = [results doubleForColumnIndex:0];
-    
-    [results close];
-    
-    return (float)maxZoom;
+    return maxZoom;
 }
 
 @end
 
-@implementation RMTileStreamSource (DSMapBoxTileSourceInfiniteZoom)
+@implementation RMMapBoxSource (DSMapBoxTileSourceInfiniteZoom)
 
 + (void)load
 {
     DSMapBoxTileSourceInfiniteZoomEnable(self);
 }
 
-- (RMTileImage *)tileImageInfinite:(RMTile)tile
+- (UIImage *)infiniteImageForTile:(RMTile)tile inCache:(RMTileCache *)tileCache
 {
     if (tile.zoom < [self minZoomNative] || tile.zoom > [self maxZoomNative] || ! [self.infoDictionary objectForKey:@"tileURL"])
-        return [RMTileImage imageForTile:tile withData:UIImagePNGRepresentation([UIImage imageNamed:@"transparent.png"])];
+        return [UIImage imageNamed:@"transparent.png"];
     
-    return [self tileImageInfinite:tile];
+    return [self infiniteImageForTile:tile inCache:tileCache];
 }
 
 - (float)minZoomInfinite
 {
-    return kTileStreamDefaultMinTileZoom;
+    return kMapBoxDefaultMinTileZoom;
 }
 
 - (float)minZoomNative
@@ -141,7 +160,7 @@ void DSMapBoxTileSourceInfiniteZoomEnable(Class aClass)
 
 - (float)maxZoomInfinite
 {
-    return kTileStreamDefaultMaxTileZoom;
+    return kMapBoxDefaultMaxTileZoom;
 }
 
 - (float)maxZoomNative

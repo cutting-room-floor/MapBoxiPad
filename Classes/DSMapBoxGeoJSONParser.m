@@ -30,11 +30,11 @@
     if (a < -180 || a > 180 || b < -90 || b > 90)
     {
         RMProjectedPoint point = {
-            .easting  = a,
-            .northing = b,
+            .x = a,
+            .y = b,
         };
         
-        RMLatLong latLong = [[RMProjection googleProjection] pointToLatLong:point];
+        CLLocationCoordinate2D latLong = [[RMProjection googleProjection] projectedPointToCoordinate:point];
         
         return [[CLLocation alloc] initWithLatitude:latLong.latitude longitude:latLong.longitude];
     }

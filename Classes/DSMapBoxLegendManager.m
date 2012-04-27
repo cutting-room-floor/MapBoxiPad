@@ -10,9 +10,8 @@
 
 #import "DSMapBoxAlertView.h"
 
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
-#import "RMCachedTileSource.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
 
 #import "UIColor-Expanded.h"
 

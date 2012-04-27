@@ -8,9 +8,8 @@
 
 #import "DSMapBoxLayerAddPreviewController.h"
 
-#import "DSMapView.h"
-#import "RMTileStreamSource.h"
-#import "DSMapContents.h"
+#import "RMMapView.h"
+#import "RMMapBoxSource.h"
 #import "RMInteractiveSource.h"
 #import "DSMapBoxDataOverlayManager.h"
 
@@ -49,20 +48,17 @@
     
     CLLocationCoordinate2D center = CLLocationCoordinate2DMake([[centerParts objectAtIndex:1] floatValue], [[centerParts objectAtIndex:0] floatValue]);
     
-    RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithInfo:self.info];
+    RMMapBoxSource *source = [[RMMapBoxSource alloc] initWithInfo:self.info];
     
-    [[DSMapContents alloc] initWithView:self.mapView 
-                             tilesource:source
-                           centerLatLon:center
-                              zoomLevel:([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds)
-                           maxZoomLevel:[source maxZoom]
-                           minZoomLevel:[source minZoom]
-                        backgroundImage:nil
-                            screenScale:0.0];
+    self.mapView.tileSource = source;
+    self.mapView.zoom = ([[centerParts objectAtIndex:2] floatValue] >= kLowerZoomBounds ? [[centerParts objectAtIndex:2] floatValue] : kLowerZoomBounds);
     
-    self.mapView.enableRotate = NO;
-    self.mapView.deceleration = NO;
+    [self.mapView setCenterCoordinate:center animated:NO];
     
+    self.mapView.decelerationMode = RMMapDecelerationFast;
+    
+    self.mapView.adjustTilesForRetinaDisplay = YES;
+
     self.mapView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     
     // setup interactivity manager
@@ -70,7 +66,6 @@
     self.overlayManager = [[DSMapBoxDataOverlayManager alloc] initWithMapView:self.mapView];
     
     self.mapView.delegate = self.overlayManager;
-    self.mapView.interactivityDelegate = self.overlayManager;
     
     // setup metadata label
     //

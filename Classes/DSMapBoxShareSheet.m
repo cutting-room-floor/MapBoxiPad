@@ -68,7 +68,7 @@
                                  mimeType:@"image/jpeg" 
                                  fileName:@"MapBoxSnapshot.jpg"];
                 
-                mailer.mailComposeDelegate = self;
+                mailer.mailComposeDelegate = self; // FIXME https://github.com/zwaldowski/BlocksKit/compare/e9c4a3a7ed...be0c3b3a93
                 
                 [self.presentingViewController presentModalViewController:mailer animated:YES];
             }

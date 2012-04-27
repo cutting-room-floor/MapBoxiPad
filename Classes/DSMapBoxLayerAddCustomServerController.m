@@ -167,18 +167,20 @@
 
         if ([[enteredValue componentsSeparatedByString:@"."] count] > 1 || [[enteredValue componentsSeparatedByString:@":"] count] > 1 || [[enteredValue componentsSeparatedByString:@"localhost"] count] > 1)
         {
-            // assume server hostname/IP if it contains a period
+            // assume self-hosted server hostname/IP
             //
             if ( ! [enteredValue hasPrefix:@"http"])
                 enteredValue = [NSString stringWithFormat:@"http://%@", enteredValue];
             
-            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", enteredValue, kTileStreamTilesetAPIPath]];
+            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@", enteredValue, kTileStreamHostingVersion, kTileStreamTilesetAPIPath]];
         }
         else
         {
             // assume hosting account username
             //
-            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], enteredValue, kTileStreamTilesetAPIPath]];
+            self.finalURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@/%@/%@", [DSMapBoxTileStreamCommon serverHostnamePrefix], kTileStreamHostingVersion, enteredValue, kTileStreamTilesetAPIPath]];
+            
+            NSLog(@"%@", self.finalURL);
         }
         
         if (self.finalURL)
@@ -199,7 +201,7 @@
                 
                 if (layers && [layers isKindOfClass:[NSArray class]] && [layers count])
                 {
-                    weakSelf.finalURL = [NSURL URLWithString:[[weakSelf.finalURL absoluteString] stringByReplacingOccurrencesOfString:kTileStreamTilesetAPIPath withString:@""]];
+                    weakSelf.finalURL = [NSURL URLWithString:[[weakSelf.finalURL absoluteString] stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"/%@/%@", kTileStreamHostingVersion, kTileStreamTilesetAPIPath] withString:@""]];
                     
                     [weakSelf indicateSuccess];
                 }

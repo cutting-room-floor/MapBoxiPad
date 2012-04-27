@@ -8,8 +8,8 @@
 
 #import "DSMapBoxTileSetManager.h"
 
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
 
 @implementation DSMapBoxTileSetManager
 
@@ -99,10 +99,10 @@
         return kDSMapQuestOSMName;
 
     if ([tileSetURL isTileStreamURL])
-        return [[[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL] shortName];
+        return [[[RMMapBoxSource alloc] initWithReferenceURL:tileSetURL] shortName];
     
     if ([tileSetURL isMBTilesURL])
-        return [[[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL] shortName];
+        return [[[RMMBTilesSource alloc] initWithTileSetURL:tileSetURL] shortName];
     
     return @"(untitled)";
 }
@@ -117,7 +117,7 @@
 
     else if ([tileSetURL isTileStreamURL])
     {
-        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+        RMMapBoxSource *source = [[RMMapBoxSource alloc] initWithReferenceURL:tileSetURL];
         
         NSString *description = [source longDescription];
         
@@ -126,7 +126,7 @@
     
     else if ([tileSetURL isMBTilesURL])
     {             
-        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+        RMMBTilesSource *source = [[RMMBTilesSource alloc] initWithTileSetURL:tileSetURL];
         
         NSString *description = [source longDescription];
         
@@ -148,14 +148,14 @@
     
     else if ([tileSetURL isTileStreamURL])
     {
-        RMTileStreamSource *source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+        RMMapBoxSource *source = [[RMMapBoxSource alloc] initWithReferenceURL:tileSetURL];
         
         attribution = [source shortAttribution];
     }
 
     else if ([tileSetURL isMBTilesURL])
     {
-        RMMBTilesTileSource *source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+        RMMBTilesSource *source = [[RMMBTilesSource alloc] initWithTileSetURL:tileSetURL];
         
         attribution = [source shortAttribution];
     }
@@ -204,7 +204,9 @@
              
 - (BOOL)isTileStreamURL
 {
-    return ([self isFileURL] && [[[self pathExtension] lowercaseString] isEqualToString:@"plist"]);
+    return ([self isFileURL] && ([[[self pathExtension] lowercaseString] isEqualToString:@"plist"] || 
+                                 [[[self pathExtension] lowercaseString] isEqualToString:@"json"]  || 
+                                 [[[self pathExtension] lowercaseString] isEqualToString:@"jsonp"]));
 }
 
 @end

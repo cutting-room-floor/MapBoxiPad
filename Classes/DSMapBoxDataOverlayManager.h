@@ -16,21 +16,20 @@
 //  re-associating us with the new top-most map view.
 //
 
-#import "DSMapView.h"
-#import "RMLatLong.h"
+#import "RMMapViewDelegate.h"
+#import "RMFoundation.h"
 
 @class SimpleKML;
 @class DSMapBoxPopoverController;
 
-@interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate, DSMapBoxInteractivityDelegate>
+static NSString *const DSMapBoxZoomBoundsReached = @"DSMapBoxZoomBoundsReached";
 
-@property (nonatomic, strong) DSMapView *mapView;
-@property (nonatomic, strong) NSMutableArray *overlays;
+@interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
 
-- (id)initWithMapView:(DSMapView *)inMapView;
-- (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml;
-- (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss;
-- (RMSphericalTrapezium)addOverlayForGeoJSON:(NSString *)json;
+- (id)initWithMapView:(RMMapView *)inMapView;
+- (BOOL)addOverlayForKML:(SimpleKML *)kml;
+- (BOOL)addOverlayForGeoRSS:(NSString *)rss;
+- (BOOL)addOverlayForGeoJSON:(NSString *)json;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
 

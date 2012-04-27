@@ -16,7 +16,6 @@
 @synthesize attribution;
 @synthesize filesize;
 @synthesize source;
-@synthesize overlay;
 @synthesize selected;
 @synthesize downloadable;
 @synthesize type;

@@ -83,11 +83,20 @@
     //
     NSString *fullURLString;
     
+    NSString *accountName  = [[[self.serverURL absoluteString] componentsSeparatedByString:@"/"] lastObject];
+    
+    NSString *baseHostname = [[self.serverURL absoluteString] stringByReplacingOccurrencesOfString:[@"/" stringByAppendingString:accountName]
+                                                                                        withString:@""
+                                                                                           options:NSAnchoredSearch & NSBackwardsSearch
+                                                                                             range:NSMakeRange(0, [[self.serverURL absoluteString] length])];
+    
     if ([[self.serverURL absoluteString] hasPrefix:[DSMapBoxTileStreamCommon serverHostnamePrefix]])
-        fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamMapAPIPath];
+        fullURLString = [NSString stringWithFormat:@"%@/%@/%@/%@", baseHostname, kTileStreamHostingVersion, accountName, kTileStreamMapAPIPath];
 
     else
-        fullURLString = [NSString stringWithFormat:@"%@%@", self.serverURL, kTileStreamTilesetAPIPath];
+        fullURLString = [NSString stringWithFormat:@"%@/%@/%@/%@", baseHostname, kTileStreamHostingVersion, accountName, kTileStreamTilesetAPIPath];
+    
+    NSLog(@"checking %@", fullURLString);
     
     DSMapBoxURLRequest *layersRequest = [DSMapBoxURLRequest requestWithURL:[NSURL URLWithString:fullURLString]];
     
@@ -400,6 +409,7 @@
                            ([layerInfo objectForKey:@"filesize"] ? [layerInfo objectForKey:@"filesize"] : @""), @"filesize",
                            [NSNumber numberWithInt:[[layerInfo objectForKey:@"minzoom"] intValue]], @"minzoom", 
                            [NSNumber numberWithInt:[[layerInfo objectForKey:@"maxzoom"] intValue]], @"maxzoom", 
+                           ([layerInfo objectForKey:@"scheme"] ? [layerInfo objectForKey:@"scheme"] : @"xyz"), @"scheme",
                            [layerInfo objectForKey:@"id"], @"id", 
                            [layerInfo objectForKey:@"name"], @"name", 
                            [layerInfo objectForKey:@"center"], @"center",

@@ -9,8 +9,6 @@
 #import "DSMapBoxPopoverController.h"
 
 #import "RMMapView.h"
-#import "RMMapContents.h"
-#import "RMProjection.h"
 
 @implementation DSMapBoxPopoverController
 
@@ -40,9 +38,9 @@
         self.presentingView = view;
         
         CGPoint attachPoint     = CGPointMake(rect.origin.x, rect.origin.y);
-        RMLatLong attachLatLong = [((RMMapView *)view).contents pixelToLatLong:attachPoint];
+        CLLocationCoordinate2D attachLatLong = [((RMMapView *)view) pixelToCoordinate:attachPoint];
 
-        self.projectedPoint = [((RMMapView *)view).contents.projection latLongToPoint:attachLatLong];
+        self.projectedPoint = [((RMMapView *)view) coordinateToProjectedPoint:attachLatLong];
     }
 
     // determine best arrow direction based on screen location

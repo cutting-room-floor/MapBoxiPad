@@ -16,7 +16,6 @@
 		D71ECDEA11FE2D8D006A60EB /* iTunesArtwork in Resources */ = {isa = PBXBuildFile; fileRef = D71ECDE911FE2D8D006A60EB /* iTunesArtwork */; };
 		DD01F5C114634D7E00BD29C9 /* mustache.js in Resources */ = {isa = PBXBuildFile; fileRef = DD01F5BE14634BBB00BD29C9 /* mustache.js */; };
 		DD051E4C1475F37F00072B0F /* UIColor-Expanded.m in Sources */ = {isa = PBXBuildFile; fileRef = DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */ = {isa = PBXBuildFile; fileRef = DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */; };
 		DD0A9E1013DA313600D7B7D1 /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD0B1349121DD3D000A1309D /* action.png in Resources */ = {isa = PBXBuildFile; fileRef = DD0B1348121DD3D000A1309D /* action.png */; };
 		DD0F614811ED5A9F0050174D /* SimpleKML_UIImage.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0F611F11ED5A9F0050174D /* SimpleKML_UIImage.m */; };
@@ -67,7 +66,6 @@
 		DD1ADA291208DBEA00B052E9 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA111208DBEA00B052E9 /* mztools.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA131208DBEA00B052E9 /* unzip.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADA151208DBEA00B052E9 /* zip.c */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */; };
 		DD1F7CD5135DED3000D769BC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */; };
 		DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */; };
 		DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD261B73135D03C9001609A3 /* DSMapBoxPopoverController.m */; };
@@ -195,7 +193,6 @@
 		DDA3E90213B03A26004D861C /* mbtiles_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */; };
 		DDA3E90313B03A26004D861C /* kml_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FE13B03A25004D861C /* kml_layer.png */; };
 		DDA3E90413B03A26004D861C /* georss_layer.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA3E8FF13B03A26004D861C /* georss_layer.png */; };
-		DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDA58F6E1326CAA6000E0761 /* DSMapView.m */; };
 		DDA7DBCB1381E503004461A8 /* mbtiles_file.png in Resources */ = {isa = PBXBuildFile; fileRef = DDA7DBCA1381E503004461A8 /* mbtiles_file.png */; };
 		DDAA3B3E12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss in Resources */ = {isa = PBXBuildFile; fileRef = DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */; };
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
@@ -219,7 +216,6 @@
 		DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE14114C610C3009082A2 /* DSMapBoxShareSheet.m */; };
 		DDBFE14414C623BC009082A2 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDBFE14314C623BC009082A2 /* Twitter.framework */; };
 		DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */; };
-		DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */; };
 		DDCBA2EC14C4D7DA0099C220 /* DSMapBoxMailComposeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCBA2EB14C4D7D90099C220 /* DSMapBoxMailComposeViewController.m */; };
 		DDCD58761406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */; };
 		DDCE0EFF14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCE0EFE14B61C68006438AE /* DSMapBoxNetworkActivityIndicator.m */; };
@@ -243,6 +239,7 @@
 		DDE1C6B61342E1180049C325 /* crosshairs.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B41342E1180049C325 /* crosshairs.png */; };
 		DDE1C6BA1342E12F0049C325 /* point.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE1C6B91342E12F0049C325 /* point.png */; };
 		DDE41E5E1443CABB00837C16 /* testflight.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE41E5D1443CABB00837C16 /* testflight.png */; };
+		DDE4686A15408C7C005BF15F /* libMapView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD579D8115407AD300BA5BF1 /* libMapView.a */; };
 		DDE4E21114897AE70040AFCD /* grabber.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE4E21014897AE70040AFCD /* grabber.png */; };
 		DDE77E511212138B00201ACE /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = DDE77E501212138B00201ACE /* trash.png */; };
 		DDEEACAF136F516A0058BA90 /* loading.png in Resources */ = {isa = PBXBuildFile; fileRef = DDEEACAE136F516A0058BA90 /* loading.png */; };
@@ -255,7 +252,6 @@
 		DDF3221311DADD720068287A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DDF3221211DADD720068287A /* CoreLocation.framework */; };
 		DDF8B8D514C0CBFC0095176F /* UIBarButtonItem_Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */; };
 		DDFB5CB111F656EE00695B89 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = DDFB5CB011F656EE00695B89 /* icon.png */; };
-		DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFB5ED611F784CA00695B89 /* DSMapContents.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -272,6 +268,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 2BF3078F0F8AC5C0007014EE;
 			remoteInfo = "Unit Tests";
+		};
+		DDE4686815408C75005BF15F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = B8C974130E8A19B2007D16AD;
+			remoteInfo = MapView;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -292,8 +295,6 @@
 		DD01F5BE14634BBB00BD29C9 /* mustache.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = mustache.js; path = "Externals/route-me/MapView/Map/mustache.js/mustache.js"; sourceTree = "<group>"; };
 		DD051E4A1475F37F00072B0F /* UIColor-Expanded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIColor-Expanded.h"; path = "Externals/UIColor-Expanded/UIColor-Expanded.h"; sourceTree = "<group>"; };
 		DD051E4B1475F37F00072B0F /* UIColor-Expanded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIColor-Expanded.m"; path = "Externals/UIColor-Expanded/UIColor-Expanded.m"; sourceTree = "<group>"; };
-		DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerCluster.h; sourceTree = "<group>"; };
-		DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerCluster.m; sourceTree = "<group>"; };
 		DD0A9E0E13DA313600D7B7D1 /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
 		DD0A9E0F13DA313600D7B7D1 /* UIImage-Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extensions.m"; sourceTree = "<group>"; };
 		DD0B1348121DD3D000A1309D /* action.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = action.png; sourceTree = SOURCE_ROOT; };
@@ -386,8 +387,6 @@
 		DD1ADA141208DBEA00B052E9 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
 		DD1ADA151208DBEA00B052E9 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
 		DD1ADA161208DBEA00B052E9 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
-		DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMarkerManager.h; sourceTree = "<group>"; };
-		DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMarkerManager.m; sourceTree = "<group>"; };
 		DD1F7CD4135DED3000D769BC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		DD1F7CFB135DED7500D769BC /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		DD261B72135D03C9001609A3 /* DSMapBoxPopoverController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxPopoverController.h; sourceTree = "<group>"; };
@@ -591,8 +590,6 @@
 		DDA3E8FD13B03A25004D861C /* mbtiles_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_layer.png; sourceTree = SOURCE_ROOT; };
 		DDA3E8FE13B03A25004D861C /* kml_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kml_layer.png; sourceTree = SOURCE_ROOT; };
 		DDA3E8FF13B03A26004D861C /* georss_layer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = georss_layer.png; sourceTree = SOURCE_ROOT; };
-		DDA58F6D1326CAA6000E0761 /* DSMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapView.h; sourceTree = "<group>"; };
-		DDA58F6E1326CAA6000E0761 /* DSMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapView.m; sourceTree = "<group>"; };
 		DDA7DBCA1381E503004461A8 /* mbtiles_file.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mbtiles_file.png; sourceTree = "<group>"; };
 		DDAA3B3D12DBEB0C0003B98E /* Wildlife Disease Outbreaks.rss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "Wildlife Disease Outbreaks.rss"; sourceTree = "<group>"; };
 		DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DSMapBoxLegendView.xib; sourceTree = "<group>"; };
@@ -627,8 +624,6 @@
 		DDBFE14314C623BC009082A2 /* Twitter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Twitter.framework; path = System/Library/Frameworks/Twitter.framework; sourceTree = SDKROOT; };
 		DDC7AE1A134F84C100C46EC0 /* DSFingerTipWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DSFingerTipWindow.h; path = Externals/fingertips/DSFingerTipWindow.h; sourceTree = "<group>"; };
 		DDC7AE1B134F84C100C46EC0 /* DSFingerTipWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DSFingerTipWindow.m; path = Externals/fingertips/DSFingerTipWindow.m; sourceTree = "<group>"; };
-		DDC7F97511FE1BE80019A081 /* DSMapBoxTiledLayerMapView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxTiledLayerMapView.h; sourceTree = "<group>"; };
-		DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTiledLayerMapView.m; sourceTree = "<group>"; };
 		DDCBA2EA14C4D7D90099C220 /* DSMapBoxMailComposeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapBoxMailComposeViewController.h; sourceTree = "<group>"; };
 		DDCBA2EB14C4D7D90099C220 /* DSMapBoxMailComposeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxMailComposeViewController.m; sourceTree = "<group>"; };
 		DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxTileSourceInfiniteZoom.m; sourceTree = "<group>"; };
@@ -675,8 +670,6 @@
 		DDF8B8D314C0CBFC0095176F /* UIBarButtonItem_Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIBarButtonItem_Additions.h; sourceTree = "<group>"; };
 		DDF8B8D414C0CBFC0095176F /* UIBarButtonItem_Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIBarButtonItem_Additions.m; sourceTree = "<group>"; };
 		DDFB5CB011F656EE00695B89 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		DDFB5ED511F784CA00695B89 /* DSMapContents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSMapContents.h; sourceTree = "<group>"; };
-		DDFB5ED611F784CA00695B89 /* DSMapContents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapContents.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -697,6 +690,7 @@
 				DDBFE14414C623BC009082A2 /* Twitter.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				DDA1830F150177B00070E67C /* libBlocksKit.a in Frameworks */,
+				DDE4686A15408C7C005BF15F /* libMapView.a in Frameworks */,
 				DD1F7CFC135DED7500D769BC /* libsqlite3.dylib in Frameworks */,
 				DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */,
 				DD1ACD5D13CD1CD2001244D2 /* libz.dylib in Frameworks */,
@@ -1355,10 +1349,6 @@
 				DDA1073511E442B6008D00A7 /* DSMapBoxBalloonController.h */,
 				DDA1073611E442B6008D00A7 /* DSMapBoxBalloonController.m */,
 				DDA1073711E442B6008D00A7 /* DSMapBoxBalloonController.xib */,
-				DD1ADB90120A2E3400B052E9 /* DSMapBoxMarkerManager.h */,
-				DD1ADB91120A2E3400B052E9 /* DSMapBoxMarkerManager.m */,
-				DD077AFB120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.h */,
-				DD077AFC120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m */,
 				DDAB24D6146B49C100C14467 /* DSMapBoxLegendManager.h */,
 				DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */,
 				DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */,
@@ -1386,12 +1376,6 @@
 			children = (
 				DD70D80A11D176750002E222 /* DSMapBoxTileSetManager.h */,
 				DD70D80B11D176750002E222 /* DSMapBoxTileSetManager.m */,
-				DDC7F97511FE1BE80019A081 /* DSMapBoxTiledLayerMapView.h */,
-				DDC7F97611FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m */,
-				DDA58F6D1326CAA6000E0761 /* DSMapView.h */,
-				DDA58F6E1326CAA6000E0761 /* DSMapView.m */,
-				DDFB5ED511F784CA00695B89 /* DSMapContents.h */,
-				DDFB5ED611F784CA00695B89 /* DSMapContents.m */,
 				DDCD58751406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.h */,
 				DDCD58741406D1D700F59E0D /* DSMapBoxTileSourceInfiniteZoom.m */,
 				D75E3E7A12A0ADD50007996C /* Resources */,
@@ -1613,6 +1597,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				DDE4686915408C75005BF15F /* PBXTargetDependency */,
 			);
 			name = MapBoxiPad;
 			productName = MapBoxiPadDemo;
@@ -1864,9 +1849,7 @@
 				DD0F615A11ED5A9F0050174D /* SimpleKMLStyle.m in Sources */,
 				DD0F615B11ED5A9F0050174D /* SimpleKMLStyleSelector.m in Sources */,
 				DD0F615C11ED5A9F0050174D /* SimpleKMLSubStyle.m in Sources */,
-				DDFB5ED711F784CA00695B89 /* DSMapContents.m in Sources */,
 				DDA2921711F8B53B000FFFF4 /* UIApplication_Additions.m in Sources */,
-				DDC7F97711FE1BE80019A081 /* DSMapBoxTiledLayerMapView.m in Sources */,
 				DD86B69911FE6CE700165CDF /* DSMapBoxLayerController.m in Sources */,
 				DD3ACA4311FF3E5F00B4203F /* DSMapBoxLayerManager.m in Sources */,
 				DD1ADA171208DBEA00B052E9 /* adler32.c in Sources */,
@@ -1890,8 +1873,6 @@
 				DD1ADA291208DBEA00B052E9 /* mztools.c in Sources */,
 				DD1ADA2A1208DBEA00B052E9 /* unzip.c in Sources */,
 				DD1ADA2B1208DBEA00B052E9 /* zip.c in Sources */,
-				DD1ADB92120A2E3400B052E9 /* DSMapBoxMarkerManager.m in Sources */,
-				DD077AFD120B4C3D0006F6B0 /* DSMapBoxMarkerCluster.m in Sources */,
 				DDBA88E61210E77F00E5B572 /* DSMapBoxDocumentLoadController.m in Sources */,
 				DDBA89891210EF4600E5B572 /* DSMapBoxDocumentSaveController.m in Sources */,
 				DD540F7E12131F3800C5899E /* DSMapBoxLargeSnapshotView.m in Sources */,
@@ -1909,7 +1890,6 @@
 				DD601BAC12FA3C9A00CE7C14 /* CXHTMLDocument.m in Sources */,
 				DD601BAD12FA3C9A00CE7C14 /* CXMLDocument_CreationExtensions.m in Sources */,
 				DD601BAE12FA3C9A00CE7C14 /* CXMLNode_CreationExtensions.m in Sources */,
-				DDA58F6F1326CAA6000E0761 /* DSMapView.m in Sources */,
 				DDC7AE1C134F84C100C46EC0 /* DSFingerTipWindow.m in Sources */,
 				DD261B74135D03C9001609A3 /* DSMapBoxPopoverController.m in Sources */,
 				DDEEAD87136F7C090058BA90 /* DSMapBoxNotificationCenter.m in Sources */,
@@ -1953,6 +1933,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		DDE4686915408C75005BF15F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MapView;
+			targetProxy = DDE4686815408C75005BF15F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1968,7 +1956,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Externals/Reachability\"",
 					"\"$(SRCROOT)/Externals/BlocksKit/Header\"/**",
-					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
+					"\"$(SRCROOT)/Externals/MapBox iOS SDK/MapView/Map\"/**",
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
@@ -1980,7 +1968,6 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
@@ -1999,7 +1986,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Externals/Reachability\"",
 					"\"$(SRCROOT)/Externals/BlocksKit/Header\"/**",
-					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
+					"\"$(SRCROOT)/Externals/MapBox iOS SDK/MapView/Map\"/**",
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
@@ -2011,7 +1998,6 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;
@@ -2082,7 +2068,7 @@
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/Externals/Reachability\"",
 					"\"$(SRCROOT)/Externals/BlocksKit/Header\"/**",
-					"\"$(SRCROOT)/Externals/route-me/MapView/Map\"/**",
+					"\"$(SRCROOT)/Externals/MapBox iOS SDK/MapView/Map\"/**",
 					/usr/include/libxml2,
 				);
 				INFOPLIST_FILE = "MapBoxiPad-Info.plist";
@@ -2094,7 +2080,6 @@
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
-					"-all_load",
 					"-lxml2",
 				);
 				PRODUCT_NAME = MapBox;

@@ -11,26 +11,22 @@
 #import "DSMapBoxLayer.h"
 #import "DSMapBoxDataOverlayManager.h"
 #import "DSMapBoxTileSetManager.h"
-#import "DSMapBoxTiledLayerMapView.h"
-#import "DSMapContents.h"
-#import "DSMapView.h"
 
 #import "SimpleKML.h"
 
+#import "RMMapView.h"
 #import "RMOpenStreetMapSource.h"
 #import "RMMapQuestOSMSource.h"
-#import "RMMBTilesTileSource.h"
-#import "RMTileStreamSource.h"
-#import "RMCachedTileSource.h"
-#import "RMMarker.h"
-#import "RMLayerCollection.h"
+#import "RMMBTilesSource.h"
+#import "RMMapBoxSource.h"
+#import "RMCompositeSource.h"
 
 #import <QuartzCore/QuartzCore.h>
 
 @interface DSMapBoxLayerManager ()
 
 @property (nonatomic, strong) DSMapBoxDataOverlayManager *dataOverlayManager;
-@property (nonatomic, strong) DSMapView *baseMapView;
+@property (nonatomic, strong) RMMapView *mapView;
 @property (nonatomic, strong) NSArray *tileLayers;
 @property (nonatomic, strong) NSArray *dataLayers;
 
@@ -41,27 +37,19 @@
 @implementation DSMapBoxLayerManager
 
 @synthesize dataOverlayManager;
-@synthesize baseMapView;
+@synthesize mapView;
 @synthesize tileLayers;
 @synthesize dataLayers;
 @synthesize delegate;
 
-bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium sphericalTrapeziumOne, RMSphericalTrapezium sphericalTrapeziumTwo)
-{
-    return (sphericalTrapeziumOne.northeast.latitude  == sphericalTrapeziumTwo.northeast.latitude  && 
-            sphericalTrapeziumOne.northeast.longitude == sphericalTrapeziumTwo.northeast.longitude && 
-            sphericalTrapeziumOne.southwest.latitude  == sphericalTrapeziumTwo.southwest.latitude  && 
-            sphericalTrapeziumOne.southwest.longitude == sphericalTrapeziumTwo.southwest.longitude);
-}
-
-- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overBaseMapView:(DSMapView *)mapView;
+- (id)initWithDataOverlayManager:(DSMapBoxDataOverlayManager *)overlayManager overMapView:(RMMapView *)aMapView;
 {
     self = [super init];
 
     if (self != nil)
     {
         dataOverlayManager = overlayManager;
-        baseMapView        = mapView;
+        mapView            = aMapView;
         
         tileLayers = [NSArray array];
         dataLayers = [NSArray array];
@@ -306,96 +294,30 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         self.dataLayers = [[[NSArray arrayWithArray:mutableDataLayers] reverseObjectEnumerator] allObjects];
 }
 
-- (void)reorderLayerDisplay
+- (void)updateLayers
 {
-    // reorder tile layers
+    // notify delegate of tile layer toggles to update attributions
     //
-    NSArray *visibleTileLayers    = [[[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] reverseObjectEnumerator] allObjects];
-    NSArray *currentLayerMapViews = ((DSMapContents *)self.baseMapView.contents).layerMapViews;
+    if (/*indexPath.section == DSMapBoxLayerSectionTile &&*/ [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateTileLayers:)])
+        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
     
-    // remove all tile layer maps from superview
+    // notify delegate for clustering button to toggle visibility
     //
-    [currentLayerMapViews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (/*indexPath.section == DSMapBoxLayerSectionData &&*/ [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayers:)])
+        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
     
-    // iterate visible layers, finding map for each & inserting it above top-most existing map layer
-    //
-    NSMutableArray *newLayerMapViews = [NSMutableArray array];
-    
-    for (NSUInteger i = 0; i < [visibleTileLayers count]; i++)
-    {
-        DSMapBoxTiledLayerMapView *layerMapView = [[currentLayerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"tileSetURL = %@", ((DSMapBoxLayer *)[visibleTileLayers objectAtIndex:i]).URL]] lastObject];
-        
-        [self.baseMapView insertLayerMapView:layerMapView];
-        [newLayerMapViews addObject:layerMapView];
-    }
-    
-    // update stacking order of map views structure
-    //
-    ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:newLayerMapViews];
-    
-    // find the new top-most map
-    //
-    DSMapView *topMostMapView = self.baseMapView.topMostMapView;
+}
 
-    // pass the data overlay baton to it
-    //
-    self.dataOverlayManager.mapView = topMostMapView;
-
-    // setup the master map & data manager connections
-    //
-    if ( ! [topMostMapView isEqual:self.baseMapView])
-    {
-        ((DSMapBoxTiledLayerMapView *)self.baseMapView.topMostMapView).masterView = self.baseMapView;
-        
-        self.baseMapView.topMostMapView.delegate              = self.dataOverlayManager;
-        self.baseMapView.topMostMapView.interactivityDelegate = self.dataOverlayManager;
-    }
+- (void)reorderLayers
+{
+    // FIXME double-check data layer ordering
     
-    // zero out the non-top-most map connections
-    //
-    for (DSMapBoxTiledLayerMapView *otherMap in [((DSMapContents *)self.baseMapView.contents).layerMapViews filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@", self.baseMapView.topMostMapView]])
-    {
-        otherMap.masterView            = nil;
-        otherMap.delegate              = nil;
-        otherMap.interactivityDelegate = nil;
-    }
-    
-    // notify delegate
+    // notify delegate of tile layer reorders to update attributions
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
         [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
     
-    // reorder data layers
-    //
-    NSArray *visibleDataLayers = [[[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] reverseObjectEnumerator] allObjects];
-    
-    // First iterate all layers & get all non-cluster paths, in order.
-    // Clusters aren't grabbed here because they aren't associated 
-    // with data layers directly.
-    //
-    NSMutableArray *orderedDataPaths = [NSMutableArray array];
-    
-    for (DSMapBoxLayer *dataLayer in visibleDataLayers)
-    {
-        for (CALayer *path in dataLayer.overlay)
-        {
-            // make sure it's live, then remove it and store it in order
-            //
-            if ([path.superlayer isEqual:self.dataOverlayManager.mapView.contents.overlay])
-            {
-                [orderedDataPaths addObject:path];
-                
-                [path removeFromSuperlayer];
-            }
-        }
-    }
-    
-    // add them back in collected order
-    //
-    for (CALayer *path in orderedDataPaths)
-        [self.dataOverlayManager.mapView.contents.overlay addSublayer:path];
-    
-    // notify delegate
+    // (currently unused)
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderDataLayers:)])
         [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
@@ -438,27 +360,53 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         self.dataLayers = newDataLayers;
     }
     
-    [self reorderLayerDisplay];
+    [self reorderLayers];
 }
 
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
 {
+    if ([fromIndexPath compare:toIndexPath] == NSOrderedSame)
+        return;
+    
     DSMapBoxLayer *layer;
+    
+    int targetRow = (fromIndexPath.row < toIndexPath.row ? toIndexPath.row - 1 : toIndexPath.row);
     
     switch (fromIndexPath.section)
     {
         case DSMapBoxLayerSectionTile:
         {
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
-
+            
+            // rearrange layer storage
+            //
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
             
             [mutableTileLayers removeObject:layer];
-            [mutableTileLayers insertObject:layer atIndex:toIndexPath.row];
+            [mutableTileLayers insertObject:layer atIndex:targetRow];
 
             self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
+            
+            // rearrange tile sources (if necessary)
+            //
+            RMCompositeSource *oldSource = self.mapView.tileSource;
+            
+            NSArray *currentTileSources = oldSource.compositeSources;
+            
+            NSArray *enabledLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
+            
+            NSMutableArray *newTileSources = [NSMutableArray arrayWithArray:[[[enabledLayers valueForKey:@"source"] reverseObjectEnumerator] allObjects]];
+            
+            if ( ! [newTileSources isEqualToArray:currentTileSources])
+            {
+                RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
+                
+                newSource.compositeSources = newTileSources;
+                
+                self.mapView.tileSource = newSource;
+            }
             
             break;
         }
@@ -469,7 +417,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
             NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
             
             [mutableDataLayers removeObject:layer];
-            [mutableDataLayers insertObject:layer atIndex:toIndexPath.row];
+            [mutableDataLayers insertObject:layer atIndex:targetRow];
             
             self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
@@ -478,7 +426,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     }
     
     [self reloadLayersFromDisk];
-    [self reorderLayerDisplay];
+    [self reorderLayers];
 }
 
 - (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths
@@ -535,7 +483,7 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
 
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow
 {
-    DSMapBoxLayer *layer = nil;
+    DSMapBoxLayer *layer;
     
     switch (indexPath.section)
     {
@@ -543,25 +491,17 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
         {
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
+            NSMutableArray *tileSources = [NSMutableArray array];
+            
             if (layer.isSelected) // layer disable
             {
-                for (DSMapBoxTiledLayerMapView *layerMapView in ((DSMapContents *)self.baseMapView.contents).layerMapViews)
-                {
-                    if ([layerMapView.tileSetURL isEqual:layer.URL])
-                    {
-                        // disassociate with master map
-                        //
-                        NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
-                        [layerMapViews removeObject:layerMapView];
-                        ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
-
-                        // remove from view hierarchy
-                        //
-                        [layerMapView removeFromSuperview];
-                        
-                        break;
-                    }
-                }
+                // remove tile source
+                //
+                RMCompositeSource *oldSource = self.mapView.tileSource;
+                
+                [tileSources setArray:oldSource.compositeSources];
+                
+                [tileSources removeObject:layer.source];
             }
             else // layer enable
             {
@@ -578,67 +518,50 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     source = [[RMMapQuestOSMSource alloc] init];
 
                 else if ([tileSetURL isTileStreamURL])
-                    source = [[RMTileStreamSource alloc] initWithReferenceURL:tileSetURL];
+                    source = [[RMMapBoxSource alloc] initWithReferenceURL:tileSetURL];
                 
                 else
-                    source = [[RMMBTilesTileSource alloc] initWithTileSetURL:tileSetURL];
+                    source = [[RMMBTilesSource alloc] initWithTileSetURL:tileSetURL];
                 
-                // create the overlay map view
+                layer.source = source;
+                
+                // determine source(s) to show
                 //
-                DSMapBoxTiledLayerMapView *layerMapView = [[DSMapBoxTiledLayerMapView alloc] initWithFrame:self.baseMapView.frame];
-                
-                layerMapView.tileSetURL = tileSetURL;
-                
-                // insert above top-most existing map view (this will get ordered properly afterwards)
-                //
-                [self.baseMapView insertLayerMapView:layerMapView];
-                
-                // copy main map view attributes
-                //
-                layerMapView.autoresizingMask = self.baseMapView.autoresizingMask;
-                layerMapView.enableRotate     = self.baseMapView.enableRotate;
-                layerMapView.deceleration     = self.baseMapView.deceleration;
+                NSArray *desiredLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES OR SELF = %@", layer]];
 
-                [[DSMapContents alloc] initWithView:layerMapView 
-                                         tilesource:source
-                                       centerLatLon:self.baseMapView.contents.mapCenter
-                                          zoomLevel:self.baseMapView.contents.zoom
-                                       maxZoomLevel:[source maxZoom]
-                                       minZoomLevel:[source minZoom]
-                                    backgroundImage:nil
-                                        screenScale:0.0];
-                
-                // get peer layer map views
-                //
-                NSMutableArray *layerMapViews = [NSMutableArray arrayWithArray:((DSMapContents *)self.baseMapView.contents).layerMapViews];
+                for (DSMapBoxLayer *desiredLayer in desiredLayers)
+                    [tileSources addObject:desiredLayer.source];
 
-                // associate new with master
-                //
-                [layerMapViews addObject:layerMapView];
-                ((DSMapContents *)self.baseMapView.contents).layerMapViews = [NSArray arrayWithArray:layerMapViews];
-                
                 [TestFlight passCheckpoint:@"enabled tile layer"];
             }
-
-            // hide default base map if we have full-world coverage somewhere else
-            //
-            self.baseMapView.hidden = NO;
             
-            for (RMMapView *layerMapView in ((DSMapContents *)self.baseMapView.contents).layerMapViews)
+            // add in default base map if we don't have full-world coverage somewhere else
+            //
+            BOOL shouldShowBase = YES;
+            
+            for (id <RMTileSource>enabledSource in tileSources)
             {
-                id <RMTileSource>source = layerMapView.contents.tileSource;
-                
-                if ([source isKindOfClass:[RMCachedTileSource class]])
-                    source = [(NSObject *)source valueForKey:@"tileSource"];
-                
-                if ( [source isKindOfClass:[RMOpenStreetMapSource class]]                                                      || 
-                     [source isKindOfClass:[RMMapQuestOSMSource   class]]                                                      || 
-                    ([source isKindOfClass:[RMMBTilesTileSource   class]] && [(RMMBTilesTileSource *)source coversFullWorld])  ||
-                    ([source isKindOfClass:[RMTileStreamSource    class]] && [(RMTileStreamSource  *)source coversFullWorld]))
+                if ( [enabledSource isKindOfClass:[RMOpenStreetMapSource class]]                                                         || 
+                     [enabledSource isKindOfClass:[RMMapQuestOSMSource   class]]                                                         || 
+                    ([enabledSource isKindOfClass:[RMMBTilesSource       class]] && [(RMMBTilesSource *)enabledSource coversFullWorld])  ||
+                    ([enabledSource isKindOfClass:[RMMapBoxSource        class]] && [(RMMapBoxSource  *)enabledSource coversFullWorld]))
                 {
-                    self.baseMapView.hidden = YES;
+                    shouldShowBase = NO;
                 }
             }
+            
+            if (shouldShowBase)
+                [tileSources addObject:[[RMMBTilesSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]]];
+
+            // reverse & set new sources (table view vs. tile source stacking order)
+            //
+            [tileSources setArray:[[tileSources reverseObjectEnumerator] allObjects]];
+            
+            RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
+            
+            newSource.compositeSources = tileSources;
+            
+            self.mapView.tileSource = newSource;
 
             break;
         }
@@ -648,10 +571,6 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
             
             if (layer.isSelected)
             {
-                // free up reorder reference to visuals
-                //
-                layer.overlay = nil;
-                
                 // remove visuals
                 //
                 [self.dataOverlayManager removeOverlayWithSource:layer.source];
@@ -674,10 +593,8 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForKML:kml], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    if ( ! [self.dataOverlayManager addOverlayForKML:kml])
                     {
-                        // no layer visual was actually added
-                        //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
                             [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
@@ -688,10 +605,6 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     //
                     if ( ! layer.source)
                         layer.source = [kml source];
-                    
-                    // reference visuals for reordering later
-                    //
-                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled KML layer"];
                 }
@@ -709,19 +622,13 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoRSS:layer.source], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    if ( ! [self.dataOverlayManager addOverlayForGeoRSS:layer.source])
                     {
-                        // no layer visual was actually added
-                        //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
                             [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
-                    
-                    // reference visuals for reordering later
-                    //
-                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled GeoRSS layer"];
                 }
@@ -739,19 +646,13 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
                     
                     // add layer visuals
                     //
-                    if (RMSphericalTrapeziumEqualToSphericalTrapezium([self.dataOverlayManager addOverlayForGeoJSON:layer.source], [self.baseMapView.contents latitudeLongitudeBoundingBoxForScreen]))
+                    if ( ! [self.dataOverlayManager addOverlayForGeoJSON:layer.source])
                     {
-                        // no layer visual was actually added
-                        //
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
                             [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
                         
                         return;
                     }
-                    
-                    // reference visuals for reordering later
-                    //
-                    layer.overlay = [[self.dataOverlayManager.overlays lastObject] valueForKey:@"overlay"];
                     
                     [TestFlight passCheckpoint:@"enabled GeoJSON layer"];
                 }
@@ -765,19 +666,8 @@ bool RMSphericalTrapeziumEqualToSphericalTrapezium(RMSphericalTrapezium spherica
     //
     layer.selected = ! layer.isSelected;
     
-    // notify delegate of tile layer toggles to update attributions
-    //
-    if (indexPath.section == DSMapBoxLayerSectionTile && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateTileLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
-    
-    // notify delegate for clustering button to toggle visibility
-    //
-    if (indexPath.section == DSMapBoxLayerSectionData && [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
-
-    // reorder layers according to current arrangement
-    //
-    [self reorderLayerDisplay];
+    [self updateLayers];
+    [self reorderLayers];
 }
 
 @end

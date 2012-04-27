@@ -10,21 +10,20 @@
 
 #import "DSMapBoxBalloonController.h"
 #import "DSMapBoxFeedParser.h"
-#import "DSMapBoxMarkerManager.h"
 #import "DSMapBoxPopoverController.h"
-#import "DSMapContents.h"
-#import "DSMapBoxTiledLayerMapView.h"
 #import "DSMapBoxGeoJSONParser.h"
 
 #import <CoreLocation/CoreLocation.h>
 
 #import "RMMapView.h"
 #import "RMProjection.h"
-#import "RMLayerCollection.h"
+#import "RMAnnotation.h"
+#import "RMQuadTree.h"
+#import "RMMarker.h"
 #import "RMPath.h"
-#import "RMLatLong.h"
 #import "RMGlobalConstants.h"
 #import "RMInteractiveSource.h"
+#import "RMCompositeSource.h"
 
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
@@ -43,13 +42,18 @@
 
 #import "UIImage-Extensions.h"
 
-#define kDSPlacemarkAlpha        0.9f
-#define kDSPathShadowBlur       10.0f
-#define kDSPathShadowOffset     CGSizeMake(3, 3)
-#define kDSPathDefaultLineWidth  2.0f
+#define kDSPlacemarkAlpha            0.9f
+#define kDSPathShadowBlur            10.0f
+#define kDSPathShadowOffset          CGSizeMake(3, 3)
+#define kDSPathDefaultLineWidth      2.0f
+#define kDSPointAnnotationTypeName   @"kDSPointAnnotationType"
+#define kDSLineAnnotationTypeName    @"kDSLineStringAnnotationType"
+#define kDSPolygonAnnotationTypeName @"kDSPolygonAnnotationType"
+#define kDSOverlayAnnotationTypeName @"kDSOverlayAnnotationType"
 
 @interface DSMapBoxDataOverlayManager ()
 
+@property (nonatomic, strong) RMMapView *mapView;
 @property (nonatomic, strong) DSMapBoxPopoverController *balloon;
 @property (nonatomic, assign) float lastKnownZoom;
 
@@ -60,20 +64,18 @@
 @implementation DSMapBoxDataOverlayManager
 
 @synthesize mapView;
-@synthesize overlays;
 @synthesize balloon;
 @synthesize lastKnownZoom;
 
-- (id)initWithMapView:(DSMapView *)inMapView
+- (id)initWithMapView:(RMMapView *)inMapView
 {
     self = [super init];
 
     if (self != nil)
     {
         mapView  = inMapView;
-        overlays = [NSMutableArray array];
         
-        lastKnownZoom = mapView.contents.zoom;
+        lastKnownZoom = mapView.zoom;
     }
     
     return self;
@@ -81,49 +83,8 @@
 
 #pragma mark -
 
-- (void)setMapView:(DSMapView *)inMapView
+- (BOOL)addOverlayForKML:(SimpleKML *)kml
 {
-    if ([inMapView isEqual:self.mapView])
-        return;
-    
-    // When tile layers come or go, the top-most one, or else the base layer if none,
-    // gets passed here in order to juggle the data overlay layer to it. 
-    //    
-    // First we take the clusters & their markers (which we'll redraw anyway).
-    //
-    [((DSMapBoxMarkerManager *)inMapView.markerManager) takeClustersFromMarkerManager:((DSMapBoxMarkerManager *)self.mapView.markerManager)];
-
-    // Then we take the CALayer-based layers (paths, overlays, etc.)
-    //
-    RMLayerCollection *newOverlay = inMapView.contents.overlay;
-    
-    NSArray *sublayers = [NSArray arrayWithArray:self.mapView.contents.overlay.sublayers];
-    
-    for (CALayer *layer in sublayers)
-    {  
-        [layer removeFromSuperlayer];
-        [newOverlay addSublayer:layer];
-        
-        // update RMPath contents
-        //
-        if ([layer respondsToSelector:@selector(setMapContents:)])
-            [layer setValue:inMapView.contents forKey:@"mapContents"];
-    }
-    
-    mapView = inMapView;
-}
-
-#pragma mark -
-
-- (RMSphericalTrapezium)addOverlayForKML:(SimpleKML *)kml
-{
-    NSMutableArray *overlay = [NSMutableArray array];
-    
-    CGFloat minLat =  kMaxLat;
-    CGFloat maxLat = -kMaxLat;
-    CGFloat minLon =  kMaxLong;
-    CGFloat maxLon = -kMaxLong;
-
     // collect supported features that we're going to plot
     //
     NSMutableSet *features = [NSMutableSet set];
@@ -147,160 +108,83 @@
         
     // iterate & handle supported features
     //
+    NSMutableArray *annotationsToAdd = [NSMutableArray array];
+    
     for (SimpleKMLFeature *feature in features)
     {
-        // draw placemarks as RMMarkers with popups
+        // placemarks will become RMMarkers with popups
         //
         if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).point)
         {
-            UIImage *icon;
+            UIImage *icon = nil;
             
             if (((SimpleKMLPlacemark *)feature).style && ((SimpleKMLPlacemark *)feature).style.iconStyle)
                 icon = ((SimpleKMLPlacemark *)feature).style.iconStyle.icon;
             
-            else
-                icon = [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha];
-            
-            RMMarker *marker;
-            
-            CLLocation *location = [[CLLocation alloc] initWithLatitude:((SimpleKMLPlacemark *)feature).point.coordinate.latitude 
-                                                              longitude:((SimpleKMLPlacemark *)feature).point.coordinate.longitude];
-
             if (((SimpleKMLPlacemark *)feature).style.balloonStyle)
             {
                 // TODO: style the balloon according to the given style
             }
             
-            marker = [[RMMarker alloc] initWithUIImage:[icon imageWithAlphaComponent:kDSPlacemarkAlpha]];
-
-            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:feature,  @"placemark",
-                                                                     location, @"location",
-                                                                     nil];
-
             CLLocationCoordinate2D coordinate = ((SimpleKMLPlacemark *)feature).point.coordinate;
             
-            if (coordinate.latitude < minLat)
-                minLat = coordinate.latitude;
+            RMAnnotation *pointAnnotation = [RMAnnotation annotationWithMapView:self.mapView coordinate:coordinate andTitle:nil];
             
-            if (coordinate.latitude > maxLat)
-                maxLat = coordinate.latitude;
+            pointAnnotation.annotationType = kDSPointAnnotationTypeName;
             
-            if (coordinate.longitude < minLon)
-                minLon = coordinate.longitude;
+            pointAnnotation.userInfo = [NSMutableDictionary dictionaryWithObjectsAndKeys:feature,      @"placemark",
+                                                                                         [kml source], @"source",
+                                                                                         nil];
+
+            if (icon)
+                [pointAnnotation.userInfo setObject:icon forKey:@"icon"];
             
-            if (coordinate.longitude > maxLon)
-                maxLon = coordinate.longitude;
-            
-            [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
-            
-            [overlay addObject:marker];
+            [annotationsToAdd addObject:pointAnnotation];
         }
         
-        // draw lines as RMPaths
+        // line strings will become RMPaths
         //
         else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).lineString)
         {
-            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
-            
-            path.lineColor    = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
-            path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
-            path.fillColor    = [UIColor clearColor];
-            path.shadowBlur   = kDSPathShadowBlur;
-            path.shadowOffset = kDSPathShadowOffset;
-            
             SimpleKMLLineString *lineString = ((SimpleKMLPlacemark *)feature).lineString;
+
+            RMAnnotation *lineStringAnnotation = [RMAnnotation annotationWithMapView:self.mapView coordinate:((CLLocation *)[lineString.coordinates objectAtIndex:0]).coordinate andTitle:nil]; // FIXME what coord do we use here? 
             
-            BOOL hasStarted = NO;
+            lineStringAnnotation.annotationType = kDSLineAnnotationTypeName;
             
-            for (CLLocation *coordinate in lineString.coordinates)
-            {
-                if ( ! hasStarted)
-                {
-                    [path moveToLatLong:coordinate.coordinate];
-                    hasStarted = YES;
-                }
-                
-                else
-                    [path addLineToLatLong:coordinate.coordinate];
+            lineStringAnnotation.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:feature,      @"lineString",
+                                                                                       [kml source], @"source", 
+                                                                                       nil];
+                        
+            [lineStringAnnotation setBoundingBoxFromLocations:lineString.coordinates];
             
-                // this could be possibly be done per-path instead of per-point using
-                // a bounding box but I wasn't having much luck with it & it's 
-                // probably only worth it on very large & complicated paths
-                //
-                if (coordinate.coordinate.latitude < minLat)
-                    minLat = coordinate.coordinate.latitude;
-                
-                if (coordinate.coordinate.latitude > maxLat)
-                    maxLat = coordinate.coordinate.latitude;
-                
-                if (coordinate.coordinate.longitude < minLon)
-                    minLon = coordinate.coordinate.longitude;
-                
-                if (coordinate.coordinate.longitude > maxLon)
-                    maxLon = coordinate.coordinate.longitude;
-            }
-            
-            [self.mapView.contents.overlay addSublayer:path];
-            
-            [overlay addObject:path];
+            lineStringAnnotation.clusteringEnabled = NO;
+
+            [annotationsToAdd addObject:lineStringAnnotation];
         }
         
-        // draw polygons as RMPaths
+        // polygons will become RMPaths
         //
         else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).polygon)
         {
-            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
-            
-            path.lineColor = (((SimpleKMLPlacemark *)feature).style.lineStyle.color ? ((SimpleKMLPlacemark *)feature).style.lineStyle.color : kMapBoxBlue);
-            
-            if (((SimpleKMLPlacemark *)feature).style.polyStyle.fill)
-                path.fillColor = ((SimpleKMLPlacemark *)feature).style.polyStyle.color;
-            
-            else
-                path.fillColor = [UIColor clearColor];
-            
-            path.lineWidth    = (((SimpleKMLPlacemark *)feature).style.lineStyle.width ? ((SimpleKMLPlacemark *)feature).style.lineStyle.width : kDSPathDefaultLineWidth);
-            path.shadowBlur   = kDSPathShadowBlur;
-            path.shadowOffset = kDSPathShadowOffset;
-
             SimpleKMLLinearRing *outerBoundary = ((SimpleKMLPlacemark *)feature).polygon.outerBoundary;
             
-            BOOL hasStarted = NO;
+            RMAnnotation *polygonAnnotation = [RMAnnotation annotationWithMapView:self.mapView coordinate:((CLLocation *)[outerBoundary.coordinates objectAtIndex:0]).coordinate andTitle:nil];
             
-            for (CLLocation *coordinate in outerBoundary.coordinates)
-            {
-                if ( ! hasStarted)
-                {
-                    [path moveToLatLong:coordinate.coordinate];
-                    hasStarted = YES;
-                }
-                
-                else
-                    [path addLineToLatLong:coordinate.coordinate];
+            polygonAnnotation.annotationType = kDSPolygonAnnotationTypeName;
             
-                // this could be possibly be done per-path instead of per-point using
-                // a bounding box but I wasn't having much luck with it & it's 
-                // probably only worth it on very large & complicated paths
-                //
-                if (coordinate.coordinate.latitude < minLat)
-                    minLat = coordinate.coordinate.latitude;
-                
-                if (coordinate.coordinate.latitude > maxLat)
-                    maxLat = coordinate.coordinate.latitude;
-                
-                if (coordinate.coordinate.longitude < minLon)
-                    minLon = coordinate.coordinate.longitude;
-                
-                if (coordinate.coordinate.longitude > maxLon)
-                    maxLon = coordinate.coordinate.longitude;
-            }
+            polygonAnnotation.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:feature,      @"polygon",
+                                                                                    [kml source], @"source", 
+                                                                                    nil];
+                        
+            [polygonAnnotation setBoundingBoxFromLocations:outerBoundary.coordinates];
+
+            polygonAnnotation.clusteringEnabled = NO;
             
-            [self.mapView.contents.overlay addSublayer:path];
-            
-            [overlay addObject:path];
+            [annotationsToAdd addObject:polygonAnnotation];
         }
     
-        // add overlays as map layers
+        // overlays will become direct map layers
         //
         else if ([feature isKindOfClass:[SimpleKMLGroundOverlay class]] && ((SimpleKMLGroundOverlay *)feature).icon)
         {
@@ -308,99 +192,30 @@
             //
             SimpleKMLGroundOverlay *groundOverlay = (SimpleKMLGroundOverlay *)feature;
             
-            RMMapLayer *overlayLayer = [RMMapLayer layer];
+            RMAnnotation *groundOverlayAnnotation = [RMAnnotation annotationWithMapView:self.mapView coordinate:CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east) andTitle:nil];
             
-            RMLatLong ne = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east);
-            RMLatLong nw = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.west);
-            RMLatLong se = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.east);
-            RMLatLong sw = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.west);
+            groundOverlayAnnotation.annotationType = kDSOverlayAnnotationTypeName;
             
-            CGPoint nePoint = [self.mapView.contents latLongToPixel:ne];
-            CGPoint nwPoint = [self.mapView.contents latLongToPixel:nw];
-            CGPoint sePoint = [self.mapView.contents latLongToPixel:se];
+            groundOverlayAnnotation.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:feature,      @"groundOverlay",
+                                                                                          [kml source], @"source", 
+                                                                                          nil];
             
-            // rotate & size image as necessary
-            //
-            UIImage *overlayImage = groundOverlay.icon;
+            [groundOverlayAnnotation setBoundingBoxCoordinatesSouthWest:CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.west) 
+                                                              northEast:CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east)];
             
-            CGSize originalSize = overlayImage.size;
-            
-            if (groundOverlay.rotation)
-                overlayImage = [overlayImage imageRotatedByDegrees:-groundOverlay.rotation];
-            
-            // account for rotated corners now sticking out
-            //
-            CGFloat xFactor = (nePoint.x - nwPoint.x) / originalSize.width;
-            CGFloat yFactor = (sePoint.y - nePoint.y) / originalSize.height;
-            
-            CGFloat xDelta  = (overlayImage.size.width  - originalSize.width)  * xFactor;
-            CGFloat yDelta  = (overlayImage.size.height - originalSize.height) * yFactor;
-            
-            CGRect overlayRect = CGRectMake(nwPoint.x - (xDelta / 2), nwPoint.y - (yDelta / 2), nePoint.x - nwPoint.x + xDelta, sePoint.y - nePoint.y + yDelta);
-            
-            overlayImage = [overlayImage imageWithWidth:overlayRect.size.width height:overlayRect.size.height];
-            
-            // size & place layer with image
-            //
-            overlayLayer.frame = overlayRect;
-            
-            overlayLayer.contents = (id)[overlayImage CGImage];
-            
-            // update reported bounds & store for later
-            //
-            if (sw.latitude < minLat)
-                minLat = sw.latitude;
-            
-            if (nw.latitude > maxLat)
-                maxLat = nw.latitude;
-            
-            if (sw.longitude < minLon)
-                minLon = sw.longitude;
-            
-            if (nw.longitude > maxLon)
-                maxLon = nw.longitude;
-            
-            [self.mapView.contents.overlay addSublayer:overlayLayer];
-            
-            [overlay addObject:overlayLayer];
+            [annotationsToAdd addObject:groundOverlayAnnotation];
         }
     }
 
-    // now we can recalculate
-    //
-    [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
-        
-    // determine bounds
-    //
-    if ([overlay count])
-    {
-        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:kml,     @"source", 
-                                                                               overlay, @"overlay",
-                                                                               nil];
-        
-        [self.overlays addObject:overlayDict];
-        
-        // calculate bounds showing all points plus a 10% border on the edges
-        //
-        RMSphericalTrapezium overlayBounds = { 
-            .northeast = {
-                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
-                .longitude = maxLon + (0.1 * (maxLon - minLon))
-            },
-            .southwest = {
-                .latitude  = minLat - (0.1 * (maxLat - minLat)),
-                .longitude = minLon - (0.1 * (maxLat - minLat))
-            }
-        };
-        
-        return overlayBounds;
-    }
+    [self.mapView addAnnotations:annotationsToAdd];
     
-    return [self.mapView.contents latitudeLongitudeBoundingBoxForScreen];
+    return (BOOL)[annotationsToAdd count];
 }
 
-- (RMSphericalTrapezium)addOverlayForGeoRSS:(NSString *)rss
+- (BOOL)addOverlayForGeoRSS:(NSString *)rss
 {
+    return NO;
+    
     NSMutableArray *overlay = [NSMutableArray array];
     
     CGFloat minLat =   90;
@@ -431,10 +246,10 @@
         
         // create a generic point with the RSS item's attributes plus location for clustering
         //
-        marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[item objectForKey:@"title"], @"title",
-                                                                 balloonBlurb,                 @"description",
-                                                                 location,                     @"location",
-                                                                 nil];
+        marker.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[item objectForKey:@"title"], @"title",
+                                                                     balloonBlurb,                 @"description",
+                                                                     location,                     @"location",
+                                                                     nil];
                 
         if (coordinate.latitude < minLat)
             minLat = coordinate.latitude;
@@ -448,42 +263,34 @@
         if (coordinate.longitude > maxLon)
             maxLon = coordinate.longitude;
         
-        [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
-        
         [overlay addObject:marker];
     }
     
     if ([overlay count])
     {
-        [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
-        
-        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:rss,     @"source", 
-                                                                               overlay, @"overlay",
-                                                                               nil];
-        
-        [self.overlays addObject:overlayDict];
-        
         // calculate bounds showing all points plus a 10% border on the edges
         //
         RMSphericalTrapezium overlayBounds = { 
-            .northeast = {
+            .northEast = {
                 .latitude  = maxLat + (0.1 * (maxLat - minLat)),
                 .longitude = maxLon + (0.1 * (maxLon - minLon))
             },
-            .southwest = {
+            .southWest = {
                 .latitude  = minLat - (0.1 * (maxLat - minLat)),
                 .longitude = minLon - (0.1 * (maxLat - minLat))
             }
         };
         
-        return overlayBounds;
+        //return overlayBounds;
     }
     
-    return [self.mapView.contents latitudeLongitudeBoundingBoxForScreen];
+    //return [self.mapView latitudeLongitudeBoundingBox];
 }
 
-- (RMSphericalTrapezium)addOverlayForGeoJSON:(NSString *)json
+- (BOOL)addOverlayForGeoJSON:(NSString *)json
 {
+    return NO;
+    
     NSMutableArray *overlay = [NSMutableArray array];
     
     CGFloat minLat =   90;
@@ -512,10 +319,10 @@
             
             // create a generic point with the GeoJSON item's properties plus location for clustering
             //
-            marker.data = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Point %@", [item objectForKey:@"id"]], @"title",
-                                                                     balloonBlurb,                                                       @"description",
-                                                                     location,                                                           @"location",
-                                                                     nil];
+            marker.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:[NSString stringWithFormat:@"Point %@", [item objectForKey:@"id"]], @"title",
+                                                                         balloonBlurb,                                                       @"description",
+                                                                         location,                                                           @"location",
+                                                                         nil];
             
             if (coordinate.latitude < minLat)
                 minLat = coordinate.latitude;
@@ -529,13 +336,11 @@
             if (coordinate.longitude > maxLon)
                 maxLon = coordinate.longitude;
             
-            [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) addMarker:marker AtLatLong:coordinate recalculatingImmediately:NO];
-            
             [overlay addObject:marker];
         }
         else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypeLineString)
         {
-            RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
+            RMPath *path = [[RMPath alloc] initWithView:self.mapView];
             
             path.lineColor    = kMapBoxBlue;
             path.fillColor    = [UIColor clearColor];
@@ -549,16 +354,16 @@
             {
                 if ( ! hasStarted)
                 {
-                    [path moveToLatLong:geometry.coordinate];
+                    [path moveToCoordinate:geometry.coordinate];
                     
                     hasStarted = YES;
                 }
 
                 else
-                    [path addLineToLatLong:geometry.coordinate];
+                    [path addLineToCoordinate:geometry.coordinate];
             }
             
-            [self.mapView.contents.overlay addSublayer:path];
+//            [self.mapView.contents.overlay addSublayer:path];
             
             [overlay addObject:path];
         }
@@ -566,7 +371,7 @@
         {
             for (NSArray *linearRing in [item objectForKey:@"geometries"])
             {
-                RMPath *path = [[RMPath alloc] initWithContents:self.mapView.contents];
+                RMPath *path = [[RMPath alloc] initWithView:self.mapView];
                 
                 path.lineColor    = kMapBoxBlue;
                 path.fillColor    = [UIColor clearColor];
@@ -580,18 +385,18 @@
                 {
                     if ( ! hasStarted)
                     {
-                        [path moveToLatLong:point.coordinate];
+                        [path moveToCoordinate:point.coordinate];
                         
                         hasStarted = YES;
                     }
                     
                     else
-                        [path addLineToLatLong:point.coordinate];
+                        [path addLineToCoordinate:point.coordinate];
                 }
                 
                 [path closePath];
                 
-                [self.mapView.contents.overlay addSublayer:path];
+//                [self.mapView.contents.overlay addSublayer:path];
                 
                 [overlay addObject:path];
             }
@@ -600,73 +405,38 @@
     
     if ([overlay count])
     {
-        [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
-        
-        NSDictionary *overlayDict = [NSDictionary dictionaryWithObjectsAndKeys:json,    @"source", 
-                                                                               overlay, @"overlay",
-                                                                               nil];
-        
-        [self.overlays addObject:overlayDict];
-        
         // calculate bounds showing all points plus a 10% border on the edges
         //
         RMSphericalTrapezium overlayBounds = { 
-            .northeast = {
+            .northEast = {
                 .latitude  = maxLat + (0.1 * (maxLat - minLat)),
                 .longitude = maxLon + (0.1 * (maxLon - minLon))
             },
-            .southwest = {
+            .southWest = {
                 .latitude  = minLat - (0.1 * (maxLat - minLat)),
                 .longitude = minLon - (0.1 * (maxLat - minLat))
             }
         };
         
-        return overlayBounds;
+        //return overlayBounds;
     }
     
-    return [self.mapView.contents latitudeLongitudeBoundingBoxForScreen];
+    //return [self.mapView latitudeLongitudeBoundingBox];
 }
 
 - (void)removeAllOverlays
 {
-    [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) removeMarkersAndClusters];
-    self.mapView.contents.overlay.sublayers = nil;
+    [self.mapView removeAllAnnotations];
     
     if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
-    
-    [self.overlays removeAllObjects];
 }
 
 - (void)removeOverlayWithSource:(NSString *)source
 {
-    NSDictionary *overlayToRemove = nil;
+    NSArray *annotationsToRemove = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.userInfo.source = %@", source]];
     
-    for (NSDictionary *overlayDict in self.overlays)
-    {
-        if (([[overlayDict objectForKey:@"source"] isKindOfClass:[SimpleKML class]] && 
-            [[[overlayDict objectForKey:@"source"] valueForKeyPath:@"source"] isEqualToString:source]) ||
-            ([[overlayDict objectForKey:@"source"] isKindOfClass:[NSString class]] &&
-            [[overlayDict objectForKey:@"source"] isEqualToString:source]))
-        {
-            NSArray *components = [overlayDict objectForKey:@"overlay"];
-            
-            for (id component in components)
-                if ([component isKindOfClass:[RMMarker class]])
-                    [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) removeMarker:component recalculatingImmediately:NO];
-                else if ([component isKindOfClass:[RMMapLayer class]])
-                    [component removeFromSuperlayer];
-                
-            [((DSMapBoxMarkerManager *)self.mapView.contents.markerManager) recalculateClusters];
-            
-            overlayToRemove = overlayDict;
-            
-            break;
-        }
-    }
-    
-    if (overlayToRemove)
-        [self.overlays removeObject:overlayToRemove];
+    [self.mapView removeAnnotations:annotationsToRemove];
     
     if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
@@ -674,107 +444,60 @@
 
 #pragma mark -
 
-- (void)presentInteractivityAtPoint:(CGPoint)point
+- (void)singleTapOnMap:(RMMapView *)map at:(CGPoint)point
 {
-    // We get here without knowing which layer to query. So, find 
-    // the top-most layer that supports interactivity, then query 
-    // it for interactivity.
-    //
-    // In the future, we could, depending on performance, query
-    // all layers, top-down, until we get *results*. But this would
-    // potentially delay local sources while we query every 
-    // remote source above it, coming up empty. 
-    //
-    DSMapView *interactiveMapView = nil;
-
-    if ([self.mapView isKindOfClass:[DSMapBoxTiledLayerMapView class]])
-    {
-        // if we get here, tile layers are enabled
-        //
-        DSMapView *masterMapView = ((DSMapBoxTiledLayerMapView *)self.mapView).masterView;
-        NSArray *peerMapViews = ((DSMapContents *)masterMapView.contents).layerMapViews;
-        
-        // find top-most interactive one
-        //
-        for (DSMapView *peerMapView in [[peerMapViews reverseObjectEnumerator] allObjects])
-        {
-            if ([peerMapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)peerMapView.contents.tileSource supportsInteractivity])
-            {
-                interactiveMapView = peerMapView;
-                
-                break;
-            }
-        }
-    }
-    else
-    {
-        // no tile layers; just check our (base) map - previews, for example
-        //
-        if ([self.mapView.contents.tileSource conformsToProtocol:@protocol(RMInteractiveSource)] && [(id <RMInteractiveSource>)self.mapView.contents.tileSource supportsInteractivity])
-            interactiveMapView = self.mapView;
-    }
+//    if ( ! [map supportsInteractivity])
+//        return; // FIXME dismiss popover
     
-    if (interactiveMapView)
+    NSLog(@"querying interactivity");
+    
+    NSString *formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeFull forPoint:point];
+    
+    if ( ! formattedOutput || ! [formattedOutput length])
+        formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser forPoint:point];
+
+    if (formattedOutput && [formattedOutput length])
     {
-        NSLog(@"querying for interactivity: %@", interactiveMapView.contents.tileSource);
-
-        NSString *formattedOutput = [(id <RMInteractiveSource>)interactiveMapView.contents.tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeFull 
-                                                                                                                   forPoint:point 
-                                                                                                                  inMapView:interactiveMapView];
+        if (self.balloon.popoverVisible)
+            [self.balloon dismissPopoverAnimated:NO];
         
-        if ( ! formattedOutput || ! [formattedOutput length])
-            formattedOutput = [(id <RMInteractiveSource>)interactiveMapView.contents.tileSource formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser 
-                                                                                                             forPoint:point 
-                                                                                                            inMapView:interactiveMapView];
-
-        if (formattedOutput && [formattedOutput length])
-        {
-            if (self.balloon.popoverVisible)
-                [self.balloon dismissPopoverAnimated:NO];
-            
-            DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
-            
-            self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
-            
-            self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
-            self.balloon.delegate = self;
-            
-            balloonController.name        = @"";
-            balloonController.description = formattedOutput;
-            
-            self.balloon.popoverContentSize = CGSizeMake(320, 160);
-            
-            [self.balloon setContentViewController:balloonController];
-            
-            [self.balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
-                                          inView:self.mapView.topMostMapView
-                                        animated:YES];
-            
-            [TestFlight passCheckpoint:@"tapped interactive layer"];
-        }
-
-        else if (self.balloon.popoverVisible)
-            [self.balloon dismissPopoverAnimated:YES];
+        DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
+        
+        self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
+        
+//            self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
+        self.balloon.delegate = self;
+        
+        balloonController.name        = @"";
+        balloonController.description = formattedOutput;
+        
+        self.balloon.popoverContentSize = CGSizeMake(320, 160);
+        
+        [self.balloon setContentViewController:balloonController];
+        
+        [self.balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
+                                      inView:map
+                                    animated:YES];
+        
+        [TestFlight passCheckpoint:@"tapped interactive layer"];
     }
 
     else if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:YES];
 }
 
-- (void)hideInteractivityAnimated:(BOOL)animated
-{
-    if (self.balloon.popoverVisible)
-        [self.balloon dismissPopoverAnimated:animated];
-}
+//- (void)hideInteractivityAnimated:(BOOL)animated
+//{
+//    if (self.balloon.popoverVisible)
+//        [self.balloon dismissPopoverAnimated:animated];
+//}
 
-#pragma mark -
-
-- (void)tapOnMarker:(RMMarker *)marker onMap:(RMMapView *)map
+- (void)tapOnAnnotation:(RMAnnotation *)annotation onMap:(RMMapView *)map;
 {
     if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:NO];
     
-    NSDictionary *markerData = ((NSDictionary *)marker.data);
+    NSDictionary *annotationInfo = ((NSDictionary *)annotation.userInfo);
     
     DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
     CGRect attachPoint;
@@ -783,20 +506,20 @@
     //
     self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
     
-    self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
+//    self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
     self.balloon.delegate = self;
     
     // KML placemarks have their own title & description
     //
-    if ([markerData objectForKey:@"placemark"])
+    if ([annotationInfo objectForKey:@"placemark"])
     {
-        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[markerData objectForKey:@"placemark"];
+        SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[annotationInfo objectForKey:@"placemark"];
         
         balloonController.name        = placemark.name;
         balloonController.description = placemark.featureDescription;
         
-        attachPoint = CGRectMake([self.mapView.contents latLongToPixel:placemark.point.coordinate].x,
-                                 [self.mapView.contents latLongToPixel:placemark.point.coordinate].y, 
+        attachPoint = CGRectMake([self.mapView coordinateToPixel:placemark.point.coordinate].x,
+                                 [self.mapView coordinateToPixel:placemark.point.coordinate].y, 
                                  1,
                                  1);
         
@@ -807,13 +530,13 @@
     //
     else
     {
-        balloonController.name        = [markerData objectForKey:@"title"];
-        balloonController.description = [markerData objectForKey:@"description"];
+        balloonController.name        = [annotationInfo objectForKey:@"title"];
+        balloonController.description = [annotationInfo objectForKey:@"description"];
         
-        RMLatLong latLong = [self.mapView.contents.projection pointToLatLong:marker.projectedLocation];
+        CLLocationCoordinate2D latLong = [self.mapView projectedPointToCoordinate:annotation.projectedLocation];
         
-        attachPoint = CGRectMake([self.mapView.contents latLongToPixel:latLong].x,
-                                 [self.mapView.contents latLongToPixel:latLong].y, 
+        attachPoint = CGRectMake([self.mapView coordinateToPixel:latLong].x,
+                                 [self.mapView coordinateToPixel:latLong].y, 
                                  1, 
                                  1);
         
@@ -825,22 +548,24 @@
     [self.balloon setContentViewController:balloonController];
     
     [self.balloon presentPopoverFromRect:attachPoint
-                                  inView:self.mapView.topMostMapView
+                                  inView:self.mapView
                                 animated:YES];
     
     [TestFlight passCheckpoint:@"tapped on marker"];
 }
 
-- (void)tapOnLabelForMarker:(RMMarker *)marker onMap:(RMMapView *)map
+- (void)tapOnLabelForAnnotation:(RMAnnotation *)annotation onMap:(RMMapView *)map
 {
-    [self tapOnMarker:marker onMap:map];
+    [self tapOnAnnotation:annotation onMap:map];
 }
 
 - (void)mapViewRegionDidChange:(RMMapView *)map
 {
+    // popover handling
+    //
     if (self.balloon.popoverVisible)
     {
-        if (self.lastKnownZoom != map.contents.zoom)
+        if (self.lastKnownZoom != map.zoom)
         {
             // dismiss popover if the user has zoomed
             //
@@ -850,9 +575,9 @@
         {
             // determine screen point to keep popover at same lat/long
             //
-            RMProjectedPoint oldProjectedPoint = self.balloon.projectedPoint;
-            RMLatLong oldAttachLatLong         = [map.contents.projection pointToLatLong:oldProjectedPoint];
-            CGPoint newAttachPoint             = [map.contents latLongToPixel:oldAttachLatLong];
+            RMProjectedPoint oldProjectedPoint      = self.balloon.projectedPoint;
+            CLLocationCoordinate2D oldAttachLatLong = [map projectedPointToCoordinate:oldProjectedPoint];
+            CGPoint newAttachPoint                  = [map coordinateToPixel:oldAttachLatLong];
             
             // check that popover won't try to move off-screen; dismiss if so
             //
@@ -893,7 +618,201 @@
         }
     }
     
-    self.lastKnownZoom = map.contents.zoom;
+//    // out-of-zoom-bounds warnings
+//    //
+//    if ([map.tileSource isKindOfClass:[RMMBTilesSource class]])
+//    {
+//        RMMBTilesSource *source = (RMMBTilesSource *)map.tileSource;
+//        
+//        NSInteger newTag;
+//        
+//        if (map.zoom > [source maxZoomNative] || map.zoom < [source minZoomNative])
+//        {
+//            newTag = 0; // out of bounds
+//            
+//            // Only warn once per bounds limit crossing. We use tag as a way to 
+//            // mark which layer we're warning the user about.
+//            //
+//            if (map.tag != newTag)
+//                [[NSNotificationCenter defaultCenter] postNotificationName:DSMapBoxZoomBoundsReached object:map];
+//        }
+//        
+//        else
+//            newTag = 1; // in bounds
+//        
+//        map.tag = newTag;
+//    }
+    
+    self.lastKnownZoom = map.zoom;
+}
+
+- (RMMapLayer *)mapView:(RMMapView *)mapView layerForAnnotation:(RMAnnotation *)annotation
+{
+    if ([annotation.annotationType isEqualToString:kRMClusterAnnotationTypeName])
+    {
+        RMQuadTreeNode *quadTreeNode = annotation.userInfo;
+        
+        CGFloat size = 44.0 + (50.0 * (((CGFloat)[quadTreeNode.clusteredAnnotations count]) / (CGFloat)[quadTreeNode.clusterAnnotation.mapView.annotations count]));
+        
+        UIImage *image = [[[UIImage imageNamed:@"circle.png"] imageWithAlphaComponent:0.7] imageWithWidth:size height:size];
+        
+        RMMarker *clusterMarker = [[RMMarker alloc] initWithUIImage:image];
+        
+        NSString *labelText      = [NSString stringWithFormat:@"%i",        [quadTreeNode.clusteredAnnotations count]];
+        NSString *touchLabelText = [NSString stringWithFormat:@"%i Points", [quadTreeNode.clusteredAnnotations count]];
+        
+        // build up summary of clustered points
+        //
+        NSMutableArray *descriptions = [NSMutableArray array];
+        
+        for (RMMarker *clusterMarker in quadTreeNode.clusteredAnnotations)
+        {
+            NSDictionary *clusterMarkerData = ((NSDictionary *)clusterMarker.userInfo);
+            
+            if ([clusterMarkerData objectForKey:@"placemark"])
+            {
+                SimpleKMLPlacemark *placemark = (SimpleKMLPlacemark *)[clusterMarkerData objectForKey:@"placemark"];
+                
+                [descriptions addObject:placemark.name];
+            }
+            
+            else if ([clusterMarkerData objectForKey:@"title"])
+                [descriptions addObject:[clusterMarkerData objectForKey:@"title"]];
+        }
+        
+        [descriptions sortUsingSelector:@selector(compare:)];
+        
+        // build the cluster marker
+        //
+        clusterMarker.userInfo = [NSDictionary dictionaryWithObjectsAndKeys:touchLabelText,                                                     @"title",
+                                                                            [descriptions componentsJoinedByString:@", "],                      @"description",
+                                                                            [NSNumber numberWithInt:[quadTreeNode.clusteredAnnotations count]], @"count",
+                                                                            nil];
+        
+        [clusterMarker changeLabelUsingText:labelText
+                                       font:[RMMarker defaultFont]
+                            foregroundColor:[UIColor whiteColor]
+                            backgroundColor:[UIColor clearColor]];
+        
+        return clusterMarker;
+    }
+    else if ([annotation.annotationType isEqualToString:kDSPointAnnotationTypeName])
+    {
+        UIImage *pointImage = ([annotation.userInfo objectForKey:@"icon"] ? [annotation.userInfo objectForKey:@"icon"] : [[[UIImage imageNamed:@"point.png"] imageWithWidth:44.0 height:44.0] imageWithAlphaComponent:kDSPlacemarkAlpha]); // FIXME optimize reuse
+        
+        RMMarker *pointMarker = [[RMMarker alloc] initWithUIImage:pointImage];
+
+        return pointMarker;
+    }
+    else if ([annotation.annotationType isEqualToString:kDSLineAnnotationTypeName])
+    {
+        SimpleKMLPlacemark *feature = [annotation.userInfo objectForKey:@"lineString"];
+        
+        RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+        
+        path.lineColor    = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
+        path.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
+        path.fillColor    = [UIColor clearColor];
+        path.shadowBlur   = kDSPathShadowBlur;
+        path.shadowOffset = kDSPathShadowOffset;
+        
+        BOOL hasStarted = NO;
+        
+        for (CLLocation *location in feature.lineString.coordinates)
+        {
+            if ( ! hasStarted)
+            {
+                [path moveToCoordinate:location.coordinate];
+                hasStarted = YES;
+            }
+            
+            else
+                [path addLineToCoordinate:location.coordinate];
+        }
+        
+        return path;
+    }
+    else if ([annotation.annotationType isEqualToString:kDSPolygonAnnotationTypeName])
+    {
+        SimpleKMLPlacemark *feature = [annotation.userInfo objectForKey:@"polygon"];
+        
+        RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+        
+        path.lineColor = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
+        
+        if (feature.style.polyStyle.fill)
+            path.fillColor = feature.style.polyStyle.color;
+        
+        else
+            path.fillColor = [UIColor clearColor];
+        
+        path.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
+        path.shadowBlur   = kDSPathShadowBlur;
+        path.shadowOffset = kDSPathShadowOffset;
+        
+        SimpleKMLLinearRing *outerBoundary = feature.polygon.outerBoundary;
+        
+        BOOL hasStarted = NO;
+        
+        for (CLLocation *location in outerBoundary.coordinates)
+        {
+            if ( ! hasStarted)
+            {
+                [path moveToCoordinate:location.coordinate];
+                hasStarted = YES;
+            }
+            
+            else
+                [path addLineToCoordinate:location.coordinate];
+        }
+        
+        return path;
+    }
+    else if ([annotation.annotationType isEqualToString:kDSOverlayAnnotationTypeName])
+    {
+        SimpleKMLGroundOverlay *groundOverlay = [annotation.userInfo objectForKey:@"groundOverlay"];
+        
+        CLLocationCoordinate2D ne = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.east);
+        CLLocationCoordinate2D nw = CLLocationCoordinate2DMake(groundOverlay.north, groundOverlay.west);
+        CLLocationCoordinate2D se = CLLocationCoordinate2DMake(groundOverlay.south, groundOverlay.east);
+        
+        CGPoint nePoint = [self.mapView coordinateToPixel:ne];
+        CGPoint nwPoint = [self.mapView coordinateToPixel:nw];
+        CGPoint sePoint = [self.mapView coordinateToPixel:se];
+        
+        // rotate & size image as necessary
+        //
+        UIImage *overlayImage = groundOverlay.icon;
+        
+        CGSize originalSize = overlayImage.size;
+        
+        if (groundOverlay.rotation)
+            overlayImage = [overlayImage imageRotatedByDegrees:-groundOverlay.rotation];
+        
+        // account for rotated corners now sticking out
+        //
+        CGFloat xFactor = (nePoint.x - nwPoint.x) / originalSize.width;
+        CGFloat yFactor = (sePoint.y - nePoint.y) / originalSize.height;
+        
+        CGFloat xDelta  = (overlayImage.size.width  - originalSize.width)  * xFactor;
+        CGFloat yDelta  = (overlayImage.size.height - originalSize.height) * yFactor;
+        
+        CGRect overlayRect = CGRectMake(nwPoint.x - (xDelta / 2), nwPoint.y - (yDelta / 2), nePoint.x - nwPoint.x + xDelta, sePoint.y - nePoint.y + yDelta);
+        
+        overlayImage = [overlayImage imageWithWidth:overlayRect.size.width height:overlayRect.size.height];
+        
+        // size & place layer with image
+        //
+        RMMapLayer *overlayLayer = [RMMapLayer layer];
+        
+        overlayLayer.frame = overlayRect;
+        
+        overlayLayer.contents = (id)[overlayImage CGImage];
+        
+        return overlayLayer; // FIXME doesn't scale with map
+    }
+    
+    return nil;
 }
 
 #pragma mark -

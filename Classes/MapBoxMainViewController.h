@@ -10,7 +10,7 @@
 #import "DSMapBoxLayerController.h"
 #import "DSMapBoxLayerManager.h"
 
-@class DSMapView;
+@class RMMapView;
 @class BALabel;
 
 @interface MapBoxMainViewController : UIViewController <UIActionSheetDelegate, 
@@ -20,7 +20,7 @@
                                                         MFMailComposeViewControllerDelegate,
                                                         DSMapBoxLayerControllerDelegate>
 
-@property (nonatomic, strong) IBOutlet DSMapView *mapView;
+@property (nonatomic, strong) IBOutlet RMMapView *mapView;
 @property (nonatomic, strong) IBOutlet UIImageView *watermarkImage;
 @property (nonatomic, strong) IBOutlet BALabel *attributionLabel;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;

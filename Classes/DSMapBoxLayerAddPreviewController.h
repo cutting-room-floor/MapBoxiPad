@@ -6,11 +6,11 @@
 //  Copyright 2011 Development Seed. All rights reserved.
 //
 
-@class DSMapView;
+@class RMMapView;
 
 @interface DSMapBoxLayerAddPreviewController : UIViewController
 
-@property (nonatomic, strong) IBOutlet DSMapView *mapView;
+@property (nonatomic, strong) IBOutlet RMMapView *mapView;
 @property (nonatomic, strong) IBOutlet UILabel *metadataLabel;
 @property (nonatomic, strong) NSDictionary *info;
 
