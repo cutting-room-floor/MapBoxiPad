@@ -202,6 +202,7 @@
 		DDAB24D5146B482E00C14467 /* DSMapBoxLegendView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAB24D4146B482E00C14467 /* DSMapBoxLegendView.xib */; };
 		DDAB24D8146B49C200C14467 /* DSMapBoxLegendManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */; };
 		DDACBCA1141FC6F4002704B7 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DDACBC9F141FC6F4002704B7 /* libTestFlight.a */; };
+		DDB0D741154F1AAB004F7869 /* SimpleKMLMultiGeometry.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0D740154F1AAB004F7869 /* SimpleKMLMultiGeometry.m */; };
 		DDB0FCA71485CD70003A4FD3 /* BALabel.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB0FCA61485CD70003A4FD3 /* BALabel.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		DDB62E3814CA13B2005C1F6A /* MapBoxMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */; };
 		DDB7BEDC13CE160E00280095 /* DSMapBoxErrorView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB7BEDB13CE160E00280095 /* DSMapBoxErrorView.m */; };
@@ -615,6 +616,8 @@
 		DDAB24D7146B49C100C14467 /* DSMapBoxLegendManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSMapBoxLegendManager.m; sourceTree = "<group>"; };
 		DDACBC9F141FC6F4002704B7 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libTestFlight.a; path = "Externals/TestFlight SDK/libTestFlight.a"; sourceTree = "<group>"; };
 		DDACBCA0141FC6F4002704B7 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestFlight.h; path = "Externals/TestFlight SDK/TestFlight.h"; sourceTree = "<group>"; };
+		DDB0D73F154F1AAB004F7869 /* SimpleKMLMultiGeometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SimpleKMLMultiGeometry.h; path = "Externals/Simple KML/SimpleKMLMultiGeometry.h"; sourceTree = "<group>"; };
+		DDB0D740154F1AAB004F7869 /* SimpleKMLMultiGeometry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SimpleKMLMultiGeometry.m; path = "Externals/Simple KML/SimpleKMLMultiGeometry.m"; sourceTree = "<group>"; };
 		DDB0FCA51485CD70003A4FD3 /* BALabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BALabel.h; path = Externals/BaseAppKit/BALabel.h; sourceTree = "<group>"; };
 		DDB0FCA61485CD70003A4FD3 /* BALabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BALabel.m; path = Externals/BaseAppKit/BALabel.m; sourceTree = "<group>"; };
 		DDB62E3714CA13B2005C1F6A /* MapBoxMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MapBoxMainViewController.xib; sourceTree = "<group>"; };
@@ -860,6 +863,8 @@
 				DD0F612D11ED5A9F0050174D /* SimpleKMLFolder.m */,
 				DD0F612E11ED5A9F0050174D /* SimpleKMLGeometry.h */,
 				DD0F612F11ED5A9F0050174D /* SimpleKMLGeometry.m */,
+				DDB0D73F154F1AAB004F7869 /* SimpleKMLMultiGeometry.h */,
+				DDB0D740154F1AAB004F7869 /* SimpleKMLMultiGeometry.m */,
 				DD283A2B13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.h */,
 				DD283A2C13A93C1000AB9BD2 /* SimpleKMLGroundOverlay.m */,
 				DD0F613011ED5A9F0050174D /* SimpleKMLIconStyle.h */,
@@ -1974,6 +1979,7 @@
 				DDBFE14214C610C3009082A2 /* DSMapBoxShareSheet.m in Sources */,
 				DD28BE021519565300EAF5D2 /* UIImage_Additions.m in Sources */,
 				DD3698E7153F6AA4009E3ACA /* DSMapBoxLayer.m in Sources */,
+				DDB0D741154F1AAB004F7869 /* SimpleKMLMultiGeometry.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
