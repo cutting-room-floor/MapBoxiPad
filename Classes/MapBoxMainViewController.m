@@ -388,7 +388,7 @@
     {
         // remove current layers
         //
-        NSArray *activeTileLayers = [self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
+        NSArray *activeTileLayers = [self.layerManager.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate];
         for (DSMapBoxLayer *tileLayer in activeTileLayers)
             [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.tileLayers indexOfObject:tileLayer]
                                                                          inSection:DSMapBoxLayerSectionTile]];
@@ -448,7 +448,7 @@
     {
         // remove current layers
         //
-        NSArray *activeDataLayers = [self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
+        NSArray *activeDataLayers = [self.layerManager.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate];
         for (NSDictionary *dataLayer in activeDataLayers)
             [self.layerManager toggleLayerAtIndexPath:[NSIndexPath indexPathForRow:[self.layerManager.dataLayers indexOfObject:dataLayer]
                                                                          inSection:DSMapBoxLayerSectionData]];
@@ -501,11 +501,11 @@
     
     // get tile overlay state(s)
     //
-    NSArray *tileOverlayState = [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
+    NSArray *tileOverlayState = [[self.layerManager.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
     
     // get data overlay state(s)
     //
-    NSArray *dataOverlayState = [[self.layerManager.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
+    NSArray *dataOverlayState = [[self.layerManager.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate] valueForKeyPath:@"URL.pathRelativeToApplicationSandbox"];
 
     // determine if document or global save
     //
@@ -878,7 +878,7 @@
 {
     if ([(Reachability *)[notification object] currentReachabilityStatus] == NotReachable)
     {
-        for (NSURL *layerURL in [[self.layerManager.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]] valueForKey:@"URL"])
+        for (NSURL *layerURL in [[self.layerManager.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate] valueForKey:@"URL"])
         {
             if ([layerURL isEqual:kDSOpenStreetMapURL] || [layerURL isEqual:kDSMapQuestOSMURL] || [layerURL isTileStreamURL])
             {

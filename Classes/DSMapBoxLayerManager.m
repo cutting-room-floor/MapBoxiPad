@@ -299,12 +299,12 @@
     // notify delegate of tile layer toggles to update attributions
     //
     if (/*indexPath.section == DSMapBoxLayerSectionTile &&*/ [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateTileLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
+        [self.delegate dataLayerHandler:self didUpdateTileLayers:[self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
     
     // notify delegate for clustering button to toggle visibility
     //
     if (/*indexPath.section == DSMapBoxLayerSectionData &&*/ [self.delegate respondsToSelector:@selector(dataLayerHandler:didUpdateDataLayers:)])
-        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
+        [self.delegate dataLayerHandler:self didUpdateDataLayers:[self.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
     
 }
 
@@ -315,12 +315,12 @@
     // notify delegate of tile layer reorders to update attributions
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
-        [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
-    
-    // (currently unused)
+        [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
+
+    // data layers
     //
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderDataLayers:)])
-        [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]]];
+        [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
 }
 
 - (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers

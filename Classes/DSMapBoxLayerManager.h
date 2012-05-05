@@ -25,6 +25,8 @@
 @class RMMapView;
 @class RMMBTilesTileSource;
 
+#define kDSMapBoxSelectedLayerPredicate [NSPredicate predicateWithFormat:@"SELF.isSelected = YES"]
+
 @protocol DSMapBoxDataLayerHandlerDelegate
 
 @optional
