@@ -62,7 +62,7 @@ typedef enum {
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath;
 - (void)toggleLayerAtIndexPath:(NSIndexPath *)indexPath zoomingIfNecessary:(BOOL)zoomNow;
 - (void)reloadLayersFromDisk;
-- (void)reorderLayers;
+- (void)reorderLayersDisplay;
 - (void)bringActiveTileLayersToTop:(NSArray *)activeTileLayers dataLayers:(NSArray *)activeDataLayers;
 
 @end

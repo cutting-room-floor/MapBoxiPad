@@ -16,6 +16,7 @@
 @synthesize attribution;
 @synthesize filesize;
 @synthesize source;
+@synthesize annotations;
 @synthesize selected;
 @synthesize downloadable;
 @synthesize type;

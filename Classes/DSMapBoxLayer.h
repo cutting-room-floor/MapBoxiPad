@@ -22,6 +22,7 @@ typedef enum {
 @property (nonatomic, strong) NSString *attribution;
 @property (nonatomic, strong) NSNumber *filesize;
 @property (nonatomic, strong) id source;
+@property (nonatomic, strong) NSArray *annotations;
 @property (nonatomic, assign, getter=isSelected) BOOL selected;
 @property (nonatomic, assign, getter=isDownloadable) BOOL downloadable;
 @property (nonatomic, assign) DSMapBoxLayerType type;

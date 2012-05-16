@@ -27,9 +27,9 @@ static NSString *const DSMapBoxZoomBoundsReached = @"DSMapBoxZoomBoundsReached";
 @interface DSMapBoxDataOverlayManager : NSObject <RMMapViewDelegate, UIPopoverControllerDelegate>
 
 - (id)initWithMapView:(RMMapView *)inMapView;
-- (BOOL)addOverlayForKML:(SimpleKML *)kml;
-- (BOOL)addOverlayForGeoRSS:(NSString *)rss;
-- (BOOL)addOverlayForGeoJSON:(NSString *)json;
+- (NSArray *)addOverlayForKML:(SimpleKML *)kml;
+- (NSArray *)addOverlayForGeoRSS:(NSString *)rss;
+- (NSArray *)addOverlayForGeoJSON:(NSString *)json;
 - (void)removeAllOverlays;
 - (void)removeOverlayWithSource:(NSString *)source;
 

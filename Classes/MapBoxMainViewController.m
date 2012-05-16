@@ -707,7 +707,7 @@
     
     // reorder to ensure clusters or points are ordered properly
     //
-    [self.layerManager reorderLayers];
+    [self.layerManager reorderLayersDisplay];
 }
 
 - (IBAction)tappedHelpButton:(id)sender

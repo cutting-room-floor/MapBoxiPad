@@ -20,6 +20,8 @@
 #import "RMMBTilesSource.h"
 #import "RMMapBoxSource.h"
 #import "RMCompositeSource.h"
+#import "RMAnnotation.h"
+#import "RMMapLayer.h"
 
 #import <QuartzCore/QuartzCore.h>
 
@@ -308,17 +310,45 @@
     
 }
 
-- (void)reorderLayers
+- (void)reorderLayersDisplay
 {
-    // FIXME double-check data layer ordering
-    
-    // notify delegate of tile layer reorders to update attributions
+    // tile layers
     //
+    RMCompositeSource *oldSource = self.mapView.tileSource;
+    
+    NSArray *currentTileSources = oldSource.compositeSources;
+    
+    NSArray *enabledLayers = [self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate];
+    
+    NSMutableArray *newTileSources = [NSMutableArray arrayWithArray:[[[enabledLayers valueForKey:@"source"] reverseObjectEnumerator] allObjects]];
+    
+    [newTileSources filterUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS SELF", currentTileSources]];
+    
+    if ([newTileSources count] && ! [newTileSources isEqualToArray:currentTileSources])
+    {
+        RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
+        
+        newSource.compositeSources = newTileSources;
+        
+        self.mapView.tileSource = newSource;
+    }
+    
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
         [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
 
     // data layers
     //
+    NSArray *annotationsWithVisibleLayers = [self.mapView.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF != %@ AND SELF.layer != %@", [NSNull null], [NSNull null]]];
+    
+    for (RMAnnotation *annotation in annotationsWithVisibleLayers)
+        annotation.layer.zPosition = 0;
+    
+    int i = 0;
+    
+    for (DSMapBoxLayer *dataLayer in [[[self.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate] reverseObjectEnumerator] allObjects])
+        for (RMAnnotation *annotation in [dataLayer.annotations filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.layer != %@", [NSNull null]]])
+                annotation.layer.zPosition = i++;
+    
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderDataLayers:)])
         [self.delegate dataLayerHandler:self didReorderDataLayers:[self.dataLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
 }
@@ -360,7 +390,7 @@
         self.dataLayers = newDataLayers;
     }
     
-    [self reorderLayers];
+    [self reorderLayersDisplay];
 }
 
 #pragma mark -
@@ -372,41 +402,18 @@
     
     DSMapBoxLayer *layer;
     
-    int targetRow = (fromIndexPath.row < toIndexPath.row ? toIndexPath.row - 1 : toIndexPath.row);
-    
     switch (fromIndexPath.section)
     {
         case DSMapBoxLayerSectionTile:
         {
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
             
-            // rearrange layer storage
-            //
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
             
             [mutableTileLayers removeObject:layer];
-            [mutableTileLayers insertObject:layer atIndex:targetRow];
+            [mutableTileLayers insertObject:layer atIndex:toIndexPath.row];
 
             self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
-            
-            // rearrange tile sources (if necessary)
-            //
-            RMCompositeSource *oldSource = self.mapView.tileSource;
-            
-            NSArray *currentTileSources = oldSource.compositeSources;
-            
-            NSArray *enabledLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES"]];
-            
-            NSMutableArray *newTileSources = [NSMutableArray arrayWithArray:[[[enabledLayers valueForKey:@"source"] reverseObjectEnumerator] allObjects]];
-            
-            if ( ! [newTileSources isEqualToArray:currentTileSources])
-            {
-                RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
-                
-                newSource.compositeSources = newTileSources;
-                
-                self.mapView.tileSource = newSource;
-            }
             
             break;
         }
@@ -417,7 +424,7 @@
             NSMutableArray *mutableDataLayers = [NSMutableArray arrayWithArray:self.dataLayers];
             
             [mutableDataLayers removeObject:layer];
-            [mutableDataLayers insertObject:layer atIndex:targetRow];
+            [mutableDataLayers insertObject:layer atIndex:toIndexPath.row];
             
             self.dataLayers = [NSArray arrayWithArray:mutableDataLayers];
             
@@ -426,7 +433,7 @@
     }
     
     [self reloadLayersFromDisk];
-    [self reorderLayers];
+    [self reorderLayersDisplay];
 }
 
 - (void)deleteLayersAtIndexPaths:(NSArray *)indexPaths
@@ -523,7 +530,8 @@
                 else
                     source = [[RMMBTilesSource alloc] initWithTileSetURL:tileSetURL];
                 
-                layer.source = source;
+                if ( ! layer.source)
+                    layer.source = source;
                 
                 // determine source(s) to show
                 //
@@ -571,6 +579,10 @@
             
             if (layer.isSelected)
             {
+                // forget annotations
+                //
+                layer.annotations = nil;
+                
                 // remove visuals
                 //
                 [self.dataOverlayManager removeOverlayWithSource:layer.source];
@@ -593,7 +605,7 @@
                     
                     // add layer visuals
                     //
-                    if ( ! [self.dataOverlayManager addOverlayForKML:kml])
+                    if ( ! (layer.annotations = [self.dataOverlayManager addOverlayForKML:kml]) || ! [layer.annotations count])
                     {
                         if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didFailToHandleDataLayerAtURL:)])
                             [self.delegate dataLayerHandler:self didFailToHandleDataLayerAtURL:layer.URL];
@@ -667,7 +679,7 @@
     layer.selected = ! layer.isSelected;
     
     [self updateLayers];
-    [self reorderLayers];
+    [self reorderLayersDisplay];
 }
 
 @end

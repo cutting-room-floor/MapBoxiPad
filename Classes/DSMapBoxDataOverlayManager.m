@@ -83,7 +83,7 @@
 
 #pragma mark -
 
-- (BOOL)addOverlayForKML:(SimpleKML *)kml
+- (NSArray *)addOverlayForKML:(SimpleKML *)kml
 {
     // collect supported features that we're going to plot
     //
@@ -209,12 +209,12 @@
 
     [self.mapView addAnnotations:annotationsToAdd];
     
-    return (BOOL)[annotationsToAdd count];
+    return annotationsToAdd;
 }
 
-- (BOOL)addOverlayForGeoRSS:(NSString *)rss
+- (NSArray *)addOverlayForGeoRSS:(NSString *)rss
 {
-    return NO;
+    return nil;
     
     NSMutableArray *overlay = [NSMutableArray array];
     
@@ -287,9 +287,9 @@
     //return [self.mapView latitudeLongitudeBoundingBox];
 }
 
-- (BOOL)addOverlayForGeoJSON:(NSString *)json
+- (NSArray *)addOverlayForGeoJSON:(NSString *)json
 {
-    return NO;
+    return nil;
     
     NSMutableArray *overlay = [NSMutableArray array];
     
@@ -693,6 +693,8 @@
                                        font:[RMMarker defaultFont]
                             foregroundColor:[UIColor whiteColor]
                             backgroundColor:[UIColor clearColor]];
+        
+        clusterMarker.zPosition = -1;
         
         return clusterMarker;
     }
