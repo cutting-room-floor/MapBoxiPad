@@ -395,9 +395,9 @@
     
     NSLog(@"connected %@ with HTTP %i", connection.originalRequest.URL, webResponse.statusCode);
     
-    // error out if not available
+    // error out if not available or not binary
     //
-    if ([webResponse statusCode] >= 400)
+    if ([webResponse statusCode] >= 400 || [[[webResponse allHeaderFields] objectForKey:@"Content-Type"] hasPrefix:@"text/"])
         return [self connection:connection didFailWithError:nil];
 
     // notify of start
