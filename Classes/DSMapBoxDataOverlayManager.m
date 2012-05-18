@@ -446,51 +446,61 @@
 
 - (void)singleTapOnMap:(RMMapView *)map at:(CGPoint)point
 {
-//    if ( ! [map supportsInteractivity])
-//        return; // FIXME dismiss popover
-    
-    NSLog(@"querying interactivity");
-    
-    NSString *formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeFull forPoint:point];
-    
-    if ( ! formattedOutput || ! [formattedOutput length])
-        formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser forPoint:point];
-
-    if (formattedOutput && [formattedOutput length])
+    // Hack to dismiss interactivity when tapping on interactive
+    // map view, despite it being the only popover passthrough view.
+    // Adding, say, the top toolbar to passthrough results in multiple
+    // popovers possibly being displayed (ex: interactivity + layers UI),
+    // which is grounds for App Store rejection. Easiest thing for now
+    // is just to assume all map views (currently main & TileStream 
+    // preview) have a top toolbar and account for that. 
+    //
+    // See https://github.com/developmentseed/MapBoxiPad/issues/52
+    //
+    if (point.y > 44 && [map supportsInteractivity])
     {
-        if (self.balloon.popoverVisible)
-            [self.balloon dismissPopoverAnimated:NO];
+        // try full, then teaser content
+        //
+        NSString *formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeFull forPoint:point];
         
-        DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
+        if ( ! formattedOutput || ! [formattedOutput length])
+            formattedOutput = [map formattedOutputOfType:RMInteractiveSourceOutputTypeTeaser forPoint:point];
         
-        self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
-        
-//            self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
-        self.balloon.delegate = self;
-        
-        balloonController.name        = @"";
-        balloonController.description = formattedOutput;
-        
-        self.balloon.popoverContentSize = CGSizeMake(320, 160);
-        
-        [self.balloon setContentViewController:balloonController];
-        
-        [self.balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
-                                      inView:map
-                                    animated:YES];
-        
-        [TestFlight passCheckpoint:@"tapped interactive layer"];
+        // display/"move" popup if we have content
+        //
+        if (formattedOutput && [formattedOutput length])
+        {
+            if (self.balloon.popoverVisible)
+                [self.balloon dismissPopoverAnimated:NO];
+            
+            DSMapBoxBalloonController *balloonController = [[DSMapBoxBalloonController alloc] initWithNibName:nil bundle:nil];
+            
+            self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
+            
+            self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView];
+            self.balloon.delegate = self;
+            
+            balloonController.name        = @"";
+            balloonController.description = formattedOutput;
+            
+            self.balloon.popoverContentSize = CGSizeMake(320, 160);
+            
+            [self.balloon setContentViewController:balloonController];
+            
+            [self.balloon presentPopoverFromRect:CGRectMake(point.x, point.y, 1, 1) 
+                                          inView:map
+                                        animated:YES];
+            
+            [TestFlight passCheckpoint:@"tapped interactive layer"];
+            
+            return;
+        }
     }
-
-    else if (self.balloon.popoverVisible)
+    
+    // dismiss if non-interactive or no content
+    //
+    if (self.balloon.popoverVisible)
         [self.balloon dismissPopoverAnimated:YES];
 }
-
-//- (void)hideInteractivityAnimated:(BOOL)animated
-//{
-//    if (self.balloon.popoverVisible)
-//        [self.balloon dismissPopoverAnimated:animated];
-//}
 
 - (void)tapOnAnnotation:(RMAnnotation *)annotation onMap:(RMMapView *)map;
 {
@@ -506,7 +516,7 @@
     //
     self.balloon = [[DSMapBoxPopoverController alloc] initWithContentViewController:[[UIViewController alloc] initWithNibName:nil bundle:nil]];
     
-//    self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView.topMostMapView];
+    self.balloon.passthroughViews = [NSArray arrayWithObject:self.mapView];
     self.balloon.delegate = self;
     
     // KML placemarks have their own title & description
