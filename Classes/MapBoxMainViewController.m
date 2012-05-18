@@ -57,6 +57,8 @@
 - (UIImage *)mapSnapshot;
 - (void)layerImportAlertWithName:(NSString *)name;
 - (void)setClusteringOn:(BOOL)clusteringOn;
+- (void)updateAttributionsWithTileLayers:(NSArray *)tileLayers;
+- (void)updateLegendsWithTileLayers:(NSArray *)tileLayers;
 
 @property (nonatomic, strong) UIPopoverController *layersPopover;
 @property (nonatomic, strong) UIPopoverController *downloadsPopover;
@@ -800,6 +802,37 @@
     [button setImage:stateImage forState:UIControlStateNormal];
 }
 
+- (void)updateAttributionsWithTileLayers:(NSArray *)tileLayers
+{
+    // update attributions - first, remove empties
+    //
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF != '' AND SELF != %@", [NSNull null]];
+    
+    NSArray *allAttributions = [[tileLayers valueForKey:@"attribution"] filteredArrayUsingPredicate:predicate];
+
+    // de-dupe
+    //
+    NSMutableArray *uniqueAttributions = [NSMutableArray array];
+    
+    for (NSString *attribution in allAttributions)
+        if ( ! [uniqueAttributions containsObject:attribution])
+            [uniqueAttributions addObject:attribution];
+    
+    // update label
+    //
+    self.attributionLabel.text = [uniqueAttributions componentsJoinedByString:@" "];
+}
+
+- (void)updateLegendsWithTileLayers:(NSArray *)tileLayers
+{
+    // update legends
+    //
+    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
+        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
+    else
+        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
+}
+
 #pragma mark -
 
 - (void)downloadBegan:(NSNotification *)notification
@@ -1333,36 +1366,14 @@
 
 - (void)dataLayerHandler:(id)handler didUpdateTileLayers:(NSArray *)activeTileLayers
 {
-    // update attributions - first, remove empties
-    //
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF != '' AND SELF != %@", [NSNull null]];
-    
-    NSArray *allAttributions = [[activeTileLayers valueForKey:@"attribution"] filteredArrayUsingPredicate:predicate];
-    
-    // de-dupe
-    //
-    NSSet *uniqueAttributions = [NSSet setWithArray:allAttributions];
-    
-    // update label
-    //
-    self.attributionLabel.text = [[uniqueAttributions allObjects] componentsJoinedByString:@" "];
-    
-    // update legends
-    //
-    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
-        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
-    else
-        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
+    [self updateAttributionsWithTileLayers:activeTileLayers];
+    [self updateLegendsWithTileLayers:activeTileLayers];
 }
 
 - (void)dataLayerHandler:(id)handler didReorderTileLayers:(NSArray *)activeTileLayers
 {
-    // update legends
-    //
-    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
-        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
-    else
-        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
+    [self updateAttributionsWithTileLayers:activeTileLayers];
+    [self updateLegendsWithTileLayers:activeTileLayers];
 }
 
 - (void)dataLayerHandler:(id)handler didUpdateDataLayers:(NSArray *)activeDataLayers
