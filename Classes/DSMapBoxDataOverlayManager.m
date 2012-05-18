@@ -270,16 +270,16 @@
     {
         // calculate bounds showing all points plus a 10% border on the edges
         //
-        RMSphericalTrapezium overlayBounds = { 
-            .northEast = {
-                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
-                .longitude = maxLon + (0.1 * (maxLon - minLon))
-            },
-            .southWest = {
-                .latitude  = minLat - (0.1 * (maxLat - minLat)),
-                .longitude = minLon - (0.1 * (maxLat - minLat))
-            }
-        };
+//        RMSphericalTrapezium overlayBounds = { 
+//            .northEast = {
+//                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+//                .longitude = maxLon + (0.1 * (maxLon - minLon))
+//            },
+//            .southWest = {
+//                .latitude  = minLat - (0.1 * (maxLat - minLat)),
+//                .longitude = minLon - (0.1 * (maxLat - minLat))
+//            }
+//        };
         
         //return overlayBounds;
     }
@@ -407,16 +407,16 @@
     {
         // calculate bounds showing all points plus a 10% border on the edges
         //
-        RMSphericalTrapezium overlayBounds = { 
-            .northEast = {
-                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
-                .longitude = maxLon + (0.1 * (maxLon - minLon))
-            },
-            .southWest = {
-                .latitude  = minLat - (0.1 * (maxLat - minLat)),
-                .longitude = minLon - (0.1 * (maxLat - minLat))
-            }
-        };
+//        RMSphericalTrapezium overlayBounds = { 
+//            .northEast = {
+//                .latitude  = maxLat + (0.1 * (maxLat - minLat)),
+//                .longitude = maxLon + (0.1 * (maxLon - minLon))
+//            },
+//            .southWest = {
+//                .latitude  = minLat - (0.1 * (maxLat - minLat)),
+//                .longitude = minLon - (0.1 * (maxLat - minLat))
+//            }
+//        };
         
         //return overlayBounds;
     }
