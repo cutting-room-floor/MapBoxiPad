@@ -345,8 +345,9 @@
             lineString.lineColor    = kMapBoxBlue;
             lineString.fillColor    = [UIColor clearColor];
             lineString.lineWidth    = 10.0;
-//            lineString.shadowBlur   = kDSPathShadowBlur;
-//            lineString.shadowOffset = kDSPathShadowOffset;
+            lineString.shadowBlur   = kDSPathShadowBlur;
+            lineString.shadowOffset = kDSPathShadowOffset;
+//            lineString.enableShadow = YES;
 
             for (CLLocation *geometry in [item objectForKey:@"geometries"])
                 [lineString addLineToCoordinate:geometry.coordinate];
@@ -364,8 +365,9 @@
                 polygonLinearRing.lineColor    = kMapBoxBlue;
                 polygonLinearRing.fillColor    = [UIColor clearColor];
                 polygonLinearRing.lineWidth    = 10.0;
-//                polygonLinearRing.shadowBlur   = kDSPathShadowBlur;
-//                polygonLinearRing.shadowOffset = kDSPathShadowOffset;
+                polygonLinearRing.shadowBlur   = kDSPathShadowBlur;
+                polygonLinearRing.shadowOffset = kDSPathShadowOffset;
+//                polygonLinearRing.enableShadow = YES;
 
                 for (CLLocation *point in [linearRing subarrayWithRange:NSMakeRange(0, [linearRing count] - 1)])
                     [polygonLinearRing addLineToCoordinate:point.coordinate];
@@ -701,8 +703,9 @@
         lineString.lineColor    = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
         lineString.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
         lineString.fillColor    = [UIColor clearColor];
-//        lineString.shadowBlur   = kDSPathShadowBlur;
-//        lineString.shadowOffset = kDSPathShadowOffset;
+        lineString.shadowBlur   = kDSPathShadowBlur;
+        lineString.shadowOffset = kDSPathShadowOffset;
+//        lineString.enableShadow = YES;
         
         for (CLLocation *location in feature.lineString.coordinates)
             [lineString addLineToCoordinate:location.coordinate];
@@ -724,8 +727,9 @@
             polygon.fillColor = [UIColor clearColor];
         
         polygon.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
-//        polygon.shadowBlur   = kDSPathShadowBlur;
-//        polygon.shadowOffset = kDSPathShadowOffset;
+        polygon.shadowBlur   = kDSPathShadowBlur;
+        polygon.shadowOffset = kDSPathShadowOffset;
+//        polygon.enableShadow = YES;
         
         SimpleKMLLinearRing *outerBoundary = feature.polygon.outerBoundary;
         
