@@ -1070,7 +1070,7 @@
 				DDD7F87B14BB62C000B6840E /* BlocksKit */,
 				DD436528147C838400235F20 /* DirectoryWatcher */,
 				DDC7AE19134F84B100C46EC0 /* Fingertips */,
-				DD579D7015407ABD00BA5BF1 /* MapBox iOS SDK */,
+				DD579D7015407ABD00BA5BF1 /* MapBox SDK */,
 				DD01F5BD14634B9C00BD29C9 /* mustache.js */,
 				DD47067E14BB7AC600E5B99E /* Reachability */,
 				DD0F615D11ED5AA70050174D /* Simple KML */,
@@ -1118,12 +1118,12 @@
 			name = Help;
 			sourceTree = "<group>";
 		};
-		DD579D7015407ABD00BA5BF1 /* MapBox iOS SDK */ = {
+		DD579D7015407ABD00BA5BF1 /* MapBox SDK */ = {
 			isa = PBXGroup;
 			children = (
 				DD579D7115407AD200BA5BF1 /* MapView.xcodeproj */,
 			);
-			name = "MapBox iOS SDK";
+			name = "MapBox SDK";
 			sourceTree = "<group>";
 		};
 		DD579D7215407AD200BA5BF1 /* Products */ = {
