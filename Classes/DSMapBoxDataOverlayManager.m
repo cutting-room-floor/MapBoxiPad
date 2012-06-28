@@ -20,7 +20,7 @@
 #import "RMAnnotation.h"
 #import "RMQuadTree.h"
 #import "RMMarker.h"
-#import "RMPath.h"
+#import "RMShape.h"
 #import "RMGlobalConstants.h"
 #import "RMInteractiveSource.h"
 #import "RMCompositeSource.h"
@@ -142,7 +142,7 @@
             [annotationsToAdd addObject:pointAnnotation];
         }
         
-        // line strings will become RMPaths
+        // line strings will become RMShapes
         //
         else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).lineString)
         {
@@ -163,7 +163,7 @@
             [annotationsToAdd addObject:lineStringAnnotation];
         }
         
-        // polygons will become RMPaths
+        // polygons will become RMShapes
         //
         else if ([feature isKindOfClass:[SimpleKMLPlacemark class]] && ((SimpleKMLPlacemark *)feature).polygon)
         {
@@ -340,65 +340,41 @@
         }
         else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypeLineString)
         {
-            RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+            RMShape *lineString = [[RMShape alloc] initWithView:self.mapView];
             
-            path.lineColor    = kMapBoxBlue;
-            path.fillColor    = [UIColor clearColor];
-            path.lineWidth    = 10.0;
-            path.shadowBlur   = kDSPathShadowBlur;
-            path.shadowOffset = kDSPathShadowOffset;
+            lineString.lineColor    = kMapBoxBlue;
+            lineString.fillColor    = [UIColor clearColor];
+            lineString.lineWidth    = 10.0;
+//            lineString.shadowBlur   = kDSPathShadowBlur;
+//            lineString.shadowOffset = kDSPathShadowOffset;
 
-            BOOL hasStarted = NO;
-            
             for (CLLocation *geometry in [item objectForKey:@"geometries"])
-            {
-                if ( ! hasStarted)
-                {
-                    [path moveToCoordinate:geometry.coordinate];
-                    
-                    hasStarted = YES;
-                }
-
-                else
-                    [path addLineToCoordinate:geometry.coordinate];
-            }
+                [lineString addLineToCoordinate:geometry.coordinate];
             
 //            [self.mapView.contents.overlay addSublayer:path];
             
-            [overlay addObject:path];
+            [overlay addObject:lineString];
         }
         else if ([[item objectForKey:@"type"] intValue] == DSMapBoxGeoJSONGeometryTypePolygon)
         {
             for (NSArray *linearRing in [item objectForKey:@"geometries"])
             {
-                RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+                RMShape *polygonLinearRing = [[RMShape alloc] initWithView:self.mapView];
                 
-                path.lineColor    = kMapBoxBlue;
-                path.fillColor    = [UIColor clearColor];
-                path.lineWidth    = 10.0;
-                path.shadowBlur   = kDSPathShadowBlur;
-                path.shadowOffset = kDSPathShadowOffset;
+                polygonLinearRing.lineColor    = kMapBoxBlue;
+                polygonLinearRing.fillColor    = [UIColor clearColor];
+                polygonLinearRing.lineWidth    = 10.0;
+//                polygonLinearRing.shadowBlur   = kDSPathShadowBlur;
+//                polygonLinearRing.shadowOffset = kDSPathShadowOffset;
 
-                BOOL hasStarted = NO;
-                
                 for (CLLocation *point in [linearRing subarrayWithRange:NSMakeRange(0, [linearRing count] - 1)])
-                {
-                    if ( ! hasStarted)
-                    {
-                        [path moveToCoordinate:point.coordinate];
-                        
-                        hasStarted = YES;
-                    }
-                    
-                    else
-                        [path addLineToCoordinate:point.coordinate];
-                }
+                    [polygonLinearRing addLineToCoordinate:point.coordinate];
                 
-                [path closePath];
+                [polygonLinearRing closePath];
                 
 //                [self.mapView.contents.overlay addSublayer:path];
                 
-                [overlay addObject:path];
+                [overlay addObject:polygonLinearRing];
             }
         }
     }
@@ -720,65 +696,43 @@
     {
         SimpleKMLPlacemark *feature = [annotation.userInfo objectForKey:@"lineString"];
         
-        RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+        RMShape *lineString = [[RMShape alloc] initWithView:self.mapView];
         
-        path.lineColor    = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
-        path.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
-        path.fillColor    = [UIColor clearColor];
-        path.shadowBlur   = kDSPathShadowBlur;
-        path.shadowOffset = kDSPathShadowOffset;
-        
-        BOOL hasStarted = NO;
+        lineString.lineColor    = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
+        lineString.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
+        lineString.fillColor    = [UIColor clearColor];
+//        lineString.shadowBlur   = kDSPathShadowBlur;
+//        lineString.shadowOffset = kDSPathShadowOffset;
         
         for (CLLocation *location in feature.lineString.coordinates)
-        {
-            if ( ! hasStarted)
-            {
-                [path moveToCoordinate:location.coordinate];
-                hasStarted = YES;
-            }
-            
-            else
-                [path addLineToCoordinate:location.coordinate];
-        }
+            [lineString addLineToCoordinate:location.coordinate];
         
-        return path;
+        return lineString;
     }
     else if ([annotation.annotationType isEqualToString:kDSPolygonAnnotationTypeName])
     {
         SimpleKMLPlacemark *feature = [annotation.userInfo objectForKey:@"polygon"];
         
-        RMPath *path = [[RMPath alloc] initWithView:self.mapView];
+        RMShape *polygon = [[RMShape alloc] initWithView:self.mapView];
         
-        path.lineColor = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
+        polygon.lineColor = (feature.style.lineStyle.color ? feature.style.lineStyle.color : kMapBoxBlue);
         
         if (feature.style.polyStyle.fill)
-            path.fillColor = feature.style.polyStyle.color;
+            polygon.fillColor = feature.style.polyStyle.color;
         
         else
-            path.fillColor = [UIColor clearColor];
+            polygon.fillColor = [UIColor clearColor];
         
-        path.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
-        path.shadowBlur   = kDSPathShadowBlur;
-        path.shadowOffset = kDSPathShadowOffset;
+        polygon.lineWidth    = (feature.style.lineStyle.width ? feature.style.lineStyle.width : kDSPathDefaultLineWidth);
+//        polygon.shadowBlur   = kDSPathShadowBlur;
+//        polygon.shadowOffset = kDSPathShadowOffset;
         
         SimpleKMLLinearRing *outerBoundary = feature.polygon.outerBoundary;
         
-        BOOL hasStarted = NO;
-        
         for (CLLocation *location in outerBoundary.coordinates)
-        {
-            if ( ! hasStarted)
-            {
-                [path moveToCoordinate:location.coordinate];
-                hasStarted = YES;
-            }
-            
-            else
-                [path addLineToCoordinate:location.coordinate];
-        }
+            [polygon addLineToCoordinate:location.coordinate];
         
-        return path;
+        return polygon;
     }
     else if ([annotation.annotationType isEqualToString:kDSOverlayAnnotationTypeName])
     {
