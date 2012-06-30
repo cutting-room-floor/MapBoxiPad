@@ -19,7 +19,6 @@
 #import "RMMapQuestOSMSource.h"
 #import "RMMBTilesSource.h"
 #import "RMMapBoxSource.h"
-#import "RMCompositeSource.h"
 #import "RMAnnotation.h"
 #import "RMMapLayer.h"
 
@@ -31,6 +30,8 @@
 @property (nonatomic, strong) RMMapView *mapView;
 @property (nonatomic, strong) NSArray *tileLayers;
 @property (nonatomic, strong) NSArray *dataLayers;
+
+- (void)updateBaseHiddenState;
 
 @end
 
@@ -312,27 +313,8 @@
 
 - (void)reorderLayersDisplay
 {
-    // tile layers
+    // tile layers - just notify
     //
-    RMCompositeSource *oldSource = self.mapView.tileSource;
-    
-    NSArray *currentTileSources = oldSource.compositeSources;
-    
-    NSArray *enabledLayers = [self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate];
-    
-    NSMutableArray *newTileSources = [NSMutableArray arrayWithArray:[[[enabledLayers valueForKey:@"source"] reverseObjectEnumerator] allObjects]];
-    
-    [newTileSources filterUsingPredicate:[NSPredicate predicateWithFormat:@"%@ CONTAINS SELF", currentTileSources]];
-    
-    if ([newTileSources count] && ! [newTileSources isEqualToArray:currentTileSources])
-    {
-        RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
-        
-        newSource.compositeSources = newTileSources;
-        
-        self.mapView.tileSource = newSource;
-    }
-    
     if ([self.delegate respondsToSelector:@selector(dataLayerHandler:didReorderTileLayers:)])
         [self.delegate dataLayerHandler:self didReorderTileLayers:[self.tileLayers filteredArrayUsingPredicate:kDSMapBoxSelectedLayerPredicate]];
 
@@ -393,6 +375,28 @@
     [self reorderLayersDisplay];
 }
 
+- (void)updateBaseHiddenState
+{
+    // add in default base map if we don't have full-world coverage somewhere else
+    //
+    for (int j = 1; j < [self.mapView.tileSources count]; j++) // skip first/base source in tests
+    {
+        id enabledSource = [self.mapView.tileSources objectAtIndex:j];
+        
+        if ( [enabledSource isKindOfClass:[RMOpenStreetMapSource class]]                                                         || 
+            [enabledSource isKindOfClass:[RMMapQuestOSMSource   class]]                                                         || 
+            ([enabledSource isKindOfClass:[RMMBTilesSource       class]] && [(RMMBTilesSource *)enabledSource coversFullWorld])  ||
+            ([enabledSource isKindOfClass:[RMMapBoxSource        class]] && [(RMMapBoxSource  *)enabledSource coversFullWorld]))
+        {
+            [self.mapView setHidden:YES forTileSourceAtIndex:0];
+            
+            return;
+        }
+    }
+    
+    [self.mapView setHidden:NO forTileSourceAtIndex:0];
+}
+
 #pragma mark -
 
 - (void)moveLayerAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
@@ -408,12 +412,27 @@
         {
             layer = [self.tileLayers objectAtIndex:fromIndexPath.row];
             
+            // figure out relative movement in tile layers, leaving space for base layer
+            //
+            NSArray *desiredSources = [[[self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"SELF.isSelected = YES OR SELF = %@", layer]] reverseObjectEnumerator] allObjects];
+            
+            int fromRow = [desiredSources indexOfObject:layer] + 1;
+            int toRow   = [desiredSources indexOfObject:[self.tileLayers objectAtIndex:toIndexPath.row]] + 1;
+
+            // move in tile layers
+            //
             NSMutableArray *mutableTileLayers = [NSMutableArray arrayWithArray:self.tileLayers];
             
             [mutableTileLayers removeObject:layer];
             [mutableTileLayers insertObject:layer atIndex:toIndexPath.row];
 
             self.tileLayers = [NSArray arrayWithArray:mutableTileLayers];
+
+            // move in tile sources
+            //
+            [self.mapView moveTileSourceAtIndex:fromRow toIndex:toRow];
+            
+            [self updateBaseHiddenState];
             
             break;
         }
@@ -498,17 +517,11 @@
         {
             layer = [self.tileLayers objectAtIndex:indexPath.row];
             
-            NSMutableArray *tileSources = [NSMutableArray array];
-            
             if (layer.isSelected) // layer disable
             {
                 // remove tile source
                 //
-                RMCompositeSource *oldSource = self.mapView.tileSource;
-                
-                [tileSources setArray:oldSource.compositeSources];
-                
-                [tileSources removeObject:layer.source];
+                [self.mapView removeTileSource:layer.source];
             }
             else // layer enable
             {
@@ -535,42 +548,17 @@
                 
                 // determine source(s) to show
                 //
-                NSArray *desiredLayers = [self.tileLayers filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES OR SELF = %@", layer]];
+                NSArray *desiredLayers = [[[self.tileLayers reverseObjectEnumerator] allObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"isSelected = YES OR SELF = %@", layer]];
 
-                for (DSMapBoxLayer *desiredLayer in desiredLayers)
-                    [tileSources addObject:desiredLayer.source];
+                for (int i = 0; i < [desiredLayers count]; i++)
+                    if ( ! [self.mapView.tileSources containsObject:((DSMapBoxLayer *)[desiredLayers objectAtIndex:i]).source])
+                        [self.mapView addTileSource:(id <RMTileSource>)(((DSMapBoxLayer *)[desiredLayers objectAtIndex:i]).source) atIndex:i + 1];
 
                 [TestFlight passCheckpoint:@"enabled tile layer"];
             }
             
-            // add in default base map if we don't have full-world coverage somewhere else
-            //
-            BOOL shouldShowBase = YES;
+            [self updateBaseHiddenState];
             
-            for (id <RMTileSource>enabledSource in tileSources)
-            {
-                if ( [enabledSource isKindOfClass:[RMOpenStreetMapSource class]]                                                         || 
-                     [enabledSource isKindOfClass:[RMMapQuestOSMSource   class]]                                                         || 
-                    ([enabledSource isKindOfClass:[RMMBTilesSource       class]] && [(RMMBTilesSource *)enabledSource coversFullWorld])  ||
-                    ([enabledSource isKindOfClass:[RMMapBoxSource        class]] && [(RMMapBoxSource  *)enabledSource coversFullWorld]))
-                {
-                    shouldShowBase = NO;
-                }
-            }
-            
-            if (shouldShowBase)
-                [tileSources addObject:[[RMMBTilesSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]]];
-
-            // reverse & set new sources (table view vs. tile source stacking order)
-            //
-            [tileSources setArray:[[tileSources reverseObjectEnumerator] allObjects]];
-            
-            RMCompositeSource *newSource = [[RMCompositeSource alloc] init];
-            
-            newSource.compositeSources = tileSources;
-            
-            self.mapView.tileSource = newSource;
-
             break;
         }
         case DSMapBoxLayerSectionData:

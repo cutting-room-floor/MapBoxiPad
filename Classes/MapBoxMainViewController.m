@@ -38,7 +38,6 @@
 #import "RMMapQuestOSMSource.h"
 #import "RMMBTilesSource.h"
 #import "RMMapBoxSource.h"
-#import "RMCompositeSource.h"
 
 #import <CoreLocation/CoreLocation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -116,7 +115,7 @@
     //
     self.view.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"loading.png"]];
     
-    self.mapView.tileSource = [[RMCompositeSource alloc] initWithTileSource:[[RMMBTilesSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]]];
+    self.mapView.tileSource = [[RMMBTilesSource alloc] initWithTileSetURL:[[DSMapBoxTileSetManager defaultManager] defaultTileSetURL]];
 
     self.mapView.zoom = kStartingZoom;
     [self.mapView setCenterCoordinate:CLLocationCoordinate2DMake(kStartingLat, kStartingLon) animated:NO];
@@ -827,10 +826,7 @@
 {
     // update legends
     //
-    if ([self.mapView.tileSource isKindOfClass:[RMCompositeSource class]])
-        self.legendManager.legendSources = ((RMCompositeSource *)self.mapView.tileSource).compositeSources;
-    else
-        self.legendManager.legendSources = [NSArray arrayWithObject:self.mapView.tileSource];
+    self.legendManager.legendSources = self.mapView.tileSources;
 }
 
 #pragma mark -

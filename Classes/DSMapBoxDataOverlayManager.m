@@ -23,7 +23,6 @@
 #import "RMShape.h"
 #import "RMGlobalConstants.h"
 #import "RMInteractiveSource.h"
-#import "RMCompositeSource.h"
 
 #import "SimpleKML.h"
 #import "SimpleKMLFeature.h"
